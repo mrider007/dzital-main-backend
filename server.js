@@ -33,6 +33,7 @@ const role = require('./routes/role.routes');
 const promocode = require('./routes/promo_code.routes');
 const cms = require('./routes/cms.routes');
 const faq = require('./routes/faq.routes');
+const product = require('./routes/product.routes');
 
 global.BASE_URL = `http://${process.env.HOST}:${getPort}`;
 
@@ -48,6 +49,7 @@ app.use('/api', role);
 app.use('/api', promocode);
 app.use('/api', cms);
 app.use('/api', faq);
+app.use('/api', product);
 
 app.use('/uploads', express.static('uploads'))
 
