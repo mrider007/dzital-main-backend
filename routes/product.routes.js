@@ -20,6 +20,6 @@ const Storage = multer.diskStorage({
 
 const uploadFile = multer({ storage: Storage });
 
-router.post('/product/add', uploadFile.any(), Authentication.Authenticate, ProductController.productAdd);
+router.post('/product/add', uploadFile.any(), Authentication.AuthenticateAdmin, ProductController.productAdd);
 
 module.exports = router;
