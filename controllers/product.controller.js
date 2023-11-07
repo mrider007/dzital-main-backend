@@ -20,6 +20,19 @@ class productController {
             res.send({ status: 500, message: e.message });
         }
     };
+
+    async productList(req, res) {
+        try {
+            let products = await Product.find();
+            if (!_.isEmpty(products)) {
+                res.send({ status: 200, data: products, message: 'Products list fetched successfully' });
+            } else {
+                res.send({ status: 201, data: [], message: 'No products found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
 }
 
 module.exports = new productController();
