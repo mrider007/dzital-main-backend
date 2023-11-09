@@ -13,6 +13,10 @@ const productRepository = {
                 and_clauses.push({ $or: [{ "name": { $regex: (req.body.name).trim(), $options: 'i' } }] });
             }
 
+            if (_.isObject(req.body) && _.has(req.body, 'price')) {
+                and_clauses.push({ "price": req.body.price });
+            }
+
             conditions['$and'] = and_clauses;
 
             let products = Product.aggregate([
@@ -30,7 +34,7 @@ const productRepository = {
                         image_3: { $first: '$image_3' },
                         brand: { $first: '$brand' },
                         category_id: { $first: '$category_id' },
-                        quantity: { $first: '$quantity' },
+                        quantity: { $first: '$quantity' }
                     }
                 }
             ]);
