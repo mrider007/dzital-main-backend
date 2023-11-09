@@ -58,6 +58,29 @@ class productController {
             res.send({ status: 500, message: e.message });
         }
     };
+
+    async productUpdate(req, res) {
+        try {
+            const productInfo = await Product.findOne({ _id: req.params.id });
+            if (!_.isEmpty(productInfo) && productInfo._id) {
+                if (req.files && req.files.length > 0) {
+                    req.files.forEach(element => {
+                        req.body[element.fieldname] = element.filename;
+                    });
+                }
+                let productUpdate = await productRepo.updateById(req.body, req.params.id);
+                if (!_.isEmpty(productUpdate) && productUpdate._id) {
+                    res.send({ status: 200, data: productUpdate, message: 'Product has been updated successfully' });
+                } else {
+                    res.send({ status: 201, data: {}, message: 'Product could not be updated' });
+                }
+            } else {
+                res.send({ status: 201, data: {}, message: 'Product not found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
 }
 
 module.exports = new productController();

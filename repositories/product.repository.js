@@ -23,7 +23,19 @@ const productRepository = {
             }
             var options = { page: req.body.page, limit: req.body.limit };
             let allProducts = await Product.aggregatePaginate(products, options);
-            return allProducts;            
+            return allProducts;
+        } catch (e) {
+            throw e;
+        }
+    },
+
+    updateById: async (data, id) => {
+        try {
+            let productUpdate = await Product.findByIdAndUpdate(id, data, { new: true, upsert: true }).exec();
+            if (!productUpdate) {
+                return null;
+            }
+            return productUpdate;
         } catch (e) {
             throw e;
         }
