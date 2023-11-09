@@ -39,6 +39,21 @@ const productRepository = {
         } catch (e) {
             throw e;
         }
+    },
+
+    delete: async (id) => {
+        try {
+            let product = await Product.findById(id);
+            if (product) {
+                let productDelete = await Product.deleteOne({ _id: id }).exec();
+                if (!productDelete) {
+                    return null;
+                }
+                return product;
+            }
+        } catch (e) {
+            throw e;
+        }
     }
 
 }

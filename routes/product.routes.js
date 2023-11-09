@@ -21,6 +21,7 @@ const Storage = multer.diskStorage({
 const uploadFile = multer({ storage: Storage });
 
 router.get('/product/details/:id', Authentication.AuthenticateAdmin, ProductController.productDetails);
+router.get('/product/delete/:id', Authentication.AuthenticateAdmin, ProductController.productDelete);
 router.post('/product/add', uploadFile.any(), Authentication.AuthenticateAdmin, ProductController.productAdd);
 router.post('/product/list', request_param.any(), Authentication.AuthenticateAdmin, ProductController.productList);
 router.post('/product/update/:id', uploadFile.any(), Authentication.AuthenticateAdmin, ProductController.productUpdate);
