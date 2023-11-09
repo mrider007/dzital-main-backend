@@ -1,4 +1,5 @@
 const Product = require('../models/product.model');
+const mongoose = require('mongoose');
 const productRepo = require('../repositories/product.repository');
 
 class productController {
