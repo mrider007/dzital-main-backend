@@ -45,6 +45,19 @@ class productController {
             res.send({ status: 500, message: e.message });
         }
     };
+
+    async productDetails(req, res) {
+        try {
+            const productInfo = await Product.findOne({ _id: req.params.id });
+            if (!_.isEmpty(productInfo) && productInfo._id) {
+                res.send({ status: 200, data: productInfo, message: 'Product details fetched successfully' });
+            } else {
+                res.send({ status: 201, data: {}, message: 'Product not found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
 }
 
 module.exports = new productController();

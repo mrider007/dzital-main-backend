@@ -7,7 +7,10 @@ const ProductSchema = new Schema({
     description: { type: String, index: true, trim: true },
     price: { type: Number, trim: true },
     product_type: { type: String, index: true, trim: true },
-    image: { type: String, default: '', index: true, trim: true },
+    photo: { type: String, default: '', index: true, trim: true },
+    image_1: { type: String, default: '', index: true, trim: true },
+    image_2: { type: String, default: '', index: true, trim: true },
+    image_3: { type: String, default: '', index: true, trim: true },
     brand: { type: String, index: true },
     category_id: { type: Schema.Types.ObjectId, ref: 'service_category', index: true },
     quantity: { type: Number, trim: true }
