@@ -85,6 +85,25 @@ class faqController {
             res.send({ status: 500, message: e.message });
         }
     };
+
+    async faqDelete(req, res) {
+        try {
+            const faq_id = new mongoose.Types.ObjectId(req.params.id);
+            const faqInfo = await FAQ.findOne({ _id: faq_id });
+            if (!_.isEmpty(faqInfo) && faqInfo._id) {
+                let faqDelete = await faqRepo.delete(faq_id);
+                if (!_.isEmpty(faqDelete) && faqDelete._id) {
+                    res.send({ status: 200, data: faqDelete, message: 'FAQ has been removed successfully' });
+                } else {
+                    res.send({ status: 201, data: {}, message: 'FAQ could not be deleted' });
+                }             
+            } else {
+                res.send({ status: 201, data: {}, message: 'FAQ not found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
 }
 
 module.exports = new faqController();
