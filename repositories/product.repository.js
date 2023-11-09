@@ -16,7 +16,23 @@ const productRepository = {
             conditions['$and'] = and_clauses;
 
             let products = Product.aggregate([
-                { $match: conditions }
+                { $match: conditions },
+                {
+                    $group: {
+                        _id: '$_id',
+                        name: { $first: '$name' },
+                        description: { $first: '$description' },
+                        price: { $first: '$price' },
+                        product_type: { $first: '$product_type' },
+                        photo: { $first: '$photo' },
+                        image_1: { $first: '$image_1' },
+                        image_2: { $first: '$image_2' },
+                        image_3: { $first: '$image_3' },
+                        brand: { $first: '$brand' },
+                        category_id: { $first: '$category_id' },
+                        quantity: { $first: '$quantity' },
+                    }
+                }
             ]);
             if (!products) {
                 return null;
