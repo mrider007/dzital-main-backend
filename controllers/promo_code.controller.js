@@ -63,6 +63,20 @@ class PromocodeController {
         }
     };
 
+    /** User Promo Code List */
+    async Promocodes(req, res) {
+        try {
+            let promocodes = await Promocode.find({ status: 'Active' });
+            if (!_.isEmpty(promocodes)) {
+                res.send({ status: 200, data: promocodes, message: 'Promocode list fetched successfully' });
+            } else {
+                res.send({ status: 201, data: [], message: 'No Promocodes found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
     async promocodeUpdate(req, res) {
         try {
             let promocode_id = new mongoose.Types.ObjectId(req.params.id);
