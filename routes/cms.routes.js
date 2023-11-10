@@ -5,7 +5,7 @@ const router = express.Router();
 const multer = require('multer');
 const request_param = multer();
 
-router.get('/cms/getAll', cmsController.getAllCms);
+router.post('/cms/getAll', request_param.any(), cmsController.getAllCms);
 router.get('/cms/delete/:id', Authentication.AuthenticateAdmin, cmsController.cmsDelete);
 router.get('/cms/detail/:id', Authentication.AuthenticateAdmin, cmsController.getDetails);
 router.get('/cms/status-change/:id', Authentication.AuthenticateAdmin, cmsController.changeStatus);

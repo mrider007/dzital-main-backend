@@ -149,7 +149,7 @@ class cmsController {
 
     async getAllCms(req, res) {
         try {
-            let cmsList = await CMS.find();
+            let cmsList = await cmsRepo.getCMS(req);
             if (!_.isEmpty(cmsList)) {
                 res.send({ status: 200, data: cmsList, message: 'CMS list fetched successfully' });
             } else {

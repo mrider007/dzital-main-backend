@@ -29,6 +29,31 @@ const cmsRepository = {
         }
     },
 
+    getCMS: async (req) => {
+        try {
+            var conditions = {};
+            var and_clauses = [];
+
+            and_clauses.push({  });
+
+            if (_.isObject(req.body) && _.has(req.body, 'slug')) {
+                and_clauses.push({ "slug": req.body.slug });
+            }
+
+            conditions['$and'] = and_clauses;
+
+            let cms = await CMS.aggregate([
+                { $match: conditions }
+            ]);
+            if (!cms) {
+                return null;
+            }
+            return cms;
+        } catch (e) {
+            throw e;
+        }
+    },
+
     getCMSList: async (req) => {
         try {
             var conditions = {};
