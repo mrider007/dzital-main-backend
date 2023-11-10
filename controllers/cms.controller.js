@@ -140,7 +140,20 @@ class cmsController {
             if (!_.isEmpty(cmsList)) {
                 res.send({ status: 200, data: cmsList.docs, total: cmsList.total, limit: cmsList.limit, page: cmsList.page, pages: cmsList.pages, message: 'CMS list fetched successfully' });
             } else {
-                res.send({ status: 201, data: {}, message: 'CMS not found' });
+                res.send({ status: 201, data: [], message: 'CMS not found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
+    async getAllCms(req, res) {
+        try {
+            let cmsList = await CMS.find();
+            if (!_.isEmpty(cmsList)) {
+                res.send({ status: 200, data: cmsList, message: 'CMS list fetched successfully' });
+            } else {
+                res.send({ status: 201, data: [], message: 'No CMS found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
