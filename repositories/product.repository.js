@@ -17,6 +17,14 @@ const productRepository = {
                 and_clauses.push({ "price": req.body.price });
             }
 
+            if (_.isObject(req.body) && _.has(req.body, 'product_type')) {
+                and_clauses.push({ 'product_type': req.body.product_type });
+            }
+
+            if (_.isObject(req.body) && _.has(req.body, 'brand')) {
+                and_clauses.push({ 'brand': req.body.brand });
+            }
+
             conditions['$and'] = and_clauses;
 
             let products = Product.aggregate([
