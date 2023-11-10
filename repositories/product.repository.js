@@ -44,7 +44,8 @@ const productRepository = {
                         category_id: { $first: '$category_id' },
                         quantity: { $first: '$quantity' }
                     }
-                }
+                },
+                { $sort: { _id: -1 } }
             ]);
             if (!products) {
                 return null;
