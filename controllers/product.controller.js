@@ -1,6 +1,7 @@
 const Product = require('../models/product.model');
 const mongoose = require('mongoose');
 const productRepo = require('../repositories/product.repository');
+const cloudinary = require('cloudinary');
 
 class productController {
     constructor() { }
