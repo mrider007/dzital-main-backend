@@ -32,7 +32,7 @@ class userController {
                         res.send({ status: 200, token: token, data: saveUser, msg: 'User Registration Successful' });
                     }
                     else {
-                        res.send({ status: 201, data: {}, message: 'User Registration Unsuccessful' });
+                        res.send({ status: 400, data: {}, message: 'User Registration Unsuccessful' });
                     }
                 }
             }
