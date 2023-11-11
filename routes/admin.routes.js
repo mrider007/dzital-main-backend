@@ -5,6 +5,13 @@ const router = express.Router();
 const multer = require('multer');
 const fs = require('fs');
 const request_param = multer();
+const cloudinary = require('cloudinary');
+
+cloudinary.v2.config({
+    "cloud_name": 'dslcqudfq',
+    "api_key": '865887567124381',
+    "api_secret": 'aW3AA2C1pCIAhY1B1xGut7XBMFo',
+});
 
 const Storage = multer.diskStorage({
     destination: (req, file, callback) => {

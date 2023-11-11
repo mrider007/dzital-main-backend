@@ -2,6 +2,7 @@ const Admin = require('../models/admin.model');
 const adminRepo = require('../repositories/admin.repository');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const cloudinary = require('cloudinary');
 
 class adminController {
     constructor() { }
@@ -82,11 +83,21 @@ class adminController {
 
     async updateProfile(req, res) {
         try {
+            // if (req.files && req.files.length > 0) {
+            //     req.files.forEach(element => {
+            //         req.body[element.fieldname] = element.filename;
+            //     });
+            // }
+            let adminInfo = await Admin.findById(req.user._id);
+            
             if (req.files && req.files.length > 0) {
-                req.files.forEach(element => {
-                    req.body[element.fieldname] = element.filename;
-                });
+                const uploadResult = await cloudinary.v2.uploader.upload(req.files[0].path);
+                req.body.image = uploadResult.secure_url;
             }
+            else {
+                req.body.image = adminInfo.image;
+            }
+
             let updateDetails = await adminRepo.updateById(req.body, req.user._id);
             if (!_.isEmpty(updateDetails) && updateDetails._id) {
                 res.send({ status: 200, data: updateDetails, message: 'Admin details has been updated' });
