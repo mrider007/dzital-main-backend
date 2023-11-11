@@ -98,9 +98,7 @@ class userController {
 
             if (req.files && req.files.length > 0) {
                 const uploadResult = await cloudinary.v2.uploader.upload(req.files[0].path);
-                //console.log('uploadResult',uploadResult)
                 req.body.image = uploadResult.secure_url;
-                //console.log('img',imageurl)
             }
             else {
                 req.body.image = userInfo.image;
