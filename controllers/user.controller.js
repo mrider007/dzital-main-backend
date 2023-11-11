@@ -64,7 +64,7 @@ class userController {
                     }
                 }
                 else {
-                    res.send({ status: 201, data: {}, isLoggedIn: false, message: 'User not Registered!' });
+                    res.send({ status: 400, data: {}, isLoggedIn: false, message: 'User not Registered!' });
                 }
             }
         } catch (err) {
