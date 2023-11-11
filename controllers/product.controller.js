@@ -38,7 +38,7 @@ class productController {
             }
             let products = await productRepo.productList(req);
             if (!_.isEmpty(products)) {
-                res.send({ status: 200, data: products.docs, total: products.total, pages: products.pages, message: 'Products list fetched successfully' });
+                res.send({ status: 200, data: products.docs, total: products.total, limit: products.limit, page: products.page, pages: products.pages, message: 'Products list fetched successfully' });
             } else {
                 res.send({ status: 201, data: [], message: 'No products found' });
             }
@@ -54,6 +54,31 @@ class productController {
                 res.send({ status: 200, data: productInfo, message: 'Product details fetched successfully' });
             } else {
                 res.send({ status: 201, data: {}, message: 'Product not found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
+    async products(req, res) {
+        try {
+            if (!req.body.page) {
+                req.body.page = 1;
+            } else {
+                req.body.page = parseInt(req.body.page);
+            }
+
+            if (!req.body.limit) {
+                req.body.limit = 10;
+            } else {
+                req.body.limit = parseInt(req.body.limit);
+            }
+            const products = await productRepo.productList(req);
+            if (!_.isEmpty(products)) {
+                res.send({ status: 200, data: products.docs, total: products.total, limit: products.limit, page: products.page, pages: products.pages, message: 'Products fetched successfully' });                
+            } 
+            else {
+                res.send({ status: 201, data: [], message: 'No Products found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });

@@ -2,6 +2,7 @@ const User = require('../models/user.model');
 const userRepo = require('../repositories/user.repository');
 const bcrypt = require('bcrypt');
 const jsonwebtoken = require('jsonwebtoken');
+const cloudinary = require('cloudinary');
 
 class userController {
     constructor() { }
@@ -87,12 +88,24 @@ class userController {
 
     async updateProfile(req, res) {
         try {
-            console.log('req', req.files);
+            //console.log('req', req.files);
+            let userInfo = await User.findById(req.user._id);
+            // if (req.files && req.files.length > 0) {
+            //     req.files.forEach(element => {
+            //         req.body[element.fieldname] = element.filename;
+            //     });
+            // }
+
             if (req.files && req.files.length > 0) {
-                req.files.forEach(element => {
-                    req.body[element.fieldname] = element.filename;
-                });
+                const uploadResult = await cloudinary.v2.uploader.upload(req.files[0].path);
+                //console.log('uploadResult',uploadResult)
+                req.body.image = uploadResult.secure_url;
+                //console.log('img',imageurl)
             }
+            else {
+                req.body.image = userInfo.image;
+            }
+
             let updateUser = await userRepo.updateById(req.body, req.user._id);
             if (!_.isEmpty(updateUser) && updateUser._id) {
                 res.send({ status: 200, data: updateUser, message: 'Profile details updated successfully' });
