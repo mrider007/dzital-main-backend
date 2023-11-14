@@ -89,7 +89,7 @@ class adminController {
             //     });
             // }
             let adminInfo = await Admin.findById(req.user._id);
-            
+
             if (req.files && req.files.length > 0) {
                 const uploadResult = await cloudinary.v2.uploader.upload(req.files[0].path);
                 req.body.image = uploadResult.secure_url;
