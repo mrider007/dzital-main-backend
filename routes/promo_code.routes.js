@@ -7,7 +7,7 @@ const request_param = multer();
 
 router.get('/promocode/details/:id', Authentication.AuthenticateAdmin, promocodeController.promocodeDetails);
 router.get('/promocode/delete/:id', Authentication.AuthenticateAdmin, promocodeController.promocodeDelete);
-router.get('/promocode/list', Authentication.Authenticate, promocodeController.Promocodes);
+router.get('/active/promocode/list', Authentication.Authenticate, promocodeController.Promocodes);
 router.post('/promocode/add', request_param.any(), Authentication.AuthenticateAdmin, promocodeController.promocodeAdd);
 router.post('/promocode/update/:id', request_param.any(), Authentication.AuthenticateAdmin, promocodeController.promocodeUpdate);
 router.post('/promocode/list', Authentication.AuthenticateAdmin, promocodeController.promocodeList);
