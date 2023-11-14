@@ -96,7 +96,7 @@ class faqController {
                     res.send({ status: 200, data: faqDelete, message: 'FAQ has been removed successfully' });
                 } else {
                     res.send({ status: 201, data: {}, message: 'FAQ could not be deleted' });
-                }             
+                }
             } else {
                 res.send({ status: 201, data: {}, message: 'FAQ not found' });
             }
