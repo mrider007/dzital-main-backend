@@ -10,7 +10,7 @@ const PromocodeSchema = new Schema({
     end_date: { type: Date, index: true, trim: true },
     discount_type: { type: String, index: true, trim: true },
     discount: { type: Number, trim: true },
-    status: { type: String, index: true, trim: true }
+    status: { type: String, default: 'Active', index: true, trim: true }
 }, { timestamps: true, versionKey: false });
 
 PromocodeSchema.plugin(mongooseAggregatePaginate);
