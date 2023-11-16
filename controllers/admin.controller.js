@@ -11,18 +11,18 @@ class adminController {
     async adminRegister(req, res) {
         try {
             if (!_.has(req.body, 'name')) {
-                res.send({ status: 201, message: 'Name is required' });
+                res.send({ status: 400, message: 'Name is required' });
             }
             else if (!_.has(req.body, 'email')) {
-                res.send({ status: 201, message: 'Email is required' });
+                res.send({ status: 400, message: 'Email is required' });
             }
             else if (!_.has(req.body, 'password')) {
-                res.send({ status: 201, message: 'Password is required' });
+                res.send({ status: 400, message: 'Password is required' });
             }
             else {
                 const adminExist = await Admin.findOne({ email: req.body.email });
                 if (!_.isEmpty(adminExist)) {
-                    res.send({ status: 201, message: 'Admin already exists' });
+                    res.send({ status: 400, message: 'Admin already exists' });
                 }
                 else {
                     let password = req.body.password;
@@ -32,7 +32,7 @@ class adminController {
                         const token = jwt.sign({ email: saveAdmin.email, id: saveAdmin._id }, process.env.JWTSECERT, { expiresIn: process.env.JWTTIME });
                         res.send({ status: 200, token: token, data: saveAdmin, msg: 'Admin Registration Successful' });
                     } else {
-                        res.send({ status: 201, message: 'Admin Registration Unsuccessful' });
+                        res.send({ status: 400, message: 'Admin Registration Unsuccessful' });
                     }
                 }
             }
@@ -44,10 +44,10 @@ class adminController {
     async adminLogin(req, res) {
         try {
             if (!_.has(req.body, 'email')) {
-                res.send({ status: 201, message: 'Email is required' });
+                res.send({ status: 400, message: 'Email is required' });
             }
             else if (!_.has(req.body, 'password')) {
-                res.send({ status: 201, message: 'Password is required' });
+                res.send({ status: 400, message: 'Password is required' });
             }
             else {
                 let password = req.body.password;
@@ -55,13 +55,13 @@ class adminController {
                 if (!_.isEmpty(adminInfo) && adminInfo._id) {
                     let isPasswordMatched = await bcrypt.compareSync(password, adminInfo.password);
                     if (!isPasswordMatched) {
-                        res.send({ status: 201, message: 'Password not matched' });
+                        res.send({ status: 400, message: 'Password not matched' });
                     } else {
                         let token = jwt.sign({ email: adminInfo.email, id: adminInfo._id }, process.env.JWTSECERT, { expiresIn: process.env.JWTTIME });
                         res.send({ status: 200, data: adminInfo, token: token, isLoggedIn: true, message: 'Admin Login Successful' });
                     }
                 } else {
-                    res.send({ status: 201, isLoggedIn: false, message: 'Email not matched!' });
+                    res.send({ status: 400, isLoggedIn: false, message: 'Email not matched!' });
                 }
             }
         } catch (e) {
@@ -75,7 +75,7 @@ class adminController {
             if (!_.isEmpty(adminDetails) && adminDetails._id) {
                 res.send({ status: 200, data: adminDetails, message: 'admin profile details fetched successfully' });
             } else {
-                res.send({ status: 201, message: 'Admin not found' });
+                res.send({ status: 400, message: 'Admin not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -98,7 +98,7 @@ class adminController {
             if (!_.isEmpty(updateDetails) && updateDetails._id) {
                 res.send({ status: 200, data: updateDetails, message: 'Admin details has been updated' });
             } else {
-                res.send({ status: 201, message: 'Admin details could not be updated' });
+                res.send({ status: 400, message: 'Admin details could not be updated' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -115,7 +115,7 @@ class adminController {
                 res.send({ status: 200, isLoggedIn: false, message: 'Logout Successfully' });
             }
             else {
-                res.send({ status: 201, message: 'Admin not found' });
+                res.send({ status: 400, message: 'Admin not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -126,7 +126,7 @@ class adminController {
         try {
             let adminInfo = await Admin.findById(req.user._id);
             if (!bcrypt.compareSync(req.body.currentPassword, adminInfo.password)) {
-                res.send({ status: 201, message: 'Wrong Current Password' });
+                res.send({ status: 400, message: 'Wrong Current Password' });
             }
             if (!_.isEmpty(adminInfo) && adminInfo._id) {
                 req.body.password = adminInfo.generateHash(req.body.newPassword);
@@ -135,10 +135,10 @@ class adminController {
                     res.send({ status: 200, data: updatePassword, message: 'Password has been updated successfully' });
                 }
                 else {
-                    res.send({ status: 201, message: 'Password could not be updated' });
+                    res.send({ status: 400, message: 'Password could not be updated' });
                 }
             } else {
-                res.send({ status: 201, message: 'Admin not found' });
+                res.send({ status: 400, message: 'Admin not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
