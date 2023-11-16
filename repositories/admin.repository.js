@@ -36,7 +36,7 @@ const adminRepository = {
             var conditions = {};
             var and_clauses = [];
 
-            and_clauses.push({ });
+            and_clauses.push({});
 
             if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
                 and_clauses.push({
@@ -82,6 +82,33 @@ const adminRepository = {
                 return null;
             }
             return adminUpdate;
+        } catch (e) {
+            throw e;
+        }
+    },
+
+    delete: async (id) => {
+        try {
+            let user = await User.findById(id);
+            if (user) {
+                let userDelete = await User.deleteOne({ _id: id }).exec();
+                if (!userDelete) {
+                    return null;
+                }
+                return user;
+            }
+        } catch (e) {
+            throw e;
+        }
+    },
+
+    getById: async (id) => {
+        try {
+            let user = await User.findById(id).lean().exec();
+            if (!user) {
+                return null;
+            }
+            return user;
         } catch (e) {
             throw e;
         }

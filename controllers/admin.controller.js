@@ -2,6 +2,7 @@ const Admin = require('../models/admin.model');
 const adminRepo = require('../repositories/admin.repository');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 const cloudinary = require('cloudinary');
 
 class adminController {
@@ -83,11 +84,6 @@ class adminController {
 
     async updateProfile(req, res) {
         try {
-            // if (req.files && req.files.length > 0) {
-            //     req.files.forEach(element => {
-            //         req.body[element.fieldname] = element.filename;
-            //     });
-            // }
             let adminInfo = await Admin.findById(req.user._id);
 
             if (req.files && req.files.length > 0) {
@@ -167,10 +163,31 @@ class adminController {
             if (!_.isEmpty(users)) {
                 res.send({ status: 200, data: users.docs, total: users.total, limit: users.limit, page: users.page, pages: users.pages, message: 'Users list fetched successfully' });
             } else {
-                res.send({ status: 201, message: 'No user found' });
+                res.send({ status: 400, message: 'No user found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
+        }
+    };
+
+    /** Admin User Delete */
+    async userDelete(req, res) {
+        try {
+            const userId = new mongoose.Types.ObjectId(req.params.id);
+            const userInfo = await adminRepo.getById(userId);
+            if (!_.isEmpty(userInfo) && userInfo._id) {
+                let userDelete = await adminRepo.delete(userId);
+                if (!_.isEmpty(userDelete) && userDelete._id) {
+                    res.send({ status: 200, data: userDelete, message: 'User has been removed successfully' });
+                }
+                else {
+                    res.send({ status: 400, data: {}, message: 'User could not be removed' });
+                }
+            } else {
+                res.send({ status: 400, data: {}, message: 'User not found!' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });            
         }
     };
 
