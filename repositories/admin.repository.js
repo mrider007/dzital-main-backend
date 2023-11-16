@@ -36,14 +36,15 @@ const adminRepository = {
             var conditions = {};
             var and_clauses = [];
 
-            and_clauses.push({});
+            and_clauses.push({ });
 
-            if (_.isObject(req.body) && _.has(req.body, 'name')) {
-                and_clauses.push({ $or: [{ "name": { $regex: (req.body.name).trim(), $options: 'i' } }] });
-            }
-
-            if (_.isObject(req.body) && _.has(req.body, 'email')) {
-                and_clauses.push({ $or: [{ "email": { $regex: (req.body.email).trim(), $options: 'i' } }] });
+            if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
+                and_clauses.push({
+                    $or: [
+                        { 'name': { $regex: (req.body.keyword_search).trim(), $options: 'i' } },
+                        { 'email': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
+                    ]
+                });
             }
 
             conditions['$and'] = and_clauses;
