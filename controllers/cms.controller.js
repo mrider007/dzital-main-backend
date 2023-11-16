@@ -122,6 +122,7 @@ class cmsController {
         }
     };
 
+    /** Admin CMS List */
     async cmsList(req, res) {
         try {
             if (!req.body.page) {

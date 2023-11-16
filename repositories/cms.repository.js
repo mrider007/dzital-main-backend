@@ -34,7 +34,7 @@ const cmsRepository = {
             var conditions = {};
             var and_clauses = [];
 
-            and_clauses.push({  });
+            and_clauses.push({});
 
             if (_.isObject(req.body) && _.has(req.body, 'slug')) {
                 and_clauses.push({ "slug": req.body.slug });
@@ -59,25 +59,25 @@ const cmsRepository = {
             var conditions = {};
             var and_clauses = [];
 
-            and_clauses.push({});
+            and_clauses.push({ });
 
-            if (_.isObject(req.body) && _.has(req.body, 'title')) {
-                and_clauses.push({ $or: [{ "title": { $regex: (req.body.title).trim(), $options: 'i' } }] });
-            }
-
-            if (_.isObject(req.body) && _.has(req.body, 'slug')) {
-                and_clauses.push({ $or: [{ "slug": { $regex: (req.body.slug).trim(), $options: 'i' } }] });
+            if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
+                and_clauses.push({
+                    $or: [
+                        { 'title': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
+                    ]
+                });
             }
 
             conditions['$and'] = and_clauses;
 
-            let cmslist = await CMS.aggregate([
+            let cmslist = CMS.aggregate([
                 { $match: conditions }
             ]);
             if (!cmslist) {
                 return null;
             }
-            var options = { page: req.body.page, limit: req.body.limit };
+            var options = { page: req.body.page || 1, limit: req.body.limit || 10 };
             let allCMS = await CMS.aggregatePaginate(cmslist, options);
             return allCMS;
         } catch (e) {
