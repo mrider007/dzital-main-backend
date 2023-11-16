@@ -170,6 +170,35 @@ class adminController {
         }
     };
 
+    /** Admin User Add */
+    async userAdd(req, res) {
+        try {
+            let user = await adminRepo.getUserInfo({ email: req.body.email });
+            if (!_.isEmpty(user) && user._id) {
+                res.send({ status: 400, data: {}, message: 'User Already Exists' });
+            }
+            else {
+                let password = req.body.password;
+                req.body.password = bcrypt.hashSync(password, 10);
+
+                if (req.files && req.files.length > 0) {
+                    const uploadResult = await cloudinary.v2.uploader.upload(req.files[0].path);
+                    req.body.image = uploadResult.secure_url;
+                }
+                
+                let saveUser = await adminRepo.save(req.body);
+                if (!_.isEmpty(saveUser) && saveUser._id) {
+                    res.send({ status: 200, data: saveUser, message: 'User has been added successfully' });
+                }
+                else {
+                    res.send({ status: 400, data: {}, message: 'User could not be added' });
+                }
+            }          
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
     /** Admin User Delete */
     async userDelete(req, res) {
         try {

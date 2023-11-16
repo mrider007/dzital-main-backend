@@ -35,5 +35,6 @@ router.post('/admin/login', request_param.any(), adminController.adminLogin);
 router.post('/admin/profile/update', uploadFile.any(), Authentication.AuthenticateAdmin, adminController.updateProfile);
 router.post('/admin/change-password', request_param.any(), Authentication.AuthenticateAdmin, adminController.changePassword);
 router.post('/admin/users/list', request_param.any(), Authentication.AuthenticateAdmin, adminController.userList);
+router.post('/admin/user/add', uploadFile.any(), Authentication.AuthenticateAdmin, adminController.userAdd);
 
 module.exports = router;

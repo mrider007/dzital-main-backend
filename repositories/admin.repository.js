@@ -112,6 +112,18 @@ const adminRepository = {
         } catch (e) {
             throw e;
         }
+    },
+
+    save: async (data) => {
+        try {
+            let user = await User.create(data);
+            if (!user) {
+                return null;
+            }
+            return user;
+        } catch (e) {
+            throw e;
+        }
     }
 
 }
