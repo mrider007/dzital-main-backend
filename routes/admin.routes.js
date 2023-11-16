@@ -31,7 +31,7 @@ router.get('/admin/details', request_param.any(), Authentication.AuthenticateAdm
 router.get('/admin/logout', request_param.any(), Authentication.AuthenticateAdmin, adminController.logout);
 router.post('/admin/register', request_param.any(), adminController.adminRegister);
 router.post('/admin/login', request_param.any(), adminController.adminLogin);
-router.post('/admin/profile/update/:id', uploadFile.any(), Authentication.AuthenticateAdmin, adminController.updateProfile);
+router.post('/admin/profile/update', uploadFile.any(), Authentication.AuthenticateAdmin, adminController.updateProfile);
 router.post('/admin/change-password', request_param.any(), Authentication.AuthenticateAdmin, adminController.changePassword);
 router.post('/admin/users/list', request_param.any(), Authentication.AuthenticateAdmin, adminController.userList);
 
