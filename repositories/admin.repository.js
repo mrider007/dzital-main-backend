@@ -42,6 +42,10 @@ const adminRepository = {
                 and_clauses.push({ $or: [{ "name": { $regex: (req.body.name).trim(), $options: 'i' } }] });
             }
 
+            if (_.isObject(req.body) && _.has(req.body, 'email')) {
+                and_clauses.push({ $or: [{ "email": { $regex: (req.body.email).trim(), $options: 'i' } }] });
+            }
+
             conditions['$and'] = and_clauses;
 
             let users = User.aggregate([
