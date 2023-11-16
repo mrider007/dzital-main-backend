@@ -10,18 +10,18 @@ class userController {
     async registration(req, res) {
         try {
             if (!_.has(req.body, 'name')) {
-                res.send({ status: 201, data: {}, message: 'Name is required' });
+                res.send({ status: 400, data: {}, message: 'Name is required' });
             }
             else if (!_.has(req.body, 'email')) {
-                res.send({ status: 201, data: {}, message: 'Email is required' });
+                res.send({ status: 400, data: {}, message: 'Email is required' });
             }
             else if (!_.has(req.body, 'password')) {
-                res.send({ status: 201, data: {}, message: 'Password is required' });
+                res.send({ status: 400, data: {}, message: 'Password is required' });
             }
             else {
                 const userExist = await User.findOne({ email: req.body.email });
                 if (!_.isEmpty(userExist)) {
-                    res.send({ status: 201, message: 'User Already Registered' });;
+                    res.send({ status: 400, message: 'User Already Registered' });;
                 }
                 else {
                     let password = req.body.password;
@@ -44,10 +44,10 @@ class userController {
     async login(req, res) {
         try {
             if (!_.has(req.body, 'email')) {
-                res.send({ status: 201, data: {}, message: 'Email is required' });
+                res.send({ status: 400, data: {}, message: 'Email is required' });
             }
             else if (!_.has(req.body, 'password')) {
-                res.send({ status: 201, data: {}, message: 'Password is required' });
+                res.send({ status: 400, data: {}, message: 'Password is required' });
             }
             else {
                 let password = req.body.password;
@@ -56,7 +56,7 @@ class userController {
                 if (!_.isEmpty(userDetails)) {
                     let isPasswordMatched = await bcrypt.compareSync(password, userDetails.password);
                     if (!isPasswordMatched) {
-                        res.send({ status: 201, data: {}, message: 'Password not matched' });
+                        res.send({ status: 400, data: {}, message: 'Password not matched' });
                     }
                     else {
                         let token = jsonwebtoken.sign({ email: userDetails.email, id: userDetails._id }, process.env.JWTSECERT, { expiresIn: process.env.JWTTIME });
@@ -79,7 +79,7 @@ class userController {
                 res.send({ status: 200, data: userInfo, message: 'Profile details fetched successfully' });
             }
             else {
-                res.send({ status: 201, message: 'User not found' });
+                res.send({ status: 400, message: 'User not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -109,7 +109,7 @@ class userController {
                 res.send({ status: 200, data: updateUser, message: 'Profile details updated successfully' });
             }
             else {
-                res.send({ status: 201, data: {}, message: 'Profile details could not be updated' });
+                res.send({ status: 400, data: {}, message: 'Profile details could not be updated' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -120,7 +120,7 @@ class userController {
         try {
             let userInfo = await User.findById(req.user._id);
             if (!bcrypt.compareSync(req.body.currentPassword, userInfo.password)) {
-                res.send({ status: 201, message: 'Wrong Current Password' });
+                res.send({ status: 400, message: 'Wrong Current Password' });
             }
             req.body.password = userInfo.generateHash(req.body.newPassword);
             let updatePassword = await userRepo.updateById(req.body, req.user._id);
@@ -128,7 +128,7 @@ class userController {
                 res.send({ status: 200, data: updatePassword, message: 'Password updated successfully' });
             }
             else {
-                res.send({ status: 201, message: 'Password could not be updated' });
+                res.send({ status: 400, message: 'Password could not be updated' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -144,7 +144,7 @@ class userController {
                 const token = jsonwebtoken.sign(payload, process.env.JWTSECERT, { expiresIn: 0 });
                 res.send({ status: 200, isLoggedIn: false, message: 'Logout Successfully' });
             } else {
-                res.send({ status: 201, message: 'User not found' });
+                res.send({ status: 400, message: 'User not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -160,7 +160,7 @@ class userController {
                     const token = jsonwebtoken.sign(payload, process.env.JWTSECERT, { expiresIn: 86400 });
                     res.send({ status: 200, data: checkUser, token: token, message: "User have successfully logged in" });
                 } else {
-                    res.send({ status: 201, message: 'User already registered' });
+                    res.send({ status: 400, message: 'User already registered' });
                 }
             } else {
                 let userData = await User.create(req.body);
