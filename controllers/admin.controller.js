@@ -145,6 +145,7 @@ class adminController {
         }
     };
 
+    /** Admin User List */
     async userList(req, res) {
         try {
             if (!req.body.page) {
@@ -163,7 +164,7 @@ class adminController {
             if (!_.isEmpty(users)) {
                 res.send({ status: 200, data: users.docs, total: users.total, limit: users.limit, page: users.page, pages: users.pages, message: 'Users list fetched successfully' });
             } else {
-                res.send({ status: 400, message: 'No user found' });
+                res.send({ status: 201, message: 'No user found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });

@@ -87,6 +87,18 @@ const adminRepository = {
         }
     },
 
+    getUserInfo: async (params) => {
+        try {
+            let user = await User.findOne(params).exec();
+            if (!user) {
+                return null;
+            }
+            return user;           
+        } catch (e) {
+            throw e;
+        }
+    },
+
     delete: async (id) => {
         try {
             let user = await User.findById(id);
