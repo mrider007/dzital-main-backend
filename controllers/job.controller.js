@@ -54,7 +54,7 @@ class JobController {
             if (!_.isEmpty(jobs)) {
                 res.send({ status: 200, data: jobs.docs, total: jobs.total, limit: jobs.limit, page: jobs.page, pages: jobs.pages, message: 'client jobs list fetched successfully' });
             } else {
-                res.send({ status: 201, data: [], message: 'no client jobs found' });
+                res.send({ status: 201, data: [], message: 'No Jobs Found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -66,7 +66,7 @@ class JobController {
             const job_id = new mongoose.Types.ObjectId(req.params.id);
             let jobInfo = await jobRepo.getJobDetails({ _id: job_id });
             if (!_.isEmpty(jobInfo)) {
-                res.send({ status: 200, data: jobInfo, message: 'Job details fetched successfully' });
+                res.send({ status: 200, data: jobInfo, message: 'Job Details fetched successfully' });
             }
             else {
                 res.send({ status: 400, message: 'Job not found' });
