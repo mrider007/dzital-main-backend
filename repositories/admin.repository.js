@@ -114,7 +114,7 @@ const adminRepository = {
         }
     },
 
-    getById: async (id) => {
+    getUserById: async (id) => {
         try {
             let user = await User.findById(id).lean().exec();
             if (!user) {

@@ -36,5 +36,6 @@ router.post('/admin/profile/update', uploadFile.any(), Authentication.Authentica
 router.post('/admin/change-password', request_param.any(), Authentication.AuthenticateAdmin, adminController.changePassword);
 router.post('/admin/users/list', request_param.any(), Authentication.AuthenticateAdmin, adminController.userList);
 router.post('/admin/user/add', uploadFile.any(), Authentication.AuthenticateAdmin, adminController.userAdd);
+router.post('/admin/user/update/:id', uploadFile.any(), Authentication.AuthenticateAdmin, adminController.userUpdate);
 
 module.exports = router;

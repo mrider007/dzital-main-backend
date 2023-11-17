@@ -1,5 +1,6 @@
 const Admin = require('../models/admin.model');
 const adminRepo = require('../repositories/admin.repository');
+const userRepo = require('../repositories/user.repository');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
@@ -186,7 +187,7 @@ class adminController {
                     const uploadResult = await cloudinary.v2.uploader.upload(req.files[0].path);
                     req.body.image = uploadResult.secure_url;
                 }
-                
+
                 let saveUser = await adminRepo.save(req.body);
                 if (!_.isEmpty(saveUser) && saveUser._id) {
                     res.send({ status: 200, data: saveUser, message: 'User has been added successfully' });
@@ -194,7 +195,7 @@ class adminController {
                 else {
                     res.send({ status: 400, data: {}, message: 'User could not be added' });
                 }
-            }          
+            }
         } catch (e) {
             res.send({ status: 500, message: e.message });
         }
@@ -204,7 +205,7 @@ class adminController {
     async userDelete(req, res) {
         try {
             const userId = new mongoose.Types.ObjectId(req.params.id);
-            const userInfo = await adminRepo.getById(userId);
+            const userInfo = await adminRepo.getUserById(userId);
             if (!_.isEmpty(userInfo) && userInfo._id) {
                 let userDelete = await adminRepo.delete(userId);
                 if (!_.isEmpty(userDelete) && userDelete._id) {
@@ -217,7 +218,35 @@ class adminController {
                 res.send({ status: 400, data: {}, message: 'User not found!' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });            
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
+    async userUpdate(req, res) {
+        try {
+            const userId = new mongoose.Types.ObjectId(req.params.id);
+            const userInfo = await adminRepo.getUserById(userId);
+            if (!_.isEmpty(userInfo) && userInfo._id) {
+                if (req.files && req.files.length > 0) {
+                    const uploadResult = await cloudinary.v2.uploader.upload(req.files[0].path);
+                    req.body.image = uploadResult.secure_url;
+                }
+                else {
+                    req.body.image = userInfo.image;
+                }
+                let userUpdate = await userRepo.updateById(req.body, userId);
+                if (!_.isEmpty(userUpdate) && userUpdate._id) {
+                    res.send({ status: 200, data: userUpdate, message: 'User details has been updated successfully' });
+                }
+                else {
+                    res.send({ status: 201, data: {}, message: 'Sorry, unable to update user at this moment!' });
+                }
+            }
+            else {
+                res.send({ status: 201, data: {}, message: 'User not found!' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
         }
     };
 
