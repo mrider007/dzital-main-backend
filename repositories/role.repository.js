@@ -36,6 +36,14 @@ const roleRepository = {
 
             and_clauses.push({  });
 
+            if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
+                and_clauses.push({
+                    $or: [
+                        { 'role': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
+                    ]
+                });
+            }
+
             conditions['$and'] = and_clauses;
 
             let roles = Role.aggregate([
