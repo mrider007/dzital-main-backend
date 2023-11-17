@@ -39,9 +39,20 @@ class JobController {
 
     async jobList(req, res) {
         try {
-            let jobs = await Job.find({ 'client_id': req.user._id });
+            if (!req.body.page) {
+                req.body.page = 1;
+            } else {
+                req.body.page = parseInt(req.body.page);
+            }
+
+            if (!req.body.limit) {
+                req.body.limit = 10;
+            } else {
+                req.body.limit = parseInt(req.body.limit);
+            }
+            let jobs = await jobRepo.getJobList(req);
             if (!_.isEmpty(jobs)) {
-                res.send({ status: 200, data: jobs, message: 'client jobs list fetched successfully' });
+                res.send({ status: 200, data: jobs.docs, total: jobs.total, limit: jobs.limit, page: jobs.page, pages: jobs.pages, message: 'client jobs list fetched successfully' });
             } else {
                 res.send({ status: 201, data: [], message: 'no client jobs found' });
             }

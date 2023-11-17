@@ -63,6 +63,29 @@ const JobRepository = {
         } catch (e) {
             return e;
         }
+    },
+
+    getJobList: async (req) => {
+        try {
+            var conditions = {};
+            var and_clauses = [];
+
+            and_clauses.push({});
+
+            conditions['$and'] = and_clauses;
+
+            let joblist = Job.aggregate([
+                { $match: conditions }
+            ]);
+            if (!joblist) {
+                return null;
+            }
+            var options = { page: req.body.page, limit: req.body.limit };
+            let allJobs = await Job.aggregatePaginate(joblist, options);
+            return allJobs;
+        } catch (e) {
+            throw e;
+        }
     }
 
 }
