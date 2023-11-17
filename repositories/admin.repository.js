@@ -93,7 +93,7 @@ const adminRepository = {
             if (!user) {
                 return null;
             }
-            return user;           
+            return user;
         } catch (e) {
             throw e;
         }
