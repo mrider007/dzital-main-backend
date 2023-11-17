@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
 
 const JobSchema = new mongoose.Schema({
     client_id: { type: Schema.Types.ObjectId, ref: 'User', index: true },
@@ -18,5 +19,7 @@ const JobSchema = new mongoose.Schema({
     date: { type: Date, index: true },
     status: { type: String, default: 'Open', enum: ['Open', 'Ongoing', 'Completed'] }
 }, { timestamps: true, versionKey: false });
+
+JobSchema.plugin(mongooseAggregatePaginate);
 
 module.exports = mongoose.model('Job', JobSchema);
