@@ -9,13 +9,13 @@ class JobController {
     async jobPost(req, res) {
         try {
             if (!_.has(req.body, 'title')) {
-                res.send({ status: 201, message: 'Job Title is required' });
+                res.send({ status: 400, message: 'Job Title is required' });
             }
             else if (!_.has(req.body, 'description')) {
-                res.send({ status: 201, message: 'Job Description is required' });
+                res.send({ status: 400, message: 'Job Description is required' });
             }
             else if (!_.has(req.body, 'budget')) {
-                res.send({ status: 201, message: 'Budget Amount is required' });
+                res.send({ status: 400, message: 'Budget Amount is required' });
             }
             else {
                 let adminInfo = await Admin.findOne({ _id: req.user._id });
@@ -26,10 +26,10 @@ class JobController {
                         res.send({ status: 200, data: jobSave, message: 'Job Post saved successfully' });
                     }
                     else {
-                        res.send({ status: 201, message: 'Job Post could not be saved' });
+                        res.send({ status: 400, message: 'Job Post could not be saved' });
                     }
                 } else {
-                    res.send({ status: 201, message: 'Admin not found' });
+                    res.send({ status: 400, message: 'Admin not found' });
                 }
             }
         } catch (e) {
@@ -58,7 +58,7 @@ class JobController {
                 res.send({ status: 200, data: jobInfo, message: 'Job details fetched successfully' });
             }
             else {
-                res.send({ status: 201, message: 'Job not found' });
+                res.send({ status: 400, message: 'Job not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -75,10 +75,10 @@ class JobController {
                     res.send({ status: 200, data: jobUpdate, message: 'Job has been updated successfully' })
                 }
                 else {
-                    res.send({ status: 201, message: 'Job could not be updated' });
+                    res.send({ status: 400, message: 'Job could not be updated' });
                 }
             } else {
-                res.send({ status: 201, message: 'Job not found' });
+                res.send({ status: 400, message: 'Job not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -94,10 +94,10 @@ class JobController {
                 if (!_.isEmpty(statusUpdate) && statusUpdate._id) {
                     res.send({ status: 200, data: statusUpdate, message: 'Job Status has been updated successfully' });
                 } else {
-                    res.send({ status: 200, data: {}, message: 'Job Status could not be updated' });
+                    res.send({ status: 400, data: {}, message: 'Job Status could not be updated' });
                 }
             } else {
-                res.send({ status: 201, data: {}, message: 'Job not found' });
+                res.send({ status: 400, data: {}, message: 'Job not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -113,10 +113,10 @@ class JobController {
                 if (!_.isEmpty(deleteData) && deleteData._id) {
                     res.send({ status: 200, data: deleteData, message: 'Job has been removed successfully' });
                 } else {
-                    res.send({ status: 201, message: 'Sorry, unable to remove job at the moment' });
+                    res.send({ status: 400, message: 'Sorry, unable to remove job at the moment' });
                 }
             } else {
-                res.send({ status: 201, message: 'Job not found' });
+                res.send({ status: 400, message: 'Job not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
