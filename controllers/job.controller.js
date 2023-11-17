@@ -18,9 +18,9 @@ class JobController {
                 res.send({ status: 201, message: 'Budget Amount is required' });
             }
             else {
-                let userInfo = await User.findOne({ _id: req.user._id });
-                if (!_.isEmpty(userInfo)) {
-                    req.body.client_id = userInfo._id;
+                let adminInfo = await Admin.findOne({ _id: req.user._id });
+                if (!_.isEmpty(adminInfo)) {
+                    req.body.client_id = adminInfo._id;
                     let jobSave = await Job.create(req.body);
                     if (!_.isEmpty(jobSave) && jobSave._id) {
                         res.send({ status: 200, data: jobSave, message: 'Job Post saved successfully' });
@@ -29,7 +29,7 @@ class JobController {
                         res.send({ status: 201, message: 'Job Post could not be saved' });
                     }
                 } else {
-                    res.send({ status: 201, message: 'User not found' });
+                    res.send({ status: 201, message: 'Admin not found' });
                 }
             }
         } catch (e) {
