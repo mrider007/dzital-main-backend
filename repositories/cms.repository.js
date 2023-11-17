@@ -59,7 +59,7 @@ const cmsRepository = {
             var conditions = {};
             var and_clauses = [];
 
-            and_clauses.push({ });
+            and_clauses.push({});
 
             if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
                 and_clauses.push({
