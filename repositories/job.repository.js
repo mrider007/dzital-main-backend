@@ -84,7 +84,8 @@ const JobRepository = {
             conditions['$and'] = and_clauses;
 
             let joblist = Job.aggregate([
-                { $match: conditions }
+                { $match: conditions },
+                { $sort: { _id: 1 } }
             ]);
             if (!joblist) {
                 return null;
