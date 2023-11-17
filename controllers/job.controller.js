@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Job = require('../models/job.model');
-const User = require('../models/user.model');
+const Admin = require('../models/admin.model');
 const jobRepo = require('../repositories/job.repository');
 
 class JobController {
