@@ -56,8 +56,7 @@ class adminController {
                 if (!_.isEmpty(adminInfo) && adminInfo._id) {
                     let isPasswordMatched = await bcrypt.compareSync(password, adminInfo.password);
                     if (!isPasswordMatched) {
-                        res.status(401).json({ 'status': 401, "message": "Password not matched" })
-                        //res.send({ status: 400, message: 'Password not matched' });
+                        res.status(401).json({ status: 401, message: "Password not matched" });
                     } else {
                         let token = jwt.sign({ email: adminInfo.email, id: adminInfo._id }, process.env.JWTSECERT, { expiresIn: process.env.JWTTIME });
                         res.send({ status: 200, data: adminInfo, token: token, isLoggedIn: true, message: 'Admin Login Successful' });
