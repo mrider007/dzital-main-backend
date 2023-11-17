@@ -39,6 +39,7 @@ class faqController {
         }
     };
 
+    /** Admin FAQ List */
     async faqList(req, res) {
         try {
             if (!req.body.page) {
