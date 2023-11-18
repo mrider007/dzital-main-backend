@@ -36,6 +36,35 @@ class serviceController {
         }
     };
 
+    /** Admin service categories list */
+    async serviceCatergories(req, res) {
+        try {
+            if (!req.body.page) {
+                req.body.page = 1;
+            }
+            else {
+                req.body.page = parseInt(req.body.page);
+            }
+
+            if (!req.body.limit) {
+                req.body.limit = 10;
+            }
+            else {
+                req.body.limit = parseInt(req.body.limit);
+            }
+
+            let categories = await serviceRepo.getCategories(req);
+            if (!_.isEmpty(categories)) {
+                res.send({ status: 200, data: categories.docs, total: categories.total, limit: categories.limit, page: categories.page, pages: categories.pages, message: 'Categories list fetched successfully' });
+            }
+            else {
+                res.send({ status: 201, data: [], message: 'No category found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
     async serviceUpdate(req, res) {
         try {
             let service_id = new mongoose.Types.ObjectId(req.params.id);
