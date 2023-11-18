@@ -34,6 +34,7 @@ const promocode = require('./routes/promo_code.routes');
 const cms = require('./routes/cms.routes');
 const faq = require('./routes/faq.routes');
 const product = require('./routes/product.routes');
+const store_setting = require('./routes/store_setting.routes');
 
 global.BASE_URL = `http://${process.env.HOST}:${getPort}`;
 
@@ -50,6 +51,7 @@ app.use('/api', promocode);
 app.use('/api', cms);
 app.use('/api', faq);
 app.use('/api', product);
+app.use('/api', store_setting);
 
 app.use('/uploads', express.static('uploads'))
 
