@@ -5,6 +5,6 @@ const router = express.Router();
 const multer = require('multer');
 const request_param = multer();
 
-
+router.post('/admin/email/setting/add', request_param.any(), Authentication.AuthenticateAdmin, emailSettingController.add);
 
 module.exports = router;
