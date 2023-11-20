@@ -15,6 +15,19 @@ class emailSettingController {
             res.send({ status: 500, message: e.message });
         }
     };
+
+    async details(req, res) {
+        try {
+            const emailSettingInfo = await EmailSetting.findOne();
+            if (!_.isEmpty(emailSettingInfo) && emailSettingInfo._id) {
+                res.send({ status: 200, data: emailSettingInfo, message: 'Email Setting details has been fetched successfully' });
+            } else {
+                res.send({ status: 400, data: {}, message: 'Email Setting not found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
 }
 
 module.exports = new emailSettingController();
