@@ -5,6 +5,7 @@ const router = express.Router();
 const multer = require('multer');
 const request_param = multer();
 
+router.get('/admin/master/setting/details', Authentication.AuthenticateAdmin, MasterSettingController.details);
 router.post('/admin/master/setting/add', request_param.any(), Authentication.AuthenticateAdmin, MasterSettingController.add);
 
 module.exports = router;

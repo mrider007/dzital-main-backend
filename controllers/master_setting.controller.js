@@ -17,6 +17,19 @@ class MasterSettingController {
         }
     };
 
+    async details(req, res) {
+        try {
+            let master_setting = await MasterSetting.findOne();
+            if (!_.isEmpty(master_setting) && master_setting._id) {
+                res.send({ status: 200, data: master_setting, message: 'Master Setting details fetched successfully' });
+            } else {
+                res.send({ status: 400, data: {}, message: 'Master Setting not found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
 }
 
 module.exports = new MasterSettingController();
