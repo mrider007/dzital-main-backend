@@ -1,4 +1,6 @@
+const mongoose = require('mongoose');
 const PaymentMethod = require('../models/payment_method.model');
+const paymentMethodRepo = require('../repositories/payment_method.repository');
 
 class paymentMethodController {
     constructor() { }
@@ -31,7 +33,19 @@ class paymentMethodController {
 
     async update(req, res) {
         try {
-            
+            let payment_method_id = new mongoose.Types.ObjectId(req.params.id);
+            let paymentMethodInfo = await PaymentMethod.findOne({ _id: payment_method_id });
+            if (!_.isEmpty(paymentMethodInfo) && paymentMethodInfo._id) {
+                let paymentMethodUpdate = await paymentMethodRepo.updateById(req.body, payment_method_id);
+                if (!_.isEmpty(paymentMethodUpdate) && paymentMethodUpdate._id) {
+                    res.send({ status: 200, data: paymentMethodUpdate, message: 'Payment Method has been updated successfully' });                    
+                } else {
+                    res.send({ status: 400, data: {}, message: 'Payment Method could not be updated' });
+                }
+            }
+            else {
+                res.send({ status: 400, data: {}, message: 'Payment Method not found' });
+            }
         } catch (e) {
             res.send({ status: 500, message: e.message });
         }

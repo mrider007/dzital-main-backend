@@ -7,5 +7,6 @@ const request_param = multer();
 
 router.get('/admin/payment/method/details', Authentication.AuthenticateAdmin, paymentMethodController.details);
 router.post('/admin/payment/method/add', request_param.any(), Authentication.AuthenticateAdmin, paymentMethodController.add);
+router.post('/admin/payment/method/update/:id', request_param.any(), Authentication.AuthenticateAdmin, paymentMethodController.update);
 
 module.exports = router;
