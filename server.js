@@ -37,6 +37,7 @@ const product = require('./routes/product.routes');
 const store_setting = require('./routes/store_setting.routes');
 const email_setting = require('./routes/email_setting.routes');
 const payment_method = require('./routes/payment_method.routes');
+const master_setting = require('./routes/master_setting.routes');
 
 global.BASE_URL = `http://${process.env.HOST}:${getPort}`;
 
@@ -56,6 +57,7 @@ app.use('/api', product);
 app.use('/api', store_setting);
 app.use('/api', email_setting);
 app.use('/api', payment_method);
+app.use('/api', master_setting);
 
 app.use('/uploads', express.static('uploads'))
 
