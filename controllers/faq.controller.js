@@ -66,6 +66,34 @@ class faqController {
         }
     };
 
+    /** User FAQ List */
+    async getAll(req, res) {
+        try {
+            if (!req.body.page) {
+                req.body.page = 1;
+            } else {
+                req.body.page = parseInt(req.body.page);
+            }
+
+            if (!req.body.limit) {
+                req.body.limit = 10
+            }
+            else {
+                req.body.limit = parseInt(req.body.limit);
+            }
+
+            let faqData = await faqRepo.getFaqList(req);
+            if (!_.isEmpty(faqData)) {
+                res.send({ status: 200, data: faqData.docs, total: faqData.total, limit: faqData.limit, page: faqData.page, pages: faqData.pages, message: 'FAQ list fetched successfully' });
+            }
+            else {
+                res.send({ status: 201, data: [], message: e.message });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
     async faqUpdate(req, res) {
         try {
             const faq_id = new mongoose.Types.ObjectId(req.params.id);

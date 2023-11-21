@@ -10,5 +10,6 @@ router.get('/faq/delete/:id', Authentication.AuthenticateAdmin, faqController.fa
 router.post('/faq/add', request_param.any(), Authentication.AuthenticateAdmin, faqController.faqAdd);
 router.post('/faq/list', request_param.any(), Authentication.AuthenticateAdmin, faqController.faqList);
 router.post('/faq/update/:id', request_param.any(), Authentication.AuthenticateAdmin, faqController.faqUpdate);
+router.post('/all-faq', request_param.any(), Authentication.Authenticate, faqController.getAll);
 
 module.exports = router;
