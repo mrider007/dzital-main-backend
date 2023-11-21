@@ -88,7 +88,6 @@ class userController {
 
     async updateProfile(req, res) {
         try {
-            //console.log('req', req.files);
             let userInfo = await User.findById(req.user._id);
 
             if (req.files && req.files.length > 0) {

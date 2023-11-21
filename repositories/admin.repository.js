@@ -51,6 +51,15 @@ const adminRepository = {
 
             let users = User.aggregate([
                 {
+                    $lookup: {
+                        from: 'membership_plans',
+                        localField: 'plan_id',
+                        foreignField: '_id',
+                        as: 'plan_details'
+                    }
+                },
+                { $unwind: { path: '$plan_details', preserveNullAndEmptyArrays: true } },
+                {
                     $group: {
                         _id: '$_id',
                         name: { $first: '$name' },
@@ -59,7 +68,8 @@ const adminRepository = {
                         mobile: { $first: '$mobile' },
                         social_id: { $first: '$social_id' },
                         register_type: { $first: '$register_type' },
-                        createdAt: { $first: '$createdAt' }
+                        createdAt: { $first: '$createdAt' },
+                        plan_title: { $first: '$plan_details.title' }
                     }
                 },
                 { $match: conditions }
