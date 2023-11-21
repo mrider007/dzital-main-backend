@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const StoreSetting = require('../models/store_setting.model');
 const storeSettingRepo = require('../repositories/store_setting.repository');
+const cloudinary = require('cloudinary');
 
 class StoreSettingController {
     constructor() { }
@@ -33,13 +34,50 @@ class StoreSettingController {
     };
 
     async storeSettingUpdate(req, res) {
-        try {         
+        try {
             let store_setting_id = new mongoose.Types.ObjectId(req.params.id);
             let store_setting = await storeSettingRepo.getById(store_setting_id);
             if (!_.isEmpty(store_setting) && store_setting._id) {
+                //console.log('file',req.files);
+                var logo, favicon_logo;
+
+                if (req.files.length > 0) {
+                    req.files.forEach(element => {
+                        req.body[element.fieldname] = element.filename;
+                    });
+                }
+
+                if (req.files && req.files.length > 0) {
+                    req.files.forEach(element => {
+                        if (element.fieldname === 'logo') {
+                            logo = element.path;
+                        }
+                        else if (element.fieldname === 'favicon_logo') {
+                            favicon_logo = element.path;
+                        }
+                        //const uploadResultLogo = await cloudinary.v2.uploader.upload(element.path);
+                    });
+
+                    const uploadResultLogo = await cloudinary.v2.uploader.upload(logo);
+                    const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(favicon_logo);
+                    req.body.logo = uploadResultLogo.secure_url;
+                    req.body.favicon_logo = uploadResultFaviconLogo.secure_url;
+
+                    // const logo = req.files['logo'][0];
+                    // const favicon_logo = req.files['favicon_logo'][0];
+                    // const uploadResultLogo = await cloudinary.v2.uploader.upload(logo.path);
+                    // req.body.logo = uploadResultLogo.secure_url;
+                    // const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(favicon_logo.path);
+                    // req.body.favicon_logo = uploadResultFaviconLogo.secure_url;
+                }
+                else {
+                    req.body.logo = store_setting.logo;
+                    req.body.favicon_logo = store_setting.favicon_logo;
+                }
+
                 let store_setting_update = await storeSettingRepo.updateById(req.body, store_setting_id);
                 if (!_.isEmpty(store_setting_update) && store_setting_update._id) {
-                    res.send({ status: 200, data: store_setting_update, message: 'Store Setting has been updated successfully' });                    
+                    res.send({ status: 200, data: store_setting_update, message: 'Store Setting has been updated successfully' });
                 }
                 else {
                     res.send({ status: 400, data: {}, message: 'Store Setting could not be updated' });
