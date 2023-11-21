@@ -41,7 +41,7 @@ class MembershipPlanController {
             }
             let planList = await planRepo.planList(req);
             if (!_.isEmpty(planList)) {
-                res.send({ status: 200, data: planList, message: 'Membership Plan list fetched successfully' });
+                res.send({ status: 200, data: planList.docs, total: planList.total, limit: planList.limit, page: planList.page, pages: planList.pages, message: 'Membership Plan list fetched successfully' });
             } else {
                 res.send({ status: 201, data: [], message: 'No Membership Plan found' });
             }

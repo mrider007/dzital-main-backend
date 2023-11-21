@@ -27,6 +27,27 @@ const MembershipPlanRepository = {
         } catch (e) {
             throw e;
         }
+    },
+
+    planList: async (req) => {
+        try {
+            var conditions = {};
+            var and_clauses = [];
+
+            and_clauses.push({});
+
+            conditions['$and'] = and_clauses;
+
+            let plans = MembershipPlan.aggregate([
+                { $match: conditions }
+            ]);
+
+            var options = { page: req.body.page, limit: req.body.limit };
+            let allPlans = await MembershipPlan.aggregatePaginate(plans, options);
+            return allPlans;
+        } catch (e) {
+            throw e;
+        }
     }
 
 }
