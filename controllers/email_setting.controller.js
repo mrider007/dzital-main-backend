@@ -31,6 +31,19 @@ class emailSettingController {
         }
     };
 
+    async detail(req, res) {
+        try {
+            let email_setting_info = await EmailSetting.findOne();
+            if (!_.isEmpty(email_setting_info) && email_setting_info._id) {
+                res.send({ status: 200, data: email_setting_info, message: 'Email Setting detail has been fetched' });
+            } else {
+                res.send({ status: 400, data: {}, message: 'Email Setting not found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
     async update(req, res) {
         try {
             let email_setting_id = new mongoose.Types.ObjectId(req.params.id);
