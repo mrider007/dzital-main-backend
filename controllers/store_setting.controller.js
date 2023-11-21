@@ -52,6 +52,19 @@ class StoreSettingController {
         }
     };
 
+    async details(req, res) {
+        try {
+            let store_setting_info = await StoreSetting.findOne();
+            if (!_.isEmpty(store_setting_info) && store_setting_info._id) {
+                res.send({ status: 200, data: store_setting_info, message: 'Store Setting details has been fetched successfully' });
+            } else {
+                res.send({ status: 400, data: {}, message: 'Store Setting not found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
 }
 
 module.exports = new StoreSettingController();

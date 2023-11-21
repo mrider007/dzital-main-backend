@@ -6,6 +6,7 @@ const multer = require('multer');
 const request_param = multer();
 
 router.get('/admin/store/setting/details', Authentication.AuthenticateAdmin, StoreSettingController.storeSettingDetails);
+router.get('/store/setting/detail', Authentication.Authenticate, StoreSettingController.details);
 router.post('/admin/store/setting/add', request_param.any(), Authentication.AuthenticateAdmin, StoreSettingController.storeSettingAdd);
 router.post('/admin/store/setting/update/:id', request_param.any(), Authentication.AuthenticateAdmin, StoreSettingController.storeSettingUpdate);
 
