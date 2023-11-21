@@ -90,11 +90,6 @@ class userController {
         try {
             //console.log('req', req.files);
             let userInfo = await User.findById(req.user._id);
-            // if (req.files && req.files.length > 0) {
-            //     req.files.forEach(element => {
-            //         req.body[element.fieldname] = element.filename;
-            //     });
-            // }
 
             if (req.files && req.files.length > 0) {
                 const uploadResult = await cloudinary.v2.uploader.upload(req.files[0].path);
