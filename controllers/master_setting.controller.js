@@ -31,6 +31,19 @@ class MasterSettingController {
         }
     };
 
+    async detail(req, res) {
+        try {
+            let master_setting_info = await MasterSetting.findOne();
+            if (!_.isEmpty(master_setting_info) && master_setting_info._id) {
+                res.send({ status: 200, data: master_setting_info, message: 'Master Setting details has been fetched' });
+            } else {
+                res.send({ status: 400, data: {}, message: 'Master Setting not found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
     async update(req, res) {
         try {
             let master_setting_id = new mongoose.Types.ObjectId(req.params.id);
