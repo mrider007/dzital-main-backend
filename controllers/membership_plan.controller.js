@@ -26,7 +26,20 @@ class MembershipPlanController {
 
     async planList(req, res) {
         try {
-            let planList = await MembershipPlan.find();
+            if (!req.body.page) {
+                req.body.page = 1;
+            }
+            else {
+                req.body.page = parseInt(req.body.page);
+            }
+
+            if (!req.body.limit) {
+                req.body.limit = 10;
+            }
+            else {
+                req.body.limit = parseInt(req.body.limit);
+            }
+            let planList = await planRepo.planList(req);
             if (!_.isEmpty(planList)) {
                 res.send({ status: 200, data: planList, message: 'Membership Plan list fetched successfully' });
             } else {
