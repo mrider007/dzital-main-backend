@@ -55,11 +55,6 @@ class StoreSettingController {
                             req.body.favicon_logo = uploadResultFaviconLogo.secure_url;
                         }
                     }
-
-                    // const uploadResultLogo = await cloudinary.v2.uploader.upload(logo.path);
-                    // req.body.logo = uploadResultLogo.secure_url;
-                    // const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(favicon_logo.path);
-                    // req.body.favicon_logo = uploadResultFaviconLogo.secure_url;
                 }
                 else {
                     req.body.logo = store_setting.logo;
