@@ -57,16 +57,6 @@ class StoreSettingController {
                         }
                     }
 
-                    //    //         console.log('favicon_logo', favicon_logo);
-                    //         //const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(favicon_logo);
-                    //     }
-                    // });
-
-                    // const uploadResultLogo = await cloudinary.v2.uploader.upload(logo);
-                    // const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(favicon_logo);
-                    // req.body.logo = uploadResultLogo.secure_url;
-                    // req.body.favicon_logo = uploadResultFaviconLogo.secure_url;
-
                     // const logo = req.files['logo'][0];
                     // const favicon_logo = req.files['favicon_logo'][0];
                     // const uploadResultLogo = await cloudinary.v2.uploader.upload(logo.path);
