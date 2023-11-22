@@ -48,7 +48,13 @@ class productWishlistController {
 
     async userProductWishlist(req, res) {
         try {
-
+            let userwishlistInfo = await Wishlist.findOne({ user_id: req.user._id });
+            if (!_.isEmpty(userwishlistInfo) && userwishlistInfo._id) {
+                res.send({ status: 200, data: userwishlistInfo, message: 'User Wishlist fetched successfully' });
+            }
+            else {
+                res.send({ status: 400, data: {}, message: 'You have no product in your wishlist' });
+            }
         } catch (e) {
             res.send({ status: 500, message: e.message });
         }
