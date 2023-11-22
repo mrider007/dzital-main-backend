@@ -2,13 +2,13 @@ const ProductWishlist = require('../models/product_wishlist.model');
 
 const ProductWishlistRepository = {
 
-    addWishlist: async (obj) => {
+    updateWishlist: async (field, data) => {
         try {
-            let newproductWishlist = await ProductWishlist.create(obj);
-            if (!newproductWishlist) {
+            let updateProductWishlist = await ProductWishlist.findOneAndUpdate(field, data);
+            if (!updateProductWishlist) {
                 return null;
             }
-            return newproductWishlist;
+            return updateProductWishlist;
         } catch (e) {
             throw e;
         }
