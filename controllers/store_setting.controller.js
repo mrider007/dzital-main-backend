@@ -41,12 +41,6 @@ class StoreSettingController {
                 //console.log('file',req.files);
                 var logo, favicon_logo;
 
-                if (req.files.length > 0) {
-                    req.files.forEach(element => {
-                        req.body[element.fieldname] = element.filename;
-                    });
-                }
-
                 if (req.files && req.files.length > 0) {
                     req.files.forEach(element => {
                         if (element.fieldname === 'logo') {
