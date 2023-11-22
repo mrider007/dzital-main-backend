@@ -1,4 +1,5 @@
 const Admin = require('../models/admin.model');
+const User = require('../models/user.model');
 const adminRepo = require('../repositories/admin.repository');
 const userRepo = require('../repositories/user.repository');
 const bcrypt = require('bcrypt');
@@ -195,6 +196,21 @@ class adminController {
                 else {
                     res.send({ status: 400, data: {}, message: 'User could not be added' });
                 }
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
+    /** Admin User Details */
+    async userDetails(req, res) {
+        try {
+            const user_id = new mongoose.Types.ObjectId(req.params.id);
+            let userInfo = await User.findOne({ _id: user_id });
+            if (!_.isEmpty(userInfo) && userInfo._id) {
+                res.send({ status: 200, data: userInfo, message: 'user details fetched successfully' });
+            } else {
+                res.send({ status: 400, data: {}, message: 'User not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
