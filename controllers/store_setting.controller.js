@@ -38,24 +38,41 @@ class StoreSettingController {
             let store_setting_id = new mongoose.Types.ObjectId(req.params.id);
             let store_setting = await storeSettingRepo.getById(store_setting_id);
             if (!_.isEmpty(store_setting) && store_setting._id) {
-                //console.log('file',req.files);
+                //console.log('file', req.files);
                 var logo, favicon_logo;
 
                 if (req.files && req.files.length > 0) {
-                    req.files.forEach(element => {
+
+                    for (let i = 0; i < req.files.length; i++) {
+                        const element = req.files[i];
                         if (element.fieldname === 'logo') {
                             logo = element.path;
+                            const uploadResultLogo = await cloudinary.v2.uploader.upload(logo);
+                            req.body.logo = uploadResultLogo.secure_url;
                         }
-                        else if (element.fieldname === 'favicon_logo') {
+                        if (element.fieldname === 'favicon_logo') {
                             favicon_logo = element.path;
+                            const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(favicon_logo);
+                            req.body.favicon_logo = uploadResultFaviconLogo.secure_url;
                         }
-                        //const uploadResultLogo = await cloudinary.v2.uploader.upload(element.path);
-                    });
+                    }
 
-                    const uploadResultLogo = await cloudinary.v2.uploader.upload(logo);
-                    const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(favicon_logo);
-                    req.body.logo = uploadResultLogo.secure_url;
-                    req.body.favicon_logo = uploadResultFaviconLogo.secure_url;
+                    //     if (element.fieldname === 'logo') {
+                    //         logo = element.path;
+                    //         console.log('logo', logo);
+                    //         const uploadResultLogo = await cloudinary.v2.uploader.upload(logo);
+                    //     }
+                    //     else if (element.fieldname === 'favicon_logo') {
+                    //         favicon_logo = element.path;
+                    //         console.log('favicon_logo', favicon_logo);
+                    //         //const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(favicon_logo);
+                    //     }
+                    // });
+
+                    // const uploadResultLogo = await cloudinary.v2.uploader.upload(logo);
+                    // const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(favicon_logo);
+                    // req.body.logo = uploadResultLogo.secure_url;
+                    // req.body.favicon_logo = uploadResultFaviconLogo.secure_url;
 
                     // const logo = req.files['logo'][0];
                     // const favicon_logo = req.files['favicon_logo'][0];
