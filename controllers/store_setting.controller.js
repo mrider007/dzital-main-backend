@@ -38,7 +38,6 @@ class StoreSettingController {
             let store_setting_id = new mongoose.Types.ObjectId(req.params.id);
             let store_setting = await storeSettingRepo.getById(store_setting_id);
             if (!_.isEmpty(store_setting) && store_setting._id) {
-                //console.log('file', req.files);
                 var logo, favicon_logo;
 
                 if (req.files && req.files.length > 0) {
@@ -57,8 +56,6 @@ class StoreSettingController {
                         }
                     }
 
-                    // const logo = req.files['logo'][0];
-                    // const favicon_logo = req.files['favicon_logo'][0];
                     // const uploadResultLogo = await cloudinary.v2.uploader.upload(logo.path);
                     // req.body.logo = uploadResultLogo.secure_url;
                     // const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(favicon_logo.path);
