@@ -9,20 +9,12 @@ const productRepository = {
 
             and_clauses.push({});
 
-            if (_.isObject(req.body) && _.has(req.body, 'name')) {
-                and_clauses.push({ $or: [{ "name": { $regex: (req.body.name).trim(), $options: 'i' } }] });
-            }
-
-            if (_.isObject(req.body) && _.has(req.body, 'price')) {
-                and_clauses.push({ "price": req.body.price });
-            }
-
-            if (_.isObject(req.body) && _.has(req.body, 'product_type')) {
-                and_clauses.push({ 'product_type': req.body.product_type });
-            }
-
-            if (_.isObject(req.body) && _.has(req.body, 'brand')) {
-                and_clauses.push({ 'brand': req.body.brand });
+            if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
+                and_clauses.push({
+                    $or: [
+                        { 'name': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
+                    ]
+                });
             }
 
             conditions['$and'] = and_clauses;
