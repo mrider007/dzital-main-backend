@@ -113,6 +113,7 @@ const userRepository = {
                         mobile: { $first: '$mobile' },
                         social_id: { $first: '$social_id' },
                         register_type: { $first: '$register_type' },
+                        plan_id: { $first: '$plan_id' },
                         plan_title: { $first: '$plan_details.title' }
                     }
                 }
