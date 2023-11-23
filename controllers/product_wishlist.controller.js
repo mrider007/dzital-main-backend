@@ -46,6 +46,7 @@ class productWishlistController {
         }
     };
 
+    /** User Wishlist */
     async userProductWishlist(req, res) {
         try {
             let userwishlistInfo = await Wishlist.findOne({ user_id: req.user._id });
