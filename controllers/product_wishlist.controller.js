@@ -6,6 +6,7 @@ const User = require('../models/user.model');
 class productWishlistController {
     constructor() { }
 
+    /** Product Add to wishlist */
     async addToWishlist(req, res) {
         try {
             let user = await User.findOne({ _id: req.user._id });
@@ -49,8 +50,8 @@ class productWishlistController {
     /** User Wishlist */
     async userProductWishlist(req, res) {
         try {
-            let userwishlistInfo = await Wishlist.findOne({ user_id: req.user._id });
-            if (!_.isEmpty(userwishlistInfo) && userwishlistInfo._id) {
+        let userwishlistInfo = await productwishlistRepo.getUserWishlist(req);//findOne({ user_id: req.user._id });
+            if (!_.isEmpty(userwishlistInfo)) {
                 res.send({ status: 200, data: userwishlistInfo, message: 'User Wishlist fetched successfully' });
             }
             else {
@@ -61,6 +62,7 @@ class productWishlistController {
         }
     };
 
+    /** Product Remove From Wishlist */
     async removeFromWishlist(req, res) {
         try {
             let userId = req.user._id;
