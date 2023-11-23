@@ -9,14 +9,14 @@ class faqController {
         try {
             let faqCheck = await FAQ.findOne({ question: req.body.question });
             if (!_.isEmpty(faqCheck) && faqCheck._id) {
-                res.send({ status: 201, data: {}, message: 'FAQ already exists' });
+                res.send({ status: 400, data: {}, message: 'FAQ already exists' });
             }
             else {
                 let faqSave = await FAQ.create(req.body);
                 if (!_.isEmpty(faqSave) && faqSave._id) {
                     res.send({ status: 200, data: faqSave, message: 'FAQ has been saved successfully' });
                 } else {
-                    res.send({ status: 201, data: {}, message: 'FAQ could not be added' });
+                    res.send({ status: 400, data: {}, message: 'FAQ could not be added' });
                 }
             }
         } catch (e) {
@@ -32,7 +32,7 @@ class faqController {
                 res.send({ status: 200, data: faqInfo, message: 'FAQ Details has been fetched successfully' });
             }
             else {
-                res.send({ status: 201, message: 'FAQ not found' });
+                res.send({ status: 400, message: 'FAQ not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -59,7 +59,7 @@ class faqController {
                 res.send({ status: 200, data: faqData.docs, total: faqData.total, limit: faqData.limit, page: faqData.page, pages: faqData.pages, message: 'FAQ list fetched successfully' });
             }
             else {
-                res.send({ status: 201, data: [], message: e.message });
+                res.send({ status: 201, data: [], message: 'No records found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -87,7 +87,7 @@ class faqController {
                 res.send({ status: 200, data: faqData.docs, total: faqData.total, limit: faqData.limit, page: faqData.page, pages: faqData.pages, message: 'FAQ list fetched successfully' });
             }
             else {
-                res.send({ status: 201, data: [], message: e.message });
+                res.send({ status: 201, data: [], message: 'No records found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -104,11 +104,11 @@ class faqController {
                     res.send({ status: 200, data: updateData, message: 'FAQ has been updated successfully' });
                 }
                 else {
-                    res.send({ status: 201, data: {}, message: 'FAQ could not be updated' });
+                    res.send({ status: 400, data: {}, message: 'FAQ could not be updated' });
                 }
             }
             else {
-                res.send({ status: 201, data: {}, message: 'FAQ not found' });
+                res.send({ status: 400, data: {}, message: 'FAQ not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -124,10 +124,10 @@ class faqController {
                 if (!_.isEmpty(faqDelete) && faqDelete._id) {
                     res.send({ status: 200, data: faqDelete, message: 'FAQ has been removed successfully' });
                 } else {
-                    res.send({ status: 201, data: {}, message: 'FAQ could not be deleted' });
+                    res.send({ status: 400, data: {}, message: 'FAQ could not be deleted' });
                 }
             } else {
-                res.send({ status: 201, data: {}, message: 'FAQ not found' });
+                res.send({ status: 400, data: {}, message: 'FAQ not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
