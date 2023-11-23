@@ -53,10 +53,25 @@ const userRepository = {
             let data = await User.aggregate([
                 { $match: conditions },
                 {
-                    $project: {
-                        'password': 0,
-                        'createdAt': 0,
-                        'updatedAt': 0
+                    $lookup: {
+                        from: 'membership_plans',
+                        localField: 'plan_id',
+                        foreignField: '_id',
+                        as: 'plan_details'
+                    }
+                },
+                { $unwind: { path: '$plan_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: '$_id',
+                        name: { $first: '$name' },
+                        email: { $first: '$email' },
+                        image: { $first: '$image' },
+                        mobile: { $first: '$mobile' },
+                        social_id: { $first: '$social_id' },
+                        register_type: { $first: '$register_type' },
+                        plan_id: { $first: '$plan_id' },
+                        plan_title: { $first: '$plan_details.title' }
                     }
                 }
             ]);
