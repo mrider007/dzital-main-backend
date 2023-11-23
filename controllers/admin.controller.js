@@ -206,7 +206,7 @@ class adminController {
     async userDetails(req, res) {
         try {
             const user_id = new mongoose.Types.ObjectId(req.params.id);
-            let userInfo = await User.findOne({ _id: user_id });
+            let userInfo = await userRepo.getUserInfo({ _id: user_id });
             if (!_.isEmpty(userInfo) && userInfo._id) {
                 res.send({ status: 200, data: userInfo, message: 'user details fetched successfully' });
             } else {

@@ -67,6 +67,35 @@ const userRepository = {
         } catch (e) {
             return e;
         }
+    },
+
+    getUserInfo: async (params) => {
+        try {
+            var conditions = {};
+            var and_clauses = [];
+
+            and_clauses.push({});
+
+            conditions['$and'] = and_clauses;
+
+            let data = await User.aggregate([
+                { $match: params },
+                {
+                    $project: {
+                        password: 0,
+                        createdAt: 0,
+                        updatedAt: 0
+                    }
+                }
+            ]);
+
+            if (!data) {
+                return null;
+            }
+            return data[0];
+        } catch (e) {
+
+        }
     }
 
 }
