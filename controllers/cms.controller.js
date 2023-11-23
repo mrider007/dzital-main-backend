@@ -10,11 +10,11 @@ class cmsController {
         try {
             let checkCMS = await CMS.findOne({ title: req.body.title });
             if (!_.isEmpty(checkCMS) && checkCMS._id) {
-                res.send({ status: 201, data: {}, message: 'CMS Already Exists' });
+                res.send({ status: 400, data: {}, message: 'CMS Already Exists' });
             }
             else {
                 if (!_.has(req.body, 'title')) {
-                    res.send({ status: 201, message: 'Title is required' });
+                    res.send({ status: 400, message: 'Title is required' });
                 }
                 else {
                     req.body.slug = slug(req.body.title, { lower: true, replacement: '-', trim: true });
@@ -23,7 +23,7 @@ class cmsController {
                         res.send({ status: 200, data: cmsSave, message: 'CMS saved successfully' });
                     }
                     else {
-                        res.send({ status: 201, data: {}, message: 'CMS could not be added' });
+                        res.send({ status: 400, data: {}, message: 'CMS could not be added' });
                     }
                 }
             }
@@ -32,7 +32,7 @@ class cmsController {
         }
     };
 
-    /** Admin Cms Details */
+    /** Admin CMS Details */
     async getDetails(req, res) {
         try {
             const cmsId = new mongoose.Types.ObjectId(req.params.id);
@@ -40,7 +40,7 @@ class cmsController {
             if (!_.isEmpty(cmsInfo) && cmsInfo._id) {
                 res.send({ status: 200, data: cmsInfo, message: 'CMS Details has been fetched' });
             } else {
-                res.send({ status: 201, data: {}, message: 'CMS not found' });
+                res.send({ status: 400, data: {}, message: 'CMS not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -54,7 +54,7 @@ class cmsController {
             if (!_.isEmpty(cmsDetails) && cmsDetails._id) {
                 res.send({ status: 200, data: cmsDetails, message: 'CMS Details fetched successfully' });
             } else {
-                res.send({ status: 201, data: {}, message: 'CMS not found' });
+                res.send({ status: 400, data: {}, message: 'CMS not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -71,10 +71,10 @@ class cmsController {
                     res.send({ status: 200, data: cmsUpdate, message: 'CMS has been updated successfully' });
                 }
                 else {
-                    res.send({ status: 201, data: {}, message: 'CMS could not be updated' });
+                    res.send({ status: 400, data: {}, message: 'CMS could not be updated' });
                 }
             } else {
-                res.send({ status: 201, data: {}, message: 'CMS not found' });
+                res.send({ status: 400, data: {}, message: 'CMS not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -91,10 +91,10 @@ class cmsController {
                     res.send({ status: 200, data: cmsDelete, message: 'CMS has been removed successfully' });
                 }
                 else {
-                    res.send({ status: 201, data: {}, message: 'CMS could not be removed' });
+                    res.send({ status: 400, data: {}, message: 'CMS could not be removed' });
                 }
             } else {
-                res.send({ status: 201, data: {}, message: 'CMS not found' });
+                res.send({ status: 400, data: {}, message: 'CMS not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -112,10 +112,10 @@ class cmsController {
                     res.send({ status: 200, data: updateData, message: 'CMS status has been updated successfully' });
                 }
                 else {
-                    res.send({ status: 201, data: {}, message: 'CMS status could not be updated' });
+                    res.send({ status: 400, data: {}, message: 'CMS status could not be updated' });
                 }
             } else {
-                res.send({ status: 201, data: {}, message: 'CMS not found' });
+                res.send({ status: 400, data: {}, message: 'CMS not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -141,7 +141,7 @@ class cmsController {
             if (!_.isEmpty(cmsList)) {
                 res.send({ status: 200, data: cmsList.docs, total: cmsList.total, limit: cmsList.limit, page: cmsList.page, pages: cmsList.pages, message: 'CMS list fetched successfully' });
             } else {
-                res.send({ status: 201, data: [], message: 'CMS not found' });
+                res.send({ status: 400, data: [], message: 'CMS not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -154,7 +154,7 @@ class cmsController {
             if (!_.isEmpty(cmsList)) {
                 res.send({ status: 200, data: cmsList, message: 'CMS list fetched successfully' });
             } else {
-                res.send({ status: 201, data: [], message: 'No CMS found' });
+                res.send({ status: 400, data: [], message: 'No CMS found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
