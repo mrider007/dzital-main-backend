@@ -12,7 +12,7 @@ class JobProposalController {
             if (!_.isEmpty(userInfo) && userInfo._id) {
                 let jobProposalCheck = await JobProposal.findOne({ freelancer_id: req.user._id, job_id: req.body.job_id });
                 if (!_.isEmpty(jobProposalCheck)) {
-                    res.send({ status: 201, message: 'Job Proposal already exists for this job' });
+                    res.send({ status: 400, message: 'Job Proposal already exists for this job' });
                 }
                 else {
                     req.body.status = 'Pending';
@@ -21,11 +21,11 @@ class JobProposalController {
                     if (!_.isEmpty(jobProposal) && jobProposal._id) {
                         res.send({ status: 200, data: jobProposal, message: 'Job proposal added successfully' });
                     } else {
-                        res.send({ status: 201, message: 'Job proposal could not be added' });
+                        res.send({ status: 400, message: 'Job proposal could not be added' });
                     }
                 }
             } else {
-                res.send({ status: 201, message: 'User not found' });
+                res.send({ status: 400, message: 'User not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -39,7 +39,7 @@ class JobProposalController {
             if (!_.isEmpty(jobProposalInfo)) {
                 res.send({ status: 200, data: jobProposalInfo, message: 'Job Proposal details fetched successfully' });
             } else {
-                res.send({ status: 201, message: 'Job Proposal not found' });
+                res.send({ status: 400, message: 'Job Proposal not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -54,7 +54,7 @@ class JobProposalController {
                 res.send({ status: 200, data: jobProposals, message: 'Job Proposal list for this job fetched successfully' });
             }
             else {
-                res.send({ status: 201, message: 'No Job Proposal found for this job' })
+                res.send({ status: 400, message: 'No Job Proposal found for this job' })
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -70,10 +70,10 @@ class JobProposalController {
                 if (!_.isEmpty(jobProposalUpdate) && jobProposalUpdate._id) {
                     res.send({ status: 200, data: jobProposalUpdate, message: 'Job Proposal has been updated successfully' });
                 } else {
-                    res.send({ status: 201, message: 'Job Proposal could not be updated' });
+                    res.send({ status: 400, message: 'Job Proposal could not be updated' });
                 }
             } else {
-                res.status({ status: 201, message: 'Job Proposal not found' });
+                res.status({ status: 400, message: 'Job Proposal not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -89,11 +89,11 @@ class JobProposalController {
                 if (!_.isEmpty(proposalDelete) && proposalDelete._id) {
                     res.send({ status: 200, data: proposalDelete, message: 'Job Proposal has been removed successfully' });
                 } else {
-                    res.send({ status: 201, data: {}, message: 'Job Proposal could not be removed' });
+                    res.send({ status: 400, data: {}, message: 'Job Proposal could not be removed' });
                 }
             }
             else {
-                res.send({ status: 201, message: 'Job Proposal not found' });
+                res.send({ status: 400, message: 'Job Proposal not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -109,10 +109,10 @@ class JobProposalController {
                 if (!_.isEmpty(proposalStatusUpdate) && proposalStatusUpdate._id) {
                     res.send({ status: 200, data: proposalStatusUpdate, message: 'Job Proposal status has been updated' });
                 } else {
-                    res.send({ status: 201, message: 'Job Proposal status could not be updated' });
+                    res.send({ status: 400, message: 'Job Proposal status could not be updated' });
                 }
             } else {
-                res.send({ status: 201, message: 'Job Proposal not found' });
+                res.send({ status: 400, message: 'Job Proposal not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
