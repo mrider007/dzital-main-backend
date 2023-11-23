@@ -60,6 +60,27 @@ class productWishlistController {
             res.send({ status: 500, message: e.message });
         }
     };
+
+    async removeFromWishlist(req, res) {
+        try {
+            let userId = req.user._id;
+            let wishlist_exist = await Wishlist.findOne({ user_id: userId, 'products.product_id': { $in: new mongoose.Types.ObjectId(req.body.product_id) } });
+            if (_.isEmpty(wishlist_exist)) {
+                res.send({ status: 400, data: {}, message: 'Product is not in your wishlist' });
+            } else {
+                let updateWishlist = await productwishlistRepo.updateWishlist({ user_id: userId }, { $pull: { 'products': { product_id: req.body.product_id } } });
+                if (!_.isEmpty(updateWishlist)) {
+                    let user_wishlist = await Wishlist.findOne({ user_id: userId });
+                    res.send({ status: 200, data: user_wishlist, message: 'Product is removed from your wishlist' });
+                }
+                else {
+                    res.send({ status: 400, data: {}, message: 'Product could not be removed from wishlist' });
+                }
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
 }
 
 module.exports = new productWishlistController();
