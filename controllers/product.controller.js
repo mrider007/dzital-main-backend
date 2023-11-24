@@ -40,7 +40,7 @@ class productController {
             if (!_.isEmpty(productSave) && productSave._id) {
                 res.send({ status: 200, data: productSave, message: 'Product saved successfully' });
             } else {
-                res.send({ status: 201, data: {}, message: 'Product could not be added' });
+                res.send({ status: 400, data: {}, message: 'Product could not be added' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -65,7 +65,7 @@ class productController {
             if (!_.isEmpty(products)) {
                 res.send({ status: 200, data: products.docs, total: products.total, limit: products.limit, page: products.page, pages: products.pages, message: 'Products list fetched successfully' });
             } else {
-                res.send({ status: 201, data: [], message: 'No products found' });
+                res.send({ status: 400, data: [], message: 'No products found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -78,7 +78,7 @@ class productController {
             if (!_.isEmpty(productInfo) && productInfo._id) {
                 res.send({ status: 200, data: productInfo, message: 'Product details fetched successfully' });
             } else {
-                res.send({ status: 201, data: {}, message: 'Product not found' });
+                res.send({ status: 400, data: {}, message: 'Product not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -104,7 +104,7 @@ class productController {
                 res.send({ status: 200, data: products.docs, total: products.total, limit: products.limit, page: products.page, pages: products.pages, message: 'Products fetched successfully' });
             }
             else {
-                res.send({ status: 201, data: [], message: 'No Products found' });
+                res.send({ status: 400, data: [], message: 'No Products found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -124,10 +124,10 @@ class productController {
                 if (!_.isEmpty(productUpdate) && productUpdate._id) {
                     res.send({ status: 200, data: productUpdate, message: 'Product has been updated successfully' });
                 } else {
-                    res.send({ status: 201, data: {}, message: 'Product could not be updated' });
+                    res.send({ status: 400, data: {}, message: 'Product could not be updated' });
                 }
             } else {
-                res.send({ status: 201, data: {}, message: 'Product not found' });
+                res.send({ status: 400, data: {}, message: 'Product not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -143,10 +143,10 @@ class productController {
                 if (!_.isEmpty(productRemove) && productRemove._id) {
                     res.send({ status: 200, data: productRemove, message: 'Product has been removed successfully' });
                 } else {
-                    res.send({ status: 201, data: {}, message: 'Sorry, unable to update product at this moment' });
+                    res.send({ status: 400, data: {}, message: 'Sorry, unable to update product at this moment' });
                 }
             } else {
-                res.send({ status: 201, data: {}, message: 'Product not found' });
+                res.send({ status: 400, data: {}, message: 'Product not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
