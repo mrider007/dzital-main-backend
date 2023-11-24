@@ -22,6 +22,7 @@ const getPort = config.app.getPort;
 connectDB();
 
 const user = require('./routes/user.routes');
+const job_type = require('./routes/job_type.routes');
 const job = require('./routes/job.routes');
 const job_proposal = require('./routes/job_proposal.routes');
 const service = require('./routes/service_master.routes');
@@ -43,6 +44,7 @@ const product_wishlist = require('./routes/product_wishlist.routes');
 global.BASE_URL = `http://${process.env.HOST}:${getPort}`;
 
 app.use('/api', user);
+app.use('/api', job_type);
 app.use('/api', job);
 app.use('/api', job_proposal);
 app.use('/api', service);
