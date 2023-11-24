@@ -24,6 +24,7 @@ class MembershipPlanController {
         }
     };
 
+    /** Admin Plan List */
     async planList(req, res) {
         try {
             if (!req.body.page) {
