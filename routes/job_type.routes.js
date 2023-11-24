@@ -6,5 +6,6 @@ const multer = require('multer');
 const request_param = multer();
 
 router.post('/admin/job/type/add', request_param.any(), Authentication.AuthenticateAdmin, JobTypeController.add);
+router.post('/admin/job/type/list', request_param.any(), Authentication.AuthenticateAdmin, JobTypeController.list);
 
 module.exports = router;
