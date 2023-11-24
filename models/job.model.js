@@ -4,6 +4,7 @@ const mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
 
 const JobSchema = new mongoose.Schema({
     client_id: { type: Schema.Types.ObjectId, ref: 'User', index: true },
+    job_type: { type: Schema.Types.ObjectId, ref: 'Job_Type', index: true },
     title: { type: String, index: true, trim: true },
     description: { type: String, index: true, trim: true },
     experience: { type: String, index: true, trim: true },
