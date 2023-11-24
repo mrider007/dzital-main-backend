@@ -47,6 +47,7 @@ class productController {
         }
     };
 
+    /** Admin Product List */
     async productList(req, res) {
         try {
             if (!req.body.page) {
@@ -84,6 +85,7 @@ class productController {
         }
     };
 
+    /** User Product List */
     async products(req, res) {
         try {
             if (!req.body.page) {
