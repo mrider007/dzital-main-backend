@@ -10,5 +10,6 @@ router.get('/membership/plan/delete/:id', Authentication.AuthenticateAdmin, Memb
 router.post('/membership/plan/add', request_param.any(), Authentication.AuthenticateAdmin, MembershipPlanController.createPlan);
 router.post('/membership/plan/update/:id', request_param.any(), Authentication.AuthenticateAdmin, MembershipPlanController.planUpdate);
 router.post('/membership/plan/list', request_param.any(), Authentication.AuthenticateAdmin, MembershipPlanController.planList);
+router.post('/user/membership/plan/list', request_param.any(), Authentication.Authenticate, MembershipPlanController.userPlanList);
 
 module.exports = router;

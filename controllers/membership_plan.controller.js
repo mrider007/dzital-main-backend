@@ -51,6 +51,33 @@ class MembershipPlanController {
         }
     };
 
+    /** User Plan List */
+    async userPlanList(req, res) {
+        try {
+            if (!req.body.page) {
+                req.body.page = 1;
+            }
+            else {
+                req.body.page = parseInt(req.body.page);
+            }
+
+            if (!req.body.limit) {
+                req.body.limit = 10;
+            }
+            else {
+                req.body.limit = parseInt(req.body.limit);
+            }
+            let plans = await planRepo.planList(req);
+            if (!_.isEmpty(plans)) {
+                res.send({ status: 200, data: plans.docs, total: plans.total, limit: plans.limit, page: plans.page, pages: plans.pages, message: 'Membership Plan list fetched successfully' });
+            } else {
+                res.send({ status: 400, data: [], message: 'No Membership Plan Found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
     async planDetails(req, res) {
         try {
             let plan_id = new mongoose.Types.ObjectId(req.params.id);
