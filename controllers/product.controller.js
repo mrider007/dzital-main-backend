@@ -115,11 +115,42 @@ class productController {
         try {
             const productInfo = await Product.findOne({ _id: req.params.id });
             if (!_.isEmpty(productInfo) && productInfo._id) {
+
                 if (req.files && req.files.length > 0) {
-                    req.files.forEach(element => {
-                        req.body[element.fieldname] = element.filename;
-                    });
+
+                    var photo, image_1, image_2, image_3;
+
+                    for (let i = 0; i < req.files.length; i++) {
+                        const element = req.files[i];
+                        if (element.fieldname === 'photo') {
+                            photo = element.path;
+                            const uploadResultLogo = await cloudinary.v2.uploader.upload(photo);
+                            req.body.photo = uploadResultLogo.secure_url;
+                        }
+                        if (element.fieldname === 'image_1') {
+                            image_1 = element.path;
+                            const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_1);
+                            req.body.image_1 = uploadResultFaviconLogo.secure_url;
+                        }
+                        if (element.fieldname === 'image_2') {
+                            image_2 = element.path;
+                            const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_2);
+                            req.body.image_2 = uploadResultFaviconLogo.secure_url;
+                        }
+                        if (element.fieldname === 'image_3') {
+                            image_3 = element.path;
+                            const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_3);
+                            req.body.image_3 = uploadResultFaviconLogo.secure_url;
+                        }
+                    }
                 }
+                else {
+                    req.body.photo = productInfo.photo;
+                    req.body.image_1 = productInfo.image_1;
+                    req.body.image_2 = productInfo.image_2;
+                    req.body.image_3 = productInfo.image_3;
+                }
+
                 let productUpdate = await productRepo.updateById(req.body, req.params.id);
                 if (!_.isEmpty(productUpdate) && productUpdate._id) {
                     res.send({ status: 200, data: productUpdate, message: 'Product has been updated successfully' });
