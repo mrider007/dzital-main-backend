@@ -20,6 +20,7 @@ class JobTypeController {
         }
     };
 
+    /** Admin Job Type List */
     async list(req, res) {
         try {
             if (!req.body.page) {
@@ -41,6 +42,19 @@ class JobTypeController {
                 res.send({ status: 200, data: jobtypes.docs, total: jobtypes.total, limit: jobtypes.limit, page: jobtypes.page, pages: jobtypes.pages, message: 'Job Type list fetched successfully' });
             }
             else {
+                res.send({ status: 201, data: [], message: 'No Job Type found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
+    async JobTypes(req, res) {
+        try {
+            let jobtypes = await JobType.find();
+            if (!_.isEmpty(jobtypes)) {
+                res.send({ status: 200, data: jobtypes, message: 'Job Types has been fetched' });
+            } else {
                 res.send({ status: 201, data: [], message: 'No Job Type found' });
             }
         } catch (e) {
