@@ -71,7 +71,7 @@ class JobTypeController {
             if (!_.isEmpty(JobTypeInfo) && JobTypeInfo._id) {
                 let jobtypeUpdate = await jobtypeRepo.updateById(req.body, job_type_id);
                 if (!_.isEmpty(jobtypeUpdate) && jobtypeUpdate._id) {
-                    res.send({ status: 200, data: jobtypeUpdate, message: 'Job Type has been updated successfully' });                    
+                    res.send({ status: 200, data: jobtypeUpdate, message: 'Job Type has been updated successfully' });
                 } else {
                     res.send({ status: 400, data: {}, message: 'Sorry, unable to update Job Type at this moment!' });
                 }

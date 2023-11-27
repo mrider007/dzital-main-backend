@@ -4,7 +4,7 @@ const JobTypeRepository = {
 
     list: async (req) => {
         try {
-            var conditions = {};  
+            var conditions = {};
             var and_clauses = [];
 
             and_clauses.push({});
@@ -17,7 +17,7 @@ const JobTypeRepository = {
                 });
             }
 
-            conditions['$and'] = and_clauses;          
+            conditions['$and'] = and_clauses;
 
             let jobtypes = JobType.aggregate([
                 { $match: conditions }
@@ -39,7 +39,7 @@ const JobTypeRepository = {
             if (!jobtypeUpdate) {
                 return null;
             }
-            return jobtypeUpdate;            
+            return jobtypeUpdate;
         } catch (e) {
             throw e;
         }
