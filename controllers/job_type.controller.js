@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const JobType = require('../models/job_type.model');
 const jobtypeRepo = require('../repositories/job_type.repository');
 
@@ -49,6 +50,7 @@ class JobTypeController {
         }
     };
 
+    /** User Job Type List */
     async JobTypes(req, res) {
         try {
             let jobtypes = await JobType.find();
@@ -56,6 +58,25 @@ class JobTypeController {
                 res.send({ status: 200, data: jobtypes, message: 'Job Types has been fetched' });
             } else {
                 res.send({ status: 201, data: [], message: 'No Job Type found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
+    async update(req, res) {
+        try {
+            const job_type_id = new mongoose.Types.ObjectId(req.params.id);
+            let JobTypeInfo = await JobType.findOne({ _id: job_type_id });
+            if (!_.isEmpty(JobTypeInfo) && JobTypeInfo._id) {
+                let jobtypeUpdate = await jobtypeRepo.updateById(req.body, job_type_id);
+                if (!_.isEmpty(jobtypeUpdate) && jobtypeUpdate._id) {
+                    res.send({ status: 200, data: jobtypeUpdate, message: 'Job Type has been updated successfully' });                    
+                } else {
+                    res.send({ status: 400, data: {}, message: 'Sorry, unable to update Job Type at this moment!' });
+                }
+            } else {
+                res.send({ status: 400, data: {}, message: 'Job Type not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
