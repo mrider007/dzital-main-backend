@@ -28,6 +28,15 @@ const JobRepository = {
                 },
                 { $unwind: { path: '$user_details', preserveNullAndEmptyArrays: true } },
                 {
+                    $lookup: {
+                        from: 'job_types',
+                        localField: 'job_type',
+                        foreignField: '_id',
+                        as: 'job_type_details'
+                    }
+                },
+                { $unwind: { path: '$job_type_details', preserveNullAndEmptyArrays: true } },
+                {
                     $group: {
                         _id: '$_id',
                         title: { $first: '$title' },
@@ -38,6 +47,7 @@ const JobRepository = {
                         status: { $first: '$status' },
                         createdAt: { $first: '$createdAt' },
                         client_id: { $first: '$client_id' },
+                        job_type: { $first: '$job_type' },
                         posted_by: { $first: '$user_details.name' }
                     }
                 }
@@ -96,6 +106,15 @@ const JobRepository = {
                 },
                 { $unwind: { path: '$job_type', preserveNullAndEmptyArrays: true } },
                 {
+                    $lookup: {
+                        from: 'users',
+                        localField: 'client_id',
+                        foreignField: '_id',
+                        as: 'user_details'
+                    }
+                },
+                { $unwind: { path: '$user_details', preserveNullAndEmptyArrays: true } },
+                {
                     $group: {
                         _id: '$_id',
                         client_id: { $first: "$client_id" },
@@ -105,7 +124,9 @@ const JobRepository = {
                         budget: { $first: '$budget' },
                         date: { $first: "$date" },
                         status: { $first: "$status" },
-                        job_type: { $first: '$job_type.title' }
+                        posted_by: { $first: '$user_details.name' },
+                        job_type: { $first: '$job_type' },
+                        job_type_title: { $first: '$job_type.title' }
                     }
                 },
                 { $sort: { _id: 1 } }
