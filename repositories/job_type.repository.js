@@ -23,6 +23,18 @@ const JobTypeRepository = {
         } catch (e) {
             throw e;
         }
+    },
+
+    updateById: async (data, id) => {
+        try {
+            let jobtypeUpdate = await JobType.findByIdAndUpdate(id, data, { new: true, upsert: true }).exec();
+            if (!jobtypeUpdate) {
+                return null;
+            }
+            return jobtypeUpdate;            
+        } catch (e) {
+            throw e;
+        }
     }
 
 }
