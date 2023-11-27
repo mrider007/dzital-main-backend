@@ -101,10 +101,10 @@ const JobRepository = {
                         from: 'job_types',
                         localField: 'job_type',
                         foreignField: '_id',
-                        as: 'job_type'
+                        as: 'job_type_details'
                     }
                 },
-                { $unwind: { path: '$job_type', preserveNullAndEmptyArrays: true } },
+                { $unwind: { path: '$job_type_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
                         from: 'users',
@@ -126,7 +126,7 @@ const JobRepository = {
                         status: { $first: "$status" },
                         posted_by: { $first: '$user_details.name' },
                         job_type: { $first: '$job_type' },
-                        job_type_title: { $first: '$job_type.title' }
+                        job_type_title: { $first: '$job_type_details.title' }
                     }
                 },
                 { $sort: { _id: 1 } }
