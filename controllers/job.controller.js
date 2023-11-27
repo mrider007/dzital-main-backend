@@ -37,6 +37,7 @@ class JobController {
         }
     };
 
+    /** Admin Job List */
     async jobList(req, res) {
         try {
             if (!req.body.page) {

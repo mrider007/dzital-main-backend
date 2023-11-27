@@ -34,10 +34,11 @@ const JobRepository = {
                         description: { $first: '$description' },
                         budget: { $first: '$budget' },
                         date: { $first: '$date' },
+                        skills: { $first: '$skills' },
                         status: { $first: '$status' },
                         createdAt: { $first: '$createdAt' },
                         client_id: { $first: '$client_id' },
-                        user_details: { $first: '$user_details' }
+                        posted_by: { $first: '$user_details.name' }
                     }
                 }
             ]);
@@ -85,6 +86,28 @@ const JobRepository = {
 
             let joblist = Job.aggregate([
                 { $match: conditions },
+                {
+                    $lookup: {
+                        from: 'job_types',
+                        localField: 'job_type',
+                        foreignField: '_id',
+                        as: 'job_type'
+                    }
+                },
+                { $unwind: { path: '$job_type', preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: '$_id',
+                        client_id: { $first: "$client_id" },
+                        title: { $first: "$title" },
+                        description: { $first: "$description" },
+                        skills: { $first: '$skills' },
+                        budget: { $first: '$budget' },
+                        date: { $first: "$date" },
+                        status: { $first: "$status" },
+                        job_type: { $first: '$job_type.title' }
+                    }
+                },
                 { $sort: { _id: 1 } }
             ]);
             if (!joblist) {
