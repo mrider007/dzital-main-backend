@@ -99,6 +99,27 @@ class JobTypeController {
         }
     };
 
+    async delete(req, res) {
+        try {
+            const job_type_id = new mongoose.Types.ObjectId(req.params.id);
+            let JobTypeInfo = await JobType.findOne({ _id: job_type_id });
+            if (!_.isEmpty(JobTypeInfo) && JobTypeInfo._id) {
+                let deleteData = await jobtypeRepo.delete(job_type_id);
+                if (!_.isEmpty(deleteData) && deleteData._id) {
+                    res.send({ status: 200, data: deleteData, message: 'Job Type has been removed successfully' });
+                }
+                else {
+                    res.send({ status: 400, data: {}, message: 'Job Type could not be removed' });
+                }
+            }
+            else {
+                res.send({ status: 400, data: {}, message: 'Job Type not found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
 
 }
 

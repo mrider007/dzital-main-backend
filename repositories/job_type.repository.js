@@ -43,6 +43,23 @@ const JobTypeRepository = {
         } catch (e) {
             throw e;
         }
+    },
+
+    delete: async (id) => {
+        try {
+            const job_type = await JobType.findById(id);
+            if (!_.isEmpty(job_type) && job_type._id) {
+                let jobtypeDelete = await JobType.deleteOne({ _id: id }).exec();
+                if (!jobtypeDelete) {
+                    return null;
+                }
+                return job_type;
+            } else {
+                return null;
+            }
+        } catch (e) {
+            throw e;
+        }
     }
 
 }
