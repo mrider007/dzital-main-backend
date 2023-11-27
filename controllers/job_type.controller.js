@@ -64,6 +64,22 @@ class JobTypeController {
         }
     };
 
+    /** Admin Job Type Details */
+    async details(req, res) {
+        try {
+            const job_type_id = new mongoose.Types.ObjectId(req.params.id);
+            let jobTypeInfo = await JobType.findOne({ _id: job_type_id });
+            if (!_.isEmpty(jobTypeInfo) && jobTypeInfo._id) {
+                res.send({ status: 200, data: jobTypeInfo, message: 'Job Type details has been fetched successfully' });
+            }
+            else {
+                res.send({ status: 400, data: {}, message: 'Job Type not found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
     async update(req, res) {
         try {
             const job_type_id = new mongoose.Types.ObjectId(req.params.id);
@@ -82,6 +98,8 @@ class JobTypeController {
             res.send({ status: 500, message: e.message });
         }
     };
+
+
 }
 
 module.exports = new JobTypeController();
