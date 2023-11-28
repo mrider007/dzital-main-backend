@@ -40,6 +40,7 @@ const email_setting = require('./routes/email_setting.routes');
 const payment_method = require('./routes/payment_method.routes');
 const master_setting = require('./routes/master_setting.routes');
 const product_wishlist = require('./routes/product_wishlist.routes');
+const property = require('./routes/property.routes');
 
 global.BASE_URL = `http://${process.env.HOST}:${getPort}`;
 
@@ -62,6 +63,7 @@ app.use('/api', email_setting);
 app.use('/api', payment_method);
 app.use('/api', master_setting);
 app.use('/api', product_wishlist);
+app.use('/api', property);
 
 app.use('/uploads', express.static('uploads'))
 
