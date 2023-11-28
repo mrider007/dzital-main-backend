@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 const mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
 
 const PropertySchema = new Schema({
-    name: { type: String, index: true },
+    name: { type: String, index: true, trim: true },
+    description: { type: String, index: true, trim: true },
     per_sqmt_price: { type: Number, default: 0 },
     size: { type: Number },
     rent_per_month: { type: Number },
