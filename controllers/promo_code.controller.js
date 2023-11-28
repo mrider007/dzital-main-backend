@@ -123,7 +123,6 @@ class PromocodeController {
             const promocode_id = new mongoose.Types.ObjectId(req.params.id);
             let promocodeInfo = await Promocode.findById(promocode_id);
             if (!_.isEmpty(promocodeInfo) && promocodeInfo._id) {
-                //let promocodeStatus = (promocodeInfo.status == 'Active') ? 'Inactive' : 'Active';
                 let statusUpdate = await promocodeRepo.updateById({ 'status': req.body.status }, promocode_id);
                 if (!_.isEmpty(statusUpdate) && statusUpdate._id) {
                     res.send({ status: 200, data: statusUpdate, message: 'Promocode status has been updated' })

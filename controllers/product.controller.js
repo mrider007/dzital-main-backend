@@ -41,7 +41,7 @@ class productController {
             let productSave = await Product.create(req.body);
             if (!_.isEmpty(productSave) && productSave._id) {
                 req.body.product_id = productSave._id;
-                let saveData = await ProductDetails.create(req.body);                
+                let saveData = await ProductDetails.create(req.body);
                 if (!_.isEmpty(saveData) && saveData._id) {
                     res.send({ status: 200, data: saveData, message: 'Product saved successfully' });
                 } else {
