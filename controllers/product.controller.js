@@ -1,4 +1,5 @@
 const Product = require('../models/product.model');
+const ProductDetails = require('../models/product_detail.model');
 const mongoose = require('mongoose');
 const productRepo = require('../repositories/product.repository');
 const cloudinary = require('cloudinary');
@@ -36,11 +37,16 @@ class productController {
                     }
                 }
             }
+            req.body.userId = req.user._id;
             let productSave = await Product.create(req.body);
             if (!_.isEmpty(productSave) && productSave._id) {
-                res.send({ status: 200, data: productSave, message: 'Product saved successfully' });
-            } else {
-                res.send({ status: 400, data: {}, message: 'Product could not be added' });
+                req.body.product_id = productSave._id;
+                let saveData = await ProductDetails.create(req.body);                
+                if (!_.isEmpty(saveData) && saveData._id) {
+                    res.send({ status: 200, data: saveData, message: 'Product saved successfully' });
+                } else {
+                    res.send({ status: 400, data: {}, message: 'Product could not be added' });
+                }
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });

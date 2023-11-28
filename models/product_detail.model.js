@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
 
 const ProductDetailSchema = new Schema({
-    name: { type: String, index: true, trim: true },
+    title: { type: String, index: true, trim: true },
     description: { type: String, index: true, trim: true },
     price: { type: Number, trim: true },
     product_type: { type: String, index: true, trim: true },

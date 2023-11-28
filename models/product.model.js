@@ -6,7 +6,7 @@ const ProductSchema = new Schema({
     title: { type: String, index: true, trim: true },
     description: { type: String, index: true, trim: true },
     userId: { type: Schema.Types.ObjectId, ref: 'User', trim: true },
-    status: { type: String, index: true, trim: true }
+    status: { type: String, default: 'Active', index: true, trim: true }
 }, { timestamps: true, versionKey: false });
 
 ProductSchema.plugin(mongooseAggregatePaginate);
