@@ -35,6 +35,7 @@ const promocode = require('./routes/promo_code.routes');
 const cms = require('./routes/cms.routes');
 const faq = require('./routes/faq.routes');
 const product = require('./routes/product.routes');
+const product_detail = require('./routes/product_details.routes');
 const store_setting = require('./routes/store_setting.routes');
 const email_setting = require('./routes/email_setting.routes');
 const payment_method = require('./routes/payment_method.routes');
@@ -64,6 +65,7 @@ app.use('/api', payment_method);
 app.use('/api', master_setting);
 app.use('/api', product_wishlist);
 app.use('/api', property);
+app.use('/api', product_detail);
 
 app.use('/uploads', express.static('uploads'))
 
