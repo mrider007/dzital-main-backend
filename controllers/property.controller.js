@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Property = require('../models/property.model');
+const propertyRepo = require('../repositories/property.repository');
 
 class propertyController {
     constructor() { }
@@ -27,6 +28,34 @@ class propertyController {
             }
             else {
                 res.send({ status: 400, data: {}, message: 'Property not found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
+    async list(req, res) {
+        try {
+            if (!req.body.page) {
+                req.body.page = 1;
+            }
+            else {
+                req.body.page = parseInt(req.body.page);
+            }
+
+            if (!req.body.limit) {
+                req.body.limit = 10;
+            }
+            else {
+                req.body.limit = parseInt(req.body.limit);
+            }
+
+            let properties = await propertyRepo.list(req);
+            if (!_.isEmpty(properties)) {
+                res.send({ status: 200, data: properties, message: 'Property list has been fetched successfully' });
+            }
+            else {
+                res.send({ status: 201, data: {}, message: 'No property found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });

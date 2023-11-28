@@ -12,6 +12,26 @@ const propertyRepository = {
         } catch (e) {
             throw e;
         }
+    },
+
+    list: async (req) => {
+        var conditions = {};
+        var and_clauses = [];
+
+        and_clauses.push({});
+
+        conditions['$and'] = and_clauses;
+
+        let property = Property.aggregate([
+            { $match: conditions },
+            { $sort: { _id: 1 } }
+        ]);
+        if (!property) {
+            return null;
+        }
+        var options = { page: req.body.page, limit: req.body.limit };
+        let allProperties = await Property.aggregatePaginate(property, options);
+        return allProperties;
     }
 
 }
