@@ -191,10 +191,10 @@ class adminController {
 
                 let saveUser = await adminRepo.save(req.body);
                 if (!_.isEmpty(saveUser) && saveUser._id) {
-                    res.send({ status: 200, data: saveUser, message: 'User has been added successfully' });
+                    res.status(200).send({ data: saveUser, message: 'User has been added successfully' });
                 }
                 else {
-                    res.send({ status: 400, data: {}, message: 'User could not be added' });
+                    res.status(400).send({ data: {}, message: 'User could not be added' });
                 }
             }
         } catch (e) {
