@@ -252,14 +252,14 @@ class adminController {
                 }
                 let userUpdate = await userRepo.updateById(req.body, userId);
                 if (!_.isEmpty(userUpdate) && userUpdate._id) {
-                    res.send({ status: 200, data: userUpdate, message: 'User details has been updated successfully' });
+                    res.status(200).send({ status: 200, data: userUpdate, message: 'User details has been updated successfully' });
                 }
                 else {
-                    res.send({ status: 400, data: {}, message: 'Sorry, unable to update user at this moment!' });
+                    res.status(400).send({ status: 400, data: {}, message: 'Sorry, unable to update user at this moment!' });
                 }
             }
             else {
-                res.send({ status: 400, data: {}, message: 'User not found!' });
+                res.status(400).send({ status: 400, data: {}, message: 'User not found!' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
