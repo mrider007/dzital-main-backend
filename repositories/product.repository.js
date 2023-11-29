@@ -1,4 +1,5 @@
 const Product = require('../models/product.model');
+const ProductDetails = require('../models/product_detail.model');
 
 const productRepository = {
 
@@ -12,19 +13,19 @@ const productRepository = {
             if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
                 and_clauses.push({
                     $or: [
-                        { 'name': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
+                        { 'title': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
                     ]
                 });
             }
 
             conditions['$and'] = and_clauses;
 
-            let products = Product.aggregate([
+            let products = ProductDetails.aggregate([
                 { $match: conditions },
                 {
                     $group: {
                         _id: '$_id',
-                        name: { $first: '$name' },
+                        title: { $first: '$title' },
                         description: { $first: '$description' },
                         price: { $first: '$price' },
                         product_type: { $first: '$product_type' },
@@ -43,7 +44,7 @@ const productRepository = {
                 return null;
             }
             var options = { page: req.body.page, limit: req.body.limit };
-            let allProducts = await Product.aggregatePaginate(products, options);
+            let allProducts = await ProductDetails.aggregatePaginate(products, options);
             return allProducts;
         } catch (e) {
             throw e;
@@ -52,7 +53,7 @@ const productRepository = {
 
     updateById: async (data, id) => {
         try {
-            let productUpdate = await Product.findByIdAndUpdate(id, data, { new: true, upsert: true }).exec();
+            let productUpdate = await ProductDetails.findByIdAndUpdate(id, data, { new: true, upsert: true }).exec();
             if (!productUpdate) {
                 return null;
             }
@@ -64,9 +65,9 @@ const productRepository = {
 
     delete: async (id) => {
         try {
-            let product = await Product.findById(id);
+            let product = await ProductDetails.findById(id);
             if (product) {
-                let productDelete = await Product.deleteOne({ _id: id }).exec();
+                let productDelete = await ProductDetails.deleteOne({ _id: id }).exec();
                 if (!productDelete) {
                     return null;
                 }
