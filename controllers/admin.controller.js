@@ -178,7 +178,7 @@ class adminController {
         try {
             let user = await adminRepo.getUserInfo({ email: req.body.email });
             if (!_.isEmpty(user) && user._id) {
-                res.send({ status: 400, data: {}, message: 'User Already Exists' });
+                res.status(400).send({ data: {}, message: 'User Already Exists' });
             }
             else {
                 let password = req.body.password;
