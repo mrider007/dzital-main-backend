@@ -119,7 +119,7 @@ class productController {
 
     async productUpdate(req, res) {
         try {
-            const productInfo = await Product.findOne({ _id: req.params.id });
+            const productInfo = await ProductDetails.findOne({ _id: req.params.id });
             if (!_.isEmpty(productInfo) && productInfo._id) {
 
                 if (req.files && req.files.length > 0) {
