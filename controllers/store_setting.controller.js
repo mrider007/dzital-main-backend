@@ -10,10 +10,10 @@ class StoreSettingController {
         try {
             let storeSettingSave = await StoreSetting.create(req.body);
             if (!_.isEmpty(storeSettingSave) && storeSettingSave._id) {
-                res.send({ status: 200, data: storeSettingSave, message: 'Store Setting data saved successfully' });
+                res.status(200).send({ status: 200, data: storeSettingSave, message: 'Store Setting data saved successfully' });
             }
             else {
-                res.send({ status: 400, data: {}, message: 'Store Setting data could not be saved' });
+                res.status(400).send({ status: 400, data: {}, message: 'Store Setting data could not be saved' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -24,9 +24,9 @@ class StoreSettingController {
         try {
             let storeSetting = await StoreSetting.findOne();
             if (!_.isEmpty(storeSetting) && storeSetting._id) {
-                res.send({ status: 200, data: storeSetting, message: 'Store Setting has been fetched successfully' });
+                res.status(200).send({ status: 200, data: storeSetting, message: 'Store Setting has been fetched successfully' });
             } else {
-                res.send({ status: 400, data: {}, message: 'Store Setting not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Store Setting not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -63,13 +63,13 @@ class StoreSettingController {
 
                 let store_setting_update = await storeSettingRepo.updateById(req.body, store_setting_id);
                 if (!_.isEmpty(store_setting_update) && store_setting_update._id) {
-                    res.send({ status: 200, data: store_setting_update, message: 'Store Setting has been updated successfully' });
+                    res.status(200).send({ status: 200, data: store_setting_update, message: 'Store Setting has been updated successfully' });
                 }
                 else {
-                    res.send({ status: 400, data: {}, message: 'Store Setting could not be updated' });
+                    res.status(400).send({ status: 400, data: {}, message: 'Store Setting could not be updated' });
                 }
             } else {
-                res.send({ status: 400, message: 'Store Setting not found' });
+                res.status(400).send({ status: 400, message: 'Store Setting not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -80,9 +80,9 @@ class StoreSettingController {
         try {
             let store_setting_info = await StoreSetting.findOne();
             if (!_.isEmpty(store_setting_info) && store_setting_info._id) {
-                res.send({ status: 200, data: store_setting_info, message: 'Store Setting details has been fetched successfully' });
+                res.status(200).send({ status: 200, data: store_setting_info, message: 'Store Setting details has been fetched successfully' });
             } else {
-                res.send({ status: 400, data: {}, message: 'Store Setting not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Store Setting not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
