@@ -9,9 +9,9 @@ class MasterSettingController {
         try {
             let masterSettingSave = await MasterSetting.create(req.body);
             if (!_.isEmpty(masterSettingSave) && masterSettingSave._id) {
-                res.send({ status: 200, data: masterSettingSave, message: 'Master Setting has been saved successfully' });
+                res.status(200).send({ status: 200, data: masterSettingSave, message: 'Master Setting has been saved successfully' });
             } else {
-                res.send({ status: 400, data: {}, message: 'Master Setting could not be saved' });
+                res.status(400).send({ status: 400, data: {}, message: 'Master Setting could not be saved' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -22,9 +22,9 @@ class MasterSettingController {
         try {
             let master_setting = await MasterSetting.findOne();
             if (!_.isEmpty(master_setting) && master_setting._id) {
-                res.send({ status: 200, data: master_setting, message: 'Master Setting details fetched successfully' });
+                res.status(200).send({ status: 200, data: master_setting, message: 'Master Setting details fetched successfully' });
             } else {
-                res.send({ status: 400, data: {}, message: 'Master Setting not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Master Setting not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -35,9 +35,9 @@ class MasterSettingController {
         try {
             let master_setting_info = await MasterSetting.findOne();
             if (!_.isEmpty(master_setting_info) && master_setting_info._id) {
-                res.send({ status: 200, data: master_setting_info, message: 'Master Setting details has been fetched' });
+                res.status(200).send({ status: 200, data: master_setting_info, message: 'Master Setting details has been fetched' });
             } else {
-                res.send({ status: 400, data: {}, message: 'Master Setting not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Master Setting not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -51,14 +51,14 @@ class MasterSettingController {
             if (!_.isEmpty(masterSettingInfo) && masterSettingInfo._id) {
                 let masterSettingUpdate = await mastersettingRepo.updateById(req.body, master_setting_id);
                 if (!_.isEmpty(masterSettingUpdate) && masterSettingInfo._id) {
-                    res.send({ status: 200, data: masterSettingUpdate, message: 'Master Setting has been updated successfully' });
+                    res.status(200).send({ status: 200, data: masterSettingUpdate, message: 'Master Setting has been updated successfully' });
                 }
                 else {
-                    res.send({ status: 400, data: {}, message: 'Master Setting could not be updated' });
+                    res.status(400).send({ status: 400, data: {}, message: 'Master Setting could not be updated' });
                 }
             }
             else {
-                res.send({ status: 400, data: {}, message: 'Master Setting not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Master Setting not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
