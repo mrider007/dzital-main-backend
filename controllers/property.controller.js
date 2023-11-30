@@ -9,10 +9,10 @@ class propertyController {
         try {
             let propertyCheck = await Property.create(req.body);
             if (!_.isEmpty(propertyCheck) && propertyCheck._id) {
-                res.send({ status: 200, data: propertyCheck, message: 'Property has been added successfully' });
+                res.status(200).send({ status: 200, data: propertyCheck, message: 'Property has been added successfully' });
             }
             else {
-                res.send({ status: 400, data: {}, message: 'Property could not be added' });
+                res.status(400).send({ status: 400, data: {}, message: 'Property could not be added' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -24,10 +24,10 @@ class propertyController {
             const property_id = new mongoose.Types.ObjectId(req.params.id);
             const propertyInfo = await Property.findOne({ _id: property_id });
             if (!_.isEmpty(propertyInfo) && propertyInfo._id) {
-                res.send({ status: 200, data: propertyInfo, message: 'Property details has been fetched successfully' });
+                res.status(200).send({ status: 200, data: propertyInfo, message: 'Property details has been fetched successfully' });
             }
             else {
-                res.send({ status: 400, data: {}, message: 'Property not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Property not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -52,10 +52,10 @@ class propertyController {
 
             let properties = await propertyRepo.list(req);
             if (!_.isEmpty(properties)) {
-                res.send({ status: 200, data: properties, message: 'Property list has been fetched successfully' });
+                res.status(200).send({ status: 200, data: properties, message: 'Property list has been fetched successfully' });
             }
             else {
-                res.send({ status: 201, data: {}, message: 'No property found' });
+                res.status(201).send({ status: 201, data: {}, message: 'No property found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
