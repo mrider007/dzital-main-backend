@@ -9,13 +9,13 @@ class serviceController {
         try {
             let serviceCheck = await Service.findOne({ title: req.body.title });
             if (!_.isEmpty(serviceCheck) && serviceCheck._id) {
-                res.send({ status: 201, data: {}, message: 'Service already exists' });
+                res.status(400).send({ status: 400, data: {}, message: 'Service already exists' });
             } else {
                 let saveService = await Service.create(req.body);
                 if (!_.isEmpty(saveService) && saveService._id) {
-                    res.send({ status: 200, data: saveService, message: 'Service added successfully' });
+                    res.status(200).send({ status: 200, data: saveService, message: 'Service added successfully' });
                 } else {
-                    res.send({ status: 201, data: {}, message: 'Service could not be added' });
+                    res.status(400).send({ status: 400, data: {}, message: 'Service could not be added' });
                 }
             }
         } catch (e) {
@@ -27,9 +27,9 @@ class serviceController {
         try {
             let services = await Service.find();
             if (!_.isEmpty(services)) {
-                res.send({ status: 200, data: services, message: 'Service list fetched successfully' });
+                res.status(200).send({ status: 200, data: services, message: 'Service list fetched successfully' });
             } else {
-                res.send({ status: 201, data: [], message: 'No Service found' });
+                res.status(400).send({ status: 400, data: [], message: 'No Service found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -55,10 +55,10 @@ class serviceController {
 
             let categories = await serviceRepo.getCategories(req);
             if (!_.isEmpty(categories)) {
-                res.send({ status: 200, data: categories.docs, total: categories.total, limit: categories.limit, page: categories.page, pages: categories.pages, message: 'Categories list fetched successfully' });
+                res.status(200).send({ status: 200, data: categories.docs, total: categories.total, limit: categories.limit, page: categories.page, pages: categories.pages, message: 'Categories list fetched successfully' });
             }
             else {
-                res.send({ status: 201, data: [], message: 'No category found' });
+                res.status(201).send({ status: 201, data: [], message: 'No category found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -72,13 +72,13 @@ class serviceController {
             if (!_.isEmpty(serviceInfo) && serviceInfo._id) {
                 let serviceUpdate = await serviceRepo.updateById(req.body, service_id);
                 if (!_.isEmpty(serviceUpdate) && serviceUpdate._id) {
-                    res.send({ status: 200, data: serviceUpdate, message: 'Service has been updated successfully' });
+                    res.status(200).send({ status: 200, data: serviceUpdate, message: 'Service has been updated successfully' });
                 }
                 else {
-                    res.send({ status: 201, data: {}, message: 'Service could not be updated' });
+                    res.status(400).send({ status: 400, data: {}, message: 'Service could not be updated' });
                 }
             } else {
-                res.send({ status: 201, data: {}, message: 'Service not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Service not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -92,13 +92,13 @@ class serviceController {
             if (!_.isEmpty(serviceInfo) && serviceInfo._id) {
                 let serviceDelete = await serviceRepo.delete(service_id);
                 if (!_.isEmpty(serviceDelete) && serviceDelete._id) {
-                    res.send({ status: 200, data: serviceDelete, message: 'Service has been removed successfully' });
+                    res.status(200).send({ status: 200, data: serviceDelete, message: 'Service has been removed successfully' });
                 }
                 else {
-                    res.send({ status: 201, data: {}, message: 'Sorry, unable to remove service at this moment!' });
+                    res.status(400).send({ status: 400, data: {}, message: 'Sorry, unable to remove service at this moment!' });
                 }
             } else {
-                res.send({ status: 201, data: {}, messaage: 'Service not found' });
+                res.status(400).send({ status: 400, data: {}, messaage: 'Service not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -110,10 +110,10 @@ class serviceController {
             let service_id = new mongoose.Types.ObjectId(req.params.id);
             let serviceInfo = await Service.findOne({ _id: service_id });
             if (!_.isEmpty(serviceInfo) && serviceInfo._id) {
-                res.send({ status: 200, data: serviceInfo, message: 'Service details fetched successfully' });
+                res.status(200).send({ status: 200, data: serviceInfo, message: 'Service details fetched successfully' });
             }
             else {
-                res.send({ status: 201, data: {}, message: 'Service not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Service not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
