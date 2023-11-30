@@ -9,14 +9,14 @@ class MembershipPlanController {
         try {
             let planInfo = await MembershipPlan.findOne({ title: req.body.title, amount: req.body.amount });
             if (!_.isEmpty(planInfo) && planInfo._id) {
-                res.send({ status: 400, data: {}, message: 'Plan already exists' });
+                res.status(400).send({ status: 400, data: {}, message: 'Plan already exists' });
             }
             else {
                 let planSave = await MembershipPlan.create(req.body);
                 if (!_.isEmpty(planSave) && planSave._id) {
-                    res.send({ status: 200, data: planSave, message: 'Membership Plan added successfully' });
+                    res.status(200).send({ status: 200, data: planSave, message: 'Membership Plan added successfully' });
                 } else {
-                    res.send({ status: 400, data: {}, message: 'Sorry, unable to add membership plan at this moment!' });
+                    res.status(400).send({ status: 400, data: {}, message: 'Sorry, unable to add membership plan at this moment!' });
                 }
             }
         } catch (e) {
@@ -42,9 +42,9 @@ class MembershipPlanController {
             }
             let planList = await planRepo.planList(req);
             if (!_.isEmpty(planList)) {
-                res.send({ status: 200, data: planList.docs, total: planList.total, limit: planList.limit, page: planList.page, pages: planList.pages, message: 'Membership Plan list fetched successfully' });
+                res.status(200).send({ status: 200, data: planList.docs, total: planList.total, limit: planList.limit, page: planList.page, pages: planList.pages, message: 'Membership Plan list fetched successfully' });
             } else {
-                res.send({ status: 201, data: [], message: 'No Membership Plan found' });
+                res.status(201).send({ status: 201, data: [], message: 'No Membership Plan found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -69,9 +69,9 @@ class MembershipPlanController {
             }
             let plans = await planRepo.planList(req);
             if (!_.isEmpty(plans)) {
-                res.send({ status: 200, data: plans.docs, total: plans.total, limit: plans.limit, page: plans.page, pages: plans.pages, message: 'Membership Plan list fetched successfully' });
+                res.status(200).send({ status: 200, data: plans.docs, total: plans.total, limit: plans.limit, page: plans.page, pages: plans.pages, message: 'Membership Plan list fetched successfully' });
             } else {
-                res.send({ status: 400, data: [], message: 'No Membership Plan Found' });
+                res.status(400).send({ status: 400, data: [], message: 'No Membership Plan Found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -83,10 +83,10 @@ class MembershipPlanController {
             let plan_id = new mongoose.Types.ObjectId(req.params.id);
             let planInfo = await MembershipPlan.findOne({ _id: plan_id });
             if (!_.isEmpty(planInfo) && planInfo._id) {
-                res.send({ status: 200, data: planInfo, message: 'Membership Plan details fetched successfully' });
+                res.status(200).send({ status: 200, data: planInfo, message: 'Membership Plan details fetched successfully' });
             }
             else {
-                res.send({ status: 400, data: {}, message: 'Membership Plan not found!' });
+                res.status(400).send({ status: 400, data: {}, message: 'Membership Plan not found!' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -100,12 +100,12 @@ class MembershipPlanController {
             if (!_.isEmpty(planInfo) && planInfo._id) {
                 let planUpdate = await planRepo.updateById(req.body, plan_id);
                 if (!_.isEmpty(planUpdate) && planUpdate._id) {
-                    res.send({ status: 200, data: planUpdate, message: 'Membership Plan has been updated' });
+                    res.status(200).send({ status: 200, data: planUpdate, message: 'Membership Plan has been updated' });
                 } else {
-                    res.send({ status: 400, data: {}, message: 'Membership Plan could not be updated' });
+                    res.status(400).send({ status: 400, data: {}, message: 'Membership Plan could not be updated' });
                 }
             } else {
-                res.send({ status: 400, data: {}, message: 'Membership Plan not found!' });
+                res.status(400).send({ status: 400, data: {}, message: 'Membership Plan not found!' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -119,10 +119,10 @@ class MembershipPlanController {
             if (!_.isEmpty(planInfo) && planInfo._id) {
                 let planDelete = await planRepo.delete(plan_id);
                 if (!_.isEmpty(planDelete) && planDelete._id) {
-                    res.send({ status: 200, data: planDelete, message: 'Membership Plan removed successfully' });
+                    res.status(200).send({ status: 200, data: planDelete, message: 'Membership Plan removed successfully' });
                 }
                 else {
-                    res.send({ status: 400, data: {}, message: 'Membership Plan could not be removed' });
+                    res.status(400).send({ status: 400, data: {}, message: 'Membership Plan could not be removed' });
                 }
             }
         } catch (e) {
