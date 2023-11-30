@@ -9,9 +9,9 @@ class paymentMethodController {
         try {
             const paymentMethodSave = await PaymentMethod.create(req.body);
             if (!_.isEmpty(paymentMethodSave) && paymentMethodSave._id) {
-                res.send({ status: 200, data: paymentMethodSave, message: 'Payment Method has been saved successfully' });
+                res.status(200).send({ status: 200, data: paymentMethodSave, message: 'Payment Method has been saved successfully' });
             } else {
-                res.send({ status: 400, data: {}, message: 'Payment Method could not be saved' });
+                res.status(400).send({ status: 400, data: {}, message: 'Payment Method could not be saved' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -22,9 +22,9 @@ class paymentMethodController {
         try {
             let paymentMethodInfo = await PaymentMethod.findOne();
             if (!_.isEmpty(paymentMethodInfo) && paymentMethodInfo._id) {
-                res.send({ status: 200, data: paymentMethodInfo, message: 'Payment Method details fetched successfully' });
+                res.status(200).send({ status: 200, data: paymentMethodInfo, message: 'Payment Method details fetched successfully' });
             } else {
-                res.send({ status: 400, data: {}, message: 'Payment Method not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Payment Method not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -38,13 +38,13 @@ class paymentMethodController {
             if (!_.isEmpty(paymentMethodInfo) && paymentMethodInfo._id) {
                 let paymentMethodUpdate = await paymentMethodRepo.updateById(req.body, payment_method_id);
                 if (!_.isEmpty(paymentMethodUpdate) && paymentMethodUpdate._id) {
-                    res.send({ status: 200, data: paymentMethodUpdate, message: 'Payment Method has been updated successfully' });                    
+                    res.status(200).send({ status: 200, data: paymentMethodUpdate, message: 'Payment Method has been updated successfully' });                    
                 } else {
-                    res.send({ status: 400, data: {}, message: 'Payment Method could not be updated' });
+                    res.status(400).send({ status: 400, data: {}, message: 'Payment Method could not be updated' });
                 }
             }
             else {
-                res.send({ status: 400, data: {}, message: 'Payment Method not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Payment Method not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
