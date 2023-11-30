@@ -9,13 +9,13 @@ class PromocodeController {
         try {
             let promocodeCheck = await Promocode.findOne({ promo_code: req.body.promo_code });
             if (!_.isEmpty(promocodeCheck) && promocodeCheck._id) {
-                res.send({ status: 201, data: {}, message: 'Promo code already exists' });
+                res.status(400).send({ status: 400, data: {}, message: 'Promo code already exists' });
             } else {
                 let promocodeSave = await Promocode.create(req.body);
                 if (!_.isEmpty(promocodeSave) && promocodeSave._id) {
-                    res.send({ status: 200, data: promocodeSave, message: 'Promo code added successfully' });
+                    res.status(200).send({ status: 200, data: promocodeSave, message: 'Promo code added successfully' });
                 } else {
-                    res.send({ status: 201, data: {}, message: 'Promo code could not be added' });
+                    res.status(400).send({ status: 400, data: {}, message: 'Promo code could not be added' });
                 }
             }
         } catch (e) {
@@ -40,9 +40,9 @@ class PromocodeController {
 
             let promocodes = await promocodeRepo.getPromoCode(req);
             if (!_.isEmpty(promocodes)) {
-                res.send({ status: 200, data: promocodes.docs, total: promocodes.total, limit: promocodes.limit, page: promocodes.page, pages: promocodes.pages, message: 'Promo code list fetched successfully' });
+                res.status(200).send({ status: 200, data: promocodes.docs, total: promocodes.total, limit: promocodes.limit, page: promocodes.page, pages: promocodes.pages, message: 'Promo code list fetched successfully' });
             } else {
-                res.send({ status: 201, data: [], message: 'No Promo Code Found' });
+                res.status(201).send({ status: 201, data: [], message: 'No Promo Code Found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -54,9 +54,9 @@ class PromocodeController {
             let promocode_id = new mongoose.Types.ObjectId(req.params.id);
             let promocodeInfo = await Promocode.findOne({ _id: promocode_id });
             if (!_.isEmpty(promocodeInfo) && promocodeInfo._id) {
-                res.send({ status: 200, data: promocodeInfo, message: 'Promo code details fetched successfully' });
+                res.status(200).send({ status: 200, data: promocodeInfo, message: 'Promo code details fetched successfully' });
             } else {
-                res.send({ status: 201, data: {}, message: 'Promo code not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Promo code not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -68,9 +68,9 @@ class PromocodeController {
         try {
             let promocodes = await Promocode.find({ status: 'Active' });
             if (!_.isEmpty(promocodes)) {
-                res.send({ status: 200, data: promocodes, message: 'Promocode list fetched successfully' });
+                res.status(200).send({ status: 200, data: promocodes, message: 'Promocode list fetched successfully' });
             } else {
-                res.send({ status: 201, data: [], message: 'No Promocodes found' });
+                res.status(201).send({ status: 201, data: [], message: 'No Promocodes found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -84,13 +84,13 @@ class PromocodeController {
             if (!_.isEmpty(promocodeDetails) && promocodeDetails._id) {
                 let promocodeUpdate = await promocodeRepo.updateById(req.body, promocode_id);
                 if (!_.isEmpty(promocodeUpdate) && promocodeUpdate._id) {
-                    res.send({ status: 200, data: promocodeUpdate, message: 'Promo code has been updated' });
+                    res.status(200).send({ status: 200, data: promocodeUpdate, message: 'Promo code has been updated' });
                 }
                 else {
-                    res.send({ status: 201, data: {}, message: 'Promo code could not be updated' });
+                    res.status(400).send({ status: 400, data: {}, message: 'Promo code could not be updated' });
                 }
             } else {
-                res.send({ status: 201, data: {}, message: 'Promo code not found' })
+                res.status(400).send({ status: 400, data: {}, message: 'Promo code not found' })
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -104,14 +104,14 @@ class PromocodeController {
             if (!_.isEmpty(promocodeInfo) && promocodeInfo._id) {
                 let promocodeDelete = await promocodeRepo.delete(promocode_id);
                 if (!_.isEmpty(promocodeDelete) && promocodeDelete._id) {
-                    res.send({ status: 200, data: promocodeInfo, message: 'Promo code has been removed successfully' });
+                    res.status(200).send({ status: 200, data: promocodeInfo, message: 'Promo code has been removed successfully' });
                 }
                 else {
-                    res.send({ status: 201, data: {}, message: 'Promo code could not be removed' });
+                    res.status(400).send({ status: 400, data: {}, message: 'Promo code could not be removed' });
                 }
             }
             else {
-                res.send({ status: 201, data: {}, message: 'Promo Code not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Promo Code not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -125,13 +125,13 @@ class PromocodeController {
             if (!_.isEmpty(promocodeInfo) && promocodeInfo._id) {
                 let statusUpdate = await promocodeRepo.updateById({ 'status': req.body.status }, promocode_id);
                 if (!_.isEmpty(statusUpdate) && statusUpdate._id) {
-                    res.send({ status: 200, data: statusUpdate, message: 'Promocode status has been updated' })
+                    res.status(200).send({ status: 200, data: statusUpdate, message: 'Promocode status has been updated' })
                 }
                 else {
-                    res.send({ status: 201, data: {}, message: 'Promocode could not be updated' });
+                    res.status(400).send({ status: 400, data: {}, message: 'Promocode could not be updated' });
                 }
             } else {
-                res.send({ status: 201, data: {}, message: 'Promocode not found!' });
+                res.status(400).send({ status: 400, data: {}, message: 'Promocode not found!' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
