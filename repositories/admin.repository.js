@@ -1,5 +1,6 @@
 const Admin = require('../models/admin.model');
 const User = require('../models/user.model');
+const Role = require('../models/role.model');
 
 const adminRepository = {
 
@@ -35,11 +36,11 @@ const adminRepository = {
         try {
             var conditions = {};
             var and_clauses = [];
-    
+
             and_clauses.push({});
-    
+
             let key = req.body.keyword_search;
-    
+
             if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
                 and_clauses.push({
                     $or: [
@@ -47,7 +48,7 @@ const adminRepository = {
                         { 'email': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
                     ]
                 });
-    
+
                 // Check if keyword_search has length greater than 0
                 if (key.length > 0) {
                     // Disable req.body.page and req.body.limit
@@ -55,19 +56,19 @@ const adminRepository = {
                     req.body.limit = undefined;
                 }
             }
-    
+
             conditions['$and'] = and_clauses;
-    
+
             let users = User.aggregate([
                 // ... (existing aggregation stages)
                 { $match: conditions },
                 { $sort: { _id: -1 } }
             ]);
-    
+
             if (!users) {
                 return null;
             }
-    
+
             // Only set options if they are not disabled
             var options = {};
             if (req.body.page !== undefined) {
@@ -76,13 +77,13 @@ const adminRepository = {
             if (req.body.limit !== undefined) {
                 options.limit = req.body.limit;
             }
-    
+
             let allUsers = await User.aggregatePaginate(users, options);
             return allUsers;
         } catch (e) {
             throw e;
         }
-    },    
+    },
 
     getAdminsList: async (req) => {
         try {
@@ -100,15 +101,37 @@ const adminRepository = {
                 });
             }
 
+            let role = await Role.findOne({ 'role': 'Super Admin' });
+
+            and_clauses.push({ role_id: { $ne: role._id } });
+
             conditions['$and'] = and_clauses;
 
             let admins = Admin.aggregate([
                 { $match: conditions },
                 {
                     $lookup: {
-                        from: ''
+                        from: 'roles',
+                        localField: 'role_id',
+                        foreignField: '_id',
+                        as: 'role_details'
                     }
-                }
+                },
+                { $unwind: { path: '$role_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: "$_id",
+                        name: { $first: "$name" },
+                        email: { $first: '$email' },
+                        image: { $first: '$image' },
+                        mobile: { $first: "$mobile" },
+                        createdAt: { $first: "$createdAt" },
+                        updatedAt: { $first: "$updatedAt" },
+                        role_id: { $first: "$role_id" },
+                        role: { $first: '$role_details.role' }
+                    }
+                },
+                { $sort: { _id: -1 } }
             ]);
 
             if (!admins) {

@@ -84,6 +84,34 @@ class adminController {
         }
     };
 
+    /** Admin List */
+    async adminList(req, res) {
+        try {
+            if (!req.body.page) {
+                req.body.page = 1
+            }
+            else {
+                req.body.page = parseInt(req.body.page);
+            }
+
+            if (!req.body.limit) {
+                req.body.limit = 10
+            }
+            else {
+                req.body.limit = parseInt(req.body.limit);
+            }
+
+            let admins = await adminRepo.getAdminsList(req);
+            if (!_.isEmpty(admins)) {
+                res.status(200).send({ status: 200, data: admins.docs, total: admins.total, limit: admins.limit, page: admins.page, pages: admins.pages, message: 'Admins list fetched successfully' });
+            } else {
+                res.status(201).send({ status: 201, message: 'No user found' });
+            }            
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
     async updateProfile(req, res) {
         try {
             let adminInfo = await Admin.findById(req.user._id);
