@@ -32,7 +32,7 @@ const adminRepository = {
                         image: { $first: '$image' },
                         mobile: { $first: '$mobile' },
                         role_id: { $first: '$role_id' },
-                        role: { $first: '$role_details.role' } 
+                        role: { $first: '$role_details.role' }
                     }
                 }
             ]);
