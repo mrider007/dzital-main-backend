@@ -83,6 +83,8 @@ const JobRepository = {
 
             and_clauses.push({});
 
+            let key = req.body.keyword_search;
+
             if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
                 and_clauses.push({
                     $or: [
@@ -90,6 +92,13 @@ const JobRepository = {
                         { 'description': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
                     ]
                 });
+
+                // Check if keyword_search has length greater than 0
+                if (key.length > 0) {
+                    // Disable req.body.page and req.body.limit
+                    req.body.page = undefined;
+                    req.body.limit = undefined;
+                }
             }
 
             conditions['$and'] = and_clauses;
@@ -129,12 +138,21 @@ const JobRepository = {
                         job_type_title: { $first: '$job_type_details.title' }
                     }
                 },
-                { $sort: { _id: 1 } }
+                { $sort: { _id: -1 } }
             ]);
             if (!joblist) {
                 return null;
             }
-            var options = { page: req.body.page, limit: req.body.limit };
+
+            // Only set options if they are not disabled
+            var options = {};
+            if (req.body.page !== undefined) {
+                options.page = req.body.page;
+            }
+            if (req.body.limit !== undefined) {
+                options.limit = req.body.limit;
+            }
+            
             let allJobs = await Job.aggregatePaginate(joblist, options);
             return allJobs;
         } catch (e) {
