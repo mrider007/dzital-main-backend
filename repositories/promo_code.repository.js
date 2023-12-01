@@ -36,19 +36,42 @@ const promocodeRepository = {
 
             and_clauses.push({});
 
-            if (_.isObject(req.body) && _.has(req.body, 'promo_code')) {
-                and_clauses.push({ $or: [{ "promo_code": { $regex: (req.body.promo_code).trim(), $options: 'i' } }] });
+            let key = req.body.keyword_search;
+
+            if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
+                and_clauses.push({
+                    $or: [
+                        { 'promo_code': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
+                    ]
+                });
+
+                // Check if keyword_search has length greater than 0
+                if (key.length > 0) {
+                    // Disable req.body.page and req.body.limit
+                    req.body.page = undefined;
+                    req.body.limit = undefined;
+                }
             }
 
             conditions['$and'] = and_clauses;
 
             let promocodes = Promocode.aggregate([
-                { $match: conditions }
+                { $match: conditions },
+                { $sort: { _id: -1 } }
             ]);
             if (!promocodes) {
                 return null;
             }
-            var options = { page: req.body.page, limit: req.body.limit };
+
+            // Only set options if they are not disabled
+            var options = {};
+            if (req.body.page !== undefined) {
+                options.page = req.body.page;
+            }
+            if (req.body.limit !== undefined) {
+                options.limit = req.body.limit;
+            }
+
             let allPromocodes = await Promocode.aggregatePaginate(promocodes, options);
             return allPromocodes;
         } catch (e) {
