@@ -22,6 +22,9 @@ const UserSchema = new mongoose.Schema({
     lat: { type: String, trim: true },
     long: { type: String, trim: true },
     plan_id: { type: Schema.Types.ObjectId, ref: 'Membership_Plan', index: true },
+    member_type: { type: String, index: true, trim: true },
+    organization_name: { type: String, index: true, trim: true },
+    official_email_id: { type: String, index: true, trim: true },
     purchased_on: { type: Date, index: true, trim: true },
     expired_on: { type: Date, index: true, trim: true },
     register_type: { type: String, default: 'normal', enum: ['normal', 'google', 'facebook'] }
