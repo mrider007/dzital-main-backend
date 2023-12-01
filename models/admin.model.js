@@ -14,6 +14,7 @@ const AdminSchema = new Schema({
     image: { type: String, default: '' },
     mobile: { type: String, default: '', index: true, trim: true },
     social_id: { type: String, default: '', index: true, trim: true },
+    role_id: { type: Schema.Types.ObjectId, ref: 'Role', index: true, trim: true },
     register_type: { type: String, default: 'normal', enum: ['normal', 'facebook', 'google'] },
     password: { type: String, index: true, trim: true }
 }, { timestamps: true, versionKey: false });
