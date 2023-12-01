@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 var bcrypt = require('bcrypt');
+const mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
 
 const AdminSchema = new Schema({
     name: { type: String, index: true, trim: true },
@@ -23,5 +24,7 @@ const AdminSchema = new Schema({
 AdminSchema.methods.generateHash = function (password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
+
+AdminSchema.plugin(mongooseAggregatePaginate);
 
 module.exports = mongoose.model('Admin', AdminSchema);
