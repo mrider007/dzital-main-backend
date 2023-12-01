@@ -16,10 +16,23 @@ const adminRepository = {
             let data = await Admin.aggregate([
                 { $match: conditions },
                 {
-                    $project: {
-                        'password': 0,
-                        'createdAt': 0,
-                        'updatedAt': 0
+                    $lookup: {
+                        from: 'roles',
+                        localField: 'role_id',
+                        foreignField: '_id',
+                        as: 'role_details'
+                    }
+                },
+                { $unwind: { path: '$role_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: '$_id',
+                        name: { $first: '$name' },
+                        email: { $first: '$email' },
+                        image: { $first: '$image' },
+                        mobile: { $first: '$mobile' },
+                        role_id: { $first: '$role_id' },
+                        role: { $first: '$role_details.role' } 
                     }
                 }
             ]);
@@ -146,7 +159,7 @@ const adminRepository = {
             if (!admins) {
                 return null;
             }
-            
+
             // Only set options if they are not disabled
             var options = {};
             if (req.body.page !== undefined) {
