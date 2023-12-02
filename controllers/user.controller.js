@@ -167,6 +167,20 @@ class userController {
         }
     };
 
+    async userList(req, res) {
+        try {
+            let allUsers = await User.find();
+            if (!_.isEmpty(allUsers)) {
+                res.send({ status: 200, data: allUsers, message: 'Users list has been fetched successfully' });
+            }
+            else {
+                res.send({ status: 400, data: {}, message: 'No Users found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
 }
 
 module.exports = new userController();
