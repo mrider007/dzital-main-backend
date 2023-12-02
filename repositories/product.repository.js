@@ -32,6 +32,10 @@ const productRepository = {
                 and_clauses.push({ "userId": new mongoose.Types.ObjectId(req.body.userId) });
             }
 
+            if (_.isObject(req.body) && _.has(req.body, 'status')) {
+                and_clauses.push({ 'status': req.body.status });
+            }
+
             conditions['$and'] = and_clauses;
 
             let products = Product.aggregate([
