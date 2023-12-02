@@ -67,7 +67,7 @@ class productController {
             } else {
                 req.body.limit = parseInt(req.body.limit);
             }
-            let products = await productRepo.productList(req);
+            let products = await productRepo.allProducts(req);
             if (!_.isEmpty(products)) {
                 res.status(200).send({ status: 200, data: products.docs, total: products.total, limit: products.limit, page: products.page, pages: products.pages, message: 'Products list fetched successfully' });
             } else {
