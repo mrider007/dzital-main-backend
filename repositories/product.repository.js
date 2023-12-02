@@ -59,14 +59,6 @@ const productRepository = {
                     }
                 },
                 { $unwind: { path: '$user_details', preserveNullAndEmptyArrays: true } },
-                // {
-                //     $lookup: {
-                //         from: 'service_categories',
-                //         localField: 'category_id',
-                //         foreignField: '_id',
-                //         as: 'category_details'
-                //     }
-                // },
                 {
                     $lookup: {
                         let: { category: '$category_id' },
