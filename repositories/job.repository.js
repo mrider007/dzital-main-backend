@@ -152,7 +152,7 @@ const JobRepository = {
             if (req.body.limit !== undefined) {
                 options.limit = req.body.limit;
             }
-            
+
             let allJobs = await Job.aggregatePaginate(joblist, options);
             return allJobs;
         } catch (e) {
