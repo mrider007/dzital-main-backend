@@ -8,7 +8,7 @@ const productRepository = {
         try {
             var conditions = {};
             var and_clauses = [];
-            
+
             and_clauses.push({});
 
             let key = req.body.keyword_search;
@@ -34,6 +34,10 @@ const productRepository = {
 
             if (_.isObject(req.body) && _.has(req.body, 'status')) {
                 and_clauses.push({ 'status': req.body.status });
+            }
+
+            if (_.isObject(req.body) && _.has(req.body, 'category_id')) {
+                and_clauses.push({ 'category_id': new mongoose.Types.ObjectId(req.body.category_id) });
             }
 
             conditions['$and'] = and_clauses;
