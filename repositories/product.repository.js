@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Product = require('../models/product.model');
 const ProductDetails = require('../models/product_detail.model');
 
@@ -25,6 +26,10 @@ const productRepository = {
                     req.body.page = undefined;
                     req.body.limit = undefined;
                 }
+            }
+
+            if (_.isObject(req.body) && _.has(req.body, 'userId')) {
+                and_clauses.push({ "userId": new mongoose.Types.ObjectId(req.body.userId) });
             }
 
             conditions['$and'] = and_clauses;
