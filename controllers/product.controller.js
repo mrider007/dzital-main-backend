@@ -174,12 +174,14 @@ class productController {
     async productDelete(req, res) {
         try {
             const product_id = new mongoose.Types.ObjectId(req.params.id);
-            const productInfo = await ProductDetails.findOne({ _id: req.params.id });
+            const productInfo = await Product.findOne({ _id: req.params.id });
+            console.log('product', productInfo)
             if (!_.isEmpty(productInfo) && productInfo._id) {
                 let productRemove = await productRepo.delete(product_id);
+                console.log('productRemove', productRemove);
                 if (!_.isEmpty(productRemove) && productRemove._id) {
-                    let productId = productRemove.product_id;
-                    let deleteData = await productRepo.deleteProduct(productId);
+                    // let productId = productRemove.product_id;
+                    // let deleteData = await productRepo.deleteProduct(productId);
                     res.status(200).send({ status: 200, data: productRemove, message: 'Product has been removed successfully' });
                 } else {
                     res.status(400).send({ status: 400, data: {}, message: 'Sorry, unable to update product at this moment' });

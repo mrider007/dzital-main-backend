@@ -194,9 +194,9 @@ const productRepository = {
 
     delete: async (id) => {
         try {
-            let product = await ProductDetails.findById(id);
+            let product = await Product.findById(id);
             if (product) {
-                let productDelete = await ProductDetails.deleteOne({ _id: id }).exec();
+                let productDelete = await Product.deleteOne({ _id: id }).exec();
                 if (!productDelete) {
                     return null;
                 }
