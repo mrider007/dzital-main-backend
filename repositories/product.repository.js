@@ -31,6 +31,67 @@ const productRepository = {
 
             let products = Product.aggregate([
                 { $match: conditions },
+                {
+                    $lookup: {
+                        let: { user_id: '$userId' },
+                        from: "users",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $or: [{ $eq: ["$_id", "$$user_id"] }] },
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                $group: {
+                                    _id: '$_id',
+                                    name: { $first: "$name" },
+                                    email: { $first: '$email' },
+                                    image: { $first: '$image' },
+                                    mobile: { $first: '$mobile' }
+                                }
+                            }
+                        ],
+                        as: "user_details"
+                    }
+                },
+                { $unwind: { path: '$user_details', preserveNullAndEmptyArrays: true } },
+                // {
+                //     $lookup: {
+                //         from: 'service_categories',
+                //         localField: 'category_id',
+                //         foreignField: '_id',
+                //         as: 'category_details'
+                //     }
+                // },
+                {
+                    $lookup: {
+                        let: { category: '$category_id' },
+                        from: "service_categories",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $or: [{ $eq: ["$_id", "$$category"] }] },
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                $group: {
+                                    _id: '$_id',
+                                    title: { $first: "$title" }
+                                }
+                            }
+                        ],
+                        as: "category_details"
+                    }
+                },
+                { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
                 { $sort: { _id: -1 } }
             ]);
             if (!products) {
