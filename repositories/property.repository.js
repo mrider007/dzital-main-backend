@@ -42,6 +42,50 @@ const propertyRepository = {
 
         let property = Property.aggregate([
             { $match: conditions },
+            {
+                $lookup: {
+                    from: 'service_categories',
+                    localField: 'category_id',
+                    foreignField: '_id',
+                    as: 'category_details'
+                }
+            },
+            { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'user_id',
+                    foreignField: '_id',
+                    as: 'user_details'
+                }
+            },
+            { $unwind: { path: '$user_details', preserveNullAndEmptyArrays: true } },
+            {
+                $group: {
+                    _id: '$_id',
+                    title: { $first: '$title' },
+                    description: { $first: '$description' },
+                    per_sqmt_price: { $first: '$per_sqmt_price' },
+                    size: { $first: '$size' },
+                    rent_per_month: { $first: '$rent_per_month' },
+                    floor: { $first: '$floor' },
+                    rooms: { $first: '$rooms' },
+                    bathrooms: { $first: '$bathrooms' },
+                    bedrooms: { $first: '$bedrooms' },
+                    balcony: { $first: '$balcony' },
+                    terrace: { $first: '$terrace' },
+                    property_type: { $first: '$property_type' },
+                    parking_type: { $first: '$parking_type' },
+                    parking_fee: { $first: '$parking_fee' },
+                    parking_slots: { $first: '$parking_slots' },
+                    year_built: { $first: '$year_built' },
+                    user_id: { $first: '$user_id' },
+                    category_id: { $first: '$category_id' },
+                    user_name: { $first: '$user_details.name' },
+                    category_name: { $first: '$category_details.title' },
+                    status: { $first: '$status' }
+                }
+            },
             { $sort: { _id: -1 } }
         ]);
         if (!property) {

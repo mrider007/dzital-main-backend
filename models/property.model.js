@@ -19,7 +19,7 @@ const PropertySchema = new Schema({
     parking_fee: { type: Number },
     parking_slots: { type: Number, default: 0 },
     year_built: { type: Number },
-    added_by: { type: Schema.Types.ObjectId, ref: 'User', index: true },
+    user_id: { type: Schema.Types.ObjectId, ref: 'User', index: true },
     category_id: { type: Schema.Types.ObjectId, ref: 'service_category', index: true },
     status: { type: String, index: true, trim: true }
 }, { timestamps: true, versionKey: false });
