@@ -97,6 +97,8 @@ const productRepository = {
                     }
                 },
                 { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
+                { $addFields: { category_name: '$category_details.title' } },
+                { $addFields: { user_name: '$user_details.name' } },
                 { $sort: { _id: -1 } }
             ]);
             if (!products) {
