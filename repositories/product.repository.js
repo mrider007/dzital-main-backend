@@ -97,8 +97,19 @@ const productRepository = {
                     }
                 },
                 { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
-                { $addFields: { category_name: '$category_details.title' } },
-                { $addFields: { user_name: '$user_details.name' } },
+                {
+                    $group: {
+                        _id: '$_id',
+                        title: { $first: '$title' },
+                        description: { $first: '$description' },
+                        userId: { $first: '$userId' },
+                        adminId: { $first: '$adminId' },
+                        status: { $first: '$status' },
+                        category_id: { $first: '$category_id' },
+                        user_name: { $first: '$user_details.name' },
+                        cstegory_name: { $first: '$category_details.title' }
+                    }
+                },
                 { $sort: { _id: -1 } }
             ]);
             if (!products) {

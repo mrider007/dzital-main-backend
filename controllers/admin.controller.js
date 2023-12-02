@@ -185,7 +185,7 @@ class adminController {
             }
 
             if (!req.body.limit) {
-                req.body.limit = 10;
+                req.body.limit = 25;
             } else {
                 req.body.limit = parseInt(req.body.limit);
             }
