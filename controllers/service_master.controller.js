@@ -27,9 +27,9 @@ class serviceController {
         try {
             let services = await Service.find();
             if (!_.isEmpty(services)) {
-                res.status(200).send({ status: 200, data: services, message: 'Service list fetched successfully' });
+                res.status(200).send({ status: 200, data: services, message: 'Categories list fetched successfully' });
             } else {
-                res.status(400).send({ status: 400, data: [], message: 'No Service found' });
+                res.status(400).send({ status: 400, data: [], message: 'No Category found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
