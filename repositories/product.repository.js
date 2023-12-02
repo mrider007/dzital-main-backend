@@ -107,7 +107,7 @@ const productRepository = {
                         status: { $first: '$status' },
                         category_id: { $first: '$category_id' },
                         user_name: { $first: '$user_details.name' },
-                        cstegory_name: { $first: '$category_details.title' }
+                        category_name: { $first: '$category_details.title' }
                     }
                 },
                 { $sort: { _id: -1 } }
