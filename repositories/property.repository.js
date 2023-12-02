@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Property = require('../models/property.model');
 
 const propertyRepository = {
@@ -36,6 +37,10 @@ const propertyRepository = {
                 req.body.page = undefined;
                 req.body.limit = undefined;
             }
+        }
+
+        if (_.isObject(req.body) && _.has(req.body, 'category_id')) {
+            and_clauses.push({ 'category_id': new mongoose.Types.ObjectId(req.body.category_id) });
         }
 
         conditions['$and'] = and_clauses;
@@ -100,7 +105,6 @@ const propertyRepository = {
         if (req.body.limit !== undefined) {
             options.limit = req.body.limit;
         }
-        //var options = { page: req.body.page, limit: req.body.limit };
         let allProperties = await Property.aggregatePaginate(property, options);
         return allProperties;
     }
