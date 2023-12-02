@@ -52,7 +52,7 @@ class propertyController {
 
             let properties = await propertyRepo.list(req);
             if (!_.isEmpty(properties)) {
-                res.status(200).send({ status: 200, data: properties, message: 'Property list has been fetched successfully' });
+                res.status(200).send({ status: 200, data: properties.docs, total: properties.total, limit: properties.limit, page: properties.page, pages: properties.pages, message: 'Property list has been fetched successfully' });
             }
             else {
                 res.status(201).send({ status: 201, data: {}, message: 'No property found' });
