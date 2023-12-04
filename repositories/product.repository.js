@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Product = require('../models/product.model');
-const ProductDetails = require('../models/product_detail.model');
+const ProductElectronics = require('../models/product_electronics.model');
 
 const productRepository = {
 
@@ -149,7 +149,7 @@ const productRepository = {
 
             conditions['$and'] = and_clauses;
 
-            let products = ProductDetails.aggregate([
+            let products = ProductElectronics.aggregate([
                 { $match: conditions },
                 {
                     $group: {
@@ -173,7 +173,7 @@ const productRepository = {
                 return null;
             }
             var options = { page: req.body.page, limit: req.body.limit };
-            let allProducts = await ProductDetails.aggregatePaginate(products, options);
+            let allProducts = await ProductElectronics.aggregatePaginate(products, options);
             return allProducts;
         } catch (e) {
             throw e;
@@ -182,7 +182,7 @@ const productRepository = {
 
     updateById: async (data, id) => {
         try {
-            let productUpdate = await ProductDetails.findByIdAndUpdate(id, data, { new: true, upsert: true }).exec();
+            let productUpdate = await ProductElectronics.findByIdAndUpdate(id, data, { new: true, upsert: true }).exec();
             if (!productUpdate) {
                 return null;
             }

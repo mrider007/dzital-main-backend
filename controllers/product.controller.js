@@ -1,5 +1,5 @@
 const Product = require('../models/product.model');
-const ProductDetails = require('../models/product_detail.model');
+const ProductElectronics = require('../models/product_electronics.model');
 const mongoose = require('mongoose');
 const productRepo = require('../repositories/product.repository');
 const cloudinary = require('cloudinary');
