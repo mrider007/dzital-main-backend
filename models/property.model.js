@@ -21,6 +21,7 @@ const PropertySchema = new Schema({
     year_built: { type: Number },
     user_id: { type: Schema.Types.ObjectId, ref: 'User', index: true },
     category_id: { type: Schema.Types.ObjectId, ref: 'service_category', index: true },
+    product_id: { type: Schema.Types.ObjectId, ref: 'Product', index: true },
     status: { type: String, index: true, trim: true }
 }, { timestamps: true, versionKey: false });
 

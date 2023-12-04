@@ -87,8 +87,7 @@ const propertyRepository = {
                     user_id: { $first: '$user_id' },
                     category_id: { $first: '$category_id' },
                     user_name: { $first: '$user_details.name' },
-                    category_name: { $first: '$category_details.title' },
-                    status: { $first: '$status' }
+                    category_name: { $first: '$category_details.title' }
                 }
             },
             { $sort: { _id: -1 } }
