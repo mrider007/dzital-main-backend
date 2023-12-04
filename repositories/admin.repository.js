@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Admin = require('../models/admin.model');
 const User = require('../models/user.model');
 const Role = require('../models/role.model');
@@ -70,6 +71,10 @@ const adminRepository = {
                 }
             }
 
+            if (_.isObject(req.body) && _.has(req.body, 'plan_id')) {
+                and_clauses.push({ 'plan_id': new mongoose.Types.ObjectId(req.body.plan_id) });
+            }
+
             conditions['$and'] = and_clauses;
 
             let users = User.aggregate([
@@ -91,6 +96,7 @@ const adminRepository = {
                         image: { $first: '$image' },
                         mobile: { $first: '$mobile' },
                         address: { $first: '$address' },
+                        register_type: { $first: '$register_type' },
                         plan_id: { $first: '$plan_id' },
                         plan_title: { $first: '$plan_details.title' },
                         createdAt: { $first: '$createdAt' },
