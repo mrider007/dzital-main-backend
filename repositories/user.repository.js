@@ -84,6 +84,18 @@ const userRepository = {
         }
     },
 
+    getUserCountByParams: async (params) => {
+        try {
+            let user = await User.countDocuments(params);
+            if (!user) {
+                return null;
+            }
+            return user;
+        } catch (e) {
+            throw e;
+        }
+    },
+
     getUserInfo: async (params) => {
         try {
             var conditions = {};
