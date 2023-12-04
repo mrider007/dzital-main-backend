@@ -33,7 +33,9 @@ const productRepository = {
             }
 
             if (_.isObject(req.body) && _.has(req.body, 'status')) {
-                and_clauses.push({ 'status': req.body.status });
+                if (req.body.status !== 'All') {
+                    and_clauses.push({ 'status': req.body.status });
+                }
             }
 
             if (_.isObject(req.body) && _.has(req.body, 'category_id')) {
