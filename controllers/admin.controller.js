@@ -298,6 +298,15 @@ class adminController {
         }
     };
 
+    async userCount(req, res) {
+        try {
+            
+            let totalFreePlanUsers = await userRepo.getUserCountByParams({  });            
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
 }
 
 module.exports = new adminController();
