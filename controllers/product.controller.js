@@ -80,7 +80,7 @@ class productController {
 
     async productDetails(req, res) {
         try {
-            const productInfo = await ProductDetails.findOne({ _id: req.params.id });
+            const productInfo = await Product.findOne({ _id: req.params.id });
             if (!_.isEmpty(productInfo) && productInfo._id) {
                 res.status(200).send({ status: 200, data: productInfo, message: 'Product details fetched successfully' });
             } else {

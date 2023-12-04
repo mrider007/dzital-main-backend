@@ -23,7 +23,7 @@ connectDB();
 
 const user = require('./routes/user.routes');
 const job_type = require('./routes/job_type.routes');
-const job = require('./routes/job.routes');
+const product_jobs = require('./routes/product_job.routes');
 const job_proposal = require('./routes/job_proposal.routes');
 const service = require('./routes/service_master.routes');
 const membership_plan = require('./routes/membership_plan.routes');
@@ -47,7 +47,7 @@ global.BASE_URL = `http://${process.env.HOST}:${getPort}`;
 
 app.use('/api', user);
 app.use('/api', job_type);
-app.use('/api', job);
+app.use('/api', product_jobs);
 app.use('/api', job_proposal);
 app.use('/api', service);
 app.use('/api', membership_plan);
