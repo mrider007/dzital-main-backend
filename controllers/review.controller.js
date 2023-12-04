@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Job = require('../models/job.model');
+const Job = require('../models/product_jobs.model');
 const Review = require('../models/review.model');
 const reviewRepo = require('../repositories/review.repository');
 
