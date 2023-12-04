@@ -73,8 +73,30 @@ const adminRepository = {
             conditions['$and'] = and_clauses;
 
             let users = User.aggregate([
-                // ... (existing aggregation stages)
                 { $match: conditions },
+                {
+                    $lookup: {
+                        from: 'membership_plans',
+                        localField: 'plan_id',
+                        foreignField: '_id',
+                        as: 'plan_details'
+                    }
+                },
+                { $unwind: { path: '$plan_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: '$_id',
+                        name: { $first: '$name' },
+                        email: { $first: '$email' },
+                        image: { $first: '$image' },
+                        mobile: { $first: '$mobile' },
+                        address: { $first: '$address' },
+                        plan_id: { $first: '$plan_id' },
+                        plan_title: { $first: '$plan_details.title' },
+                        createdAt: { $first: '$createdAt' },
+                        updatedAt: { $first: '$updatedAt' }
+                    }
+                },
                 { $sort: { _id: -1 } }
             ]);
 
