@@ -16,7 +16,9 @@ const productRepository = {
             if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
                 and_clauses.push({
                     $or: [
-                        { 'title': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
+                        { 'title': { $regex: (req.body.keyword_search).trim(), $options: 'i' } },
+                        { 'user_name': { $regex: (req.body.keyword_search).trim(), $options: 'i' } },
+                        { 'category_name': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
                     ]
                 });
 
@@ -45,7 +47,6 @@ const productRepository = {
             conditions['$and'] = and_clauses;
 
             let products = Product.aggregate([
-                { $match: conditions },
                 {
                     $lookup: {
                         let: { user_id: '$userId' },
@@ -112,6 +113,7 @@ const productRepository = {
                         category_name: { $first: '$category_details.title' }
                     }
                 },
+                { $match: conditions },
                 { $sort: { _id: -1 } }
             ]);
             if (!products) {
