@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Property = require('../models/property.model');
+const Product = require('../models/product.model');
 const propertyRepo = require('../repositories/property.repository');
 
 class propertyController {
@@ -7,9 +8,16 @@ class propertyController {
 
     async add(req, res) {
         try {
-            let propertyCheck = await Property.create(req.body);
-            if (!_.isEmpty(propertyCheck) && propertyCheck._id) {
-                res.status(200).send({ status: 200, data: propertyCheck, message: 'Property has been added successfully' });
+            req.body.userId = req.user._id;
+            let productSave = await Product.create(req.body);
+            if (!_.isEmpty(productSave) && productSave._id) {
+                req.body.user_id = productSave.userId;
+                req.body.product_id = productSave._id;
+                let propertySave = await Property.create(req.body);
+                if (!_.isEmpty(propertySave) && propertySave._id) {
+                    res.status(200).send({ status: 200, data: propertySave, message: 'Property has been added successfully' });
+                }
+                //res.status(200).send({ status: 200, data: propertyCheck, message: 'Property has been added successfully' });
             }
             else {
                 res.status(400).send({ status: 400, data: {}, message: 'Property could not be added' });
