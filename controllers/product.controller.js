@@ -1,5 +1,7 @@
 const Product = require('../models/product.model');
 const ProductElectronics = require('../models/product_electronics.model');
+const Property = require('../models/property.model');
+const Category = require('../models/service_master.model');
 const mongoose = require('mongoose');
 const productRepo = require('../repositories/product.repository');
 const cloudinary = require('cloudinary');
@@ -78,11 +80,30 @@ class productController {
         }
     };
 
+    /** Admin Product Details */
     async productDetails(req, res) {
         try {
             const productInfo = await Product.findOne({ _id: req.params.id });
             if (!_.isEmpty(productInfo) && productInfo._id) {
-                res.status(200).send({ status: 200, data: productInfo, message: 'Product details fetched successfully' });
+                let categoryInfo = await Category.findOne({ _id: productInfo.category_id });
+                if (categoryInfo.title === 'Real Estate') {
+                    let propertyDetails = await Property.findOne({ product_id: productInfo._id });
+                    if (!_.isEmpty(propertyDetails) && propertyDetails._id) {
+                        res.status(200).send({ status: 200, data: propertyDetails, message: 'Property details has been fetched successfully' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                    }
+                }
+                else if (categoryInfo.title === 'Electronics') {
+                    let productElectronicsDetails = await ProductElectronics.findOne({ product_id: productInfo._id });
+                    if (!_.isEmpty(productElectronicsDetails) && productElectronicsDetails._id) {
+                        res.status(200).send({ status: 200, data: productElectronicsDetails, message: 'Product details has been fetched successfully' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                    }
+                }
             } else {
                 res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
             }
