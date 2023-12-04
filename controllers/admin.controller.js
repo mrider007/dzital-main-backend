@@ -1,5 +1,6 @@
 const Admin = require('../models/admin.model');
 const User = require('../models/user.model');
+const Plan = require('../models/membership_plan.model');
 const adminRepo = require('../repositories/admin.repository');
 const userRepo = require('../repositories/user.repository');
 const bcrypt = require('bcrypt');
@@ -216,6 +217,9 @@ class adminController {
                     const uploadResult = await cloudinary.v2.uploader.upload(req.files[0].path);
                     req.body.image = uploadResult.secure_url;
                 }
+
+                let planDetails = await Plan.findOne({ amount: 0 });
+                req.body.plan_id = planDetails._id;
 
                 let saveUser = await adminRepo.save(req.body);
                 if (!_.isEmpty(saveUser) && saveUser._id) {

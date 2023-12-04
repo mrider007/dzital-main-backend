@@ -181,6 +181,14 @@ class userController {
         }
     };
 
+    async userCount(req, res) {
+        try {
+            
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
 }
 
 module.exports = new userController();
