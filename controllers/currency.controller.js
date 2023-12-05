@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Currency = require('../models/currency.model');
+const currencyRepo = require('../repositories/currency.repository');
 
 class currencyController {
     constructor() { }
@@ -26,9 +27,9 @@ class currencyController {
 
     async list(req, res) {
         try {
-            const currencyList = await Currency.find();
+            const currencyList = await currencyRepo.list(req);
             if (!_.isEmpty(currencyList)) {
-                res.send({ status: 200, data: currencyList, message: 'Currency list has been fetched successfully' });
+                res.send({ status: 200, data: currencyList.docs, total: currencyList.total, limit: currencyList.limit, page: currencyList.page, pages: currencyList.pages, message: 'Currency list has been fetched successfully' });
             }
             else {
                 res.send({ status: 400, data: [], message: 'No records found' });
