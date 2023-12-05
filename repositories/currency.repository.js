@@ -14,9 +14,7 @@ const currencyRepository = {
             if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
                 and_clauses.push({
                     $or: [
-                        { 'currency_name': { $regex: (req.body.keyword_search).trim(), $options: 'i' } },
-                        { 'country': { $regex: (req.body.keyword_search).trim(), $options: 'i' } },
-                        { 'language': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
+                        { 'currency_name': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
                     ]
                 });
 
@@ -30,7 +28,7 @@ const currencyRepository = {
 
             conditions['$and'] = and_clauses;
 
-            let currency = await Currency.aggregate([
+            let currency = Currency.aggregate([
                 { $match: conditions },
                 { $sort: { _id: -1 } }
             ]);
@@ -46,7 +44,6 @@ const currencyRepository = {
             if (req.body.limit !== undefined) {
                 options.limit = req.body.limit;
             }
-
             let allCurrencies = await Currency.aggregatePaginate(currency, options);
             return allCurrencies;
         } catch (e) {
