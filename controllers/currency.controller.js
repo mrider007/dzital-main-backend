@@ -39,6 +39,21 @@ class currencyController {
         }
     };
 
+    async details(req, res) {
+        try {
+            const currency_id = new mongoose.Types.ObjectId(req.params.id);
+            const currencyInfo = await Currency.findOne({ _id: currency_id });
+            if (!_.isEmpty(currencyInfo) && currencyInfo._id) {
+                res.send({ status: 200, data: currencyInfo, message: 'Currency details has been fetched successfully' });
+            }
+            else {
+                res.send({ status: 400, data: {}, message: 'Currency not found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
 }
 
 module.exports = new currencyController();

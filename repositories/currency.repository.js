@@ -49,6 +49,18 @@ const currencyRepository = {
         } catch (e) {
             throw e;
         }
+    },
+
+    updateById: async (data, id) => {
+        try {
+            let currencyUpdate = await Currency.findByIdAndUpdate(id, data, { new: true, upsert: true }).exec();
+            if (!currencyUpdate) {
+                return null;
+            }
+            return currencyUpdate;
+        } catch (e) {
+            throw e;
+        }
     }
 
 }
