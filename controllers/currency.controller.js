@@ -24,6 +24,20 @@ class currencyController {
         }
     };
 
+    async list(req, res) {
+        try {
+            const currencyList = await Currency.find();
+            if (!_.isEmpty(currencyList)) {
+                res.send({ status: 200, data: currencyList, message: 'Currency list has been fetched successfully' });
+            }
+            else {
+                res.send({ status: 400, data: [], message: 'No records found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
 }
 
 module.exports = new currencyController();
