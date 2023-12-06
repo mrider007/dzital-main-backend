@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Country = require('../models/country.model');
+const countryRepo = require('../repositories/country.repository');
 
 class countryController {
     constructor() { }
@@ -32,6 +33,34 @@ class countryController {
                 res.send({ status: 200, data: countryInfo, message: 'Country details has been fetched successfully' });
             } else {
                 res.send({ status: 400, data: {}, message: 'Country not found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
+    async list(req, res) {
+        try {
+            if (!req.body.page) {
+                req.body.page = 1;
+            }
+            else {
+                req.body.page = parseInt(req.body.page);
+            }
+
+            if (!req.body.limit) {
+                req.body.limit = 10;
+            }
+            else {
+                req.body.limit = parseInt(req.body.limit);
+            }
+
+            let countries = await countryRepo.list(req);
+            if (!_.isEmpty(countries)) {
+                res.send({ status: 200, data: countries.docs, total: countries.total, limit: countries.limit, page: countries.page, pages: countries.pages, message: 'Country list has been fetched successfully' });
+            }
+            else {
+                res.send({ status: 400, data: {}, message: 'No country found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
