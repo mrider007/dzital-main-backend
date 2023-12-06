@@ -75,6 +75,27 @@ class currencyController {
         }
     };
 
+    async delete(req, res) {
+        try {
+            const currency_id = new mongoose.Types.ObjectId(req.params.id);
+            let currencyInfo = await Currency.findOne({ _id: currency_id });
+            if (!_.isEmpty(currencyInfo) && currencyInfo._id) {
+                let currencyDelete = await currencyRepo.delete(currency_id);
+                if (!_.isEmpty(currencyDelete) && currencyDelete._id) {
+                    res.send({ status: 200, data: currencyDelete, message: 'Currency has been removed successfully' });
+                }
+                else {
+                    res.send({ status: 400, data: {}, message: 'Sorry, unable to remove currency at this moment' });
+                }
+            }
+            else {
+                res.send({ status: 400, data: {}, message: 'Currency not found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
 }
 
 module.exports = new currencyController();

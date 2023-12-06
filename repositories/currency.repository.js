@@ -61,6 +61,21 @@ const currencyRepository = {
         } catch (e) {
             throw e;
         }
+    },
+
+    delete: async (id) => {
+        try {
+            let currency = await Currency.findById(id);
+            if (currency) {
+                let currencyDelete = await Currency.deleteOne({ _id: id }).exec();
+                if (!currencyDelete) {
+                    return null;
+                }
+                return currency;
+            }
+        } catch (e) {
+            throw e;
+        }
     }
 
 }
