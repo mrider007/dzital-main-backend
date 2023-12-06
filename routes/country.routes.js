@@ -5,6 +5,7 @@ const router = express.Router();
 const multer = require('multer');
 const request_param = multer();
 
+router.get('/country/details/:id', Authentication.AuthenticateAdmin, countryController.details);
 router.post('/country/add', request_param.any(), Authentication.AuthenticateAdmin, countryController.add);
 
 module.exports = router;
