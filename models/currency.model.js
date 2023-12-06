@@ -7,8 +7,7 @@ const CurrencySchema = new Schema({
     code: { type: String, index: true, trim: true },
     exchange_rate: { type: Number, default: 1 },
     is_default: { type: Boolean, default: false, enum: [true, false] },
-    country: { type: String, index: true, trim: true },
-    language: { type: String, index: true, trim: true }
+    country: { type: String, index: true, trim: true }
 }, { versionKey: false });
 
 CurrencySchema.plugin(mongooseAggregatePaginate);
