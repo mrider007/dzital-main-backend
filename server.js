@@ -43,6 +43,7 @@ const master_setting = require('./routes/master_setting.routes');
 const product_wishlist = require('./routes/product_wishlist.routes');
 const property = require('./routes/property.routes');
 const currency = require('./routes/currency.routes');
+const country = require('./routes/country.routes');
 
 global.BASE_URL = `http://${process.env.HOST}:${getPort}`;
 
@@ -68,6 +69,7 @@ app.use('/api', product_wishlist);
 app.use('/api', property);
 app.use('/api', product_electronics);
 app.use('/api', currency);
+app.use('/api', country);
 
 app.use('/uploads', express.static('uploads'))
 
