@@ -51,6 +51,18 @@ const countryRepository = {
         } catch (e) {
             throw e;
         }
+    },
+
+    updateById: async (data, id) => {
+        try {
+            let countryUpdate = await Country.findByIdAndUpdate(id, data, { new: true, upsert: true }).exec();
+            if (!countryUpdate) {
+                return null;
+            }
+            return countryUpdate;
+        } catch (e) {
+            throw e;
+        }
     }
 
 }

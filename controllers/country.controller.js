@@ -72,8 +72,14 @@ class countryController {
             const country_id = new mongoose.Types.ObjectId(req.params.id);
             let countryInfo = await Country.findOne({ _id: country_id });
             if (!_.isEmpty(countryInfo) && countryInfo._id) {
-                res.send({ status: 200, data: countryInfo, message: 'Country has been updated successfully' });
-            }            
+                let countryUpdate = await countryRepo.updateById(req.body, country_id);
+                if (!_.isEmpty(countryUpdate) && countryUpdate._id) {
+                    res.send({ status: 200, data: countryUpdate, message: 'Country has been updated successfully' });
+                }
+                else {
+                    res.send({ status: 400, data: {}, message: 'Country could not be updated' });
+                }
+            }
             else {
                 res.send({ status: 400, data: {}, message: 'Country not found' });
             }
