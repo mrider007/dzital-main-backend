@@ -88,6 +88,21 @@ class countryController {
         }
     };
 
+    async delete(req, res) {
+        try {
+            const country_id = new mongoose.Types.ObjectId(req.params.id);
+            let countryDetails = await Country.findOne({ _id: country_id });
+            if (!_.isEmpty(countryDetails) && countryDetails._id) {
+                res.send({ status: 200, data: countryDetails, message: 'Country has been removed successfully' });
+            }
+            else {
+                res.send({ status: 400, data: {}, message: 'Country not found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
 }
 
 module.exports = new countryController();
