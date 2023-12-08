@@ -22,8 +22,6 @@ const getPort = config.app.getPort;
 connectDB();
 
 const user = require('./routes/user.routes');
-const job_type = require('./routes/job_type.routes');
-const product_jobs = require('./routes/product_job.routes');
 const job_proposal = require('./routes/job_proposal.routes');
 const service = require('./routes/service_master.routes');
 const membership_plan = require('./routes/membership_plan.routes');
@@ -35,20 +33,22 @@ const promocode = require('./routes/promo_code.routes');
 const cms = require('./routes/cms.routes');
 const faq = require('./routes/faq.routes');
 const product = require('./routes/product.routes');
+const product_jobs = require('./routes/product_job.routes');
+const product_job_type = require('./routes/product_job_type.routes');
 const product_electronics = require('./routes/product_electronics.routes');
+const product_real_estate = require('./routes/product_real_estate.routes');
+const product_wishlist = require('./routes/product_wishlist.routes');
 const store_setting = require('./routes/store_setting.routes');
 const email_setting = require('./routes/email_setting.routes');
 const payment_method = require('./routes/payment_method.routes');
 const master_setting = require('./routes/master_setting.routes');
-const product_wishlist = require('./routes/product_wishlist.routes');
-const product_real_estate = require('./routes/product_real_estate.routes');
 const currency = require('./routes/currency.routes');
 const country = require('./routes/country.routes');
 
 global.BASE_URL = `http://${process.env.HOST}:${getPort}`;
 
 app.use('/api', user);
-app.use('/api', job_type);
+app.use('/api', product_job_type);
 app.use('/api', product_jobs);
 app.use('/api', job_proposal);
 app.use('/api', service);
