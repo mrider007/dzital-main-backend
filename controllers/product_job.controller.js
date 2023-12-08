@@ -6,6 +6,7 @@ const jobRepo = require('../repositories/product_job.repository');
 class JobController {
     constructor() { }
 
+    /** Admin Job Post */
     async jobPost(req, res) {
         try {
             if (!_.has(req.body, 'title')) {
@@ -20,7 +21,7 @@ class JobController {
             else {
                 let adminInfo = await Admin.findOne({ _id: req.user._id });
                 if (!_.isEmpty(adminInfo)) {
-                    req.body.client_id = adminInfo._id;
+                    req.body.admin_id = adminInfo._id;
                     let jobSave = await Job.create(req.body);
                     if (!_.isEmpty(jobSave) && jobSave._id) {
                         res.status(200).send({ status: 200, data: jobSave, message: 'Job Post saved successfully' });

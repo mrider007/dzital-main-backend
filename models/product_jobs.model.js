@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 const mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
 
 const JobSchema = new mongoose.Schema({
-    client_id: { type: Schema.Types.ObjectId, ref: 'User', index: true },
+    admin_id: { type: Schema.Types.ObjectId, ref: 'Admin', index: true },
+    user_id: { type: Schema.Types.ObjectId, ref: 'User', index: true },
     job_type: { type: Schema.Types.ObjectId, ref: 'Job_Type', index: true },
     title: { type: String, index: true, trim: true },
     description: { type: String, index: true, trim: true },
@@ -12,7 +13,6 @@ const JobSchema = new mongoose.Schema({
     location: { type: String, index: true },
     role: { type: String, trim: true },
     role_category: { type: String, trim: true },
-    joining: { type: String },
     employment_type: { type: String, trim: true },
     industry_type: { type: String, trim: true },
     department: { type: String, index: true },

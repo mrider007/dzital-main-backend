@@ -21,7 +21,7 @@ const JobRepository = {
                 {
                     $lookup: {
                         from: 'users',
-                        localField: 'client_id',
+                        localField: 'user_id',
                         foreignField: '_id',
                         as: 'user_details'
                     }
@@ -46,9 +46,10 @@ const JobRepository = {
                         skills: { $first: '$skills' },
                         status: { $first: '$status' },
                         createdAt: { $first: '$createdAt' },
-                        client_id: { $first: '$client_id' },
+                        user_id: { $first: '$user_id' },
+                        admin_id: { $first: '$admin_id' },
                         job_type: { $first: '$job_type' },
-                        posted_by: { $first: '$user_details.name' }
+                        user_name: { $first: '$user_details.name' }
                     }
                 }
             ]);
@@ -107,7 +108,7 @@ const JobRepository = {
                 { $match: conditions },
                 {
                     $lookup: {
-                        from: 'job_types',
+                        from: 'product_job_types',
                         localField: 'job_type',
                         foreignField: '_id',
                         as: 'job_type_details'
@@ -117,7 +118,7 @@ const JobRepository = {
                 {
                     $lookup: {
                         from: 'users',
-                        localField: 'client_id',
+                        localField: 'user_id',
                         foreignField: '_id',
                         as: 'user_details'
                     }
@@ -126,7 +127,7 @@ const JobRepository = {
                 {
                     $group: {
                         _id: '$_id',
-                        client_id: { $first: "$client_id" },
+                        user_id: { $first: "$user_id" },
                         title: { $first: "$title" },
                         description: { $first: "$description" },
                         skills: { $first: '$skills' },
