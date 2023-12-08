@@ -41,7 +41,7 @@ const email_setting = require('./routes/email_setting.routes');
 const payment_method = require('./routes/payment_method.routes');
 const master_setting = require('./routes/master_setting.routes');
 const product_wishlist = require('./routes/product_wishlist.routes');
-const property = require('./routes/property.routes');
+const product_real_estate = require('./routes/product_real_estate.routes');
 const currency = require('./routes/currency.routes');
 const country = require('./routes/country.routes');
 
@@ -66,7 +66,7 @@ app.use('/api', email_setting);
 app.use('/api', payment_method);
 app.use('/api', master_setting);
 app.use('/api', product_wishlist);
-app.use('/api', property);
+app.use('/api', product_real_estate);
 app.use('/api', product_electronics);
 app.use('/api', currency);
 app.use('/api', country);
