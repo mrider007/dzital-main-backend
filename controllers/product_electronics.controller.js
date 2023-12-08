@@ -1,10 +1,10 @@
-const ProductDetails = require('../models/product_electronics.model');
+const ProductElectronics = require('../models/product_electronics.model');
 
-class ProductDetailsController {
+class ProductElectronicsController {
     constructor() { }
 
 
 
 }
 
-module.exports = new ProductDetailsController();
+module.exports = new ProductElectronicsController();
