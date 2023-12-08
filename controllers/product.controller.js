@@ -1,6 +1,6 @@
 const Product = require('../models/product.model');
 const ProductElectronics = require('../models/product_electronics.model');
-const Property = require('../models/property.model');
+const Property = require('../models/product_real_estate.model');
 const Category = require('../models/service_master.model');
 const mongoose = require('mongoose');
 const productRepo = require('../repositories/product.repository');
