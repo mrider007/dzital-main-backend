@@ -9,4 +9,4 @@ const JobProposalSchema = new Schema({
     status: { type: String, default: 'Pending', enum: ['Pending', 'Accepted', 'Rejected'] }
 }, { timestamps: true, versionKey: false });
 
-module.exports = mongoose.model('job_proposal', JobProposalSchema);
+module.exports = mongoose.model('Product_Job_Proposal', JobProposalSchema);
