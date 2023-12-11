@@ -47,6 +47,7 @@ const payment_method = require('./routes/payment_method.routes');
 const master_setting = require('./routes/master_setting.routes');
 const currency = require('./routes/currency.routes');
 const country = require('./routes/country.routes');
+const admin_action = require('./routes/admin_action.routes');
 
 global.BASE_URL = `http://${process.env.HOST}:${getPort}`;
 
@@ -76,6 +77,7 @@ app.use('/api', product_goods);
 app.use('/api', product_education);
 app.use('/api', currency);
 app.use('/api', country);
+app.use('/api', admin_action);
 
 app.use('/uploads', express.static('uploads'))
 
