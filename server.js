@@ -40,6 +40,7 @@ const product_real_estate = require('./routes/product_real_estate.routes');
 const product_wishlist = require('./routes/product_wishlist.routes');
 const product_fashion = require('./routes/product_fashion.routes');
 const product_goods = require('./routes/product_goods.routes');
+const product_education = require('./routes/product_education.routes');
 const store_setting = require('./routes/store_setting.routes');
 const email_setting = require('./routes/email_setting.routes');
 const payment_method = require('./routes/payment_method.routes');
@@ -72,6 +73,7 @@ app.use('/api', product_real_estate);
 app.use('/api', product_electronics);
 app.use('/api', product_fashion);
 app.use('/api', product_goods);
+app.use('/api', product_education);
 app.use('/api', currency);
 app.use('/api', country);
 
