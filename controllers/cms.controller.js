@@ -148,6 +148,7 @@ class cmsController {
         }
     };
 
+    /** User CMS List */
     async getAllCms(req, res) {
         try {
             let cmsList = await cmsRepo.getCMS(req);

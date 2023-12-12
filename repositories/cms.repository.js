@@ -34,7 +34,7 @@ const cmsRepository = {
             var conditions = {};
             var and_clauses = [];
 
-            and_clauses.push({});
+            and_clauses.push({ status: 'Active' });
 
             if (_.isObject(req.body) && _.has(req.body, 'slug')) {
                 and_clauses.push({ "slug": req.body.slug });
