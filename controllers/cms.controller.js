@@ -106,7 +106,6 @@ class cmsController {
             const cmsId = new mongoose.Types.ObjectId(req.params.id);
             let cmsInfo = await CMS.findById(cmsId);
             if (!_.isEmpty(cmsInfo) && cmsInfo._id) {
-                //let cmsStatus = (cmsInfo.status == 'Active') ? 'Inactive' : 'Active';
                 let updateData = await cmsRepo.updateById(req.body, cmsId);
                 if (!_.isEmpty(updateData) && updateData._id) {
                     res.status(200).send({ status: 200, data: updateData, message: 'CMS status has been updated successfully' });
