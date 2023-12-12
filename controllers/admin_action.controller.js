@@ -22,7 +22,20 @@ class adminActionController {
 
     async list(req, res) {
         try {
-            const actions = await Action.find();
+            if (!req.body.page) {
+                req.body.page = 1;
+            }
+            else {
+                req.body.page = parseInt(req.body.page);
+            }
+
+            if (!req.body.limit) {
+                req.body.limit = 10;
+            }
+            else {
+                req.body.limit = parseInt(req.body.limit);
+            }
+            const actions = await adminActionRepo.list(req);
             if (!_.isEmpty(actions)) {
                 res.send({ status: 200, data: actions, message: 'All Admin Action for permission' });
             }
