@@ -1,4 +1,6 @@
+const mongoose = require('mongoose');
 const Action = require('../models/admin_action.model');
+const adminActionRepo = require('../repositories/admin_action.repository');
 
 class adminActionController {
     constructor() { }
@@ -31,6 +33,28 @@ class adminActionController {
             res.send({ status: 500, message: e.message });
         }
     };
+
+    async edit(req, res) {
+        try {
+            const action_id = new mongoose.Types.ObjectId(req.params.id);
+            let actionDetails = await Action.findOne({ _id: action_id });
+            if (!_.isEmpty(actionDetails) && actionDetails._id) {
+                let actionUpdate = await adminActionRepo.updateById(req.body, action_id);
+                if (!_.isEmpty(actionUpdate) && actionUpdate._id) {
+                    res.send({ status: 200, data: actionUpdate, message: 'Action has been updated successfully' });
+                }
+                else {
+                    res.send({ status: 400, data: {}, message: "Action could not be updated" });
+                }
+            }
+            else {
+                res.send({ status: 400, data: {}, message: 'Action not found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
 }
 
 module.exports = new adminActionController();
