@@ -84,6 +84,8 @@ const cmsRepository = {
                 }
             }
 
+            console.log('and', and_clauses);
+
             conditions['$and'] = and_clauses;
 
             let cmslist = CMS.aggregate([

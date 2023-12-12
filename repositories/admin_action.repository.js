@@ -32,7 +32,6 @@ const actionRepository = {
                 { $match: conditions },
                 { $sort: { _id: -1 } }
             ]);
-
             if (!admin_actions) {
                 return null;
             }
@@ -45,7 +44,6 @@ const actionRepository = {
             if (req.body.limit !== undefined) {
                 options.limit = req.body.limit;
             }
-
             let allActions = await Action.aggregatePaginate(admin_actions, options);
             return allActions;
         } catch (e) {

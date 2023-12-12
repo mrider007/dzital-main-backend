@@ -24,23 +24,21 @@ class adminActionController {
         try {
             if (!req.body.page) {
                 req.body.page = 1;
-            }
-            else {
+            } else {
                 req.body.page = parseInt(req.body.page);
             }
 
             if (!req.body.limit) {
                 req.body.limit = 10;
-            }
-            else {
+            } else {
                 req.body.limit = parseInt(req.body.limit);
             }
-            const actions = await adminActionRepo.list(req);
-            if (!_.isEmpty(actions)) {
-                res.send({ status: 200, data: actions, message: 'All Admin Action for permission' });
-            }
-            else {
-                res.send({ status: 400, data: {}, message: 'No Action found' });
+
+            let actionsList = await adminActionRepo.list(req);
+            if (!_.isEmpty(actionsList)) {
+                res.status(200).send({ status: 200, data: actionsList.docs, total: actionsList.total, limit: actionsList.limit, page: actionsList.page, pages: actionsList.pages, message: 'Action list fetched successfully' });
+            } else {
+                res.status(400).send({ status: 400, data: [], message: 'Action not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
