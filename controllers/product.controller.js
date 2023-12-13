@@ -1,6 +1,7 @@
 const Product = require('../models/product.model');
 const ProductElectronics = require('../models/product_electronics.model');
 const Property = require('../models/product_real_estate.model');
+const Job = require('../models/product_jobs.model');
 const Category = require('../models/service_master.model');
 const mongoose = require('mongoose');
 const productRepo = require('../repositories/product.repository');
@@ -9,46 +10,71 @@ const cloudinary = require('cloudinary');
 class productController {
     constructor() { }
 
+    // async productAdd(req, res) {
+    //     try {
+    //         if (req.files && req.files.length > 0) {
+
+    //             var photo, image_1, image_2, image_3;
+
+    //             for (let i = 0; i < req.files.length; i++) {
+    //                 const element = req.files[i];
+    //                 if (element.fieldname === 'photo') {
+    //                     photo = element.path;
+    //                     const uploadResultLogo = await cloudinary.v2.uploader.upload(photo);
+    //                     req.body.photo = uploadResultLogo.secure_url;
+    //                 }
+    //                 if (element.fieldname === 'image_1') {
+    //                     image_1 = element.path;
+    //                     const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_1);
+    //                     req.body.image_1 = uploadResultFaviconLogo.secure_url;
+    //                 }
+    //                 if (element.fieldname === 'image_2') {
+    //                     image_2 = element.path;
+    //                     const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_2);
+    //                     req.body.image_2 = uploadResultFaviconLogo.secure_url;
+    //                 }
+    //                 if (element.fieldname === 'image_3') {
+    //                     image_3 = element.path;
+    //                     const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_3);
+    //                     req.body.image_3 = uploadResultFaviconLogo.secure_url;
+    //                 }
+    //             }
+    //         }
+    //         req.body.userId = req.user._id;
+    //         let productSave = await Product.create(req.body);
+    //         if (!_.isEmpty(productSave) && productSave._id) {
+    //             req.body.product_id = productSave._id;
+    //             let saveData = await ProductDetails.create(req.body);
+    //             if (!_.isEmpty(saveData) && saveData._id) {
+    //                 res.status(200).send({ status: 200, data: saveData, message: 'Product saved successfully' });
+    //             } else {
+    //                 res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
+    //             }
+    //         }
+    //     } catch (e) {
+    //         res.send({ status: 500, message: e.message });
+    //     }
+    // };
+
+    /** Admin Product Add */
     async productAdd(req, res) {
         try {
-            if (req.files && req.files.length > 0) {
-
-                var photo, image_1, image_2, image_3;
-
-                for (let i = 0; i < req.files.length; i++) {
-                    const element = req.files[i];
-                    if (element.fieldname === 'photo') {
-                        photo = element.path;
-                        const uploadResultLogo = await cloudinary.v2.uploader.upload(photo);
-                        req.body.photo = uploadResultLogo.secure_url;
+            let productSave = await Product.create(req.body);
+            if (!_.isEmpty(productSave) && productSave._id) {
+                let categoryInfo = await Category.findOne({ _id: productSave.category_id });
+                if (categoryInfo.title === 'Jobs') {
+                    req.body.product_id = productSave._id;
+                    let jobData = await Job.create(req.body);
+                    if (!_.isEmpty(jobData) && jobData._id) {
+                        res.status(200).send({ status: 200, data: jobData, message: 'Product saved successfully' });
                     }
-                    if (element.fieldname === 'image_1') {
-                        image_1 = element.path;
-                        const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_1);
-                        req.body.image_1 = uploadResultFaviconLogo.secure_url;
-                    }
-                    if (element.fieldname === 'image_2') {
-                        image_2 = element.path;
-                        const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_2);
-                        req.body.image_2 = uploadResultFaviconLogo.secure_url;
-                    }
-                    if (element.fieldname === 'image_3') {
-                        image_3 = element.path;
-                        const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_3);
-                        req.body.image_3 = uploadResultFaviconLogo.secure_url;
+                    else {
+                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
                     }
                 }
             }
-            req.body.userId = req.user._id;
-            let productSave = await Product.create(req.body);
-            if (!_.isEmpty(productSave) && productSave._id) {
-                req.body.product_id = productSave._id;
-                let saveData = await ProductDetails.create(req.body);
-                if (!_.isEmpty(saveData) && saveData._id) {
-                    res.status(200).send({ status: 200, data: saveData, message: 'Product saved successfully' });
-                } else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
-                }
+            else {
+                res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });

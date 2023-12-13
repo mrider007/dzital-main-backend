@@ -3,9 +3,6 @@ const Schema = mongoose.Schema;
 const mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
 
 const JobSchema = new mongoose.Schema({
-    admin_id: { type: Schema.Types.ObjectId, ref: 'Admin', index: true },
-    user_id: { type: Schema.Types.ObjectId, ref: 'User', index: true },
-    job_type: { type: Schema.Types.ObjectId, ref: 'Job_Type', index: true },
     title: { type: String, index: true, trim: true },
     description: { type: String, index: true, trim: true },
     experience: { type: String, index: true, trim: true },
@@ -16,7 +13,10 @@ const JobSchema = new mongoose.Schema({
     employment_type: { type: String, trim: true },
     industry_type: { type: String, trim: true },
     department: { type: String, index: true },
-    budget: { type: Number, trim: true },
+    user_id: { type: Schema.Types.ObjectId, ref: 'User', index: true },
+    job_type: { type: Schema.Types.ObjectId, ref: 'Job_Type', index: true },
+    product_id: { type: Schema.Types.ObjectId, ref: 'Product', index: true },
+    category_id: { type: Schema.Types.ObjectId, ref: 'service_category', index: true },
     date: { type: Date, index: true },
     status: { type: String, default: 'Open', enum: ['Open', 'Ongoing', 'Completed'] }
 }, { timestamps: true, versionKey: false });
