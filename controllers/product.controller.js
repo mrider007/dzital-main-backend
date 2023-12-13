@@ -1,5 +1,6 @@
 const Product = require('../models/product.model');
 const ProductElectronics = require('../models/product_electronics.model');
+const Goods = require('../models/product_goods.model');
 const Property = require('../models/product_real_estate.model');
 const Job = require('../models/product_jobs.model');
 const Category = require('../models/service_master.model');
@@ -113,13 +114,52 @@ class productController {
                         }
                     }
                     req.body.product_id = productSave._id;
-                    let productElectronicsSave = await ProductElectronics.create(req.body);
-                    if (!_.isEmpty(productElectronicsSave) && productElectronicsSave._id) {
-                        res.status(200).send({ status: 200, data: propertyData, message: 'Product saved successfully' });
+                    let ElectronicsData = await ProductElectronics.create(req.body);
+                    if (!_.isEmpty(ElectronicsData) && ElectronicsData._id) {
+                        res.status(200).send({ status: 200, data: ElectronicsData, message: 'Product saved successfully' });
                     }
                     else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
                     }
+                }
+                else if (categoryInfo.title === 'Goods of all kinds') {
+
+                    if (req.files && req.files.length > 0) {
+
+                        var photo, image_1, image_2, image_3;
+        
+                        for (let i = 0; i < req.files.length; i++) {
+                            const element = req.files[i];
+                            if (element.fieldname === 'photo') {
+                                photo = element.path;
+                                const uploadResultLogo = await cloudinary.v2.uploader.upload(photo);
+                                req.body.photo = uploadResultLogo.secure_url;
+                            }
+                            if (element.fieldname === 'image_1') {
+                                image_1 = element.path;
+                                const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_1);
+                                req.body.image_1 = uploadResultFaviconLogo.secure_url;
+                            }
+                            if (element.fieldname === 'image_2') {
+                                image_2 = element.path;
+                                const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_2);
+                                req.body.image_2 = uploadResultFaviconLogo.secure_url;
+                            }
+                            if (element.fieldname === 'image_3') {
+                                image_3 = element.path;
+                                const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_3);
+                                req.body.image_3 = uploadResultFaviconLogo.secure_url;
+                            }
+                        }
+                    }
+                    req.body.product_id = productSave._id;
+                    let GoodsSave = await Goods.create(req.body);
+                    if (!_.isEmpty(GoodsSave) && GoodsSave._id) {
+                        res.status(200).send({ status: 200, data: GoodsSave, message: 'Product saved successfully' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
+                    }                    
                 }
             }
             else {
