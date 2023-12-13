@@ -26,6 +26,21 @@ class adminModuleController {
         }
     };
 
+    async details(req, res) {
+        try {
+            const module_id = new mongoose.Types.ObjectId(req.params.id);
+            let moduleInfo = await Module.findById(module_id);
+            if (!_.isEmpty(moduleInfo) && moduleInfo._id) {
+                res.send({ status: 200, data: moduleInfo, message: 'Module details has been fetched successfully' });
+            }
+            else {
+                res.send({ status: 400, data: {}, message: 'Module not found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
     async edit(req, res) {
         try {
             const module_id = new mongoose.Types.ObjectId(req.params.id);
@@ -37,7 +52,7 @@ class adminModuleController {
                 }
                 else {
                     res.send({ status: 400, data: {}, message: 'Module could not be updated' });
-                }                
+                }
             }
             else {
                 res.send({ status: 400, data: {}, message: 'Module could not be found' });
