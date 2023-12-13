@@ -6,5 +6,6 @@ const multer = require('multer');
 const request_param = multer();
 
 router.post('/admin/module/add', request_param.any(), Authentication.AuthenticateAdmin, adminModuleController.add);
+router.post('/admin/module/update/:id', request_param.any(), Authentication.AuthenticateAdmin, adminModuleController.edit);
 
 module.exports = router;
