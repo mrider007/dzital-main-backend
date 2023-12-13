@@ -77,10 +77,10 @@ class adminModuleController {
             else {
                 req.body.limit = parseInt(req.body.limit);
             }
-            let modules = await ModuleRepo.list(req);  
+            let modules = await ModuleRepo.list(req);
             if (!_.isEmpty(modules)) {
-                res.status(200).send({ status: 200, data: modules.docs, total: modules.total, limit: modules.limit, page: modules.page, pages: modules.pages, message: 'Module list fetched successfully' });                
-            }          
+                res.status(200).send({ status: 200, data: modules.docs, total: modules.total, limit: modules.limit, page: modules.page, pages: modules.pages, message: 'Module list fetched successfully' });
+            }
             else {
                 res.status(201).send({ status: 201, data: [], message: 'Module not found' });
             }

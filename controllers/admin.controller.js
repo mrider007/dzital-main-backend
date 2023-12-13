@@ -107,7 +107,7 @@ class adminController {
                 res.status(200).send({ status: 200, data: admins.docs, total: admins.total, limit: admins.limit, page: admins.page, pages: admins.pages, message: 'Admins list fetched successfully' });
             } else {
                 res.status(201).send({ status: 201, message: 'No user found' });
-            }            
+            }
         } catch (e) {
             res.send({ status: 500, message: e.message });
         }
@@ -300,8 +300,8 @@ class adminController {
 
     async userCount(req, res) {
         try {
-            
-            let totalFreePlanUsers = await userRepo.getUserCountByParams({  });            
+
+            let totalFreePlanUsers = await userRepo.getUserCountByParams({});
         } catch (e) {
             res.send({ status: 500, message: e.message });
         }
