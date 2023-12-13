@@ -72,6 +72,55 @@ class productController {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
                     }
                 }
+                else if (categoryInfo.title === 'Real Estate') {
+                    req.body.product_id = productSave._id;
+                    let propertyData = await Property.create(req.body);
+                    if (!_.isEmpty(propertyData) && propertyData._id) {
+                        res.status(200).send({ status: 200, data: propertyData, message: 'Product saved successfully' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
+                    }
+                }
+                else if (categoryInfo.title === 'Electronics') {
+
+                    if (req.files && req.files.length > 0) {
+
+                        var photo, image_1, image_2, image_3;
+        
+                        for (let i = 0; i < req.files.length; i++) {
+                            const element = req.files[i];
+                            if (element.fieldname === 'photo') {
+                                photo = element.path;
+                                const uploadResultLogo = await cloudinary.v2.uploader.upload(photo);
+                                req.body.photo = uploadResultLogo.secure_url;
+                            }
+                            if (element.fieldname === 'image_1') {
+                                image_1 = element.path;
+                                const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_1);
+                                req.body.image_1 = uploadResultFaviconLogo.secure_url;
+                            }
+                            if (element.fieldname === 'image_2') {
+                                image_2 = element.path;
+                                const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_2);
+                                req.body.image_2 = uploadResultFaviconLogo.secure_url;
+                            }
+                            if (element.fieldname === 'image_3') {
+                                image_3 = element.path;
+                                const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_3);
+                                req.body.image_3 = uploadResultFaviconLogo.secure_url;
+                            }
+                        }
+                    }
+                    req.body.product_id = productSave._id;
+                    let productElectronicsSave = await ProductElectronics.create(req.body);
+                    if (!_.isEmpty(productElectronicsSave) && productElectronicsSave._id) {
+                        res.status(200).send({ status: 200, data: propertyData, message: 'Product saved successfully' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
+                    }
+                }
             }
             else {
                 res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
