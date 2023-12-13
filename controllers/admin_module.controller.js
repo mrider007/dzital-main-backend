@@ -62,6 +62,33 @@ class adminModuleController {
         }
     };
 
+    async list(req, res) {
+        try {
+            if (!req.body.page) {
+                req.body.page = 1;
+            }
+            else {
+                req.body.page = parseInt(req.body.page);
+            }
+
+            if (!req.body.limit) {
+                req.body.limit = 10;
+            }
+            else {
+                req.body.limit = parseInt(req.body.limit);
+            }
+            let modules = await ModuleRepo.list(req);  
+            if (!_.isEmpty(modules)) {
+                res.status(200).send({ status: 200, data: modules.docs, total: modules.total, limit: modules.limit, page: modules.page, pages: modules.pages, message: 'Module list fetched successfully' });                
+            }          
+            else {
+                res.status(201).send({ status: 201, data: [], message: 'Module not found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
 }
 
 module.exports = new adminModuleController();

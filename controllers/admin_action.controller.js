@@ -38,7 +38,7 @@ class adminActionController {
             if (!_.isEmpty(actionsList)) {
                 res.status(200).send({ status: 200, data: actionsList.docs, total: actionsList.total, limit: actionsList.limit, page: actionsList.page, pages: actionsList.pages, message: 'Action list fetched successfully' });
             } else {
-                res.status(400).send({ status: 400, data: [], message: 'Action not found' });
+                res.status(201).send({ status: 201, data: [], message: 'Action not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
