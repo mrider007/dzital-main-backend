@@ -89,7 +89,7 @@ class productController {
                     if (req.files && req.files.length > 0) {
 
                         var photo, image_1, image_2, image_3;
-        
+
                         for (let i = 0; i < req.files.length; i++) {
                             const element = req.files[i];
                             if (element.fieldname === 'photo') {
@@ -128,7 +128,7 @@ class productController {
                     if (req.files && req.files.length > 0) {
 
                         var photo, image_1, image_2, image_3;
-        
+
                         for (let i = 0; i < req.files.length; i++) {
                             const element = req.files[i];
                             if (element.fieldname === 'photo') {
@@ -160,14 +160,14 @@ class productController {
                     }
                     else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
-                    }                    
+                    }
                 }
                 else if (categoryInfo.title === 'Fashion & Beauty') {
 
                     if (req.files && req.files.length > 0) {
 
                         var photo, image_1, image_2, image_3;
-        
+
                         for (let i = 0; i < req.files.length; i++) {
                             const element = req.files[i];
                             if (element.fieldname === 'photo') {
@@ -199,7 +199,7 @@ class productController {
                     }
                     else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
-                    }                    
+                    }
                 }
             }
             else {
@@ -351,13 +351,9 @@ class productController {
         try {
             const product_id = new mongoose.Types.ObjectId(req.params.id);
             const productInfo = await Product.findOne({ _id: req.params.id });
-            console.log('product', productInfo)
             if (!_.isEmpty(productInfo) && productInfo._id) {
                 let productRemove = await productRepo.delete(product_id);
-                console.log('productRemove', productRemove);
                 if (!_.isEmpty(productRemove) && productRemove._id) {
-                    // let productId = productRemove.product_id;
-                    // let deleteData = await productRepo.deleteProduct(productId);
                     res.status(200).send({ status: 200, data: productRemove, message: 'Product has been removed successfully' });
                 } else {
                     res.status(400).send({ status: 400, data: {}, message: 'Sorry, unable to update product at this moment' });
