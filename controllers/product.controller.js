@@ -12,52 +12,6 @@ const cloudinary = require('cloudinary');
 class productController {
     constructor() { }
 
-    // async productAdd(req, res) {
-    //     try {
-    //         if (req.files && req.files.length > 0) {
-
-    //             var photo, image_1, image_2, image_3;
-
-    //             for (let i = 0; i < req.files.length; i++) {
-    //                 const element = req.files[i];
-    //                 if (element.fieldname === 'photo') {
-    //                     photo = element.path;
-    //                     const uploadResultLogo = await cloudinary.v2.uploader.upload(photo);
-    //                     req.body.photo = uploadResultLogo.secure_url;
-    //                 }
-    //                 if (element.fieldname === 'image_1') {
-    //                     image_1 = element.path;
-    //                     const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_1);
-    //                     req.body.image_1 = uploadResultFaviconLogo.secure_url;
-    //                 }
-    //                 if (element.fieldname === 'image_2') {
-    //                     image_2 = element.path;
-    //                     const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_2);
-    //                     req.body.image_2 = uploadResultFaviconLogo.secure_url;
-    //                 }
-    //                 if (element.fieldname === 'image_3') {
-    //                     image_3 = element.path;
-    //                     const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_3);
-    //                     req.body.image_3 = uploadResultFaviconLogo.secure_url;
-    //                 }
-    //             }
-    //         }
-    //         req.body.userId = req.user._id;
-    //         let productSave = await Product.create(req.body);
-    //         if (!_.isEmpty(productSave) && productSave._id) {
-    //             req.body.product_id = productSave._id;
-    //             let saveData = await ProductDetails.create(req.body);
-    //             if (!_.isEmpty(saveData) && saveData._id) {
-    //                 res.status(200).send({ status: 200, data: saveData, message: 'Product saved successfully' });
-    //             } else {
-    //                 res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
-    //             }
-    //         }
-    //     } catch (e) {
-    //         res.send({ status: 500, message: e.message });
-    //     }
-    // };
-
     /** Admin Product Add */
     async productAdd(req, res) {
         try {
@@ -251,9 +205,27 @@ class productController {
                     }
                 }
                 else if (categoryInfo.title === 'Electronics') {
-                    let productElectronicsDetails = await ProductElectronics.findOne({ product_id: productInfo._id });
-                    if (!_.isEmpty(productElectronicsDetails) && productElectronicsDetails._id) {
-                        res.status(200).send({ status: 200, data: productElectronicsDetails, message: 'Product details has been fetched successfully' });
+                    let electronicsDetails = await ProductElectronics.findOne({ product_id: productInfo._id });
+                    if (!_.isEmpty(electronicsDetails) && electronicsDetails._id) {
+                        res.status(200).send({ status: 200, data: electronicsDetails, message: 'Product details has been fetched successfully' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                    }
+                }
+                else if (categoryInfo.title === 'Jobs') {
+                    let jobDetails = await Job.findOne({ product_id: productInfo._id });
+                    if (!_.isEmpty(jobDetails) && jobDetails._id) {
+                        res.status(200).send({ status: 200, data: jobDetails, message: 'Product details has been fetched successfully' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                    }
+                }
+                else if (categoryInfo.title === 'Fashion & Beauty') {
+                    let fashionDetails = await Fashion.findOne({ product_id: productInfo._id });
+                    if (!_.isEmpty(fashionDetails) && fashionDetails._id) {
+                        res.status(200).send({ status: 200, data: fashionDetails, message: 'Product details has been fetched successfully' });
                     }
                     else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
