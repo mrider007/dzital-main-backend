@@ -82,7 +82,7 @@ class adminModuleController {
                 res.status(200).send({ status: 200, data: modules.docs, total: modules.total, limit: modules.limit, page: modules.page, pages: modules.pages, message: 'Module list fetched successfully' });
             }
             else {
-                res.status(201).send({ status: 201, data: [], message: 'Module not found' });
+                res.status(201).send({ status: 201, data: [], message: 'No Module found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
