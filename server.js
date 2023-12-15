@@ -48,6 +48,7 @@ const currency = require('./routes/currency.routes');
 const country = require('./routes/country.routes');
 const admin_action = require('./routes/admin_action.routes');
 const admin_module = require('./routes/admin_module.routes');
+const admin_permission = require('./routes/admin_permission.routes');
 
 global.BASE_URL = `http://${process.env.HOST}:${getPort}`;
 
@@ -78,6 +79,7 @@ app.use('/api', currency);
 app.use('/api', country);
 app.use('/api', admin_action);
 app.use('/api', admin_module);
+app.use('/api', admin_permission);
 
 app.use('/uploads', express.static('uploads'))
 
