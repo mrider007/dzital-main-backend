@@ -29,7 +29,37 @@ const permissionRepository = {
             conditions['$and'] = and_clauses;
 
             let permissions = Permission.aggregate([
-                { $match: conditions }
+                {
+                    $lookup: {
+                        from: 'admin_modules',
+                        localField: 'module_id',
+                        foreignField: '_id',
+                        as: 'module_details'
+                    }
+                },
+                { $unwind: { path: '$module_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $lookup: {
+                        from: 'admin_actions',
+                        localField: 'action_id',
+                        foreignField: '_id',
+                        as: 'action_details'
+                    }
+                },
+                { $unwind: { path: '$action_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: '$_id',
+                        name: { $first: '$name' },
+                        slug: { $first: '$slug' },
+                        module_id: { $first: '$module_id' },
+                        action_id: { $first: '$action_id' },
+                        module_name: { $first: '$module_details.name' },
+                        action_name: { $first: '$action_details.name' },
+                        createdAt: { $first: '$createdAt' }
+                    }
+                },
+                { $match: conditions },
             ]);
             if (!permissions) {
                 return null;
