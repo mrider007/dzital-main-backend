@@ -59,6 +59,7 @@ const permissionRepository = {
                         createdAt: { $first: '$createdAt' }
                     }
                 },
+                { $sort: { _id: -1 } },
                 { $match: conditions },
             ]);
             if (!permissions) {
