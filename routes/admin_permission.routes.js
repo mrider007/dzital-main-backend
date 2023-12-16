@@ -8,5 +8,6 @@ const router = express.Router();
 router.get('/admin-permission/details/:id', Authentication.AuthenticateAdmin, permissionController.details);
 router.post('/admin-permission/add', request_param.any(), Authentication.AuthenticateAdmin, permissionController.add);
 router.post('/admin-permission/list', request_param.any(), Authentication.AuthenticateAdmin, permissionController.list);
+router.post('/admin-permission/update/:id', request_param.any(), Authentication.AuthenticateAdmin, permissionController.update);
 
 module.exports = router;

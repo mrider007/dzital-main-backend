@@ -68,6 +68,22 @@ class permissionController {
             res.send({ status: 500, message: e.message });
         }
     };
+
+    async update(req, res) {
+        try {
+            const permission_id = new mongoose.Types.ObjectId(req.params.id);
+            let permissionInfo = await Permission.findOne({ _id: permission_id });
+            if (!_.isEmpty(permissionInfo) && permissionInfo._id) {
+                let permissionUpdate = await permissionRepo.updateById(req.body, permission_id);
+                res.status(200).send({ status: 200, data: permissionUpdate, message: 'Permission has been updated successfully' });
+            }
+            else {
+                res.status(400).send({ status: 400, data: {}, message: 'Permission not found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
 }
 
 module.exports = new permissionController();

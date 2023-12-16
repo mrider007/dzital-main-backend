@@ -79,6 +79,18 @@ const permissionRepository = {
         } catch (e) {
             throw e;
         }
+    },
+
+    updateById: async (data, id) => {
+        try {
+            let permissionUpdate = await Permission.findByIdAndUpdate(id, data, { new: true, upsert: true }).exec();
+            if (!permissionUpdate) {
+                return null;
+            }
+            return permissionUpdate;                        
+        } catch (e) {
+            throw e;
+        }
     }
 
 }
