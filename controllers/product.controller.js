@@ -8,6 +8,7 @@ const Category = require('../models/service_master.model');
 const mongoose = require('mongoose');
 const productRepo = require('../repositories/product.repository');
 const electronicsRepo = require('../repositories/product_electronics.repository');
+const jobRepo = require('../repositories/product_job.repository');
 const cloudinary = require('cloudinary');
 
 class productController {
@@ -314,6 +315,16 @@ class productController {
                     if (!_.isEmpty(electronicsUpdate) && electronicsUpdate._id) {
                         let productUpdate = await productRepo.updateProductById({ image: electronicsUpdate.photo }, req.params.id);
                         res.status(200).send({ status: 200, data: electronicsUpdate, message: 'Product has been updated successfully' });
+                    } else {
+                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
+                    }
+                }
+                else if (categoryInfo.title === 'Jobs') {
+                    let jobDetails = await Job.findOne({ product_id: productInfo._id });  
+                    let jobUpdate = await jobRepo.updateById(req.body, jobDetails._id);
+                    if (!_.isEmpty(jobUpdate) && jobUpdate._id) {
+                        //let productUpdate = await productRepo.updateProductById({ image: electronicsUpdate.photo }, req.params.id);
+                        res.status(200).send({ status: 200, data: jobUpdate, message: 'Product has been updated successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
                     }
