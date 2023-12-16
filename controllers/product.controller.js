@@ -8,6 +8,7 @@ const Category = require('../models/service_master.model');
 const mongoose = require('mongoose');
 const productRepo = require('../repositories/product.repository');
 const electronicsRepo = require('../repositories/product_electronics.repository');
+const propertyRepo = require('../repositories/product_real_estate.repository');
 const jobRepo = require('../repositories/product_job.repository');
 const goodsRepo = require('../repositories/product_goods.repository');
 const cloudinary = require('cloudinary');
@@ -316,6 +317,52 @@ class productController {
                     if (!_.isEmpty(electronicsUpdate) && electronicsUpdate._id) {
                         let productUpdate = await productRepo.updateProductById({ image: electronicsUpdate.photo }, req.params.id);
                         res.status(200).send({ status: 200, data: electronicsUpdate, message: 'Product has been updated successfully' });
+                    } else {
+                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
+                    }
+                }
+                else if (categoryInfo.title === 'Real Estate') {
+                    let propertyInfo = await Property.findOne({ product_id: productInfo._id });
+
+                    if (req.files && req.files.length > 0) {
+
+                        var photo, image_1, image_2, image_3;
+
+                        for (let i = 0; i < req.files.length; i++) {
+                            const element = req.files[i];
+                            if (element.fieldname === 'photo') {
+                                photo = element.path;
+                                const uploadResultLogo = await cloudinary.v2.uploader.upload(photo);
+                                req.body.photo = uploadResultLogo.secure_url;
+                            }
+                            if (element.fieldname === 'image_1') {
+                                image_1 = element.path;
+                                const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_1);
+                                req.body.image_1 = uploadResultFaviconLogo.secure_url;
+                            }
+                            if (element.fieldname === 'image_2') {
+                                image_2 = element.path;
+                                const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_2);
+                                req.body.image_2 = uploadResultFaviconLogo.secure_url;
+                            }
+                            if (element.fieldname === 'image_3') {
+                                image_3 = element.path;
+                                const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_3);
+                                req.body.image_3 = uploadResultFaviconLogo.secure_url;
+                            }
+                        }
+                    }
+                    else {
+                        req.body.photo = propertyInfo.photo;
+                        req.body.image_1 = propertyInfo.image_1;
+                        req.body.image_2 = propertyInfo.image_2;
+                        req.body.image_3 = propertyInfo.image_3;
+                    }
+
+                    let propertyUpdate = await propertyRepo.updateById(req.body, propertyInfo._id);
+                    if (!_.isEmpty(propertyUpdate) && propertyUpdate._id) {
+                        let productUpdate = await productRepo.updateProductById({ image: propertyUpdate.photo }, req.params.id);
+                        res.status(200).send({ status: 200, data: propertyUpdate, message: 'Product has been updated successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
                     }
