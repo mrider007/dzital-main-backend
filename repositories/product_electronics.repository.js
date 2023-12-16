@@ -62,17 +62,6 @@ const productElectronicsRepository = {
                         createdAt: { $first: '$createdAt' }
                     }
                 },
-                // {
-                //     $group: {
-                //         _id: '$_id',
-                //         title: { $first: '$title' },
-                //         description: { $first: '$description' },
-                //         category_id: { $first: '$category_id' },
-                //         category_title: { $first: '$category_details.title' },
-                //         image: { $first: '$image' },
-                //         status: { $first: '$status' }
-                //     }
-                // },
                 { $match: conditions },
                 { $sort: { _id: -1 } }
             ]);

@@ -22,7 +22,7 @@ class ProductElectronicsController {
                 res.status(200).send({ status: 200, data: electronics.docs, total: electronics.total, limit: electronics.limit, page: electronics.page, pages: electronics.pages, message: 'Electronic Products fetched successfully' });
             }
             else {
-                res.status(400).send({ status: 400, data: [], message: 'No Products found' });
+                res.status(201).send({ status: 201, data: [], message: 'No Products found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
