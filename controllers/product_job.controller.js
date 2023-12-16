@@ -78,6 +78,30 @@ class JobController {
         }
     };
 
+    async userJobs(req, res) {
+        try {
+            if (!req.body.page) {
+                req.body.page = 1;
+            } else {
+                req.body.page = parseInt(req.body.page);
+            }
+
+            if (!req.body.limit) {
+                req.body.limit = 10;
+            } else {
+                req.body.limit = parseInt(req.body.limit);
+            }
+            let jobs = await jobRepo.List(req);
+            if (!_.isEmpty(jobs)) {
+                res.status(200).send({ status: 200, data: jobs.docs, total: jobs.total, limit: jobs.limit, page: jobs.page, pages: jobs.pages, message: 'client jobs list fetched successfully' });
+            } else {
+                res.status(201).send({ status: 201, data: [], message: 'No Jobs Found' });
+            }            
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
     async jobUpdate(req, res) {
         try {
             let job_id = new mongoose.Types.ObjectId(req.params.id);

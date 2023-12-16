@@ -11,5 +11,6 @@ router.post('/job/post', request_param.any(), Authentication.AuthenticateAdmin, 
 router.post('/job/list', request_param.any(), Authentication.AuthenticateAdmin, JobController.jobList);
 router.post('/job/update/:id', request_param.any(), Authentication.AuthenticateAdmin, JobController.jobUpdate);
 router.post('/job/change-status/:id', request_param.any(), Authentication.AuthenticateAdmin, JobController.changeStatus);
+router.post('/all-jobs', request_param.any(), Authentication.Authenticate, JobController.userJobs);
 
 module.exports = router;
