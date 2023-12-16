@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const ProductElectronics = require('../models/product_electronics.model');
 
 const productElectronicsRepository = {
