@@ -9,6 +9,7 @@ const mongoose = require('mongoose');
 const productRepo = require('../repositories/product.repository');
 const electronicsRepo = require('../repositories/product_electronics.repository');
 const jobRepo = require('../repositories/product_job.repository');
+const goodsRepo = require('../repositories/product_goods.repository');
 const cloudinary = require('cloudinary');
 
 class productController {
@@ -320,11 +321,57 @@ class productController {
                     }
                 }
                 else if (categoryInfo.title === 'Jobs') {
-                    let jobDetails = await Job.findOne({ product_id: productInfo._id });  
+                    let jobDetails = await Job.findOne({ product_id: productInfo._id });
                     let jobUpdate = await jobRepo.updateById(req.body, jobDetails._id);
                     if (!_.isEmpty(jobUpdate) && jobUpdate._id) {
                         //let productUpdate = await productRepo.updateProductById({ image: electronicsUpdate.photo }, req.params.id);
                         res.status(200).send({ status: 200, data: jobUpdate, message: 'Product has been updated successfully' });
+                    } else {
+                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
+                    }
+                }
+                else if (categoryInfo.title === 'Goods of all kinds') {
+                    let goodsInfo = await Goods.findOne({ product_id: productInfo._id });
+
+                    if (req.files && req.files.length > 0) {
+
+                        var photo, image_1, image_2, image_3;
+
+                        for (let i = 0; i < req.files.length; i++) {
+                            const element = req.files[i];
+                            if (element.fieldname === 'photo') {
+                                photo = element.path;
+                                const uploadResultLogo = await cloudinary.v2.uploader.upload(photo);
+                                req.body.photo = uploadResultLogo.secure_url;
+                            }
+                            if (element.fieldname === 'image_1') {
+                                image_1 = element.path;
+                                const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_1);
+                                req.body.image_1 = uploadResultFaviconLogo.secure_url;
+                            }
+                            if (element.fieldname === 'image_2') {
+                                image_2 = element.path;
+                                const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_2);
+                                req.body.image_2 = uploadResultFaviconLogo.secure_url;
+                            }
+                            if (element.fieldname === 'image_3') {
+                                image_3 = element.path;
+                                const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_3);
+                                req.body.image_3 = uploadResultFaviconLogo.secure_url;
+                            }
+                        }
+                    }
+                    else {
+                        req.body.photo = goodsInfo.photo;
+                        req.body.image_1 = goodsInfo.image_1;
+                        req.body.image_2 = goodsInfo.image_2;
+                        req.body.image_3 = goodsInfo.image_3;
+                    }
+
+                    let goodsUpdate = await goodsRepo.updateById(req.body, electronicsInfo._id);
+                    if (!_.isEmpty(goodsUpdate) && goodsUpdate._id) {
+                        let productUpdate = await productRepo.updateProductById({ image: goodsUpdate.photo }, req.params.id);
+                        res.status(200).send({ status: 200, data: goodsUpdate, message: 'Product has been updated successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
                     }
