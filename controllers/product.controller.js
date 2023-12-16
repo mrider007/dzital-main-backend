@@ -7,6 +7,7 @@ const Job = require('../models/product_jobs.model');
 const Category = require('../models/service_master.model');
 const mongoose = require('mongoose');
 const productRepo = require('../repositories/product.repository');
+const electronicsRepo = require('../repositories/product_electronics.repository');
 const cloudinary = require('cloudinary');
 
 class productController {
@@ -265,51 +266,57 @@ class productController {
         }
     };
 
+    /** Admin Product Add */
     async productUpdate(req, res) {
         try {
-            const productInfo = await ProductDetails.findOne({ _id: req.params.id });
+            const productInfo = await Product.findOne({ _id: req.params.id });
             if (!_.isEmpty(productInfo) && productInfo._id) {
+                let categoryInfo = await Category.findOne({ _id: productInfo.category_id });
+                if (categoryInfo.title === 'Electronics') {
+                    let electronicsInfo = await ProductElectronics.findOne({ product_id: productInfo._id });
 
-                if (req.files && req.files.length > 0) {
+                    if (req.files && req.files.length > 0) {
 
-                    var photo, image_1, image_2, image_3;
+                        var photo, image_1, image_2, image_3;
 
-                    for (let i = 0; i < req.files.length; i++) {
-                        const element = req.files[i];
-                        if (element.fieldname === 'photo') {
-                            photo = element.path;
-                            const uploadResultLogo = await cloudinary.v2.uploader.upload(photo);
-                            req.body.photo = uploadResultLogo.secure_url;
-                        }
-                        if (element.fieldname === 'image_1') {
-                            image_1 = element.path;
-                            const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_1);
-                            req.body.image_1 = uploadResultFaviconLogo.secure_url;
-                        }
-                        if (element.fieldname === 'image_2') {
-                            image_2 = element.path;
-                            const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_2);
-                            req.body.image_2 = uploadResultFaviconLogo.secure_url;
-                        }
-                        if (element.fieldname === 'image_3') {
-                            image_3 = element.path;
-                            const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_3);
-                            req.body.image_3 = uploadResultFaviconLogo.secure_url;
+                        for (let i = 0; i < req.files.length; i++) {
+                            const element = req.files[i];
+                            if (element.fieldname === 'photo') {
+                                photo = element.path;
+                                const uploadResultLogo = await cloudinary.v2.uploader.upload(photo);
+                                req.body.photo = uploadResultLogo.secure_url;
+                            }
+                            if (element.fieldname === 'image_1') {
+                                image_1 = element.path;
+                                const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_1);
+                                req.body.image_1 = uploadResultFaviconLogo.secure_url;
+                            }
+                            if (element.fieldname === 'image_2') {
+                                image_2 = element.path;
+                                const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_2);
+                                req.body.image_2 = uploadResultFaviconLogo.secure_url;
+                            }
+                            if (element.fieldname === 'image_3') {
+                                image_3 = element.path;
+                                const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_3);
+                                req.body.image_3 = uploadResultFaviconLogo.secure_url;
+                            }
                         }
                     }
-                }
-                else {
-                    req.body.photo = productInfo.photo;
-                    req.body.image_1 = productInfo.image_1;
-                    req.body.image_2 = productInfo.image_2;
-                    req.body.image_3 = productInfo.image_3;
-                }
+                    else {
+                        req.body.photo = electronicsInfo.photo;
+                        req.body.image_1 = electronicsInfo.image_1;
+                        req.body.image_2 = electronicsInfo.image_2;
+                        req.body.image_3 = electronicsInfo.image_3;
+                    }
 
-                let productUpdate = await productRepo.updateById(req.body, req.params.id);
-                if (!_.isEmpty(productUpdate) && productUpdate._id) {
-                    res.status(200).send({ status: 200, data: productUpdate, message: 'Product has been updated successfully' });
-                } else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
+                    let electronicsUpdate = await electronicsRepo.updateById(req.body, electronicsInfo._id);
+                    if (!_.isEmpty(electronicsUpdate) && electronicsUpdate._id) {
+                        let productUpdate = await productRepo.updateProductById({ image: electronicsUpdate.photo }, req.params.id);
+                        res.status(200).send({ status: 200, data: electronicsUpdate, message: 'Product has been updated successfully' });
+                    } else {
+                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
+                    }
                 }
             } else {
                 res.status(400).send({ status: 400, data: {}, message: 'Product not found' });

@@ -190,6 +190,18 @@ const productRepository = {
         }
     },
 
+    updateProductById: async (data, id) => {
+        try {
+            let productUpdate = await Product.findByIdAndUpdate(id, data, { new: true, upsert: true }).exec();
+            if (!productUpdate) {
+                return null;
+            }
+            return productUpdate;
+        } catch (e) {
+            throw e;
+        }
+    },
+
     updateById: async (data, id) => {
         try {
             let productUpdate = await ProductElectronics.findByIdAndUpdate(id, data, { new: true, upsert: true }).exec();
