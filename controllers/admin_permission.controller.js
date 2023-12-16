@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Permission = require('../models/admin_permission.model');
 const permissionRepo = require('../repositories/admin_permission.repository');
 
@@ -47,6 +48,21 @@ class permissionController {
             }
             else {
                 res.status(400).send({ status: 400, data: [], message: 'No Permission found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
+    async details(req, res) {
+        try {
+            let permission_id = new mongoose.Types.ObjectId(req.params.id);
+            let permissionDetails = await Permission.findOne({ _id: permission_id });
+            if (!_.isEmpty(permissionDetails) && permissionDetails._id) {
+                res.status(200).send({ status: 200, data: permissionDetails, message: 'Permission Details has been fetched' });
+            }
+            else {
+                res.status(400).send({ status: 400, data: {}, message: 'Permission not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
