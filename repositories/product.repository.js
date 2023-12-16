@@ -174,6 +174,7 @@ const productRepository = {
                         description: { $first: '$description' },
                         category_id: { $first: '$category_id' },
                         category_title: { $first: '$category_details.title' },
+                        image: { $first: '$image' },
                         status: { $first: '$status' }
                     }
                 },
