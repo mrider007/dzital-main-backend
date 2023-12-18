@@ -236,6 +236,15 @@ class productController {
                         res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
                     }
                 }
+                else if (categoryInfo.title === 'Goods of all kinds') {
+                    let goodsDetails = await Goods.findOne({ product_id: productInfo._id });
+                    if (!_.isEmpty(goodsDetails) && goodsDetails._id) {
+                        res.status(200).send({ status: 200, data: goodsDetails, message: 'Product details has been fetched successfully' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                    }
+                }
             } else {
                 res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
             }
