@@ -86,6 +86,21 @@ const productElectronicsRepository = {
         } catch (e) {
             throw e;
         }
+    },
+
+    delete: async (id) => {
+        try {
+            let electronics = await ProductElectronics.findById(id);
+            if (electronics) {
+                let electronicsDelete = await ProductElectronics.deleteOne({ _id: id }).exec();
+                if (!electronicsDelete) {
+                    return null;
+                }
+                return electronics;
+            }
+        } catch (e) {
+            throw e;
+        }
     }
 }
 

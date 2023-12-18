@@ -11,6 +11,7 @@ const electronicsRepo = require('../repositories/product_electronics.repository'
 const propertyRepo = require('../repositories/product_real_estate.repository');
 const jobRepo = require('../repositories/product_job.repository');
 const goodsRepo = require('../repositories/product_goods.repository');
+const fashionRepo = require('../repositories/product_fashion.repository');
 const cloudinary = require('cloudinary');
 
 class productController {
@@ -431,19 +432,27 @@ class productController {
         }
     };
 
+    /** Admin Product Delete */
     async productDelete(req, res) {
         try {
             const product_id = new mongoose.Types.ObjectId(req.params.id);
             const productInfo = await Product.findOne({ _id: req.params.id });
             if (!_.isEmpty(productInfo) && productInfo._id) {
                 let productRemove = await productRepo.delete(product_id);
-                if (!_.isEmpty(productRemove) && productRemove._id) {
-                    res.status(200).send({ status: 200, data: productRemove, message: 'Product has been removed successfully' });
-                } else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Sorry, unable to update product at this moment' });
+                let categoryInfo = await Category.findOne({ _id: productInfo.category_id });
+                if (categoryInfo.title === 'Electronics') {
+                    let electronics = await ProductElectronics.findOne({ product_id: productInfo._id });
+                    let electronicsDelete = await electronicsRepo.delete(electronics._id);
+                    if (!_.isEmpty(electronicsDelete) && electronicsDelete._id) {
+                        res.send({ status: 200, data: electronicsDelete, message: 'Product has been removed successfully' });
+                    }
+                    else {
+                        res.send({ status: 400, data: {}, message: 'Product could not be removed' });
+                    }
                 }
-            } else {
-                res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+            }
+            else {
+                res.send({ status: 400, data: {}, message: 'Product not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
