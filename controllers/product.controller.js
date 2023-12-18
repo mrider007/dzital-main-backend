@@ -444,15 +444,25 @@ class productController {
                     let electronics = await ProductElectronics.findOne({ product_id: productInfo._id });
                     let electronicsDelete = await electronicsRepo.delete(electronics._id);
                     if (!_.isEmpty(electronicsDelete) && electronicsDelete._id) {
-                        res.send({ status: 200, data: electronicsDelete, message: 'Product has been removed successfully' });
+                        res.status(200).send({ status: 200, data: electronicsDelete, message: 'Product has been removed successfully' });
                     }
                     else {
-                        res.send({ status: 400, data: {}, message: 'Product could not be removed' });
+                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be removed' });
+                    }
+                }
+                else if (categoryInfo.title === 'Jobs') {
+                    let job = await Job.findOne({ product_id: productInfo._id });
+                    let jobDelete = await jobRepo.delete(job._id);
+                    if (!_.isEmpty(jobDelete) && jobDelete._id) {
+                        res.status(200).send({ status: 200, data: jobDelete, message: 'Product has been removed successfully' });
+                    }                
+                    else {
+                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be removed' });
                     }
                 }
             }
             else {
-                res.send({ status: 400, data: {}, message: 'Product not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
