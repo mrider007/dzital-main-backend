@@ -480,6 +480,16 @@ class productController {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be removed' });
                     }
                 }
+                else if (categoryInfo.title === 'Goods of all kinds') {
+                    let goods = await Goods.findOne({ product_id: productInfo._id });
+                    let goodsDelete = await goodsRepo.delete(goods._id);
+                    if (!_.isEmpty(goodsDelete) && goodsDelete._id) {
+                        res.status(200).send({ status: 200, data: goodsDelete, message: 'Product has been removed successfully' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be removed' });
+                    }
+                }
             }
             else {
                 res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
