@@ -507,6 +507,26 @@ class productController {
             res.send({ status: 500, message: e.message });
         }
     };
+
+    async changeStatus(req, res) {
+        try {
+            const product_id = new mongoose.Types.ObjectId(req.params.id);
+            let productData = await Product.findOne({ _id: product_id });
+            if (!_.isEmpty(productData) && productData._id) {
+                let statusUpdate = await productRepo.updateProductById(req.body, productData._id);
+                if (!_.isEmpty(statusUpdate) && statusUpdate._id) {
+                    res.status(200).send({ status: 200, data: statusUpdate, message: 'Product status has been updated successfully' });
+                }
+                else {
+                    res.status(400).send({ status: 400, data: {}, message: 'Product status could not be updated' });
+                }
+            } else {
+                res.status(400).send({ status: 400, data: {}, message: 'Product not found!' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
 }
 
 module.exports = new productController();
