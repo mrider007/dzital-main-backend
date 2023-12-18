@@ -455,7 +455,27 @@ class productController {
                     let jobDelete = await jobRepo.delete(job._id);
                     if (!_.isEmpty(jobDelete) && jobDelete._id) {
                         res.status(200).send({ status: 200, data: jobDelete, message: 'Product has been removed successfully' });
-                    }                
+                    }
+                    else {
+                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be removed' });
+                    }
+                }
+                else if (categoryInfo.title === 'Real Estate') {
+                    let property = await Property.findOne({ product_id: productInfo._id });
+                    let propertyDelete = await propertyRepo.delete(property._id);
+                    if (!_.isEmpty(propertyDelete) && propertyDelete._id) {
+                        res.status(200).send({ status: 200, data: propertyDelete, message: 'Product has been removed successfully' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be removed' });
+                    }
+                }
+                else if (categoryInfo.title === 'Fashion & Beauty') {
+                    let fashion = await Fashion.findOne({ product_id: productInfo._id });
+                    let fashionDelete = await fashionRepo.delete(fashion._id);
+                    if (!_.isEmpty(fashionDelete) && fashionDelete._id) {
+                        res.status(200).send({ status: 200, data: fashionDelete, message: 'Product has been removed successfully' });
+                    }
                     else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be removed' });
                     }
