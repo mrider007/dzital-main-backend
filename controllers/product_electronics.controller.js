@@ -33,7 +33,7 @@ class ProductElectronicsController {
     async details(req, res) {
         try {
             const electronic_id = new mongoose.Types.ObjectId(req.params.id);
-            let electronicsInfo = await ProductElectronics.findOne({ _id: electronic_id });
+            let electronicsInfo = await electronicsRepo.getDetails({ _id: electronic_id });
             if (!_.isEmpty(electronicsInfo) && electronicsInfo._id) {
                 res.status(200).send({ status: 200, data: electronicsInfo, message: 'Electronic product details has been fetched successfully' });
             }

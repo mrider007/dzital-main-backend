@@ -88,20 +88,62 @@ const productElectronicsRepository = {
         }
     },
 
-    delete: async (id) => {
+    getDetails: async (params) => {
         try {
-            let electronics = await ProductElectronics.findById(id);
-            if (electronics) {
-                let electronicsDelete = await ProductElectronics.deleteOne({ _id: id }).exec();
-                if (!electronicsDelete) {
-                    return null;
+            let product = await ProductElectronics.aggregate([
+                { $match: params },
+                {
+                    $lookup: {
+                        from: 'products',
+                        localField: 'product_id',
+                        foreignField: '_id',
+                        as: 'product_details'
+                    }
+                },
+                { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: '$_id',
+                        title: { $first: '$title' },
+                        description: { $first: '$description' },
+                        price: { $first: '$price' },
+                        product_type: { $first: '$product_type' },
+                        photo: { $first: '$photo' },
+                        image_1: { $first: '$image_1' },
+                        image_2: { $first: '$image_2' },
+                        image_3: { $first: '$image_3' },
+                        brand: { $first: '$brand' },
+                        product_id: { $first: '$product_id' },
+                        category_id: { $first: '$category_id' },
+                        quantity: { $first: '$quantity' },
+                        status: { $first: '$product_details.status' },
+                        createdAt: { $first: '$createdAt' }
+                    }
                 }
-                return electronics;
-            }
+            ]);
+if (!product) {
+    return null;
+}
+return product[0];            
         } catch (e) {
-            throw e;
+    throw e;
+}
+    },
+
+delete: async (id) => {
+    try {
+        let electronics = await ProductElectronics.findById(id);
+        if (electronics) {
+            let electronicsDelete = await ProductElectronics.deleteOne({ _id: id }).exec();
+            if (!electronicsDelete) {
+                return null;
+            }
+            return electronics;
         }
+    } catch (e) {
+        throw e;
     }
+}
 }
 
 module.exports = productElectronicsRepository;
