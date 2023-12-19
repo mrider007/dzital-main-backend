@@ -5,6 +5,6 @@ const router = express.Router();
 const multer = require('multer');
 const request_param = multer();
 
-
+router.post('/product/fashion/list', request_param.any(), Authentication.Authenticate, productFashionController.list);
 
 module.exports = router;
