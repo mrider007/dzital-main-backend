@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const ProductGoods = require('../models/product_goods.model');
 const goodsRepo = require('../repositories/product_goods.repository');
 
@@ -30,7 +31,22 @@ class productGoodsController {
         } catch (e) {
             res.send({ status: 500, message: e.message });
         }
-    } 
+    };
+    
+    async details(req, res) {
+        try {
+            const goods_id = new mongoose.Types.ObjectId(req.params.id);
+            let goodsInfo = await goodsRepo.getDetails({ _id: goods_id });
+            if (!_.isEmpty(goodsInfo) && goodsInfo._id) {
+                res.send({ status: 200, data: goodsInfo, message: 'Product details has been fetched successfully' });
+            }
+            else {
+                res.send({ status: 400, data: {}, message: 'Product not found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
     
 }
 

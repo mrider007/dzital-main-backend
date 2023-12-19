@@ -75,6 +75,48 @@ const goodsRepository = {
         }
     },
 
+    getDetails: async (params) => {
+        try {
+            let product = await ProductGoods.aggregate([
+                { $match: params },
+                {
+                    $lookup: {
+                        from: 'products',
+                        localField: 'product_id',
+                        foreignField: '_id',
+                        as: 'product_details'                  
+                    }
+                },
+                { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: '$_id',
+                        title: { $first: '$title' },
+                        description: { $first: '$description' },
+                        price: { $first: '$price' },
+                        quantity: { $first: '$quantity' },
+                        product_type: { $first: '$product_type' },
+                        photo: { $first: '$photo' },
+                        image_1: { $first: '$image_1' },
+                        image_2: { $first: '$image_2' },
+                        image_3: { $first: '$image_3' },
+                        brand: { $first: '$brand' },
+                        category_id: { $first: '$category_id' },
+                        product_id: { $first: '$product_id' },
+                        createdAt: { $first: '$createdAt' },
+                        status: { $first: '$product_details.status' }
+                    }
+                }
+            ]); 
+            if (!product) {
+                return null;
+            }          
+            return product[0];
+        } catch (e) {
+            throw e;
+        }
+    },
+
     updateById: async (data, id) => {
         try {
             let productGoodsUpdate = await ProductGoods.findByIdAndUpdate(id, data, { new: true, upsert: true }).exec();
