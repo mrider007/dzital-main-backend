@@ -195,7 +195,35 @@ class adminController {
             if (!_.isEmpty(users)) {
                 res.status(200).send({ status: 200, data: users.docs, total: users.total, limit: users.limit, page: users.page, pages: users.pages, message: 'Users list fetched successfully' });
             } else {
-                res.status(201).send({ status: 201, message: 'No user found' });
+                res.status(201).send({ status: 201, data: [], message: 'No user found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
+    async premiumUsersList(req, res) {
+        try {
+            if (!req.body.page) {
+                req.body.page = 1;
+            }
+            else {
+                req.body.page = parseInt(req.body.page);
+            }      
+            
+            if (!req.body.limit) {
+                req.body.limit = 10;
+            }
+            else {
+                req.body.limit = parseInt(req.body.limit);
+            }
+
+            let premiumusers = await adminRepo.getPremiumUsers(req);
+            if (!_.isEmpty(premiumusers)) {
+                res.send({ status: 200, data: premiumusers.docs, total: premiumusers.total, limit: premiumusers.limit, page: premiumusers.page, pages: premiumusers.pages, message: 'Premium Users List fetched successfully' });
+            }
+            else {
+                res.send({ status: 201, data: [], message: 'No Premium User found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
@@ -293,15 +321,6 @@ class adminController {
             else {
                 res.status(400).send({ status: 400, data: {}, message: 'User not found!' });
             }
-        } catch (e) {
-            res.send({ status: 500, message: e.message });
-        }
-    };
-
-    async userCount(req, res) {
-        try {
-
-            let totalFreePlanUsers = await userRepo.getUserCountByParams({});
         } catch (e) {
             res.send({ status: 500, message: e.message });
         }
