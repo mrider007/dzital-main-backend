@@ -5,6 +5,7 @@ const router = express.Router();
 const multer = require('multer');
 const request_param = multer();
 
-router.post('/admin/product/freelancer/add', request_param.any(), Authentication.AuthenticateAdmin, freelancerController.add);
+router.get('/product/freelancer/details/:id', Authentication.Authenticate, freelancerController.details);
+router.post('/product/freelancer/add', request_param.any(), Authentication.Authenticate, freelancerController.add);
 
 module.exports = router;
