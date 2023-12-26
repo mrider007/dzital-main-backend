@@ -21,7 +21,6 @@ class JobController {
             else {
                 let adminInfo = await Admin.findOne({ _id: req.user._id });
                 if (!_.isEmpty(adminInfo)) {
-                    req.body.admin_id = adminInfo._id;
                     let jobSave = await Job.create(req.body);
                     if (!_.isEmpty(jobSave) && jobSave._id) {
                         res.status(200).send({ status: 200, data: jobSave, message: 'Job Post saved successfully' });
