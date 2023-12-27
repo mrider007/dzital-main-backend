@@ -230,6 +230,34 @@ class adminController {
         }
     };
 
+    async rejectedCustomersList(req, res) {
+        try {
+            if (!req.body.page) {
+                req.body.page = 1;
+            }
+            else {
+                req.body.page = parseInt(req.body.page);
+            }
+
+            if (!req.body.limit) {
+                req.body.limit = 10;
+            }
+            else {
+                req.body.limit = parseInt(req.body.limit);
+            }
+
+            let rejectedcustomers = await adminRepo.getRejectedUsers(req);
+            if (!_.isEmpty(rejectedcustomers)) {
+                res.send({ status: 200, data: rejectedcustomers.docs, total: rejectedcustomers.total, limit: rejectedcustomers.limit, page: rejectedcustomers.page, pages: rejectedcustomers.pages, message: 'Rejected Users List fetched successfully' });
+            }
+            else {
+                res.send({ status: 201, data: [], message: 'No Rejected User found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
     /** Admin User Add */
     async userAdd(req, res) {
         try {
