@@ -40,6 +40,5 @@ router.post('/admin/users/list', request_param.any(), Authentication.Authenticat
 router.post('/admin/user/add', uploadFile.any(), Authentication.AuthenticateAdmin, adminController.userAdd);
 router.post('/admin/user/update/:id', uploadFile.any(), Authentication.AuthenticateAdmin, adminController.userUpdate);
 router.post('/admin/premium/users/list', request_param.any(), Authentication.AuthenticateAdmin, adminController.premiumUsersList);
-router.post('/admin/rejected/users/list', request_param.any(), Authentication.AuthenticateAdmin, adminController.rejectedCustomersList);
 
 module.exports = router;
