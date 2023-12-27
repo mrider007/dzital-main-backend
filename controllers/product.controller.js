@@ -194,6 +194,31 @@ class productController {
         }
     };
 
+    /** Admin Rejected Product List */
+    async rejectedProductList(req, res) {
+        try {
+            if (!req.body.page) {
+                req.body.page = 1;
+            } else {
+                req.body.page = parseInt(req.body.page);
+            }
+
+            if (!req.body.limit) {
+                req.body.limit = 50;
+            } else {
+                req.body.limit = parseInt(req.body.limit);
+            }
+            let products = await productRepo.rejectedProducts(req);
+            if (!_.isEmpty(products)) {
+                res.status(200).send({ status: 200, data: products.docs, total: products.total, limit: products.limit, page: products.page, pages: products.pages, message: 'Rejected Products list fetched successfully' });
+            } else {
+                res.status(400).send({ status: 400, data: [], message: 'No products found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
     /** Admin Product Details */
     async productDetails(req, res) {
         try {

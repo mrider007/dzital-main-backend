@@ -34,5 +34,6 @@ router.post('/product/list', request_param.any(), Authentication.AuthenticateAdm
 router.post('/product/update/:id', uploadFile.any(), Authentication.AuthenticateAdmin, ProductController.productUpdate);
 router.post('/product/change-status/:id', uploadFile.any(), Authentication.AuthenticateAdmin, ProductController.changeStatus);
 router.post('/all-products', request_param.any(), ProductController.products);
+router.post('/admin/product/rejected/list', request_param.any(), Authentication.AuthenticateAdmin, ProductController.rejectedProductList);
 
 module.exports = router;
