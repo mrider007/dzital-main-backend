@@ -230,6 +230,34 @@ class adminController {
         }
     };
 
+    async activeUsersList(req, res) {
+        try {
+            if (!req.body.page) {
+                req.body.page = 1;
+            }
+            else {
+                req.body.page = parseInt(req.body.page);
+            }      
+            
+            if (!req.body.limit) {
+                req.body.limit = 10;
+            }
+            else {
+                req.body.limit = parseInt(req.body.limit);
+            }
+
+            const activeusers = await adminRepo.getActiveUsers(req);
+            if (!_.isEmpty(activeusers)) {
+                res.send({ status: 200, data: activeusers.docs, total: activeusers.total, limit: activeusers.limit, page: activeusers.page, pages: activeusers.pages, message: 'Active Users List fetched successfully' });
+            }
+            else {
+                res.send({ status: 201, data: [], message: 'No Active User found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
     /** Admin User Add */
     async userAdd(req, res) {
         try {

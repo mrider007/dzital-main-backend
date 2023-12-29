@@ -202,6 +202,83 @@ const adminRepository = {
         }
     },
 
+    getActiveUsers: async (req) => {
+        try {
+            var conditions = {};
+            var and_clauses = [];
+
+            and_clauses.push({ status: "Active" });
+
+            let key = req.body.keyword_search;
+
+            if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
+                and_clauses.push({
+                    $or: [
+                        { 'name': { $regex: (req.body.keyword_search).trim(), $options: 'i' } },
+                        { 'email': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
+                    ]
+                });
+
+                // Check if keyword_search has length greater than 0
+                if (key.length > 0) {
+                    // Disable req.body.page and req.body.limit
+                    req.body.page = undefined;
+                    req.body.limit = undefined;
+                }
+            }
+
+            conditions['$and'] = and_clauses;
+
+            let activeusers = User.aggregate([
+                {
+                    $lookup: {
+                        from: 'membership_plans',
+                        localField: 'plan_id',
+                        foreignField: '_id',
+                        as: 'plan_details'
+                    }
+                },
+                { $unwind: { path: '$plan_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: '$_id',
+                        name: { $first: '$name' },
+                        email: { $first: '$email' },
+                        image: { $first: '$image' },
+                        mobile: { $first: '$mobile' },
+                        address: { $first: '$address' },
+                        register_type: { $first: '$register_type' },
+                        plan_id: { $first: '$plan_id' },
+                        plan_title: { $first: '$plan_details.title' },
+                        status: { $first: '$status' },
+                        createdAt: { $first: '$createdAt' },
+                        updatedAt: { $first: '$updatedAt' }
+                    }
+                },
+                { $match: conditions },
+                { $sort: { _id: -1 } }
+            ]);
+
+            if (!activeusers) {
+                return null;
+            }
+
+            // Only set options if they are not disabled
+            var options = {};
+            if (req.body.page !== undefined) {
+                options.page = req.body.page;
+            }
+            if (req.body.limit !== undefined) {
+                options.limit = req.body.limit;
+            }
+
+            let allActiveUsers = await User.aggregatePaginate(activeusers, options);
+            return allActiveUsers;            
+        } catch (e) {
+            throw e;
+        }
+    },
+
     getAdminsList: async (req) => {
         try {
             var conditions = {};
