@@ -258,6 +258,34 @@ class adminController {
         }
     };
 
+    async deactivatedUsersList(req, res) {
+        try {
+            if (!req.body.page) {
+                req.body.page = 1;
+            }
+            else {
+                req.body.page = parseInt(req.body.page);
+            }      
+            
+            if (!req.body.limit) {
+                req.body.limit = 10;
+            }
+            else {
+                req.body.limit = parseInt(req.body.limit);
+            }
+
+            const deactivatedusers = await adminRepo.getDeactivatedUsers(req);
+            if (!_.isEmpty(deactivatedusers)) {
+                res.send({ status: 200, data: deactivatedusers.docs, total: deactivatedusers.total, limit: deactivatedusers.limit, page: deactivatedusers.page, pages: deactivatedusers.pages, message: 'Deactivated Users List fetched successfully' });
+            }
+            else {
+                res.send({ status: 201, data: [], message: 'No Deactivated User found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
     /** Admin User Add */
     async userAdd(req, res) {
         try {

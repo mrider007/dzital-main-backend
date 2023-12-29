@@ -26,7 +26,7 @@ const UserSchema = new mongoose.Schema({
     organization_name: { type: String, index: true, trim: true },
     official_email_id: { type: String, index: true, trim: true },
     purchased_on: { type: Date, index: true, trim: true },
-    status: { type: String, index: true },
+    status: { type: String, default: 'Active', index: true },
     expired_on: { type: Date, index: true, trim: true },
     register_type: { type: String, default: 'normal', enum: ['normal', 'google', 'facebook'] }
 }, { timestamps: true, versionKey: false });
