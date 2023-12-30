@@ -87,7 +87,7 @@ const permissionRepository = {
             if (!permissionUpdate) {
                 return null;
             }
-            return permissionUpdate;                        
+            return permissionUpdate;
         } catch (e) {
             throw e;
         }
