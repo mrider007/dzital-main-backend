@@ -32,7 +32,7 @@ class productGoodsController {
             res.send({ status: 500, message: e.message });
         }
     };
-    
+
     async details(req, res) {
         try {
             const goods_id = new mongoose.Types.ObjectId(req.params.id);
@@ -47,7 +47,7 @@ class productGoodsController {
             res.send({ status: 500, message: e.message });
         }
     };
-    
+
 }
 
 module.exports = new productGoodsController();
