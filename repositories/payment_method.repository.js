@@ -8,7 +8,7 @@ const PaymentMethodRepository = {
             if (!paymentmethodUpdate) {
                 return null;
             }
-            return paymentmethodUpdate;            
+            return paymentmethodUpdate;
         } catch (e) {
             throw e;
         }
