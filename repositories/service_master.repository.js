@@ -33,7 +33,7 @@ const serviceRepository = {
         try {
             var conditions = {};
             var and_clauses = [];
-            
+
             and_clauses.push({ parentId: null });
 
             if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
@@ -57,7 +57,7 @@ const serviceRepository = {
             return allServices;
         } catch (e) {
             throw e;
-        }      
+        }
     }
 
 }
