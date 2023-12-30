@@ -36,7 +36,7 @@ class freelancerController {
             }
             else {
                 res.send({ status: 400, data: {}, message: 'Product not found' });
-            }                        
+            }
         } catch (e) {
             res.send({ status: 500, message: e.message });
         }
