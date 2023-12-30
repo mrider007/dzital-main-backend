@@ -165,7 +165,7 @@ const JobRepository = {
             }
 
             let allJobs = await Job.aggregatePaginate(jobs, options);
-            return allJobs;            
+            return allJobs;
         } catch (e) {
             throw e;
         }
