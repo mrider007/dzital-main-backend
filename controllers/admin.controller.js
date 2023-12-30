@@ -209,8 +209,8 @@ class adminController {
             }
             else {
                 req.body.page = parseInt(req.body.page);
-            }      
-            
+            }
+
             if (!req.body.limit) {
                 req.body.limit = 10;
             }
@@ -237,8 +237,8 @@ class adminController {
             }
             else {
                 req.body.page = parseInt(req.body.page);
-            }      
-            
+            }
+
             if (!req.body.limit) {
                 req.body.limit = 10;
             }
@@ -265,8 +265,8 @@ class adminController {
             }
             else {
                 req.body.page = parseInt(req.body.page);
-            }      
-            
+            }
+
             if (!req.body.limit) {
                 req.body.limit = 10;
             }

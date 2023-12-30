@@ -273,7 +273,7 @@ const adminRepository = {
             }
 
             let allActiveUsers = await User.aggregatePaginate(activeusers, options);
-            return allActiveUsers;            
+            return allActiveUsers;
         } catch (e) {
             throw e;
         }
