@@ -73,7 +73,7 @@ const productFashionRepository = {
         } catch (e) {
             throw e;
         }
-    }    
+    }
 
 }
 
