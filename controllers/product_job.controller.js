@@ -95,7 +95,7 @@ class JobController {
                 res.status(200).send({ status: 200, data: jobs.docs, total: jobs.total, limit: jobs.limit, page: jobs.page, pages: jobs.pages, message: 'client jobs list fetched successfully' });
             } else {
                 res.status(201).send({ status: 201, data: [], message: 'No Jobs Found' });
-            }            
+            }
         } catch (e) {
             res.send({ status: 500, message: e.message });
         }
