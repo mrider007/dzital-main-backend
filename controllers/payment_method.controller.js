@@ -38,7 +38,7 @@ class paymentMethodController {
             if (!_.isEmpty(paymentMethodInfo) && paymentMethodInfo._id) {
                 let paymentMethodUpdate = await paymentMethodRepo.updateById(req.body, payment_method_id);
                 if (!_.isEmpty(paymentMethodUpdate) && paymentMethodUpdate._id) {
-                    res.status(200).send({ status: 200, data: paymentMethodUpdate, message: 'Payment Method has been updated successfully' });                    
+                    res.status(200).send({ status: 200, data: paymentMethodUpdate, message: 'Payment Method has been updated successfully' });
                 } else {
                     res.status(400).send({ status: 400, data: {}, message: 'Payment Method could not be updated' });
                 }
