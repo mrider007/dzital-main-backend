@@ -30,7 +30,7 @@ class productFashionController {
             res.send({ status: 500, message: e.message });
         }
     };
-    
+
 }
 
 module.exports = new productFashionController();
