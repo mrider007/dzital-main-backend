@@ -84,7 +84,7 @@ const goodsRepository = {
                         from: 'products',
                         localField: 'product_id',
                         foreignField: '_id',
-                        as: 'product_details'                  
+                        as: 'product_details'
                     }
                 },
                 { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
@@ -107,10 +107,10 @@ const goodsRepository = {
                         status: { $first: '$product_details.status' }
                     }
                 }
-            ]); 
+            ]);
             if (!product) {
                 return null;
-            }          
+            }
             return product[0];
         } catch (e) {
             throw e;
