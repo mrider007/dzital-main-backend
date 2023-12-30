@@ -121,29 +121,29 @@ const productElectronicsRepository = {
                     }
                 }
             ]);
-if (!product) {
-    return null;
-}
-return product[0];            
-        } catch (e) {
-    throw e;
-}
-    },
-
-delete: async (id) => {
-    try {
-        let electronics = await ProductElectronics.findById(id);
-        if (electronics) {
-            let electronicsDelete = await ProductElectronics.deleteOne({ _id: id }).exec();
-            if (!electronicsDelete) {
+            if (!product) {
                 return null;
             }
-            return electronics;
+            return product[0];
+        } catch (e) {
+            throw e;
         }
-    } catch (e) {
-        throw e;
+    },
+
+    delete: async (id) => {
+        try {
+            let electronics = await ProductElectronics.findById(id);
+            if (electronics) {
+                let electronicsDelete = await ProductElectronics.deleteOne({ _id: id }).exec();
+                if (!electronicsDelete) {
+                    return null;
+                }
+                return electronics;
+            }
+        } catch (e) {
+            throw e;
+        }
     }
-}
 }
 
 module.exports = productElectronicsRepository;
