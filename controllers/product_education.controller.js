@@ -3,7 +3,7 @@ const ProductEducation = require('../models/product_education.model');
 class productEducationController {
     constructor() { }
 
-    
+
 
 }
 
