@@ -194,6 +194,7 @@ class productController {
         }
     };
 
+    /** Admin Unapproved Products List */
     async unapprovedProductList(req, res) {
         try {
             if (!req.body.page) {
