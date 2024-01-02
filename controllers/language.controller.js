@@ -60,6 +60,27 @@ class languageController {
         }
     };
 
+    async update(req, res) {
+        try {
+            const language_id = new mongoose.Types.ObjectId(req.params.id);
+            let languageInfo = await Language.findOne({ _id: language_id });
+            if (!_.isEmpty(languageInfo) && languageInfo._id) {
+                let languageUpdate = await languageRepo.updateById(req.body, language_id);
+                if (!_.isEmpty(languageUpdate) && languageUpdate._id) {
+                    res.send({ status: 200, data: languageUpdate, message: 'Language has been updated successfully' });
+                }
+                else {
+                    res.send({ status: 400, data: {}, message: 'Language could not be updated' });
+                }
+            }
+            else {
+                res.send({ status: 400, data: {}, message: 'Language not found' });
+            }            
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+
 }
 
 module.exports = new languageController();

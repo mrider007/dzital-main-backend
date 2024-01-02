@@ -48,6 +48,18 @@ const languageRepository = {
         } catch (e) {
             throw e;
         }
+    },
+
+    updateById: async (data, id) => {
+        try {
+            let languageUpdate = await Language.findByIdAndUpdate(id, data, { new: true, upsert: true }).exec();
+            if (!languageUpdate) {
+                return null;
+            }
+            return languageUpdate;
+        } catch (e) {
+            throw e;
+        }
     }
 
 }
