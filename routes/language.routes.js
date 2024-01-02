@@ -6,5 +6,6 @@ const multer = require('multer');
 const request_param = multer();
 
 router.post('/language/add', request_param.any(), Authentication.AuthenticateAdmin, languageController.add);
+router.get('/language/details/:id', Authentication.AuthenticateAdmin, languageController.details);
 
 module.exports = router;
