@@ -9,5 +9,6 @@ router.get('/language/details/:id', Authentication.AuthenticateAdmin, languageCo
 router.post('/language/add', request_param.any(), Authentication.AuthenticateAdmin, languageController.add);
 router.post('/language/list', request_param.any(), Authentication.AuthenticateAdmin, languageController.list);
 router.post('/language/update/:id', request_param.any(), Authentication.AuthenticateAdmin, languageController.update);
+router.get('/language/delete/:id', request_param.any(), Authentication.AuthenticateAdmin, languageController.delete);
 
 module.exports = router;

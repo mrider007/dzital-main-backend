@@ -75,7 +75,28 @@ class languageController {
             }
             else {
                 res.send({ status: 400, data: {}, message: 'Language not found' });
-            }            
+            }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+
+    async delete(req, res) {
+        try {
+            const language_id = new mongoose.Types.ObjectId(req.params.id);
+            const languageInfo = await Language.findOne({ _id: language_id });
+            if (!_.isEmpty(languageInfo) && languageInfo._id) {
+                const languageDelete = await languageRepo.delete(language_id);
+                if (!_.isEmpty(languageDelete) && languageDelete._id) {
+                    res.status(200).send({ status: 200, data: languageDelete, message: 'Language has been removed' });
+                }
+                else {
+                    res.status(400).send({ status: 400, message: 'Language could not be deleted' });
+                }
+            }
+            else {
+                res.status(400).send({ status: 400, message: 'Language not found' });
+            }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
         }

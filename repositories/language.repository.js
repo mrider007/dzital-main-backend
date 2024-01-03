@@ -60,6 +60,21 @@ const languageRepository = {
         } catch (e) {
             throw e;
         }
+    },
+
+    delete: async (id) => {
+        try {
+            let language = await Language.findById(id);
+            if (!_.isEmpty(language) && language._id) {
+                let languageDelete = await Language.deleteOne({ _id: id }).exec();
+                if (!languageDelete) {
+                    return null;
+                }
+                return language;
+            }
+        } catch (e) {
+            throw e;
+        }
     }
 
 }
