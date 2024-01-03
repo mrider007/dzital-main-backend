@@ -67,6 +67,21 @@ const countryRepository = {
         } catch (e) {
             throw e;
         }
+    },
+
+    delete: async (id) => {
+        try {
+            let country = await Country.findById(id);
+            if (country) {
+                let countryDelete = await Country.deleteOne({ _id: id }).exec();
+                if (!countryDelete) {
+                    return null;
+                }
+                return country;
+            }
+        } catch (e) {
+            throw e;
+        }
     }
 
 }
