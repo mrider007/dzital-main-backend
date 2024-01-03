@@ -202,6 +202,7 @@ class adminController {
         }
     };
 
+    /** Admin Premium Users List */
     async premiumUsersList(req, res) {
         try {
             if (!req.body.page) {
@@ -230,6 +231,7 @@ class adminController {
         }
     };
 
+    /** Admin Active Users List */
     async activeUsersList(req, res) {
         try {
             if (!req.body.page) {
@@ -258,6 +260,7 @@ class adminController {
         }
     };
 
+    /** Admin Inactive Users List */
     async deactivatedUsersList(req, res) {
         try {
             if (!req.body.page) {
