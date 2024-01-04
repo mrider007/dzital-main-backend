@@ -6,6 +6,7 @@ const CurrencySchema = new Schema({
     currency_name: { type: String, index: true, trim: true },
     code: { type: String, index: true, trim: true },
     exchange_rate: { type: Number, default: 1 },
+    currency_symbol: { type: String, index: true, trim: true },
     is_default: { type: Boolean, default: false, enum: [true, false] },
     country: { type: String, index: true, trim: true }
 }, { versionKey: false });
