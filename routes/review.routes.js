@@ -5,10 +5,10 @@ const router = express.Router();
 const multer = require('multer');
 const request_param = multer();
 
-router.get('/review/details/:id', request_param.any(), Authentication.Authenticate, ReviewController.reviewDetails);
-router.get('/review/delete/:id', request_param.any(), Authentication.Authenticate, ReviewController.reviewDelete);
-router.post('/review/job', request_param.any(), Authentication.Authenticate, ReviewController.reviewJob);
-router.post('/review/list', request_param.any(), Authentication.Authenticate, ReviewController.jobReviewList);
-router.post('/review/update/:id', request_param.any(), Authentication.Authenticate, ReviewController.reviewUpdate);
+router.get('/review/details/:id', request_param.any(), Authentication.AuthenticateAdmin, ReviewController.reviewDetails);
+router.get('/review/delete/:id', request_param.any(), Authentication.AuthenticateAdmin, ReviewController.reviewDelete);
+router.post('/review/job', request_param.any(), Authentication.AuthenticateAdmin, ReviewController.reviewJob);
+router.post('/review/list', request_param.any(), Authentication.AuthenticateAdmin, ReviewController.jobReviewList);
+router.post('/review/update/:id', request_param.any(), Authentication.AuthenticateAdmin, ReviewController.reviewUpdate);
 
 module.exports = router;
