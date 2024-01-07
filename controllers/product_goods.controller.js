@@ -29,7 +29,7 @@ class productGoodsController {
                 res.status(201).send({ status: 201, data: [], message: 'No Products found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -38,13 +38,13 @@ class productGoodsController {
             const goods_id = new mongoose.Types.ObjectId(req.params.id);
             let goodsInfo = await goodsRepo.getDetails({ _id: goods_id });
             if (!_.isEmpty(goodsInfo) && goodsInfo._id) {
-                res.send({ status: 200, data: goodsInfo, message: 'Product details has been fetched successfully' });
+                res.status(200).send({ status: 200, data: goodsInfo, message: 'Product details has been fetched successfully' });
             }
             else {
-                res.send({ status: 400, data: {}, message: 'Product not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 

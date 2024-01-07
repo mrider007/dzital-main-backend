@@ -28,7 +28,7 @@ class JobProposalController {
                 res.status(400).send({ status: 400, message: 'User not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -42,7 +42,7 @@ class JobProposalController {
                 res.status(400).send({ status: 400, message: 'Job Proposal not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -57,7 +57,7 @@ class JobProposalController {
                 res.status(400).send({ status: 400, message: 'No Job Proposal found for this job' })
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -76,7 +76,7 @@ class JobProposalController {
                 res.status(400).send({ status: 400, message: 'Job Proposal not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -93,10 +93,10 @@ class JobProposalController {
                 }
             }
             else {
-                res.send({ status: 400, message: 'Job Proposal not found' });
+                res.status(400).send({ status: 400, message: 'Job Proposal not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -115,7 +115,7 @@ class JobProposalController {
                 res.status(400).send({ status: 400, message: 'Job Proposal not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 }
