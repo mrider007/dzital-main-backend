@@ -14,7 +14,7 @@ class emailSettingController {
                 res.status(400).send({ status: 400, data: {}, message: 'Email Setting could not be saved' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -27,7 +27,7 @@ class emailSettingController {
                 res.status(400).send({ status: 400, data: {}, message: 'Email Setting not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -40,7 +40,7 @@ class emailSettingController {
                 res.status(400).send({ status: 400, data: {}, message: 'Email Setting not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -60,7 +60,7 @@ class emailSettingController {
                 res.status(400).send({ status: 400, data: {}, message: 'Email Setting not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 }
