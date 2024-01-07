@@ -20,7 +20,7 @@ class roleController {
                 }
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -45,7 +45,7 @@ class roleController {
                 res.status(201).send({ status: 201, data: [], message: 'No role found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -59,7 +59,7 @@ class roleController {
                 res.status(400).send({ status: 400, data: {}, message: 'Role not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -78,7 +78,7 @@ class roleController {
                 res.status(400).send({ status: 400, message: 'Role not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -97,7 +97,7 @@ class roleController {
                 res.status(400).send({ status: 400, message: 'Role not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 }
