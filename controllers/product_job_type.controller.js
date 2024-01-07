@@ -9,15 +9,15 @@ class JobTypeController {
         try {
             let jobTypeExist = await JobType.findOne({ title: req.body.title });
             if (!_.isEmpty(jobTypeExist) && jobTypeExist._id) {
-                res.send({ status: 400, data: {}, message: 'Job Type Already Exists' });
+                res.status(400).send({ status: 400, data: {}, message: 'Job Type Already Exists' });
             } else {
                 let saveData = await JobType.create(req.body);
                 if (!_.isEmpty(saveData) && saveData._id) {
-                    res.send({ status: 200, data: saveData, message: 'Job Type saved successfully' });
+                    res.status(200).send({ status: 200, data: saveData, message: 'Job Type saved successfully' });
                 }
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -40,13 +40,13 @@ class JobTypeController {
 
             let jobtypes = await jobtypeRepo.list(req);
             if (!_.isEmpty(jobtypes)) {
-                res.send({ status: 200, data: jobtypes.docs, total: jobtypes.total, limit: jobtypes.limit, page: jobtypes.page, pages: jobtypes.pages, message: 'Job Type list fetched successfully' });
+                res.status(200).send({ status: 200, data: jobtypes.docs, total: jobtypes.total, limit: jobtypes.limit, page: jobtypes.page, pages: jobtypes.pages, message: 'Job Type list fetched successfully' });
             }
             else {
-                res.send({ status: 201, data: [], message: 'No Job Type found' });
+                res.status(201).send({ status: 201, data: [], message: 'No Job Type found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -55,12 +55,12 @@ class JobTypeController {
         try {
             let jobtypes = await JobType.find();
             if (!_.isEmpty(jobtypes)) {
-                res.send({ status: 200, data: jobtypes, message: 'Job Types has been fetched' });
+                res.status(200).send({ status: 200, data: jobtypes, message: 'Job Types has been fetched' });
             } else {
-                res.send({ status: 201, data: [], message: 'No Job Type found' });
+                res.status(201).send({ status: 201, data: [], message: 'No Job Type found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -70,13 +70,13 @@ class JobTypeController {
             const job_type_id = new mongoose.Types.ObjectId(req.params.id);
             let jobTypeInfo = await JobType.findOne({ _id: job_type_id });
             if (!_.isEmpty(jobTypeInfo) && jobTypeInfo._id) {
-                res.send({ status: 200, data: jobTypeInfo, message: 'Job Type details has been fetched successfully' });
+                res.status(200).send({ status: 200, data: jobTypeInfo, message: 'Job Type details has been fetched successfully' });
             }
             else {
-                res.send({ status: 400, data: {}, message: 'Job Type not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Job Type not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -87,15 +87,15 @@ class JobTypeController {
             if (!_.isEmpty(JobTypeInfo) && JobTypeInfo._id) {
                 let jobtypeUpdate = await jobtypeRepo.updateById(req.body, job_type_id);
                 if (!_.isEmpty(jobtypeUpdate) && jobtypeUpdate._id) {
-                    res.send({ status: 200, data: jobtypeUpdate, message: 'Job Type has been updated successfully' });
+                    res.status(200).send({ status: 200, data: jobtypeUpdate, message: 'Job Type has been updated successfully' });
                 } else {
-                    res.send({ status: 400, data: {}, message: 'Sorry, unable to update Job Type at this moment!' });
+                    res.status(400).send({ status: 400, data: {}, message: 'Sorry, unable to update Job Type at this moment!' });
                 }
             } else {
-                res.send({ status: 400, data: {}, message: 'Job Type not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Job Type not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -106,20 +106,19 @@ class JobTypeController {
             if (!_.isEmpty(JobTypeInfo) && JobTypeInfo._id) {
                 let deleteData = await jobtypeRepo.delete(job_type_id);
                 if (!_.isEmpty(deleteData) && deleteData._id) {
-                    res.send({ status: 200, data: deleteData, message: 'Job Type has been removed successfully' });
+                    res.status(200).send({ status: 200, data: deleteData, message: 'Job Type has been removed successfully' });
                 }
                 else {
-                    res.send({ status: 400, data: {}, message: 'Job Type could not be removed' });
+                    res.status(400).send({ status: 400, data: {}, message: 'Job Type could not be removed' });
                 }
             }
             else {
-                res.send({ status: 400, data: {}, message: 'Job Type not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Job Type not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
-
 
 }
 

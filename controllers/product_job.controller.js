@@ -33,7 +33,7 @@ class JobController {
                 }
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -58,7 +58,7 @@ class JobController {
                 res.status(201).send({ status: 201, data: [], message: 'No Jobs Found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -73,7 +73,7 @@ class JobController {
                 res.status(400).send({ status: 400, message: 'Job not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -97,7 +97,7 @@ class JobController {
                 res.status(201).send({ status: 201, data: [], message: 'No Jobs Found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -117,7 +117,7 @@ class JobController {
                 res.status(400).send({ status: 400, message: 'Job not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -136,7 +136,7 @@ class JobController {
                 res.status(400).send({ status: 400, data: {}, message: 'Job not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -155,7 +155,7 @@ class JobController {
                 res.status(400).send({ status: 400, message: 'Job not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 }
