@@ -20,7 +20,7 @@ class faqController {
                 }
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -35,7 +35,7 @@ class faqController {
                 res.status(400).send({ status: 400, message: 'FAQ not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -62,7 +62,7 @@ class faqController {
                 res.status(201).send({ status: 201, data: [], message: 'No records found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -90,7 +90,7 @@ class faqController {
                 res.status(201).send({ status: 201, data: [], message: 'No records found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -111,7 +111,7 @@ class faqController {
                 res.status(400).send({ status: 400, data: {}, message: 'FAQ not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -130,7 +130,7 @@ class faqController {
                 res.status(400).send({ status: 400, data: {}, message: 'FAQ not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 }
