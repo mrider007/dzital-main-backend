@@ -16,7 +16,7 @@ class StoreSettingController {
                 res.status(400).send({ status: 400, data: {}, message: 'Store Setting data could not be saved' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -29,7 +29,7 @@ class StoreSettingController {
                 res.status(400).send({ status: 400, data: {}, message: 'Store Setting not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -72,7 +72,7 @@ class StoreSettingController {
                 res.status(400).send({ status: 400, message: 'Store Setting not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -85,7 +85,7 @@ class StoreSettingController {
                 res.status(400).send({ status: 400, data: {}, message: 'Store Setting not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
