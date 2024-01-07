@@ -9,19 +9,19 @@ class countryController {
         try {
             const countryCheck = await Country.findOne({ name: req.body.name });
             if (!_.isEmpty(countryCheck) && countryCheck._id) {
-                res.send({ status: 400, data: countryCheck, message: 'Country already exists' });
+                res.status(400).send({ status: 400, data: countryCheck, message: 'Country already exists' });
             }
             else {
                 let saveData = await Country.create(req.body);
                 if (!_.isEmpty(saveData) && saveData._id) {
-                    res.send({ status: 200, data: saveData, message: 'Country added successfully' });
+                    res.status(200).send({ status: 200, data: saveData, message: 'Country added successfully' });
                 }
                 else {
-                    res.send({ status: 400, data: {}, message: 'Country could not be added' });
+                    res.status(400).send({ status: 400, data: {}, message: 'Country could not be added' });
                 }
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -30,12 +30,12 @@ class countryController {
             const country_id = new mongoose.Types.ObjectId(req.params.id);
             let countryInfo = await Country.findOne({ _id: country_id });
             if (!_.isEmpty(countryInfo) && countryInfo._id) {
-                res.send({ status: 200, data: countryInfo, message: 'Country details has been fetched successfully' });
+                res.status(200).send({ status: 200, data: countryInfo, message: 'Country details has been fetched successfully' });
             } else {
-                res.send({ status: 400, data: {}, message: 'Country not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Country not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -57,13 +57,13 @@ class countryController {
 
             let countries = await countryRepo.list(req);
             if (!_.isEmpty(countries)) {
-                res.send({ status: 200, data: countries.docs, total: countries.total, limit: countries.limit, page: countries.page, pages: countries.pages, message: 'Country list has been fetched successfully' });
+                res.status(200).send({ status: 200, data: countries.docs, total: countries.total, limit: countries.limit, page: countries.page, pages: countries.pages, message: 'Country list has been fetched successfully' });
             }
             else {
-                res.send({ status: 400, data: {}, message: 'No country found' });
+                res.status(400).send({ status: 400, data: {}, message: 'No country found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -74,17 +74,17 @@ class countryController {
             if (!_.isEmpty(countryInfo) && countryInfo._id) {
                 let countryUpdate = await countryRepo.updateById(req.body, country_id);
                 if (!_.isEmpty(countryUpdate) && countryUpdate._id) {
-                    res.send({ status: 200, data: countryUpdate, message: 'Country has been updated successfully' });
+                    res.status(200).send({ status: 200, data: countryUpdate, message: 'Country has been updated successfully' });
                 }
                 else {
-                    res.send({ status: 400, data: {}, message: 'Country could not be updated' });
+                    res.status(400).send({ status: 400, data: {}, message: 'Country could not be updated' });
                 }
             }
             else {
-                res.send({ status: 400, data: {}, message: 'Country not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Country not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -95,17 +95,17 @@ class countryController {
             if (!_.isEmpty(countryDetails) && countryDetails._id) {
                 let countryDelete = await countryRepo.delete(country_id);
                 if (!_.isEmpty(countryDelete) && countryDelete._id) {
-                    res.send({ status: 200, data: countryDelete, message: 'Country has been removed successfully' });
+                    res.status(200).send({ status: 200, data: countryDelete, message: 'Country has been removed successfully' });
                 }
                 else {
-                    res.send({ status: 400, message: 'Country could not be removed' });
+                    res.status(400).send({ status: 400, message: 'Country could not be removed' });
                 }
             }
             else {
-                res.send({ status: 400, data: {}, message: 'Country not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Country not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
