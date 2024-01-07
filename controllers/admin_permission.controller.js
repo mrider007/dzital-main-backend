@@ -22,7 +22,7 @@ class permissionController {
                 }
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -50,7 +50,7 @@ class permissionController {
                 res.status(400).send({ status: 400, data: [], message: 'No Permission found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -65,7 +65,7 @@ class permissionController {
                 res.status(400).send({ status: 400, data: {}, message: 'Permission not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -81,7 +81,7 @@ class permissionController {
                 res.status(400).send({ status: 400, data: {}, message: 'Permission not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 }
