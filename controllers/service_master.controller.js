@@ -19,7 +19,7 @@ class serviceController {
                 }
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -32,7 +32,7 @@ class serviceController {
                 res.status(400).send({ status: 400, data: [], message: 'No Category found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -61,7 +61,7 @@ class serviceController {
                 res.status(201).send({ status: 201, data: [], message: 'No category found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -81,7 +81,7 @@ class serviceController {
                 res.status(400).send({ status: 400, data: {}, message: 'Service not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -101,7 +101,7 @@ class serviceController {
                 res.status(400).send({ status: 400, data: {}, messaage: 'Service not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -116,7 +116,7 @@ class serviceController {
                 res.status(400).send({ status: 400, data: {}, message: 'Service not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 }
