@@ -9,19 +9,19 @@ class currencyController {
         try {
             const currencyCheck = await Currency.findOne({ currency_name: req.body.currency_name });
             if (!_.isEmpty(currencyCheck) && currencyCheck._id) {
-                res.send({ status: 400, data: {}, message: 'Currency already exists' });
+                res.status(400).send({ status: 400, data: {}, message: 'Currency already exists' });
             }
             else {
                 let saveData = await Currency.create(req.body);
                 if (!_.isEmpty(saveData) && saveData._id) {
-                    res.send({ status: 200, data: saveData, message: 'Currency added successfully' });
+                    res.status(200).send({ status: 200, data: saveData, message: 'Currency added successfully' });
                 }
                 else {
-                    res.send({ status: 400, data: {}, message: 'Currency could not be added' });
+                    res.status(400).send({ status: 400, data: {}, message: 'Currency could not be added' });
                 }
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -29,13 +29,13 @@ class currencyController {
         try {
             const currencyList = await currencyRepo.list(req);
             if (!_.isEmpty(currencyList)) {
-                res.send({ status: 200, data: currencyList.docs, total: currencyList.total, limit: currencyList.limit, page: currencyList.page, pages: currencyList.pages, message: 'Currency list has been fetched successfully' });
+                res.status(200).send({ status: 200, data: currencyList.docs, total: currencyList.total, limit: currencyList.limit, page: currencyList.page, pages: currencyList.pages, message: 'Currency list has been fetched successfully' });
             }
             else {
-                res.send({ status: 400, data: [], message: 'No records found' });
+                res.status(400).send({ status: 400, data: [], message: 'No records found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -44,13 +44,13 @@ class currencyController {
             const currency_id = new mongoose.Types.ObjectId(req.params.id);
             const currencyInfo = await Currency.findOne({ _id: currency_id });
             if (!_.isEmpty(currencyInfo) && currencyInfo._id) {
-                res.send({ status: 200, data: currencyInfo, message: 'Currency details has been fetched successfully' });
+                res.status(200).send({ status: 200, data: currencyInfo, message: 'Currency details has been fetched successfully' });
             }
             else {
-                res.send({ status: 400, data: {}, message: 'Currency not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Currency not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -61,17 +61,17 @@ class currencyController {
             if (!_.isEmpty(currencyInfo) && currencyInfo._id) {
                 let currencyUpdate = await currencyRepo.updateById(req.body, currency_id);
                 if (!_.isEmpty(currencyUpdate) && currencyUpdate._id) {
-                    res.send({ status: 200, data: currencyUpdate, message: 'Currency details has been updated successfully' });
+                    res.status(200).send({ status: 200, data: currencyUpdate, message: 'Currency details has been updated successfully' });
                 }
                 else {
-                    res.send({ status: 400, data: {}, message: 'Currency could not be updated' });
+                    res.status(400).send({ status: 400, data: {}, message: 'Currency could not be updated' });
                 }
             }
             else {
-                res.send({ status: 400, data: {}, message: 'Currency not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Currency not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -82,17 +82,17 @@ class currencyController {
             if (!_.isEmpty(currencyInfo) && currencyInfo._id) {
                 let currencyDelete = await currencyRepo.delete(currency_id);
                 if (!_.isEmpty(currencyDelete) && currencyDelete._id) {
-                    res.send({ status: 200, data: currencyDelete, message: 'Currency has been removed successfully' });
+                    res.status(200).send({ status: 200, data: currencyDelete, message: 'Currency has been removed successfully' });
                 }
                 else {
-                    res.send({ status: 400, data: {}, message: 'Sorry, unable to remove currency at this moment' });
+                    res.status(400).send({ status: 400, data: {}, message: 'Sorry, unable to remove currency at this moment' });
                 }
             }
             else {
-                res.send({ status: 400, data: {}, message: 'Currency not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Currency not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
