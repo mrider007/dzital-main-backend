@@ -6,7 +6,7 @@ const PromocodeSchema = new Schema({
     title: { type: String, trim: true },
     type: { type: String, default: 'Percentage', enum: ['Percentage', 'Flat'] },
     value: { type: Number },
-    status: { type: String, trim: true },
+    status: { type: String, default: 'Active', trim: true },
     expiry_date: { type: Date, index: true, trim: true },
 }, { timestamps: true, versionKey: false });
 
