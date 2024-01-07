@@ -40,7 +40,7 @@ class adminController {
                 }
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -68,7 +68,7 @@ class adminController {
                 }
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -81,7 +81,7 @@ class adminController {
                 res.status(400).send({ status: 400, message: 'Admin not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -109,7 +109,7 @@ class adminController {
                 res.status(201).send({ status: 201, message: 'No user found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -132,7 +132,7 @@ class adminController {
                 res.status(400).send({ status: 400, message: 'Admin details could not be updated' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -149,7 +149,7 @@ class adminController {
                 res.status(400).send({ status: 400, message: 'Admin not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -172,7 +172,7 @@ class adminController {
                 res.status(400).send({ status: 400, message: 'Admin not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -198,7 +198,7 @@ class adminController {
                 res.status(201).send({ status: 201, data: [], message: 'No user found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -221,13 +221,13 @@ class adminController {
 
             let premiumusers = await adminRepo.getPremiumUsers(req);
             if (!_.isEmpty(premiumusers)) {
-                res.send({ status: 200, data: premiumusers.docs, total: premiumusers.total, limit: premiumusers.limit, page: premiumusers.page, pages: premiumusers.pages, message: 'Premium Users List fetched successfully' });
+                res.status(200).send({ status: 200, data: premiumusers.docs, total: premiumusers.total, limit: premiumusers.limit, page: premiumusers.page, pages: premiumusers.pages, message: 'Premium Users List fetched successfully' });
             }
             else {
-                res.send({ status: 201, data: [], message: 'No Premium User found' });
+                res.status(201).send({ status: 201, data: [], message: 'No Premium User found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -250,13 +250,13 @@ class adminController {
 
             const activeusers = await adminRepo.getActiveUsers(req);
             if (!_.isEmpty(activeusers)) {
-                res.send({ status: 200, data: activeusers.docs, total: activeusers.total, limit: activeusers.limit, page: activeusers.page, pages: activeusers.pages, message: 'Active Users List fetched successfully' });
+                res.status(200).send({ status: 200, data: activeusers.docs, total: activeusers.total, limit: activeusers.limit, page: activeusers.page, pages: activeusers.pages, message: 'Active Users List fetched successfully' });
             }
             else {
-                res.send({ status: 201, data: [], message: 'No Active User found' });
+                res.status(201).send({ status: 201, data: [], message: 'No Active User found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -279,13 +279,13 @@ class adminController {
 
             const deactivatedusers = await adminRepo.getDeactivatedUsers(req);
             if (!_.isEmpty(deactivatedusers)) {
-                res.send({ status: 200, data: deactivatedusers.docs, total: deactivatedusers.total, limit: deactivatedusers.limit, page: deactivatedusers.page, pages: deactivatedusers.pages, message: 'Deactivated Users List fetched successfully' });
+                res.status(200).send({ status: 200, data: deactivatedusers.docs, total: deactivatedusers.total, limit: deactivatedusers.limit, page: deactivatedusers.page, pages: deactivatedusers.pages, message: 'Deactivated Users List fetched successfully' });
             }
             else {
-                res.send({ status: 201, data: [], message: 'No Deactivated User found' });
+                res.status(201).send({ status: 201, data: [], message: 'No Deactivated User found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -317,7 +317,7 @@ class adminController {
                 }
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -332,7 +332,7 @@ class adminController {
                 res.status(400).send({ status: 400, data: {}, message: 'User not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -353,7 +353,7 @@ class adminController {
                 res.status(400).send({ status: 400, data: {}, message: 'User not found!' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -381,7 +381,7 @@ class adminController {
                 res.status(400).send({ status: 400, data: {}, message: 'User not found!' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
