@@ -9,20 +9,20 @@ class adminModuleController {
         try {
             let moduleCheck = await Module.findOne({ name: req.body.name });
             if (!_.isEmpty(moduleCheck) && moduleCheck._id) {
-                res.send({ status: 400, data: {}, message: 'Module Already Exists' });
+                res.status(400).send({ status: 400, data: {}, message: 'Module Already Exists' });
             }
             else {
                 req.body.slug = req.body.name.trim().replace(/\s+/g, '-').toLowerCase();
                 let moduleAdd = await Module.create(req.body);
                 if (!_.isEmpty(moduleAdd) && moduleAdd._id) {
-                    res.send({ status: 200, data: moduleAdd, message: 'Module has been added successfully' });
+                    res.status(200).send({ status: 200, data: moduleAdd, message: 'Module has been added successfully' });
                 }
                 else {
-                    res.send({ status: 400, data: {}, message: 'Module could not be added' });
+                    res.status(400).send({ status: 400, data: {}, message: 'Module could not be added' });
                 }
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -31,13 +31,13 @@ class adminModuleController {
             const module_id = new mongoose.Types.ObjectId(req.params.id);
             let moduleInfo = await Module.findById(module_id);
             if (!_.isEmpty(moduleInfo) && moduleInfo._id) {
-                res.send({ status: 200, data: moduleInfo, message: 'Module details has been fetched successfully' });
+                res.status(200).send({ status: 200, data: moduleInfo, message: 'Module details has been fetched successfully' });
             }
             else {
-                res.send({ status: 400, data: {}, message: 'Module not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Module not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -48,17 +48,17 @@ class adminModuleController {
             if (!_.isEmpty(moduleInfo) && moduleInfo._id) {
                 let moduleUpdate = await ModuleRepo.updateById(req.body, module_id);
                 if (!_.isEmpty(moduleUpdate) && moduleUpdate._id) {
-                    res.send({ status: 200, data: moduleUpdate, message: 'Module has been updated successfully' });
+                    res.status(200).send({ status: 200, data: moduleUpdate, message: 'Module has been updated successfully' });
                 }
                 else {
-                    res.send({ status: 400, data: {}, message: 'Module could not be updated' });
+                    res.status(400).send({ status: 400, data: {}, message: 'Module could not be updated' });
                 }
             }
             else {
-                res.send({ status: 400, data: {}, message: 'Module could not be found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Module could not be found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -85,7 +85,7 @@ class adminModuleController {
                 res.status(201).send({ status: 201, data: [], message: 'No Module found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
