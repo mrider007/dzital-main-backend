@@ -28,7 +28,7 @@ class cmsController {
                 }
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -43,7 +43,7 @@ class cmsController {
                 res.status(400).send({ status: 400, data: {}, message: 'CMS not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -57,7 +57,7 @@ class cmsController {
                 res.status(400).send({ status: 400, data: {}, message: 'CMS not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -77,7 +77,7 @@ class cmsController {
                 res.status(400).send({ status: 400, data: {}, message: 'CMS not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -97,7 +97,7 @@ class cmsController {
                 res.status(400).send({ status: 400, data: {}, message: 'CMS not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -117,7 +117,7 @@ class cmsController {
                 res.status(400).send({ status: 400, data: {}, message: 'CMS not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -143,7 +143,7 @@ class cmsController {
                 res.status(400).send({ status: 400, data: [], message: 'CMS not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -157,7 +157,7 @@ class cmsController {
                 res.status(400).send({ status: 400, data: [], message: 'No CMS found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
