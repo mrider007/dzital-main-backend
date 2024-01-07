@@ -20,7 +20,7 @@ class MembershipPlanController {
                 }
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -47,7 +47,7 @@ class MembershipPlanController {
                 res.status(201).send({ status: 201, data: [], message: 'No Membership Plan found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -74,7 +74,7 @@ class MembershipPlanController {
                 res.status(400).send({ status: 400, data: [], message: 'No Membership Plan Found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -89,7 +89,7 @@ class MembershipPlanController {
                 res.status(400).send({ status: 400, data: {}, message: 'Membership Plan not found!' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -108,7 +108,7 @@ class MembershipPlanController {
                 res.status(400).send({ status: 400, data: {}, message: 'Membership Plan not found!' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -126,7 +126,7 @@ class MembershipPlanController {
                 }
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 }
