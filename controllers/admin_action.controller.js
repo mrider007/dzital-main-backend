@@ -10,13 +10,13 @@ class adminActionController {
             req.body.slug = req.body.name.trim().replace(/\s+/g, '-').toLowerCase();
             let actionAdd = await Action.create(req.body);
             if (!_.isEmpty(actionAdd) && actionAdd._id) {
-                res.send({ status: 200, data: actionAdd, message: 'Admin Action has been added successfully' });
+                res.status(200).send({ status: 200, data: actionAdd, message: 'Admin Action has been added successfully' });
             }
             else {
-                res.send({ status: 400, data: {}, message: 'Admin Action has been added successfully' });
+                res.status(200).send({ status: 400, data: {}, message: 'Admin Action has been added successfully' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -41,7 +41,7 @@ class adminActionController {
                 res.status(201).send({ status: 201, data: [], message: 'Action not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -52,17 +52,17 @@ class adminActionController {
             if (!_.isEmpty(actionDetails) && actionDetails._id) {
                 let actionUpdate = await adminActionRepo.updateById(req.body, action_id);
                 if (!_.isEmpty(actionUpdate) && actionUpdate._id) {
-                    res.send({ status: 200, data: actionUpdate, message: 'Action has been updated successfully' });
+                    res.status(200).send({ status: 200, data: actionUpdate, message: 'Action has been updated successfully' });
                 }
                 else {
-                    res.send({ status: 400, data: {}, message: "Action could not be updated" });
+                    res.status(400).send({ status: 400, data: {}, message: "Action could not be updated" });
                 }
             }
             else {
-                res.send({ status: 400, data: {}, message: 'Action not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Action not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
