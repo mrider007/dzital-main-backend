@@ -43,7 +43,7 @@ class productWishlistController {
                 res.status(400).send({ status: 400, data: {}, message: 'User not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -58,7 +58,7 @@ class productWishlistController {
                 res.status(400).send({ status: 400, data: {}, message: 'You have no product in your wishlist' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -80,7 +80,7 @@ class productWishlistController {
                 }
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 }

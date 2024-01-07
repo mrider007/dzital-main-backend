@@ -17,13 +17,12 @@ class propertyController {
                 if (!_.isEmpty(propertySave) && propertySave._id) {
                     res.status(200).send({ status: 200, data: propertySave, message: 'Property has been added successfully' });
                 }
-                //res.status(200).send({ status: 200, data: propertyCheck, message: 'Property has been added successfully' });
             }
             else {
                 res.status(400).send({ status: 400, data: {}, message: 'Property could not be added' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -38,7 +37,7 @@ class propertyController {
                 res.status(400).send({ status: 400, data: {}, message: 'Property not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -66,7 +65,7 @@ class propertyController {
                 res.status(201).send({ status: 201, data: [], message: 'No property found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 }
