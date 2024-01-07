@@ -27,7 +27,7 @@ class productFashionController {
                 res.status(201).send({ status: 201, data: [], message: 'No Products found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 

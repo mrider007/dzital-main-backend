@@ -23,7 +23,7 @@ class freelancerController {
                 res.status(400).send({ status: 400, message: 'Admin not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -32,13 +32,13 @@ class freelancerController {
             const freelancer_id = new mongoose.Types.ObjectId(req.params.id);
             let freelancerInfo = await freelancerRepo.getDetails({ _id: freelancer_id });
             if (!_.isEmpty(freelancerInfo) && freelancerInfo._id) {
-                res.send({ status: 200, data: freelancerInfo, message: 'Product Freelancer details has been fetched successfully' });
+                res.status(200).send({ status: 200, data: freelancerInfo, message: 'Product Freelancer details has been fetched successfully' });
             }
             else {
-                res.send({ status: 400, data: {}, message: 'Product not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
