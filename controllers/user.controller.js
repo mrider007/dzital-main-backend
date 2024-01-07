@@ -82,7 +82,7 @@ class userController {
                 res.status(400).send({ status: 400, message: 'User not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -106,7 +106,7 @@ class userController {
                 res.status(400).send({ status: 400, data: {}, message: 'Profile details could not be updated' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -125,7 +125,7 @@ class userController {
                 res.status(400).send({ status: 400, message: 'Password could not be updated' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -141,7 +141,7 @@ class userController {
                 res.status(400).send({ status: 400, message: 'User not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -163,7 +163,7 @@ class userController {
                 res.status(200).send({ status: 200, data: userData, token: token, message: "User have successfully registered" });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -177,7 +177,7 @@ class userController {
                 res.send({ status: 400, data: {}, message: 'No Users found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
