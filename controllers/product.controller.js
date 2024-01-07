@@ -165,7 +165,7 @@ class productController {
                 res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -190,7 +190,7 @@ class productController {
                 res.status(400).send({ status: 400, data: [], message: 'No products found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -216,7 +216,7 @@ class productController {
                 res.status(400).send({ status: 400, data: [], message: 'No Approved Products found' });
             }            
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -241,7 +241,7 @@ class productController {
                 res.status(400).send({ status: 400, data: [], message: 'No Unapprved Products Found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -266,7 +266,7 @@ class productController {
                 res.status(400).send({ status: 400, data: [], message: 'No products found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -325,7 +325,7 @@ class productController {
                 res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -351,7 +351,7 @@ class productController {
                 res.status(400).send({ status: 400, data: [], message: 'No Products found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -513,7 +513,7 @@ class productController {
                 res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -580,7 +580,7 @@ class productController {
                 res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -600,7 +600,7 @@ class productController {
                 res.status(400).send({ status: 400, data: {}, message: 'Product not found!' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 }

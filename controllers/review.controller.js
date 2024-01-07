@@ -27,7 +27,7 @@ class ReviewController {
                 }
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -46,7 +46,7 @@ class ReviewController {
                 res.status(201).send({ status: 201, message: 'Job not found!' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -60,7 +60,7 @@ class ReviewController {
                 res.status(201).send({ status: 201, data: {}, message: 'Review not found' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -79,7 +79,7 @@ class ReviewController {
                 res.status(201).send({ status: 201, data: {}, message: 'Review not found!' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -99,7 +99,7 @@ class ReviewController {
                 res.status(201).send({ status: 201, data: {}, message: 'Review could not be removed' });
             }
         } catch (e) {
-            res.send({ status: 500, message: e.message });
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
