@@ -5,7 +5,7 @@ const router = express.Router();
 const multer = require('multer');
 const request_param = multer();
 
-router.get('/product/electronics/details/:id', Authentication.Authenticate, ElectronicsController.details);
-router.post('/product/electronics/list', request_param.any(), Authentication.Authenticate, ElectronicsController.list);
+router.get('/product/electronics/details/:id', ElectronicsController.details);
+router.post('/product/electronics/list', request_param.any(), ElectronicsController.list);
 
 module.exports = router;
