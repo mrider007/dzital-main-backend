@@ -50,6 +50,18 @@ const promocodeRepository = {
         } catch (e) {
             throw e;
         }
+    }, 
+
+    updateById: async (data, id) => {
+        try {
+            let promocodeUpdate = await Promocode.findByIdAndUpdate(id, data, { new: true, upsert: true }).exec();
+            if (!promocodeUpdate) {
+                return null;
+            }
+            return promocodeUpdate;
+        } catch (e) {
+            throw e;
+        }
     }
 
 }
