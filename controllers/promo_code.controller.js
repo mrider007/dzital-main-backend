@@ -47,6 +47,21 @@ class promocodeController {
         }
     };
 
+    async details(req, res) {
+        try {
+            const promocode_id = new mongoose.Types.ObjectId(req.params.id);
+            let PromocodeInfo = await Promocode.findOne({ _id: promocode_id });
+            if (!_.isEmpty(PromocodeInfo) && PromocodeInfo._id) {
+                res.status(200).send({ status: 200, data: PromocodeInfo, message: 'Promocode details has been fetched successfully' });
+            }
+            else {
+                res.status(400).send({ status: 400, data: {}, message: 'Promocode not found' });
+            }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+
 }
 
 module.exports = new promocodeController();
