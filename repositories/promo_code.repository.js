@@ -50,7 +50,7 @@ const promocodeRepository = {
         } catch (e) {
             throw e;
         }
-    }, 
+    },
 
     updateById: async (data, id) => {
         try {
@@ -59,6 +59,21 @@ const promocodeRepository = {
                 return null;
             }
             return promocodeUpdate;
+        } catch (e) {
+            throw e;
+        }
+    },
+
+    delete: async (id) => {
+        try {
+            let promo_code = await Promocode.findById(id);
+            if (promo_code) {
+                let promocodeDelete = await Promocode.deleteOne({ _id: id }).exec();
+                if (!promocodeDelete) {
+                    return null;
+                }
+                return promo_code;
+            }
         } catch (e) {
             throw e;
         }

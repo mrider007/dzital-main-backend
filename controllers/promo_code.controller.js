@@ -83,6 +83,26 @@ class promocodeController {
         }
     };
 
+    async delete(req, res) {
+        try {
+            const promocode_id = new mongoose.Types.ObjectId(req.params.id);
+            let PromocodeInfo = await Promocode.findOne({ _id: promocode_id });
+            if (!_.isEmpty(PromocodeInfo) && PromocodeInfo._id) {
+                let deleteData = await promocodeRepo.delete(promocode_id);
+                if (!_.isEmpty(deleteData) && deleteData._id) {
+                    res.status(200).send({ status: 200, data: deleteData, message: 'Promocode has been removed' });
+                } else {
+                    res.status(400).send({ status: 400, message: 'Promocode could not be removed' });
+                }
+            }
+            else {
+                res.status(400).send({ status: 400, message: 'Promocode not found' });
+            }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+
 }
 
 module.exports = new promocodeController();
