@@ -5,7 +5,7 @@ const router = express.Router();
 const multer = require('multer');
 const request_param = multer();
 
-router.get('/product/goods/details/:id', Authentication.Authenticate, ProductGoods.details);
-router.post('/product/goods/list', request_param.any(), Authentication.Authenticate, ProductGoods.list);
+router.get('/product/goods/details/:id', ProductGoods.details);
+router.post('/product/goods/list', request_param.any(), ProductGoods.list);
 
 module.exports = router;
