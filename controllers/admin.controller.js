@@ -231,6 +231,34 @@ class adminController {
         }
     };
 
+    async nonPremiumUsersList(req, res) {
+        try {
+            if (!req.body.page) {
+                req.body.page = 1;
+            }
+            else {
+                req.body.page = parseInt(req.body.page);
+            }
+
+            if (!req.body.limit) {
+                req.body.limit = 10;
+            }
+            else {
+                req.body.limit = parseInt(req.body.limit);
+            }
+
+            const nonpremiumusers = await adminRepo.getNonPremiumUsers(req);
+            if (!_.isEmpty(nonpremiumusers)) {
+                res.status(200).send({ status: 200, data: nonpremiumusers.docs, total: nonpremiumusers.total, limit: nonpremiumusers.limit, page: nonpremiumusers.page, pages: nonpremiumusers.pages, message: 'Non Premium Users List fetched successfully' });
+            }
+            else {
+                res.status(201).send({ status: 201, data: [], message: 'Non Premium Users not found' });
+            }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+
     /** Admin Active Users List */
     async activeUsersList(req, res) {
         try {

@@ -42,5 +42,6 @@ router.post('/admin/user/update/:id', uploadFile.any(), Authentication.Authentic
 router.post('/admin/premium/users/list', request_param.any(), Authentication.AuthenticateAdmin, adminController.premiumUsersList);
 router.post('/admin/active/users/list', request_param.any(), Authentication.AuthenticateAdmin, adminController.activeUsersList);
 router.post('/admin/inactive/users/list', request_param.any(), Authentication.AuthenticateAdmin, adminController.deactivatedUsersList);
+router.post('/admin/non-premium/users/list', request_param.any(), Authentication.AuthenticateAdmin, adminController.nonPremiumUsersList);
 
 module.exports = router;
