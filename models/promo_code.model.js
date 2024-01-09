@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
 
 const PromocodeSchema = new Schema({
     category_id: { type: Schema.Types.ObjectId, ref: 'service_category', index: true },
@@ -9,5 +10,7 @@ const PromocodeSchema = new Schema({
     status: { type: String, default: 'Active', trim: true },
     expiry_date: { type: Date, index: true, trim: true },
 }, { timestamps: true, versionKey: false });
+
+PromocodeSchema.plugin(mongooseAggregatePaginate);
 
 module.exports = mongoose.model('Promo_code', PromocodeSchema);

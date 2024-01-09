@@ -32,7 +32,7 @@ class promocodeController {
                 req.body.limit = 10
             }
             else {
-                req.body.limit = parseInt(req,body.limit);
+                req.body.limit = parseInt(req.body.limit);
             }
 
             const promocodes = await promocodeRepo.list(req);
