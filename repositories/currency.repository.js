@@ -29,6 +29,28 @@ const currencyRepository = {
             conditions['$and'] = and_clauses;
 
             let currency = Currency.aggregate([
+                {
+                    $lookup: {
+                        from: 'languages',
+                        localField: 'language_id',
+                        foreignField: '_id',
+                        as: 'language_details'
+                    }
+                },
+                { $unwind: { path: '$language_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: '$_id',
+                        currency_name: { $first: '$currency_name' },
+                        code: { $first: '$code' },
+                        exchange_rate: { $first: '$exchange_rate' },
+                        is_default: { $first: '$is_default' },
+                        country: { $first: "$country" },
+                        currency_symbol: { $first: '$currency_symbol' },
+                        language_id: { $first: "$language_id" },
+                        language: { $first: '$language_details.language' }
+                    }
+                },
                 { $match: conditions },
                 { $sort: { _id: -1 } }
             ]);
