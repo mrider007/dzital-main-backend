@@ -5,7 +5,7 @@ const router = express.Router();
 const multer = require('multer');
 const request_param = multer();
 
-router.get('/admin/email/setting/details', Authentication.AuthenticateAdmin, emailSettingController.details);
+router.get('/admin/email/setting/details', emailSettingController.details);
 router.get('/email/setting/detail', Authentication.Authenticate, emailSettingController.detail);
 router.post('/admin/email/setting/add', request_param.any(), Authentication.AuthenticateAdmin, emailSettingController.add);
 router.post('/admin/email/setting/update/:id', request_param.any(), Authentication.AuthenticateAdmin, emailSettingController.update);
