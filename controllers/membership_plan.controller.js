@@ -7,7 +7,7 @@ class MembershipPlanController {
 
     async createPlan(req, res) {
         try {
-            let planInfo = await MembershipPlan.findOne({ title: req.body.title, amount: req.body.amount });
+            let planInfo = await MembershipPlan.findOne({ title: req.body.title });
             if (!_.isEmpty(planInfo) && planInfo._id) {
                 res.status(400).send({ status: 400, data: {}, message: 'Plan already exists' });
             }
