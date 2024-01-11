@@ -3,6 +3,7 @@ const userRepo = require('../repositories/user.repository');
 const bcrypt = require('bcrypt');
 const jsonwebtoken = require('jsonwebtoken');
 const cloudinary = require('cloudinary');
+const Membership_Plan = require('../models/membership_plan.model');
 
 class userController {
     constructor() { }
@@ -26,6 +27,8 @@ class userController {
                 else {
                     let password = req.body.password;
                     req.body.password = bcrypt.hashSync(password, 10);
+                    let freeplan = await Membership_Plan.findOne({ title: 'Free Plan' });
+                    req.body.plan_id = freeplan._id;
                     let saveUser = await User.create(req.body);
                     if (!_.isEmpty(saveUser)) {
                         let token = jsonwebtoken.sign({ email: saveUser.email, id: saveUser._id }, process.env.JWTSECERT, { expiresIn: process.env.JWTTIME });
