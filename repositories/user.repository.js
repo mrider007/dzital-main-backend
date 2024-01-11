@@ -68,6 +68,8 @@ const userRepository = {
                         email: { $first: '$email' },
                         image: { $first: '$image' },
                         mobile: { $first: '$mobile' },
+                        address: { $first: '$address' },
+                        bio: { $first: '$bio' },
                         social_id: { $first: '$social_id' },
                         register_type: { $first: '$register_type' },
                         plan_id: { $first: '$plan_id' },
