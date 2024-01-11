@@ -617,7 +617,7 @@ class productController {
                 const categoryDetails = await Category.findOne({ _id: category_id });
                 if (categoryDetails.title === 'Real Estate') {
                     let real_estate_products = await propertyRepo.list(req);
-                    res.status(200).send({ status: 200, data: real_estate_products, total: real_estate_products.total, limit: real_estate_products.limit, page: real_estate_products.page, pages: real_estate_products.pages, message: 'Real Estate Products fetched successfully' });
+                    res.status(200).send({ status: 200, data: real_estate_products.docs, total: real_estate_products.total, limit: real_estate_products.limit, page: real_estate_products.page, pages: real_estate_products.pages, message: 'Real Estate Products fetched successfully' });
                 }
                 else if (categoryDetails.title === 'Jobs') {
                     let job_products = await jobRepo.List(req);
