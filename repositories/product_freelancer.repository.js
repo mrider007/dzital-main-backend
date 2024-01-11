@@ -62,7 +62,7 @@ const freelancerRepository = {
                         skills: { $first: '$skills' },
                         location: { $first: '$location' },
                         budget: { $first: '$budget' },
-                        status: { $first: '$status' },
+                        status: { $first: '$product_details.status' },
                         category_id: { $first: '$category_id' },
                         category_name: { $first: '$category_details.title' },
                         createdAt: { $first: '$createdAt' }
