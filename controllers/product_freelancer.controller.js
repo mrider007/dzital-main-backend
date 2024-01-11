@@ -42,6 +42,32 @@ class freelancerController {
         }
     };
 
+    async list(req, res) {
+        try {
+            if (!req.body.page) {
+                req.body.page = 1;
+            }
+            else {
+                req.body.page = parseInt(req.body.page);
+            }
+
+            if (!req.body.limit) {
+                req.body.limit = 10;
+            }
+            else {
+                req.body.limit = parseInt(req.body.limit);
+            }
+            const freelancer = await freelancerRepo.list(req);
+            if (!_.isEmpty(freelancer)) {
+                res.status(200).send({ status: 200, data: freelancer, message: 'Freelancer Products fetched successfully' });
+            } else {
+                res.status(201).send({ status: 201, data: [], message: 'No Products Found' });
+            }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+
 }
 
 module.exports = new freelancerController();
