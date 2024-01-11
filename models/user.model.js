@@ -18,6 +18,7 @@ const UserSchema = new mongoose.Schema({
     mobile: { type: String, default: '', index: true, trim: true },
     password: { type: String, index: true, trim: true },
     social_id: { type: String, default: '', index: true, trim: true },
+    bio: { type: String, default: '' },
     address: { type: String, default: '' },
     lat: { type: String, trim: true },
     long: { type: String, trim: true },
