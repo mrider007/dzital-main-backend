@@ -59,7 +59,7 @@ class freelancerController {
             }
             const freelancer = await freelancerRepo.list(req);
             if (!_.isEmpty(freelancer)) {
-                res.status(200).send({ status: 200, data: freelancer, message: 'Freelancer Products fetched successfully' });
+                res.status(200).send({ status: 200, data: freelancer.docs, total: freelancer.total, limit: freelancer.limit, page: freelancer.page, pages: freelancer.pages, message: 'Freelancer Products fetched successfully' });
             } else {
                 res.status(201).send({ status: 201, data: [], message: 'No Products Found' });
             }
