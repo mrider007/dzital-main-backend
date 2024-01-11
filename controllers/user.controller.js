@@ -184,6 +184,15 @@ class userController {
         }
     };
 
+    async userBioAddressUpdate(req, res) {
+        try {
+            const userUpdate = await User.updateMany({}, { $set: { bio: '', address: '' } });
+            res.status(200).send({ status: 200, data: userUpdate, message: 'User bio added updated successfully' });
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+
 }
 
 module.exports = new userController();
