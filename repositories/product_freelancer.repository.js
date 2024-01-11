@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Freelancer = require('../models/product_freelancer.model');
 
 const freelancerRepository = {
@@ -27,10 +28,14 @@ const freelancerRepository = {
 
     list: async (req) => {
         try {
-            var conditions = {};   
+            var conditions = {};
             var and_clauses = [];
-            
-            and_clauses.push({ });
+
+            and_clauses.push({});
+
+            if (_.isObject(req.body) && _.has(req.body, 'category_id')) {
+                and_clauses.push({ 'category_id': new mongoose.Types.ObjectId(req.body.category_id) });
+            }
 
             conditions['$and'] = and_clauses;
 
@@ -66,7 +71,7 @@ const freelancerRepository = {
                         category_id: { $first: '$category_id' },
                         category_name: { $first: '$category_details.title' },
                         createdAt: { $first: '$createdAt' }
-                    }                    
+                    }
                 },
                 { $match: conditions },
                 { $sort: { _id: -1 } }

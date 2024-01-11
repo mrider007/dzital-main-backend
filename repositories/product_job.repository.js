@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Job = require('../models/product_jobs.model');
 
 const JobRepository = {

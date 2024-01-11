@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const ProductGoods = require('../models/product_goods.model');
 
 const goodsRepository = {

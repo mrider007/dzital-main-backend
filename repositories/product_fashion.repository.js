@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const ProductFashion = require('../models/product_fashion.model');
 
 const productFashionRepository = {
