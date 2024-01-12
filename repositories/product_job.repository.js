@@ -30,7 +30,7 @@ const JobRepository = {
                 { $unwind: { path: '$user_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
-                        from: 'job_types',
+                        from: 'product_job_types',
                         localField: 'job_type',
                         foreignField: '_id',
                         as: 'job_type_details'
@@ -42,15 +42,9 @@ const JobRepository = {
                         _id: '$_id',
                         title: { $first: '$title' },
                         description: { $first: '$description' },
-                        budget: { $first: '$budget' },
-                        date: { $first: '$date' },
                         skills: { $first: '$skills' },
-                        status: { $first: '$status' },
-                        createdAt: { $first: '$createdAt' },
-                        user_id: { $first: '$user_id' },
-                        admin_id: { $first: '$admin_id' },
-                        job_type: { $first: '$job_type' },
-                        user_name: { $first: '$user_details.name' }
+                        job_type: { $first: '$job_type_details.title' },
+                        createdAt: { $first: '$createdAt' }
                     }
                 }
             ]);
