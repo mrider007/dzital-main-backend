@@ -15,9 +15,6 @@ class JobController {
             else if (!_.has(req.body, 'description')) {
                 res.status(400).send({ status: 400, message: 'Job Description is required' });
             }
-            else if (!_.has(req.body, 'budget')) {
-                res.status(400).send({ status: 400, message: 'Budget Amount is required' });
-            }
             else {
                 let adminInfo = await Admin.findOne({ _id: req.user._id });
                 if (!_.isEmpty(adminInfo)) {
