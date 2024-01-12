@@ -16,17 +16,12 @@ class JobController {
                 res.status(400).send({ status: 400, message: 'Job Description is required' });
             }
             else {
-                let adminInfo = await Admin.findOne({ _id: req.user._id });
-                if (!_.isEmpty(adminInfo)) {
-                    let jobSave = await Job.create(req.body);
-                    if (!_.isEmpty(jobSave) && jobSave._id) {
-                        res.status(200).send({ status: 200, data: jobSave, message: 'Job Post saved successfully' });
-                    }
-                    else {
-                        res.status(400).send({ status: 400, message: 'Job Post could not be saved' });
-                    }
-                } else {
-                    res.status(400).send({ status: 400, message: 'Admin not found' });
+                let jobSave = await Job.create(req.body);
+                if (!_.isEmpty(jobSave) && jobSave._id) {
+                    res.status(200).send({ status: 200, data: jobSave, message: 'Job Post saved successfully' });
+                }
+                else {
+                    res.status(400).send({ status: 400, message: 'Job Post could not be saved' });
                 }
             }
         } catch (e) {
