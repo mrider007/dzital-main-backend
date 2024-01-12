@@ -44,6 +44,7 @@ const JobRepository = {
                         description: { $first: '$description' },
                         skills: { $first: '$skills' },
                         job_type: { $first: '$job_type_details.title' },
+                        job_status: { $first: '$job_status' },
                         createdAt: { $first: '$createdAt' }
                     }
                 }
@@ -216,16 +217,12 @@ const JobRepository = {
                 {
                     $group: {
                         _id: '$_id',
-                        user_id: { $first: "$user_id" },
                         title: { $first: "$title" },
                         description: { $first: "$description" },
                         skills: { $first: '$skills' },
-                        budget: { $first: '$budget' },
-                        date: { $first: "$date" },
-                        status: { $first: "$status" },
-                        posted_by: { $first: '$user_details.name' },
-                        job_type: { $first: '$job_type' },
-                        job_type_title: { $first: '$job_type_details.title' }
+                        job_status: { $first: '$job_status' },
+                        job_type: { $first: '$job_type_details.title' },
+                        createdAt: { $first: '$createdAt' } 
                     }
                 },
                 { $sort: { _id: -1 } }
