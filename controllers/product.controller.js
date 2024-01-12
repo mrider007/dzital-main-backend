@@ -615,33 +615,73 @@ class productController {
             else {
                 const category_id = new mongoose.Types.ObjectId(req.body.category_id);
                 const categoryDetails = await Category.findOne({ _id: category_id });
-                if (categoryDetails.title === 'Real Estate') {
-                    let real_estate_products = await propertyRepo.list(req);
-                    res.status(200).send({ status: 200, data: real_estate_products.docs, total: real_estate_products.total, limit: real_estate_products.limit, page: real_estate_products.page, pages: real_estate_products.pages, message: 'Real Estate Products fetched successfully' });
+                if (!_.isEmpty(categoryDetails)) {
+                    if (categoryDetails.title === 'Real Estate') {
+                        let real_estate_products = await propertyRepo.list(req);
+                        if (!_.isEmpty(real_estate_products)) {
+                            res.status(200).send({ status: 200, data: real_estate_products.docs, total: real_estate_products.total, limit: real_estate_products.limit, page: real_estate_products.page, pages: real_estate_products.pages, message: 'Real Estate Products fetched successfully' });                            
+                        }
+                        else {
+                            res.status(400).send({ status: 400, data: {}, message: 'No Real Estate Products found' });
+                        }
+                    }
+                    else if (categoryDetails.title === 'Jobs') {
+                        let job_products = await jobRepo.List(req);
+                        if (!_.isEmpty(real_estate_products)) {
+                            res.status(200).send({ status: 200, data: job_products.docs, total: job_products.total, limit: job_products.limit, page: job_products.page, pages: job_products.pages, message: 'Job Products fetched successfully' });
+                        }
+                        else {
+                            res.status(400).send({ status: 400, data: {}, message: 'No Job Products found' });
+                        }
+                    }
+                    else if (categoryDetails.title === 'Freelancer') {
+                        let freelancer_products = await freelancerRepo.list(req);
+                        if (!_.isEmpty(freelancer_products)) {
+                            res.status(200).send({ status: 200, data: freelancer_products.docs, total: freelancer_products.total, limit: freelancer_products.limit, page: freelancer_products.page, pages: freelancer_products.pages, message: 'Freelancer Products fetched successfully' });                          
+                        }
+                        else {
+                            res.status(400).send({ status: 400, data: {}, message: 'No Freelancer Products found' });
+                        }
+                    }
+                    else if (categoryDetails.title === 'Lessons & Courses') {
+                        let course_products = await educationRepo.list(req);
+                        if (!_.isEmpty(course_products)) {
+                            res.status(200).send({ status: 200, data: course_products.docs, total: course_products.total, limit: course_products.limit, page: course_products.page, pages: course_products.pages, message: 'Lesson & Courses Products fetched successfully' });
+                        }
+                        else {
+                            res.status(400).send({ status: 400, data: {}, message: 'No Lesson & Courses Products found' });
+                        }
+                    }
+                    else if (categoryDetails.title === 'Electronics') {
+                        let electronics_products = await electronicsRepo.List(req);
+                        if (!_.isEmpty(electronics_products)) {
+                            res.status(200).send({ status: 200, data: electronics_products.docs, total: electronics_products.total, limit: electronics_products.limit, page: electronics_products.page, pages: electronics_products.pages, message: 'Electronics Products fetched successfully' });
+                        }
+                        else {
+                            res.status(400).send({ status: 400, data: {}, message: 'No Electronics Products found' });
+                        }
+                    }
+                    else if (categoryDetails.title === 'Fashion & Beauty') {
+                        let fashion_products = await fashionRepo.list(req);
+                        if (!_.isEmpty(fashion_products)) {
+                            res.status(200).send({ status: 200, data: fashion_products.docs, total: fashion_products.total, limit: fashion_products.limit, page: fashion_products.page, pages: fashion_products.pages, message: 'Fashion & Beauty Products fetched successfully' });   
+                        }
+                        else {
+                            res.status(400).send({ status: 400, data: {}, message: 'No Fashion & Beauty Products found' });
+                        }
+                    }
+                    else if (categoryDetails.title === 'Goods of all kinds') {
+                        let goods_products = await goodsRepo.List(req);
+                        if (!_.isEmpty(goods_products)) {
+                            res.status(200).send({ status: 200, data: goods_products.docs, total: goods_products.total, limit: goods_products.limit, page: goods_products.page, pages: goods_products.pages, message: 'Goods of all kinds Products fetched successfully' });
+                        }
+                        else {
+                            res.status(400).send({ status: 400, data: {}, message: 'No Goods of all kinds Products found' });
+                        }
+                    }
                 }
-                else if (categoryDetails.title === 'Jobs') {
-                    let job_products = await jobRepo.List(req);
-                    res.status(200).send({ status: 200, data: job_products.docs, total: job_products.total, limit: job_products.limit, page: job_products.page, pages: job_products.pages, message: 'Job Products fetched successfully' });
-                }
-                else if (categoryDetails.title === 'Freelancer') {
-                    let freelancer_products = await freelancerRepo.list(req);
-                    res.status(200).send({ status: 200, data: freelancer_products.docs, total: freelancer_products.total, limit: freelancer_products.limit, page: freelancer_products.page, pages: freelancer_products.pages, message: 'Freelancer Products fetched successfully' });
-                }
-                else if (categoryDetails.title === 'Lessons & Courses') {
-                    let course_products = await educationRepo.list(req);
-                    res.status(200).send({ status: 200, data: course_products.docs, total: course_products.total, limit: course_products.limit, page: course_products.page, pages: course_products.pages, message: 'Lesson & Courses Products fetched successfully' });
-                }
-                else if (categoryDetails.title === 'Electronics') {
-                    let electronics_products = await electronicsRepo.List(req);
-                    res.status(200).send({ status: 200, data: electronics_products.docs, total: electronics_products.total, limit: electronics_products.limit, page: electronics_products.page, pages: electronics_products.pages, message: 'Electronics Products fetched successfully' });
-                }
-                else if (categoryDetails.title === 'Fashion & Beauty') {
-                    let fashion_products = await fashionRepo.list(req);
-                    res.status(200).send({ status: 200, data: fashion_products.docs, total: fashion_products.total, limit: fashion_products.limit, page: fashion_products.page, pages: fashion_products.pages, message: 'Fashion & Beauty Products fetched successfully' });
-                }
-                else if (categoryDetails.title === 'Goods of all kinds') {
-                    let goods_products = await goodsRepo.List(req);
-                    res.status(200).send({ status: 200, data: goods_products.docs, total: goods_products.total, limit: goods_products.limit, page: goods_products.page, pages: goods_products.pages, message: 'Goods of all kinds Products fetched successfully' });
+                else {
+                    res.status(400).send({ status: 400, data: {}, message: 'Category not found' });
                 }
             }
         } catch (e) {
