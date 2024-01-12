@@ -43,7 +43,8 @@ const JobRepository = {
                         title: { $first: '$title' },
                         description: { $first: '$description' },
                         skills: { $first: '$skills' },
-                        job_type: { $first: '$job_type_details.title' },
+                        job_type: { $first: '$job_type' }, 
+                        job_type_title: { $first: '$job_type_details.title' },
                         job_status: { $first: '$job_status' },
                         createdAt: { $first: '$createdAt' }
                     }
