@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Job = require('../models/product_jobs.model');
-const Admin = require('../models/admin.model');
+const Product = require('../models/product.model');
+const Category = require('../models/service_master.model');
 const jobRepo = require('../repositories/product_job.repository');
 
 class JobController {
@@ -16,12 +17,18 @@ class JobController {
                 res.status(400).send({ status: 400, message: 'Job Description is required' });
             }
             else {
-                let jobSave = await Job.create(req.body);
-                if (!_.isEmpty(jobSave) && jobSave._id) {
-                    res.status(200).send({ status: 200, data: jobSave, message: 'Job Post saved successfully' });
-                }
-                else {
-                    res.status(400).send({ status: 400, message: 'Job Post could not be saved' });
+                let job_category = await Category.findOne({ title: 'Jobs' });
+                req.body.category_id = job_category._id;
+                let productSave = await Product.create(req.body);
+                if (!_.isEmpty(productSave) && productSave._id) {
+                    req.body.product_id = productSave._id;
+                    let jobData = await Job.create(req.body);
+                    if (!_.isEmpty(jobData) && jobData._id) {
+                        res.status(200).send({ status: 200, data: jobData, message: 'Job saved successfully' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, data: {}, message: 'Job could not be saved' });
+                    }            
                 }
             }
         } catch (e) {
