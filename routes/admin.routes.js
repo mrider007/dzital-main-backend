@@ -44,6 +44,7 @@ router.post('/admin/active/users/list', request_param.any(), Authentication.Auth
 router.post('/admin/inactive/users/list', request_param.any(), Authentication.AuthenticateAdmin, adminController.deactivatedUsersList);
 router.post('/admin/non-premium/users/list', request_param.any(), Authentication.AuthenticateAdmin, adminController.nonPremiumUsersList);
 router.post('/admin/add', request_param.any(), Authentication.AuthenticateAdmin, adminController.adminAdd);
+router.get('/admin/detail/:id', Authentication.AuthenticateAdmin, adminController.adminDetails);
 router.post('/admin/update/:id', request_param.any(), Authentication.AuthenticateAdmin, adminController.adminUpdate);
 
 module.exports = router;
