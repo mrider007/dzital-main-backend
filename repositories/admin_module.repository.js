@@ -29,7 +29,8 @@ const adminModuleRepository = {
             conditions['$and'] = and_clauses;
 
             let modules = Module.aggregate([
-                { $match: conditions }
+                { $match: conditions },
+                { $sort: { _id: -1 } }
             ]);
             if (!modules) {
                 return null;
