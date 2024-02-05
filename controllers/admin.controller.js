@@ -85,6 +85,30 @@ class adminController {
         }
     };
 
+    /** Admin Add */
+    async adminAdd(req, res) {
+        try {
+            let admin = await Admin.findOne({ email: req.body.email });
+            if (!_.isEmpty(admin) && admin._id) {
+                res.status(400).send({ status: 400, message: 'Admin Already Exists' });
+            }
+            else {
+                let password = req.body.password;
+                req.body.password = bcrypt.hashSync(password, 10);
+
+                let saveAdmin = await Admin.create(req.body);
+                if (!_.isEmpty(saveAdmin) && saveAdmin._id) {
+                    res.status(200).send({ status: 200, data: saveAdmin, message: 'Admin has been added successfully' });
+                }
+                else {
+                    res.status(400).send({ status: 400, data: {}, message: 'Admin could not be added' });
+                }
+            }             
+        } catch (e) {
+            res.status(500).send({ message: e.message });
+        }
+    };
+
     /** Admin List */
     async adminList(req, res) {
         try {
@@ -412,6 +436,8 @@ class adminController {
             res.status(500).send({ status: 500, message: e.message });
         }
     };
+
+
 
 }
 
