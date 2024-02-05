@@ -109,6 +109,31 @@ class adminController {
         }
     };
 
+    /* Sub Admin Update */
+    async adminUpdate(req, res) {
+        try {
+            const admin_id = new mongoose.Types.ObjectId(req.params.id);
+            let adminInfo = await Admin.findOne({ _id: admin_id });
+
+            if (req.files && req.files.length > 0) {
+                const uploadResult = await cloudinary.v2.uploader.upload(req.files[0].path);
+                req.body.image = uploadResult.secure_url;
+            }
+            else {
+                req.body.image = adminInfo.image;
+            }
+
+            let updateDetails = await adminRepo.updateById(req.body, admin_id);
+            if (!_.isEmpty(updateDetails) && updateDetails._id) {
+                res.status(200).send({ status: 200, data: updateDetails, message: 'Admin Updated Successfully' });
+            } else {
+                res.status(400).send({ status: 400, message: 'Admin details could not be updated' });
+            }
+        } catch (e) {
+            res.status(500).send({ message: e.message });
+        }
+    };q
+
     /** Admin List */
     async adminList(req, res) {
         try {
