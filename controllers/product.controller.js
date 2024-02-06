@@ -4,6 +4,8 @@ const Goods = require('../models/product_goods.model');
 const Fashion = require('../models/product_fashion.model');
 const Property = require('../models/product_real_estate.model');
 const Job = require('../models/product_jobs.model');
+const ProductEducation = require('../models/product_education.model');
+const Freelancer = require('../models/product_freelancer.model');
 const Category = require('../models/service_master.model');
 const mongoose = require('mongoose');
 const productRepo = require('../repositories/product.repository');
@@ -162,6 +164,26 @@ class productController {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
                     }
                 }
+                else if (categoryInfo.title === 'Lessons & Courses') {
+                    req.body.product_id = productSave._id;
+                    let lessoncoursesData = await ProductEducation.create(req.body);
+                    if (!_.isEmpty(lessoncoursesData) && lessoncoursesData._id) {
+                        res.status(200).send({ status: 200, data: lessoncoursesData, message: 'Product saved successfully' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
+                    }
+                } 
+                else if (categoryInfo.title === 'Freelancer') {
+                    req.body.product_id = productSave._id;
+                    let freelancerData = await Freelancer.create(req.body);
+                    if (!_.isEmpty(freelancerData) && freelancerData._id) {
+                        res.status(200).send({ status: 200, data: freelancerData, message: 'Product saved successfully' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
+                    }                    
+                } 
             }
             else {
                 res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
