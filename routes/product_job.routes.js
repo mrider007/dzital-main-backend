@@ -11,5 +11,6 @@ router.post('/job/post', request_param.any(), JobController.jobPost);
 router.post('/job/list', request_param.any(), JobController.jobList);
 router.post('/job/update/:id', request_param.any(), JobController.jobUpdate);
 router.post('/job/change-status/:id', request_param.any(), JobController.changeStatus);
+router.post('/product/job/list', request_param.any(), JobController.productJobList);
 
 module.exports = router;
