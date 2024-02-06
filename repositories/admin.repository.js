@@ -535,6 +535,42 @@ const adminRepository = {
         }
     },
 
+    adminInfo: async (params) => {
+        try {
+            let sub_admin = await Admin.aggregate([
+                { $match: params },
+                {
+                    $lookup: {
+                        from: 'roles',
+                        localField: 'role_id',
+                        foreignField: '_id',
+                        as: 'role_details'
+                    }
+                },
+                { $unwind: { path: '$role_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: "$_id",
+                        name: { $first: "$name" },
+                        email: { $first: '$email' },
+                        image: { $first: '$image' },
+                        mobile: { $first: "$mobile" },
+                        createdAt: { $first: "$createdAt" },
+                        updatedAt: { $first: "$updatedAt" },
+                        role_id: { $first: "$role_id" },
+                        role: { $first: '$role_details.role' }
+                    }
+                }
+            ]);
+            if (!sub_admin) {
+                return null;
+            }
+            return sub_admin;
+        } catch (e) {
+            throw e;
+        }
+    },
+
     delete: async (id) => {
         try {
             let user = await User.findById(id);

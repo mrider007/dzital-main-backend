@@ -113,9 +113,9 @@ class adminController {
     async adminDetails(req, res) {
         try {
             const admin_id = new mongoose.Types.ObjectId(req.params.id);
-            let adminInfo = await Admin.findOne({ _id: admin_id });
-            if (!_.isEmpty(adminInfo) && adminInfo._id) {
-                res.status(200).send({ status: 200, data: adminInfo, message: 'Admin Details Fetched Successfully' });
+            let adminInfo = await adminRepo.adminInfo({ _id: admin_id });
+            if (!_.isEmpty(adminInfo)) {
+                res.status(200).send({ status: 200, data: adminInfo[0], message: 'Admin Details Fetched Successfully' });
             }
             else {
                 res.status(400).send({ status: 400, message: 'Admin Not Found' });
