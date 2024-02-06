@@ -246,6 +246,88 @@ const JobRepository = {
         } catch (e) {
             throw e;
         }
+    },
+
+    /** Product Job List */
+    getJobs: async (req) => {
+        try {
+            var conditions = {};
+            var and_clauses = [];
+
+            and_clauses.push({ status: 'Approved' });
+
+            let key = req.body.keyword_search;
+
+            if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
+                and_clauses.push({
+                    $or: [
+                        { 'title': { $regex: (req.body.keyword_search).trim(), $options: 'i' } },
+                        { 'description': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
+                    ]
+                });
+
+                // Check if keyword_search has length greater than 0
+                if (key.length > 0) {
+                    // Disable req.body.page and req.body.limit
+                    req.body.page = undefined;
+                    req.body.limit = undefined;
+                }
+            }
+
+            conditions['$and'] = and_clauses;
+
+            let joblist = Job.aggregate([
+                {
+                    $lookup: {
+                        from: 'product_job_types',
+                        localField: 'job_type',
+                        foreignField: '_id',
+                        as: 'job_type_details'
+                    }
+                },
+                { $unwind: { path: '$job_type_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $lookup: {
+                        from: 'products',
+                        localField: 'product_id',
+                        foreignField: '_id',
+                        as: 'product_details'
+                    }
+                },
+                { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: '$_id',
+                        title: { $first: "$title" },
+                        description: { $first: "$description" },
+                        status: { $first: '$product_details.status' },
+                        skills: { $first: '$skills' },
+                        job_status: { $first: '$job_status' },
+                        job_type: { $first: '$job_type_details.title' },
+                        createdAt: { $first: '$createdAt' } 
+                    }
+                },
+                { $match: conditions },
+                { $sort: { _id: -1 } }
+            ]);
+            if (!joblist) {
+                return null;
+            }
+
+            // Only set options if they are not disabled
+            var options = {};
+            if (req.body.page !== undefined) {
+                options.page = req.body.page;
+            }
+            if (req.body.limit !== undefined) {
+                options.limit = req.body.limit;
+            }
+
+            let allJobs = await Job.aggregatePaginate(joblist, options);
+            return allJobs;            
+        } catch (e) {
+            throw e;
+        }
     }
 
 }

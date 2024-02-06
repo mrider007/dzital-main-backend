@@ -36,6 +36,30 @@ class JobController {
         }
     };
 
+    async productJobList(req, res) {
+        try {
+            if (!req.body.page) {
+                req.body.page = 1;
+            } else {
+                req.body.page = parseInt(req.body.page);
+            }
+
+            if (!req.body.limit) {
+                req.body.limit = 10;
+            } else {
+                req.body.limit = parseInt(req.body.limit);
+            }
+            let jobs = await jobRepo.getJobs(req);
+            if (!_.isEmpty(jobs)) {
+                res.status(200).send({ status: 200, data: jobs.docs, total: jobs.total, limit: jobs.limit, page: jobs.page, pages: jobs.pages, message: 'Product Job list fetched Successfully' });
+            } else {
+                res.status(201).send({ status: 201, data: [], message: 'No Jobs Found' });
+            }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+
     /** Admin Job List */
     async jobList(req, res) {
         try {
