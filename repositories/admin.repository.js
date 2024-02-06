@@ -586,6 +586,21 @@ const adminRepository = {
         }
     },
 
+    adminDelete: async (id) => {
+        try {
+            let admin = await Admin.findById(id);
+            if (admin) {
+                let adminDelete = await Admin.deleteOne({ _id: id }).exec();
+                if (!adminDelete) {
+                    return null;
+                }
+                return admin;
+            }
+        } catch (e) {
+            throw e;
+        }
+    },
+
     getUserById: async (id) => {
         try {
             let user = await User.findById(id).lean().exec();

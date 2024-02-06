@@ -46,5 +46,6 @@ router.post('/admin/non-premium/users/list', request_param.any(), Authentication
 router.post('/admin/add', request_param.any(), Authentication.AuthenticateAdmin, adminController.adminAdd);
 router.get('/admin/detail/:id', Authentication.AuthenticateAdmin, adminController.adminDetails);
 router.post('/admin/update/:id', request_param.any(), Authentication.AuthenticateAdmin, adminController.adminUpdate);
+router.get('/admin/delete/:id', Authentication.AuthenticateAdmin, adminController.adminDelete);
 
 module.exports = router;
