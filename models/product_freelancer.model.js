@@ -11,7 +11,6 @@ const FreelancerSchema = new mongoose.Schema({
     budget: { type: Number },
     department: { type: String, index: true },
     user_id: { type: Schema.Types.ObjectId, ref: 'User', index: true },
-    // job_type: { type: Schema.Types.ObjectId, ref: 'Job_Type', index: true },
     status: { type: String, default: 'Active', index: true },
     category_id: { type: Schema.Types.ObjectId, ref: 'service_category', index: true }
 }, { timestamps: true, versionKey: false });
