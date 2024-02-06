@@ -150,6 +150,23 @@ class adminController {
         }
     };
 
+    /** Sub Admin Delete */
+    async adminDelete(req, res) {
+        try {
+            const admin_id = new mongoose.Types.ObjectId(req.params.id);
+            let adminInfo = await Admin.findOne({ _id: admin_id });
+            if (!_.isEmpty(adminInfo) && adminInfo._id) {
+                let adminDelete = await adminRepo.adminDelete(admin_id);
+                res.status(200).send({ status: 200, data: adminDelete, message: 'Admin Removed Successfully' });
+            }
+            else {
+                res.status(400).send({ status: 400, message: 'Admin Not Found' });
+            }
+        } catch (e) {
+            res.status(500).send({ message: e.message });
+        }
+    };
+
     /** Admin List */
     async adminList(req, res) {
         try {
