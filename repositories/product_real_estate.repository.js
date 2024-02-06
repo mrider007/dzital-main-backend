@@ -90,7 +90,6 @@ const propertyRepository = {
                         year_built: { $first: '$year_built' },
                         user_id: { $first: '$user_id' },
                         category_id: { $first: '$category_id' },
-                        user_name: { $first: '$user_details.name' },
                         category_name: { $first: '$category_details.title' }
                     }
                 },
