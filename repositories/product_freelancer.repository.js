@@ -68,6 +68,7 @@ const freelancerRepository = {
                         location: { $first: '$location' },
                         budget: { $first: '$budget' },
                         status: { $first: '$product_details.status' },
+                        product_id: { $first: '$product_id' },
                         category_id: { $first: '$category_id' },
                         category_name: { $first: '$category_details.title' },
                         createdAt: { $first: '$createdAt' }
