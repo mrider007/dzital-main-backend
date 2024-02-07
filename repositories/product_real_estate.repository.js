@@ -89,6 +89,7 @@ const propertyRepository = {
                         parking_slots: { $first: '$parking_slots' },
                         year_built: { $first: '$year_built' },
                         user_id: { $first: '$user_id' },
+                        product_id: { $first: '$product_id' },
                         category_id: { $first: '$category_id' },
                         category_name: { $first: '$category_details.title' }
                     }
