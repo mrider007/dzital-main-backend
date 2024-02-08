@@ -1,5 +1,7 @@
 const ProductEducation = require('../models/product_education.model');
 const educationRepo = require('../repositories/product_education.repository');
+const mongoose = require('mongoose');
+const cloudinary = require('cloudinary');
 
 class productEducationController {
     constructor() { }
@@ -27,6 +29,34 @@ class productEducationController {
             else {
                 res.status(201).send({ status: 201, data: [], message: 'No Products Found' });
             }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+
+    async lessonCourseUpdate(req, res) {
+        try {
+            let lesson_course_id = new mongoose.Types.ObjectId(req.params.id);
+            let courseInfo = await ProductEducation.findOne({ _id: lesson_course_id });
+            if (!_.isEmpty(courseInfo) && courseInfo._id) {
+                for (let i = 0; i < req.files.length; i++) {
+                    const element = req.files[i];
+                    if (element.fieldname === 'image') {
+                        var image = element.path;
+                        const uploadResultImage = await cloudinary.v2.uploader.upload(image);
+                        req.body.image = uploadResultImage.secure_url;
+                    }
+                }
+                let lessoncourseUpdate = await educationRepo.updateById(req.body, lesson_course_id);
+                if (!_.isEmpty(lessoncourseUpdate) && lessoncourseUpdate._id) {
+                    res.status(200).send({ status: 200, data: lessoncourseUpdate, message: 'Course Updated Successfully' })
+                }
+                else {
+                    res.status(400).send({ status: 400, message: 'Course could not be updated' });
+                }
+            } else {
+                res.status(400).send({ status: 400, message: 'Course not found' });
+            }            
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
         }

@@ -5,10 +5,7 @@ const mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
 const productEducationSchema = new Schema({
     title: { type: String, index: true, trim: true },
     description: { type: String, index: true, trim: true },
-    photo: { type: String, default: '', index: true, trim: true },
-    image_1: { type: String, default: '', index: true, trim: true },
-    image_2: { type: String, default: '', index: true, trim: true },
-    image_3: { type: String, default: '', index: true, trim: true },
+    image: { type: String, default: '', index: true, trim: true },
     address: { type: String, default: '', index: true, trim: true },
     user_id: { type: Schema.Types.ObjectId, ref: 'User', index: true },
     category_id: { type: Schema.Types.ObjectId, ref: 'service_category', index: true },
