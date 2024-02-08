@@ -3,8 +3,9 @@ const Job = require('../models/product_jobs.model');
 const Product = require('../models/product.model');
 const Category = require('../models/service_master.model');
 const jobRepo = require('../repositories/product_job.repository');
-
+const cloudinary = require('cloudinary');
 class JobController {
+    
     constructor() { }
 
     /** Admin Job Post */
@@ -28,7 +29,7 @@ class JobController {
                     }
                     else {
                         res.status(400).send({ status: 400, data: {}, message: 'Job could not be saved' });
-                    }            
+                    }
                 }
             }
         } catch (e) {
@@ -129,6 +130,15 @@ class JobController {
             let job_id = new mongoose.Types.ObjectId(req.params.id);
             let jobInfo = await Job.findOne({ _id: job_id });
             if (!_.isEmpty(jobInfo) && jobInfo._id) {
+                for (let i = 0; i < req.files.length; i++) {
+                    console.log('req files', req.files[i]);
+                    const element = req.files[i];
+                    if (element.fieldname === 'image') {
+                        var image = element.path;
+                        const uploadResultImage = await cloudinary.v2.uploader.upload(image);
+                        req.body.image = uploadResultImage.secure_url;
+                    }
+                }
                 let jobUpdate = await jobRepo.updateById(req.body, req.params.id);
                 if (!_.isEmpty(jobUpdate) && jobUpdate._id) {
                     res.status(200).send({ status: 200, data: jobUpdate, message: 'Job has been updated successfully' })
