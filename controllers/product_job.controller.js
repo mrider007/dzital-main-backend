@@ -5,7 +5,7 @@ const Category = require('../models/service_master.model');
 const jobRepo = require('../repositories/product_job.repository');
 const cloudinary = require('cloudinary');
 class JobController {
-    
+
     constructor() { }
 
     /** Admin Job Post */
@@ -131,7 +131,6 @@ class JobController {
             let jobInfo = await Job.findOne({ _id: job_id });
             if (!_.isEmpty(jobInfo) && jobInfo._id) {
                 for (let i = 0; i < req.files.length; i++) {
-                    console.log('req files', req.files[i]);
                     const element = req.files[i];
                     if (element.fieldname === 'image') {
                         var image = element.path;
