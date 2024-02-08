@@ -38,5 +38,6 @@ router.post('/admin/product/rejected/list', request_param.any(), Authentication.
 router.post('/admin/product/unapproved/list', request_param.any(), Authentication.AuthenticateAdmin, ProductController.unapprovedProductList);
 router.post('/admin/product/approved/list', request_param.any(), Authentication.AuthenticateAdmin, ProductController.approvedProductList);
 router.post('/category-wise/product/list', request_param.any(), ProductController.categoryWiseProducts);
+router.post('/products/bulk/update', request_param.any(), ProductController.productsBulkUpdate);
 
 module.exports = router;

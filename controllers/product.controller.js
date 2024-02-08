@@ -710,6 +710,15 @@ class productController {
             res.status(500).send({ status: 500, message: e.message });
         }
     };
+
+    async productsBulkUpdate(req, res) {
+        try {
+            let productsUpdate = await Product.updateMany({}, { $set: { 'image': "" } });
+            res.status(200).send({ status: 200, data: productsUpdate, message: 'Products Updated Successfully' });
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
 }
 
 module.exports = new productController();
