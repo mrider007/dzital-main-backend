@@ -63,6 +63,18 @@ const productEducationRepository = {
         } catch (e) {
             throw e;
         }
+    },
+
+    updateById: async (data, id) => {
+        try {
+            let lessoncourseUpdate = await ProductEducation.findByIdAndUpdate(id, data, { new: true, upsert: true }).exec();
+            if (!lessoncourseUpdate) {
+                return null;
+            }
+            return lessoncourseUpdate;
+        } catch (e) {
+            throw e;
+        }
     }
 
 }
