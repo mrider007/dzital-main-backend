@@ -13,6 +13,7 @@ const JobSchema = new mongoose.Schema({
     employment_type: { type: String, trim: true },
     industry_type: { type: String, trim: true },
     department: { type: String, index: true },
+    image: { type: String, default: '', trim: true },
     user_id: { type: Schema.Types.ObjectId, ref: 'User', index: true },
     job_type: { type: Schema.Types.ObjectId, ref: 'Job_Type', index: true },
     job_status: { type: String, default: 'Open', index: true },

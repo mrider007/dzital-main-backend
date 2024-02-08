@@ -9,6 +9,7 @@ const FreelancerSchema = new mongoose.Schema({
     skills: [{ type: String, index: true }],
     location: { type: String, index: true },
     budget: { type: Number },
+    image: { type: String, default: '', trim: true },
     department: { type: String, index: true },
     user_id: { type: Schema.Types.ObjectId, ref: 'User', index: true },
     status: { type: String, default: 'Active', index: true },
