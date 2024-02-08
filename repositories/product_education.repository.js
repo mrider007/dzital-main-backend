@@ -41,10 +41,7 @@ const productEducationRepository = {
                         title: { $first: '$title' },
                         description: { $first: '$description' },
                         status: { $first: '$product_details.status' },
-                        photo: { $first: '$photo' },
-                        image_1: { $first: '$image_1' },
-                        image_2: { $first: '$image_2' },
-                        image_3: { $first: '$image_3' },
+                        image: { $first: '$image' },
                         product_id: { $first: '$product_id' },
                         category_id: { $first: '$category_id' },
                         createdAt: { $first: '$createdAt' }
