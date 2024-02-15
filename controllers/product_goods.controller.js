@@ -15,7 +15,7 @@ class productGoodsController {
             }
 
             if (!req.body.limit) {
-                req.body.limit = 1;
+                req.body.limit = 10;
             }
             else {
                 req.body.limit = parseInt(req.body.limit);
