@@ -385,6 +385,7 @@ class productController {
             const productInfo = await Product.findOne({ _id: req.params.id });
             if (!_.isEmpty(productInfo) && productInfo._id) {
                 let categoryInfo = await Category.findOne({ _id: productInfo.category_id });
+                
                 if (categoryInfo.title === 'Electronics') {
                     let electronicsInfo = await ProductElectronics.findOne({ product_id: productInfo._id });
 
@@ -525,7 +526,7 @@ class productController {
                         req.body.image_3 = goodsInfo.image_3;
                     }
 
-                    let goodsUpdate = await goodsRepo.updateById(req.body, electronicsInfo._id);
+                    let goodsUpdate = await goodsRepo.updateById(req.body, goodsInfo._id);
                     if (!_.isEmpty(goodsUpdate) && goodsUpdate._id) {
                         let productUpdate = await productRepo.updateProductById({ image: goodsUpdate.photo }, req.params.id);
                         res.status(200).send({ status: 200, data: goodsUpdate, message: 'Product has been updated successfully' });
