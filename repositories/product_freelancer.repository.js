@@ -65,6 +65,7 @@ const freelancerRepository = {
                         description: { $first: '$description' },
                         experience: { $first: '$experience' },
                         skills: { $first: '$skills' },
+                        image: { $first: '$image' },
                         location: { $first: '$location' },
                         budget: { $first: '$budget' },
                         status: { $first: '$product_details.status' },
