@@ -43,7 +43,7 @@ const JobRepository = {
                         title: { $first: '$title' },
                         description: { $first: '$description' },
                         skills: { $first: '$skills' },
-                        job_type: { $first: '$job_type' }, 
+                        job_type: { $first: '$job_type' },
                         job_type_title: { $first: '$job_type_details.title' },
                         job_status: { $first: '$job_status' },
                         createdAt: { $first: '$createdAt' }
@@ -223,7 +223,7 @@ const JobRepository = {
                         skills: { $first: '$skills' },
                         job_status: { $first: '$job_status' },
                         job_type: { $first: '$job_type_details.title' },
-                        createdAt: { $first: '$createdAt' } 
+                        createdAt: { $first: '$createdAt' }
                     }
                 },
                 { $sort: { _id: -1 } }
@@ -305,7 +305,7 @@ const JobRepository = {
                         job_status: { $first: '$job_status' },
                         image: { $first: '$image' },
                         job_type: { $first: '$job_type_details.title' },
-                        createdAt: { $first: '$createdAt' } 
+                        createdAt: { $first: '$createdAt' }
                     }
                 },
                 { $match: conditions },
@@ -325,7 +325,7 @@ const JobRepository = {
             }
 
             let allJobs = await Job.aggregatePaginate(joblist, options);
-            return allJobs;            
+            return allJobs;
         } catch (e) {
             throw e;
         }
