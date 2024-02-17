@@ -62,6 +62,29 @@ const productEducationRepository = {
         }
     },
 
+    getDetails: async (params) => {
+        try {
+            let product = await ProductEducation.aggregate([
+                { $match: params },
+                {
+                    $lookup: {
+                        from: 'products',
+                        localField: 'product_id',
+                        foreignField: '_id',
+                        as: 'product_details'
+                    }
+                },
+                { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } }
+            ]);
+            if (!product) {
+                return null;
+            }
+            return product[0];
+        } catch (e) {
+            throw e;
+        }
+    },
+
     updateById: async (data, id) => {
         try {
             let lessoncourseUpdate = await ProductEducation.findByIdAndUpdate(id, data, { new: true, upsert: true }).exec();
