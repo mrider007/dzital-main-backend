@@ -8,8 +8,6 @@ const JobSchema = new mongoose.Schema({
     experience: { type: String, index: true, trim: true },
     skills: [{ type: String, index: true }],
     location: { type: String, index: true },
-    role: { type: String, trim: true },
-    role_category: { type: String, trim: true },
     employment_type: { type: String, trim: true },
     industry_type: { type: String, trim: true },
     department: { type: String, index: true },
