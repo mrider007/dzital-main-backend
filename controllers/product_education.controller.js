@@ -71,7 +71,7 @@ class productEducationController {
                 }
             } else {
                 res.status(400).send({ status: 400, message: 'Course not found' });
-            }            
+            }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
         }
