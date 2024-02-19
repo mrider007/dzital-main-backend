@@ -25,7 +25,7 @@ class serviceController {
 
     async serviceList(req, res) {
         try {
-            let services = await Service.find();
+            let services = await Service.find({ parentId: null });
             if (!_.isEmpty(services)) {
                 res.status(200).send({ status: 200, data: services, message: 'Categories list fetched successfully' });
             } else {
