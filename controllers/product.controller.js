@@ -224,7 +224,7 @@ class productController {
                     else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
                     }
-                } 
+                }
                 else if (categoryInfo.title === 'Freelancer') {
                     if (req.files && req.files.length > 0) {
                         var photo;
@@ -244,8 +244,8 @@ class productController {
                     }
                     else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
-                    }                    
-                } 
+                    }
+                }
             }
             else {
                 res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
@@ -447,7 +447,7 @@ class productController {
             const productInfo = await Product.findOne({ _id: req.params.id });
             if (!_.isEmpty(productInfo) && productInfo._id) {
                 let categoryInfo = await Category.findOne({ _id: productInfo.category_id });
-                
+
                 if (categoryInfo.title === 'Electronics') {
                     let electronicsInfo = await ProductElectronics.findOne({ product_id: productInfo._id });
 
@@ -704,7 +704,7 @@ class productController {
                     if (categoryDetails.title === 'Real Estate') {
                         let real_estate_products = await propertyRepo.list(req);
                         if (!_.isEmpty(real_estate_products)) {
-                            res.status(200).send({ status: 200, data: real_estate_products.docs, total: real_estate_products.total, limit: real_estate_products.limit, page: real_estate_products.page, pages: real_estate_products.pages, message: 'Real Estate Products fetched successfully' });                            
+                            res.status(200).send({ status: 200, data: real_estate_products.docs, total: real_estate_products.total, limit: real_estate_products.limit, page: real_estate_products.page, pages: real_estate_products.pages, message: 'Real Estate Products fetched successfully' });
                         }
                         else {
                             res.status(400).send({ status: 400, data: {}, message: 'No Real Estate Products found' });
@@ -722,7 +722,7 @@ class productController {
                     else if (categoryDetails.title === 'Freelancer') {
                         let freelancer_products = await freelancerRepo.list(req);
                         if (!_.isEmpty(freelancer_products)) {
-                            res.status(200).send({ status: 200, data: freelancer_products.docs, total: freelancer_products.total, limit: freelancer_products.limit, page: freelancer_products.page, pages: freelancer_products.pages, message: 'Freelancer Products fetched successfully' });                          
+                            res.status(200).send({ status: 200, data: freelancer_products.docs, total: freelancer_products.total, limit: freelancer_products.limit, page: freelancer_products.page, pages: freelancer_products.pages, message: 'Freelancer Products fetched successfully' });
                         }
                         else {
                             res.status(400).send({ status: 400, data: {}, message: 'No Freelancer Products found' });
@@ -749,7 +749,7 @@ class productController {
                     else if (categoryDetails.title === 'Fashion & Beauty') {
                         let fashion_products = await fashionRepo.list(req);
                         if (!_.isEmpty(fashion_products)) {
-                            res.status(200).send({ status: 200, data: fashion_products.docs, total: fashion_products.total, limit: fashion_products.limit, page: fashion_products.page, pages: fashion_products.pages, message: 'Fashion & Beauty Products fetched successfully' });   
+                            res.status(200).send({ status: 200, data: fashion_products.docs, total: fashion_products.total, limit: fashion_products.limit, page: fashion_products.page, pages: fashion_products.pages, message: 'Fashion & Beauty Products fetched successfully' });
                         }
                         else {
                             res.status(400).send({ status: 400, data: {}, message: 'No Fashion & Beauty Products found' });
