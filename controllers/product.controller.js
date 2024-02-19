@@ -224,7 +224,7 @@ class productController {
                     req.body.product_id = productSave._id;
                     let lessoncoursesData = await ProductEducation.create(req.body);
                     if (!_.isEmpty(lessoncoursesData) && lessoncoursesData._id) {
-                        let productUpdate = await productRepo.updateProductById({ image: lessoncoursesData.image }, productSave._id);                        
+                        let productUpdate = await productRepo.updateProductById({ image: lessoncoursesData.image }, productSave._id);
                         res.status(200).send({ status: 200, data: lessoncoursesData, message: 'Product saved successfully' });
                     }
                     else {
