@@ -16,7 +16,7 @@ const productFashionSchema = new Schema({
     lat: { type: String, trim: true },
     long: { type: String, trim: true },
     category_id: { type: Schema.Types.ObjectId, ref: 'service_category', index: true },
-    user_id: { type: Schema.Types.ObjectId, ref: 'User', index: true },
+    user_id: { type: Schema.Types.ObjectId, default: null, ref: 'User', index: true },
     product_id: { type: Schema.Types.ObjectId, ref: 'Product', index: true } 
 }, { timestamps: true, versionKey: false });
 
