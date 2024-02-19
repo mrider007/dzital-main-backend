@@ -122,6 +122,7 @@ class productController {
                     req.body.product_id = productSave._id;
                     let ElectronicsData = await ProductElectronics.create(req.body);
                     if (!_.isEmpty(ElectronicsData) && ElectronicsData._id) {
+                        let productUpdate = await productRepo.updateProductById({ image: ElectronicsData.photo }, productSave._id);
                         res.status(200).send({ status: 200, data: ElectronicsData, message: 'Product saved successfully' });
                     }
                     else {
@@ -161,6 +162,7 @@ class productController {
                     req.body.product_id = productSave._id;
                     let GoodsSave = await Goods.create(req.body);
                     if (!_.isEmpty(GoodsSave) && GoodsSave._id) {
+                        let productUpdate = await productRepo.updateProductById({ image: GoodsSave.photo }, productSave._id);
                         res.status(200).send({ status: 200, data: GoodsSave, message: 'Product saved successfully' });
                     }
                     else {
@@ -200,6 +202,7 @@ class productController {
                     req.body.product_id = productSave._id;
                     let FashionSave = await Fashion.create(req.body);
                     if (!_.isEmpty(FashionSave) && FashionSave._id) {
+                        let productUpdate = await productRepo.updateProductById({ image: FashionSave.photo }, productSave._id);
                         res.status(200).send({ status: 200, data: FashionSave, message: 'Product saved successfully' });
                     }
                     else {
@@ -243,6 +246,7 @@ class productController {
                     req.body.product_id = productSave._id;
                     let freelancerData = await Freelancer.create(req.body);
                     if (!_.isEmpty(freelancerData) && freelancerData._id) {
+                        let productUpdate = await productRepo.updateProductById({ image: freelancerData.image }, productSave._id);
                         res.status(200).send({ status: 200, data: freelancerData, message: 'Product saved successfully' });
                     }
                     else {
