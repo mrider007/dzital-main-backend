@@ -186,6 +186,17 @@ class productController {
                     }
                 } 
                 else if (categoryInfo.title === 'Freelancer') {
+                    if (req.files && req.files.length > 0) {
+                        var photo;
+                        for (let i = 0; i < req.files.length; i++) {
+                            const element = req.files[i];
+                            if (element.fieldname === 'image') {
+                                photo = element.path;
+                                const uploadImage = await cloudinary.v2.uploader.upload(photo);
+                                req.body.image = uploadImage.secure_url;
+                            }
+                        }
+                    }
                     req.body.product_id = productSave._id;
                     let freelancerData = await Freelancer.create(req.body);
                     if (!_.isEmpty(freelancerData) && freelancerData._id) {
