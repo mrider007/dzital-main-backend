@@ -74,7 +74,20 @@ const productEducationRepository = {
                         as: 'product_details'
                     }
                 },
-                { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } }
+                { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: '$_id',
+                        title: { $first: '$title' },
+                        description: { $first: '$description' },
+                        image: { $first: '$image' },
+                        address: { $first: '$address' },
+                        category_id: { $first: '$category_id' },
+                        status: { $first: '$product_details.status' },
+                        product_id: { $first: '$product_id' },
+                        createdAt: { $first: '$createdAt' }
+                    }
+                }
             ]);
             if (!product) {
                 return null;
