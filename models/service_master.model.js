@@ -5,8 +5,7 @@ const mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
 const ServiceSchema = new Schema({
     parentId: { type: Schema.Types.ObjectId, ref: 'service_category', default: null, index: true },
     title: { type: String, index: true },
-    order: { type: Number, index: true },
-    //sub_categories: [{ title: { type: String, trim: true, default: '' } }]
+    order: { type: Number, index: true }
 }, { timestamps: true, versionKey: false });
 
 ServiceSchema.plugin(mongooseAggregatePaginate);
