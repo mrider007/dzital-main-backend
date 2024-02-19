@@ -15,7 +15,24 @@ const freelancerRepository = {
                         as: 'category_details'
                     }
                 },
-                { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } }
+                { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: '$_id',
+                        title: { $first: '$title' },
+                        description: { $first: '$description' },
+                        experience: { $first: '$experience' },
+                        skills: { $first: '$skills' },
+                        location: { $first: '$location' },
+                        image: { $first: '$image' },                       
+                        budget: { $first: '$budget' },
+                        user_id: { $first: '$user_id' },
+                        status: { $first: '$status' },
+                        category_id: { $first: '$category_id' },
+                        category_name: { $first: '$category_details.title' },
+                        createdAt: { $first: '$createdAt' } 
+                    }
+                }
             ]);
             if (!products) {
                 return null;
