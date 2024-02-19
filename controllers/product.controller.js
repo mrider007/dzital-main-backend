@@ -28,6 +28,17 @@ class productController {
             if (!_.isEmpty(productSave) && productSave._id) {
                 let categoryInfo = await Category.findOne({ _id: productSave.category_id });
                 if (categoryInfo.title === 'Jobs') {
+                    if (req.files && req.files.length > 0) {
+                        var photo;
+                        for (let i = 0; i < req.files.length; i++) {
+                            const element = req.files[i];
+                            if (element.fieldname === 'image') {
+                                photo = element.path;
+                                const uploadImage = await cloudinary.v2.uploader.upload(photo);
+                                req.body.image = uploadImage.secure_url;
+                            }
+                        }
+                    }
                     req.body.product_id = productSave._id;
                     let jobData = await Job.create(req.body);
                     if (!_.isEmpty(jobData) && jobData._id) {
@@ -38,7 +49,7 @@ class productController {
                     }
                 }
                 else if (categoryInfo.title === 'Real Estate') {
-                    
+
                     if (req.files && req.files.length > 0) {
 
                         var photo, image_1, image_2, image_3;
