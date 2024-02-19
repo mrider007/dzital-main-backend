@@ -42,6 +42,7 @@ class productController {
                     req.body.product_id = productSave._id;
                     let jobData = await Job.create(req.body);
                     if (!_.isEmpty(jobData) && jobData._id) {
+                        let productUpdate = await productRepo.updateProductById({ image: jobData.image }, productSave._id);
                         res.status(200).send({ status: 200, data: jobData, message: 'Product saved successfully' });
                     }
                     else {
@@ -81,6 +82,7 @@ class productController {
                     req.body.product_id = productSave._id;
                     let propertyData = await Property.create(req.body);
                     if (!_.isEmpty(propertyData) && propertyData._id) {
+                        let productUpdate = await productRepo.updateProductById({ image: propertyData.photo }, productSave._id);
                         res.status(200).send({ status: 200, data: propertyData, message: 'Product saved successfully' });
                     }
                     else {
@@ -219,6 +221,7 @@ class productController {
                     req.body.product_id = productSave._id;
                     let lessoncoursesData = await ProductEducation.create(req.body);
                     if (!_.isEmpty(lessoncoursesData) && lessoncoursesData._id) {
+                        let productUpdate = await productRepo.updateProductById({ image: lessoncoursesData.image }, productSave._id);                        
                         res.status(200).send({ status: 200, data: lessoncoursesData, message: 'Product saved successfully' });
                     }
                     else {
