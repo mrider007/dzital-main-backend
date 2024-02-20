@@ -92,7 +92,29 @@ class userController {
 
     async forgetPassword(req, res) {
         try {
-            
+            const transporter = nodemailer.createTransport({
+                service: "gmail",
+                auth: {
+                    user: process.env.NODEMAILER_USER,
+                    pass: process.env.PASSWORD
+                }
+            });
+
+            const mailOptions = {
+                from: process.env.FROM,
+                to: req.body.email,
+                subject: "Forget Password",
+                html: `<h1>Your Password Reset Link - https://www.abc.com</h1> <br />`,
+            }
+
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    console.log(error);
+                } else {
+                    res.status(201).send({ success: true, message: "Password Update Link Sent To Your Email", info })
+                    console.log(info.response)
+                }
+            });
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
         }

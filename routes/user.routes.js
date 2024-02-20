@@ -38,5 +38,6 @@ router.post('/profile/update', uploadFile.any(), Authentication.Authenticate, Us
 router.post('/change-password', request_param.any(), Authentication.Authenticate, UserController.changePassword);
 router.post('/social-login', request_param.any(), UserController.socialSignup);
 router.post('/user/bio/address/update', UserController.userBioAddressUpdate);
+router.post('/user/forget-password', request_param.any(), UserController.forgetPassword);
 
 module.exports = router;
