@@ -44,10 +44,9 @@ class serviceController {
                 res.status(400).send({ status: 400, message: 'Parent Id is Required' });
             }
             else {
-                const parent_id = new mongoose.Types.ObjectId(req.body.parentId);
-                let service_sub_category = await Service.find({ parentId: parent_id });
-                if (!_.isEmpty(service_sub_category)) {
-                    res.status(200).send({ status: 200, data: service_sub_category, message: 'Service Sub Category List fetched successfully' });
+                let sub_category = await serviceRepo.getSubCategories(req); //Service.find({ parentId: parent_id });
+                if (!_.isEmpty(sub_category)) {
+                    res.status(200).send({ status: 200, data: sub_category.docs, total: sub_category.total, limit: sub_category.limit, page: sub_category.page, pages: sub_category.pages, message: 'Service Sub Category List fetched successfully' });
                 }
                 else {
                     res.status(400).send({ status: 400, message: 'No Sub Category Found' });
