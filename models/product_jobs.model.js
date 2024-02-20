@@ -17,6 +17,7 @@ const JobSchema = new mongoose.Schema({
     job_status: { type: String, default: 'Open', index: true },
     product_id: { type: Schema.Types.ObjectId, ref: 'Product', index: true },
     category_id: { type: Schema.Types.ObjectId, ref: 'service_category', index: true },
+    sub_category_id: { type: Schema.Types.ObjectId, ref: 'service_category', default: null, index: true },
     date: { type: Date, index: true }
 }, { timestamps: true, versionKey: false });
 
