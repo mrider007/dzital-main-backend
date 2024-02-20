@@ -8,7 +8,8 @@ const ProductSchema = new Schema({
     userId: { type: Schema.Types.ObjectId, default: null, ref: 'User', trim: true },    
     status: { type: String, default: 'Not Approved', enum: ['Approved', 'Not Approved'] },
     image: { type: String, default: '', trim: true },
-    category_id: { type: Schema.Types.ObjectId, ref: 'service_category', index: true, trim: true }
+    category_id: { type: Schema.Types.ObjectId, ref: 'service_category', index: true, trim: true },
+    sub_category_id: { type: Schema.Types.ObjectId, ref: 'service_category', default: null, index: true }
 }, { timestamps: true, versionKey: false });
 
 ProductSchema.plugin(mongooseAggregatePaginate);
