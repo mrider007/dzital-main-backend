@@ -160,6 +160,7 @@ class userController {
                     res.status(400).send({ status: 400, message: 'User already registered' });
                 }
             } else {
+                req.body.status = 'Active';
                 let userData = await User.create(req.body);
                 const payload = { id: userData._id };
                 const token = jsonwebtoken.sign(payload, process.env.JWTSECERT, { expiresIn: 86400 });
