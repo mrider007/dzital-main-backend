@@ -13,7 +13,8 @@ const FreelancerSchema = new mongoose.Schema({
     department: { type: String, index: true },
     user_id: { type: Schema.Types.ObjectId, default: null, ref: 'User', index: true },
     status: { type: String, default: 'Active', index: true },
-    category_id: { type: Schema.Types.ObjectId, ref: 'service_category', index: true }
+    category_id: { type: Schema.Types.ObjectId, ref: 'service_category', index: true },
+    sub_category_id: { type: Schema.Types.ObjectId, ref: 'service_category', default: null, index: true },
 }, { timestamps: true, versionKey: false });
 
 FreelancerSchema.plugin(mongooseAggregatePaginate);
