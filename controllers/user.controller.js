@@ -3,6 +3,7 @@ const userRepo = require('../repositories/user.repository');
 const bcrypt = require('bcrypt');
 const jsonwebtoken = require('jsonwebtoken');
 const cloudinary = require('cloudinary');
+const nodemailer = require('nodemailer');
 const Membership_Plan = require('../models/membership_plan.model');
 
 class userController {
@@ -84,6 +85,14 @@ class userController {
             else {
                 res.status(400).send({ status: 400, message: 'User not found' });
             }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+
+    async forgetPassword(req, res) {
+        try {
+            
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
         }
