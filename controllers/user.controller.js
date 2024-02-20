@@ -161,6 +161,8 @@ class userController {
                 }
             } else {
                 req.body.status = 'Active';
+                let freeplan = await Membership_Plan.findOne({ title: 'Free Plan' });
+                req.body.plan_id = freeplan._id;
                 let userData = await User.create(req.body);
                 const payload = { id: userData._id };
                 const token = jsonwebtoken.sign(payload, process.env.JWTSECERT, { expiresIn: 86400 });
