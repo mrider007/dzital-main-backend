@@ -44,7 +44,7 @@ class serviceController {
                 res.status(400).send({ status: 400, message: 'Parent Id is Required' });
             }
             else {
-                let sub_category = await serviceRepo.getSubCategories(req); //Service.find({ parentId: parent_id });
+                let sub_category = await serviceRepo.getSubCategories(req);
                 if (!_.isEmpty(sub_category)) {
                     res.status(200).send({ status: 200, data: sub_category.docs, total: sub_category.total, limit: sub_category.limit, page: sub_category.page, pages: sub_category.pages, message: 'Service Sub Category List fetched successfully' });
                 }
