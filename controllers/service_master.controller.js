@@ -37,7 +37,28 @@ class serviceController {
         }
     };
 
-    /** Service Sub Category List */
+    /** Admin Service Sub Category List */
+    async adminSubCategoryList(req, res) {
+        try {
+            if (!_.has(req.body, 'parentId')) {
+                res.status(400).send({ status: 400, message: 'Parent Id is Required' });
+            }
+            else {
+                const parent_id = new mongoose.Types.ObjectId(req.body.parentId);
+                let service_sub_category = await Service.find({ parentId: parent_id });
+                if (!_.isEmpty(service_sub_category)) {
+                    res.status(200).send({ status: 200, data: service_sub_category, message: 'Service Sub Category List fetched successfully' });
+                }
+                else {
+                    res.status(400).send({ status: 400, message: 'No Sub Category Found' });
+                }
+            }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+
+    /** User Service Sub Category List */
     async SubCategoryList(req, res) {
         try {
             if (!_.has(req.body, 'parentId')) {
