@@ -10,7 +10,7 @@ router.get('/service/delete/:id', serviceController.serviceDelete);
 router.get('/service/details/:id', serviceController.serviceDetails);
 router.post('/service/sub-category/list', request_param.any(), serviceController.SubCategoryList);
 router.post('/service/sub-category/add', request_param.any(), serviceController.serviceAdd);
-router.post('/service/update/:id', request_param.any(), serviceController.serviceUpdate);
+router.post('/service/sub-category/update/:id', request_param.any(), serviceController.serviceUpdate);
 router.post('/admin/service-category/list', request_param.any(), Authentication.AuthenticateAdmin, serviceController.serviceCatergories);
 
 module.exports = router;

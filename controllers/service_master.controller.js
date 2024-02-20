@@ -81,6 +81,7 @@ class serviceController {
         }
     };
 
+    /** Service Sub Category Update */
     async serviceUpdate(req, res) {
         try {
             let service_id = new mongoose.Types.ObjectId(req.params.id);
@@ -88,13 +89,13 @@ class serviceController {
             if (!_.isEmpty(serviceInfo) && serviceInfo._id) {
                 let serviceUpdate = await serviceRepo.updateById(req.body, service_id);
                 if (!_.isEmpty(serviceUpdate) && serviceUpdate._id) {
-                    res.status(200).send({ status: 200, data: serviceUpdate, message: 'Service has been updated successfully' });
+                    res.status(200).send({ status: 200, data: serviceUpdate, message: 'Sub Category has been updated successfully' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Service could not be updated' });
+                    res.status(400).send({ status: 400, data: {}, message: 'Sub Category could not be updated' });
                 }
             } else {
-                res.status(400).send({ status: 400, data: {}, message: 'Service not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Sub Category not found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
