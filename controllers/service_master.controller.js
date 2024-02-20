@@ -136,13 +136,13 @@ class serviceController {
             if (!_.isEmpty(serviceInfo) && serviceInfo._id) {
                 let serviceDelete = await serviceRepo.delete(service_id);
                 if (!_.isEmpty(serviceDelete) && serviceDelete._id) {
-                    res.status(200).send({ status: 200, data: serviceDelete, message: 'Service has been removed successfully' });
+                    res.status(200).send({ status: 200, data: serviceDelete, message: 'Sub Category has been removed successfully' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Sorry, unable to remove service at this moment!' });
+                    res.status(400).send({ status: 400, message: 'Sub Category not removed' });
                 }
             } else {
-                res.status(400).send({ status: 400, data: {}, messaage: 'Service not found' });
+                res.status(400).send({ status: 400, messaage: 'Sub Category not found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -154,10 +154,10 @@ class serviceController {
             let service_id = new mongoose.Types.ObjectId(req.params.id);
             let serviceInfo = await Service.findOne({ _id: service_id });
             if (!_.isEmpty(serviceInfo) && serviceInfo._id) {
-                res.status(200).send({ status: 200, data: serviceInfo, message: 'Service details fetched successfully' });
+                res.status(200).send({ status: 200, data: serviceInfo, message: 'Sub Category details fetched successfully' });
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'Service not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Sub Category not found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
