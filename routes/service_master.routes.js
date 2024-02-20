@@ -6,8 +6,8 @@ const multer = require('multer');
 const request_param = multer();
 
 router.get('/service/list', serviceController.serviceList);
-router.get('/service/delete/:id', serviceController.serviceDelete);
-router.get('/service/details/:id', serviceController.serviceDetails);
+router.get('/service/sub-category/delete/:id', serviceController.serviceDelete);
+router.get('/service/sub-category/details/:id', Authentication.AuthenticateAdmin, serviceController.serviceDetails);
 router.post('/service/sub-category/list', request_param.any(), serviceController.SubCategoryList);
 router.post('/admin/service/sub-category/list', request_param.any(), Authentication.AuthenticateAdmin, serviceController.adminSubCategoryList);
 router.post('/service/sub-category/add', request_param.any(), Authentication.AuthenticateAdmin, serviceController.serviceAdd);
