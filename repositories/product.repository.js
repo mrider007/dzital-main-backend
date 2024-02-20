@@ -17,7 +17,6 @@ const productRepository = {
                 and_clauses.push({
                     $or: [
                         { 'title': { $regex: (req.body.keyword_search).trim(), $options: 'i' } },
-                        // { 'user_name': { $regex: (req.body.keyword_search).trim(), $options: 'i' } },
                         { 'category_name': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
                     ]
                 });
