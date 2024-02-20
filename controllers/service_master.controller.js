@@ -5,6 +5,7 @@ const serviceRepo = require('../repositories/service_master.repository');
 class serviceController {
     constructor() { }
 
+    /** Service Sub Category Add */
     async serviceAdd(req, res) {
         try {
             let serviceCheck = await Service.findOne({ title: req.body.title });
