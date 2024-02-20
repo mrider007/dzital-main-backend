@@ -13,9 +13,9 @@ class serviceController {
             } else {
                 let saveService = await Service.create(req.body);
                 if (!_.isEmpty(saveService) && saveService._id) {
-                    res.status(200).send({ status: 200, data: saveService, message: 'Service added successfully' });
+                    res.status(200).send({ status: 200, data: saveService, message: 'Sub Category added successfully' });
                 } else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Service could not be added' });
+                    res.status(400).send({ status: 400, data: {}, message: 'Sub Category could not be added' });
                 }
             }
         } catch (e) {
