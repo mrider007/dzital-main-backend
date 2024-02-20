@@ -17,6 +17,7 @@ const productGoodsSchema = new Schema({
     long: { type: String, trim: true },
     user_id: { type: Schema.Types.ObjectId, default: null, ref: 'User', index: true },
     category_id: { type: Schema.Types.ObjectId, ref: 'service_category', index: true },
+    sub_category_id: { type: Schema.Types.ObjectId, ref: 'service_category', default: null, index: true },
     product_id: { type: Schema.Types.ObjectId, ref: 'Product', index: true }
 }, { timestamps: true, versionKey: false });
 
