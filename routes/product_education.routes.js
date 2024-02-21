@@ -26,6 +26,7 @@ const Storage = multer.diskStorage({
 
 const uploadFile = multer({ storage: Storage });
 
+router.get('/product/lesson-course/bulk-update', productEducationController.lessoncourseproductsBulkUpdate);
 router.get('/product/lesson-course/detail/:id', productEducationController.lessonCourseDetails);
 router.post('/product/lesson-courses/list', request_param.any(), productEducationController.lessonCoursesList);
 router.post('/product/lesson-course/update/:id', uploadFile.any(), productEducationController.lessonCourseUpdate);
