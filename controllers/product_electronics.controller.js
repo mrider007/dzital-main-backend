@@ -45,6 +45,15 @@ class ProductElectronicsController {
         }
     };
 
+    async ElectronicsProductsBulkUpdate(req, res) {
+        try {
+            let productsUpdate = await ProductElectronics.updateMany({}, { $set: { 'sub_category_id': null } });
+            res.status(200).send({ status: 200, data: productsUpdate, message: 'Electronics Products Updated Successfully' });
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+
 }
 
 module.exports = new ProductElectronicsController();
