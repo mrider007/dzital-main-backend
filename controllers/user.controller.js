@@ -5,7 +5,7 @@ const jsonwebtoken = require('jsonwebtoken');
 const cloudinary = require('cloudinary');
 const nodemailer = require('nodemailer');
 const Membership_Plan = require('../models/membership_plan.model');
-
+const axios = require('axios');
 class userController {
     constructor() { }
 
@@ -224,6 +224,33 @@ class userController {
             res.status(200).send({ status: 200, data: userUpdate, message: 'User bio added updated successfully' });
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+
+    async fetchAgoraToken(req, res) {
+        try {
+            const apiUrl = 'https://agora-token-service-example.up.railway.app/fetchToken';
+
+            const requestData = {
+                tokenType: 'rtc',
+                uid: '13119',
+                role: 'publisher',
+                channel: 'test',
+            };
+
+            const response = await axios.post(apiUrl, requestData, {
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              });
+          
+              // Assuming the response contains the token
+              
+              const agoraToken = response.data.token;
+          
+              console.log('Agora Token:', agoraToken);
+        } catch (e) {
+            res.send({ message: e.message });
         }
     };
 

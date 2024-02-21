@@ -39,5 +39,6 @@ router.post('/change-password', request_param.any(), Authentication.Authenticate
 router.post('/social-login', request_param.any(), UserController.socialSignup);
 router.post('/user/bio/address/update', UserController.userBioAddressUpdate);
 router.post('/user/forget-password', request_param.any(), UserController.forgetPassword);
+router.get('/user/chat-token/agora', UserController.fetchAgoraToken);
 
 module.exports = router;
