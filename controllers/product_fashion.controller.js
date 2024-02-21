@@ -47,6 +47,15 @@ class productFashionController {
         }
     };
 
+    async FashionProductsBulkUpdate(req, res) {
+        try {
+            let productsUpdate = await ProductFashion.updateMany({}, { $set: { 'sub_category_id': null } });
+            res.status(200).send({ status: 200, data: productsUpdate, message: 'Fashion Products Updated Successfully' });
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+
 }
 
 module.exports = new productFashionController();
