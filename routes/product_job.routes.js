@@ -27,6 +27,7 @@ const Storage = multer.diskStorage({
 
 const uploadFile = multer({ storage: Storage });
 
+router.get('/product/job/bulk-update', JobController.JobProductsBulkUpdate);
 router.get('/job/delete/:id', request_param.any(), JobController.jobDelete);
 router.get('/job/details/:id', request_param.any(), JobController.jobDetails);
 router.post('/job/post', request_param.any(), JobController.jobPost);
