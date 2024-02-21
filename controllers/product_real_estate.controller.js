@@ -68,6 +68,15 @@ class propertyController {
             res.status(500).send({ status: 500, message: e.message });
         }
     };
+
+    async RealEstateProductsBulkUpdate(req, res) {
+        try {
+            let productsUpdate = await Property.updateMany({}, { $set: { 'sub_category_id': null } });
+            res.status(200).send({ status: 200, data: productsUpdate, message: 'Real Estate Job Products Updated Successfully' });
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
 }
 
 module.exports = new propertyController();
