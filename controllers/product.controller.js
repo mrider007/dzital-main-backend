@@ -783,7 +783,7 @@ class productController {
 
     async productsBulkUpdate(req, res) {
         try {
-            let productsUpdate = await Product.updateMany({}, { $set: { 'image': "" } });
+            let productsUpdate = await Product.updateMany({}, { $set: { 'sub_category_id': null } });
             res.status(200).send({ status: 200, data: productsUpdate, message: 'Products Updated Successfully' });
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
