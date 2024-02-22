@@ -1,5 +1,6 @@
 const express = require('express');
 const productEducationController = require('../controllers/product_education.controller');
+const Authentication = require('../middleware/authentication');
 const router = express.Router();
 const multer = require('multer');
 const request_param = multer();
@@ -30,5 +31,6 @@ router.get('/product/lesson-course/bulk-update', productEducationController.less
 router.get('/product/lesson-course/detail/:id', productEducationController.lessonCourseDetails);
 router.post('/product/lesson-courses/list', request_param.any(), productEducationController.lessonCoursesList);
 router.post('/product/lesson-course/update/:id', uploadFile.any(), productEducationController.lessonCourseUpdate);
+router.post('/product/lesson-course/add', uploadFile.any(), Authentication.Authenticate, productEducationController.LessonCourseProductAdd);
 
 module.exports = router;

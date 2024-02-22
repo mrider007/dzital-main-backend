@@ -86,6 +86,34 @@ class productEducationController {
         }
     };
 
+    /** User Lesson and Course Product Add */
+    async LessonCourseProductAdd(req, res) {
+        try {
+            if (req.files && req.files.length > 0) {
+                var photo;
+                for (let i = 0; i < req.files.length; i++) {
+                    const element = req.files[i];
+                    if (element.fieldname === 'image') {
+                        photo = element.path;
+                        const uploadImage = await cloudinary.v2.uploader.upload(photo);
+                        req.body.image = uploadImage.secure_url;
+                    }
+                }
+            }
+            req.body.user_id = req.user._id;
+            let lessoncoursesData = await ProductEducation.create(req.body);
+            if (!_.isEmpty(lessoncoursesData) && lessoncoursesData._id) {
+                let productUpdate = await productRepo.updateProductById({ image: lessoncoursesData.image }, lessoncoursesData.product_id);
+                res.status(200).send({ status: 200, data: lessoncoursesData, message: 'Lesson and Course Product Saved Successfully' });
+            }
+            else {
+                res.status(400).send({ status: 400, data: {}, message: 'Lesson and Course Product could not be added' });
+            }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+
 }
 
 module.exports = new productEducationController();
