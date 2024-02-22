@@ -105,6 +105,21 @@ const freelancerRepository = {
         } catch (e) {
             throw e;
         }
+    },
+
+    delete: async (id) => {
+        try {
+            let freelancer = await Freelancer.findById(id);
+            if (freelancer) {
+                let freelancerDelete = await Freelancer.deleteOne({ _id: id }).exec();
+                if (!freelancerDelete) {
+                    return null;
+                }
+                return freelancer;
+            }
+        } catch (e) {
+            throw e;
+        }
     }
 
 }

@@ -108,6 +108,21 @@ const productEducationRepository = {
         } catch (e) {
             throw e;
         }
+    },
+
+    delete: async (id) => {
+        try {
+            let lesson_course = await ProductEducation.findById(id);
+            if (lesson_course) {
+                let lessoncourseDelete = await ProductEducation.deleteOne({ _id: id }).exec();
+                if (!lessoncourseDelete) {
+                    return null;
+                }
+                return lesson_course;
+            }
+        } catch (e) {
+            throw e;
+        }
     }
 
 }

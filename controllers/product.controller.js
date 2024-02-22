@@ -626,7 +626,7 @@ class productController {
                         res.status(200).send({ status: 200, data: electronicsDelete, message: 'Product has been removed successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be removed' });
+                        res.status(400).send({ status: 400, message: 'Product could not be removed' });
                     }
                 }
                 else if (categoryInfo.title === 'Jobs') {
@@ -636,7 +636,17 @@ class productController {
                         res.status(200).send({ status: 200, data: jobDelete, message: 'Product has been removed successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be removed' });
+                        res.status(400).send({ status: 400, message: 'Product could not be removed' });
+                    }
+                }
+                else if (categoryInfo.title === 'Freelancer') {
+                    let freelancer = await Freelancer.findOne({ product_id: productInfo._id });
+                    let freelancerDelete = await freelancerRepo.delete(freelancer._id);
+                    if (!_.isEmpty(freelancerDelete) && freelancerDelete._id) {
+                        res.status(200).send({ status: 200, data: freelancerDelete, message: 'Product has been removed successfully' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, message: 'Product could not be removed' });
                     }
                 }
                 else if (categoryInfo.title === 'Real Estate') {
@@ -646,7 +656,7 @@ class productController {
                         res.status(200).send({ status: 200, data: propertyDelete, message: 'Product has been removed successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be removed' });
+                        res.status(400).send({ status: 400, message: 'Product could not be removed' });
                     }
                 }
                 else if (categoryInfo.title === 'Fashion & Beauty') {
@@ -656,7 +666,7 @@ class productController {
                         res.status(200).send({ status: 200, data: fashionDelete, message: 'Product has been removed successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be removed' });
+                        res.status(400).send({ status: 400, message: 'Product could not be removed' });
                     }
                 }
                 else if (categoryInfo.title === 'Goods of all kinds') {
@@ -666,7 +676,17 @@ class productController {
                         res.status(200).send({ status: 200, data: goodsDelete, message: 'Product has been removed successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be removed' });
+                        res.status(400).send({ status: 400, message: 'Product could not be removed' });
+                    }
+                }
+                else if (categoryInfo.title === 'Lessons & Courses') {
+                    let lesson_course = await ProductEducation.findOne({ product_id: productInfo._id });
+                    let lessonDelete = await educationRepo.delete(lesson_course._id);
+                    if (!_.isEmpty(lessonDelete) && lessonDelete._id) {
+                        res.status(200).send({ status: 200, data: lessonDelete, message: 'Product has been removed successfully' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, message: 'Product could not be removed' });
                     }
                 }
             }
