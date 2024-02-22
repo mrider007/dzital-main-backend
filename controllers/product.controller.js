@@ -789,6 +789,22 @@ class productController {
             res.status(500).send({ status: 500, message: e.message });
         }
     };
+
+    /** User New Product Add */
+    async userProductAdd(req, res) {
+        try {
+            req.body.userId = req.user._id;
+            let productSave = await Product.create(req.body);
+            if (!_.isEmpty(productSave)) {
+                res.status(200).send({ status: 200, data: productSave, message: 'Product Created Successfully' });
+            }
+            else {
+                res.status(400).send({ status: 400, message: 'Product Not Created' });
+            }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
 }
 
 module.exports = new productController();
