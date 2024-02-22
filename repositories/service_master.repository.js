@@ -48,6 +48,38 @@ const serviceRepository = {
             conditions['$and'] = and_clauses;
 
             let services = Service.aggregate([
+                {
+                    $lookup: {
+                        let: { category_id: '$_id' },
+                        from: "service_categories",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $or: [{ $eq: ["$parentId", "$$category_id"] }] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "sub_category_details"
+                    }
+                },
+                {
+                    $addFields: {
+                        total_sub_categories: { $size: "$sub_category_details" },
+                    }
+                },
+                {
+                    $group: {
+                        _id: '$_id',
+                        title: { $first: '$title' },
+                        parentId: { $first: '$parentId' },
+                        total_sub_categories: { $first: '$total_sub_categories' },
+                        createdAt: { $first: '$createdAt' },
+                    }
+                },
                 { $match: conditions }
             ]);
             if (!services) {
