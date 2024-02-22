@@ -54,6 +54,51 @@ class ProductElectronicsController {
         }
     };
 
+    /** User Electronics Product Add */
+    async ElectronicsProductAdd(req, res) {
+        try {
+            if (req.files && req.files.length > 0) {
+
+                var photo, image_1, image_2, image_3;
+
+                for (let i = 0; i < req.files.length; i++) {
+                    const element = req.files[i];
+                    if (element.fieldname === 'photo') {
+                        photo = element.path;
+                        const uploadResultLogo = await cloudinary.v2.uploader.upload(photo);
+                        req.body.photo = uploadResultLogo.secure_url;
+                    }
+                    if (element.fieldname === 'image_1') {
+                        image_1 = element.path;
+                        const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_1);
+                        req.body.image_1 = uploadResultFaviconLogo.secure_url;
+                    }
+                    if (element.fieldname === 'image_2') {
+                        image_2 = element.path;
+                        const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_2);
+                        req.body.image_2 = uploadResultFaviconLogo.secure_url;
+                    }
+                    if (element.fieldname === 'image_3') {
+                        image_3 = element.path;
+                        const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_3);
+                        req.body.image_3 = uploadResultFaviconLogo.secure_url;
+                    }
+                }
+            }
+            req.body.user_id = req.user._id;
+            let electronicsProductSave = await ProductElectronics.create(req.body);
+            if (!_.isEmpty(electronicsProductSave) && electronicsProductSave._id) {
+                let productUpdate = await productRepo.updateProductById({ image: electronicsProductSave.image }, electronicsProductSave.product_id);
+                res.status(200).send({ status: 200, data: lessoncoursesData, message: 'Electronics Product Saved Successfully' });
+            }
+            else {
+                res.status(400).send({ status: 400, data: {}, message: 'Electronics Product could not be added' });
+            }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+
 }
 
 module.exports = new ProductElectronicsController();
