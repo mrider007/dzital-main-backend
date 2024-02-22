@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const ProductFashion = require('../models/product_fashion.model');
 const fashionRepo = require('../repositories/product_fashion.repository');
+const productRepo = require('../repositories/product.repository');
+
 class productFashionController {
     constructor() { }
 
@@ -51,6 +53,14 @@ class productFashionController {
         try {
             let productsUpdate = await ProductFashion.updateMany({}, { $set: { 'sub_category_id': null } });
             res.status(200).send({ status: 200, data: productsUpdate, message: 'Fashion Products Updated Successfully' });
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+
+    async FashionProductCreate(req, res) {
+        try {
+
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
         }
