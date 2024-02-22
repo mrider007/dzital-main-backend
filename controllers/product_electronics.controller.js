@@ -89,7 +89,7 @@ class ProductElectronicsController {
             req.body.user_id = req.user._id;
             let electronicsProductSave = await ProductElectronics.create(req.body);
             if (!_.isEmpty(electronicsProductSave) && electronicsProductSave._id) {
-                let productUpdate = await productRepo.updateProductById({ image: electronicsProductSave.image }, electronicsProductSave.product_id);
+                let productUpdate = await productRepo.updateProductById({ image: electronicsProductSave.photo }, electronicsProductSave.product_id);
                 res.status(200).send({ status: 200, data: lessoncoursesData, message: 'Electronics Product Saved Successfully' });
             }
             else {
