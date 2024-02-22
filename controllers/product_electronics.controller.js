@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const ProductElectronics = require('../models/product_electronics.model');
 const electronicsRepo = require('../repositories/product_electronics.repository');
+const productRepo = require('../repositories/product.repository');
 
 class ProductElectronicsController {
     constructor() { }

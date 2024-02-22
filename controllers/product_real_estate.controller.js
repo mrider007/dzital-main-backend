@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Property = require('../models/product_real_estate.model');
 const Product = require('../models/product.model');
+const productRepo = require('../repositories/product.repository');
 const propertyRepo = require('../repositories/product_real_estate.repository');
 
 class propertyController {
@@ -8,18 +9,42 @@ class propertyController {
 
     async add(req, res) {
         try {
-            req.body.userId = req.user._id;
-            let productSave = await Product.create(req.body);
-            if (!_.isEmpty(productSave) && productSave._id) {
-                req.body.user_id = productSave.userId;
-                req.body.product_id = productSave._id;
-                let propertySave = await Property.create(req.body);
-                if (!_.isEmpty(propertySave) && propertySave._id) {
-                    res.status(200).send({ status: 200, data: propertySave, message: 'Property has been added successfully' });
+            if (req.files && req.files.length > 0) {
+
+                var photo, image_1, image_2, image_3;
+
+                for (let i = 0; i < req.files.length; i++) {
+                    const element = req.files[i];
+                    if (element.fieldname === 'photo') {
+                        photo = element.path;
+                        const uploadResultLogo = await cloudinary.v2.uploader.upload(photo);
+                        req.body.photo = uploadResultLogo.secure_url;
+                    }
+                    if (element.fieldname === 'image_1') {
+                        image_1 = element.path;
+                        const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_1);
+                        req.body.image_1 = uploadResultFaviconLogo.secure_url;
+                    }
+                    if (element.fieldname === 'image_2') {
+                        image_2 = element.path;
+                        const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_2);
+                        req.body.image_2 = uploadResultFaviconLogo.secure_url;
+                    }
+                    if (element.fieldname === 'image_3') {
+                        image_3 = element.path;
+                        const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_3);
+                        req.body.image_3 = uploadResultFaviconLogo.secure_url;
+                    }
                 }
             }
+            req.body.user_id = req.user._id;
+            let real_estate_product_save = await Property.create(req.body);
+            if (!_.isEmpty(real_estate_product_save) && real_estate_product_save._id) {
+                let productUpdate = await productRepo.updateProductById({ image: electronicsProductSave.image }, real_estate_product_save.product_id);
+                res.status(200).send({ status: 200, data: real_estate_product_save, message: 'Real Estate Product Saved Successfully' });
+            }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'Property could not be added' });
+                res.status(400).send({ status: 400, data: {}, message: 'Real Estate Product could not be added' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });

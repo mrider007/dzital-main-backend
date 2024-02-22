@@ -1,5 +1,6 @@
 const ProductEducation = require('../models/product_education.model');
 const educationRepo = require('../repositories/product_education.repository');
+const productRepo = require('../repositories/product.repository');
 const mongoose = require('mongoose');
 const cloudinary = require('cloudinary');
 
