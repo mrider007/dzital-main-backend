@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-//const Attribute = require('../models/attribute.model');
 const Attribute = require('../models/attribute.model');
 
 class attributeController {
