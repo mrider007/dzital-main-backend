@@ -5,6 +5,7 @@ const router = express.Router();
 const multer = require('multer');
 const request_param = multer();
 
+router.get('/admin/attribute/detail/:id', Authentication.AuthenticateAdmin, attributeController.attributeDetails);
 router.post('/attribute/add', request_param.any(), Authentication.AuthenticateAdmin, attributeController.attributeAdd);
 router.post('/admin/attribute/list', request_param.any(), Authentication.AuthenticateAdmin, attributeController.attributeList);
 

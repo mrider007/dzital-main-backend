@@ -20,6 +20,21 @@ class attributeController {
         }
     };
 
+    /** Admin Attribute Details */
+    async attributeDetails(req, res) {
+        try {
+            let attribute_id = new mongoose.Types.ObjectId(req.params.id);
+            let attributeDetails = await Attribute.findOne({ _id: attribute_id });
+            if (!_.isEmpty(attributeDetails)) {
+                res.status(200).send({ status: 200, data: attributeDetails, message: 'Attribute details fetched successfully' });                
+            } else {
+                res.status(400).send({ status: 400, message: 'Attribute not found' });
+            }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+
     /** Admin Sub Category Attribute List */
     async attributeList(req, res) {
         try {
