@@ -1,4 +1,5 @@
 const Attribute = require('../models/attribute.model');
+const mongoose = require('mongoose');
 
 const attributeRepository = {
 
@@ -15,6 +16,14 @@ const attributeRepository = {
                         { 'attribute': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
                     ]
                 });
+            }
+
+            if (_.isObject(req.body) && _.has(req.body, 'category_id')) {
+                and_clauses.push({ 'category_id': new mongoose.Types.ObjectId(req.body.category_id) });
+            }
+
+            if (_.isObject(req.body) && _.has(req.body, 'sub_category_id')) {
+                and_clauses.push({ 'sub_category_id': new mongoose.Types.ObjectId(req.body.sub_category_id) });
             }
 
             conditions['$and'] = and_clauses;
