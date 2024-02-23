@@ -58,15 +58,18 @@ const attributeRepository = {
                     }
                 },
                 { $unwind: { path: '$sub_category_details', preserveNullAndEmptyArrays: true } },
-                // {
-                //     $group: {
-                //         _id: '$_id',
-                //         title: { $first: '$title' },
-                //         parentId: { $first: '$parentId' },
-                //         total_sub_categories: { $first: '$total_sub_categories' },
-                //         createdAt: { $first: '$createdAt' },
-                //     }
-                // },
+                {
+                    $group: {
+                        _id: '$_id',
+                        category_id: { $first: '$category_id' },
+                        sub_category_id: { $first: '$sub_category_id' },
+                        category_name: { $first: '$category_details.title' },
+                        sub_category_name: { $first: '$sub_category_details.title' },
+                        attribute: { $first: '$attribute' },
+                        createdAt: { $first: '$createdAt' },
+                        updatedAt: { $first: '$updatedAt' }
+                    }
+                },
                 { $match: conditions }
             ]);
             if (!attributes) {
