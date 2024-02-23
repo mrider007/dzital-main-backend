@@ -64,6 +64,27 @@ class attributeController {
         }
     };
 
+    /** Admin Attribute Update */
+    async update(req, res) {
+        try {
+            const attribute_id = new mongoose.Types.ObjectId(req.params.id);
+            let attributeInfo = await Attribute.findOne({ _id: attribute_id });
+            if (!_.isEmpty(attributeInfo) && attributeInfo._id) {
+                let attributeUpdate = await attributeRepo.updateById(req.body, attribute_id);
+                if (!_.isEmpty(attributeUpdate) && attributeUpdate._id) {
+                    res.status(200).send({ status: 200, data: attributeUpdate, message: 'Attribute updated successfully' });
+                }
+                else {
+                    res.status(400).send({ status: 400, message: 'Attribute could not be updated' });
+                }
+            } else {
+                res.status(400).send({ status: 400, message: 'Attribute not found' });
+            }            
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+
 }
 
 module.exports = new attributeController();

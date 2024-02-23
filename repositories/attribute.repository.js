@@ -161,6 +161,18 @@ const attributeRepository = {
         } catch (e) {
             throw e;
         }
+    },
+
+    updateById: async (data, id) => {
+        try {
+            let attributeUpdate = await Attribute.findByIdAndUpdate(id, data, { new: true, upsert: true }).exec();
+            if (!attributeUpdate) {
+                return null;
+            }
+            return attributeUpdate;
+        } catch (e) {
+            throw e;
+        }
     }
 
 }
