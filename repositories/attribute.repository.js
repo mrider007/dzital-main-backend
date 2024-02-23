@@ -173,6 +173,21 @@ const attributeRepository = {
         } catch (e) {
             throw e;
         }
+    },
+
+    delete: async (id) => {
+        try {
+            let attribute = await Attribute.findById(id);
+            if (attribute) {
+                let attributeDelete = await Attribute.deleteOne({ _id: id }).exec();
+                if (!attributeDelete) {
+                    return null;
+                }
+                return attribute;
+            }
+        } catch (e) {
+            throw e;
+        }
     }
 
 }

@@ -26,7 +26,7 @@ class attributeController {
             let attribute_id = new mongoose.Types.ObjectId(req.params.id);
             let attributeDetails = await attributeRepo.getAttributeDetails(req);
             if (!_.isEmpty(attributeDetails)) {
-                res.status(200).send({ status: 200, data: attributeDetails, message: 'Attribute details fetched successfully' });                
+                res.status(200).send({ status: 200, data: attributeDetails, message: 'Attribute details fetched successfully' });
             } else {
                 res.status(400).send({ status: 400, message: 'Attribute not found' });
             }
@@ -79,6 +79,27 @@ class attributeController {
                 }
             } else {
                 res.status(400).send({ status: 400, message: 'Attribute not found' });
+            }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+
+    /** Admin Attribute Delete */
+    async delete(req, res) {
+        try {
+            let attribute_id = new mongoose.Types.ObjectId(req.params.id);
+            let attributeInfo = await Attribute.findOne({ _id: attribute_id });
+            if (!_.isEmpty(attributeInfo) && attributeInfo._id) {
+                let attributeDelete = await attributeRepo.delete(attribute_id);
+                if (!_.isEmpty(attributeDelete) && attributeDelete._id) {
+                    res.status(200).send({ status: 200, data: attributeDelete, message: 'Attribute removed successfully' });
+                }
+                else {
+                    res.status(400).send({ status: 400, message: 'Attribute not removed' });
+                }
+            } else {
+                res.status(400).send({ status: 400, messaage: 'Attribute not found' });
             }            
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
