@@ -20,6 +20,7 @@ class attributeController {
         }
     };
 
+    /** Admin Sub Category Attribute List */
     async attributeList(req, res) {
         try {
             if (!req.body.page) {

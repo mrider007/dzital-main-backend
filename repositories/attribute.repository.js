@@ -22,14 +22,33 @@ const attributeRepository = {
             let attributes = Attribute.aggregate([
                 {
                     $lookup: {
-                        let: { category_id: '$_id' },
+                        let: { categoryId: '$category_id' },
                         from: "service_categories",
                         pipeline: [
                             {
                                 $match: {
                                     $expr: {
                                         $and: [
-                                            { $or: [{ $eq: ["$parentId", "$$category_id"] }] },
+                                            { $or: [{ $eq: ["$_id", "$$categoryId"] }] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "category_details"
+                    }
+                },
+                { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $lookup: {
+                        let: { subcategoryId: '$sub_category_id' },
+                        from: "service_categories",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $or: [{ $eq: ["$_id", "$$subcategoryId"] }] },
                                         ]
                                     }
                                 }
@@ -38,15 +57,16 @@ const attributeRepository = {
                         as: "sub_category_details"
                     }
                 },
-                {
-                    $group: {
-                        _id: '$_id',
-                        title: { $first: '$title' },
-                        parentId: { $first: '$parentId' },
-                        total_sub_categories: { $first: '$total_sub_categories' },
-                        createdAt: { $first: '$createdAt' },
-                    }
-                },
+                { $unwind: { path: '$sub_category_details', preserveNullAndEmptyArrays: true } },
+                // {
+                //     $group: {
+                //         _id: '$_id',
+                //         title: { $first: '$title' },
+                //         parentId: { $first: '$parentId' },
+                //         total_sub_categories: { $first: '$total_sub_categories' },
+                //         createdAt: { $first: '$createdAt' },
+                //     }
+                // },
                 { $match: conditions }
             ]);
             if (!attributes) {
