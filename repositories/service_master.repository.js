@@ -72,11 +72,35 @@ const serviceRepository = {
                     }
                 },
                 {
+                    $lookup: {
+                        let: { categoryId: '$_id' },
+                        from: "attributes",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $or: [{ $eq: ["$category_id", "$$categoryId"] }] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "attribute_details"
+                    }
+                },
+                {
+                    $addFields: {
+                        total_attributes: { $size: "$attribute_details" },
+                    }
+                },
+                {
                     $group: {
                         _id: '$_id',
                         title: { $first: '$title' },
                         parentId: { $first: '$parentId' },
                         total_sub_categories: { $first: '$total_sub_categories' },
+                        total_attributes: { $first: '$total_attributes' },
                         createdAt: { $first: '$createdAt' },
                     }
                 },

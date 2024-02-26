@@ -19,6 +19,15 @@ class attributevalueController {
         }
     };
 
+    /** Product Wise Attribute Value List */
+    async productAttributeValuesList(req, res) {
+        try {
+
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
 }
 
 module.exports = new attributevalueController();
