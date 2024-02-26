@@ -75,6 +75,7 @@ const attributeRepository = {
                         category_name: { $first: '$category_details.title' },
                         sub_category_name: { $first: '$sub_category_details.title' },
                         attribute: { $first: '$attribute' },
+                        options: { $first: '$options' },
                         createdAt: { $first: '$createdAt' },
                         updatedAt: { $first: '$updatedAt' }
                     }
@@ -148,6 +149,7 @@ const attributeRepository = {
                         category_name: { $first: '$category_details.title' },
                         sub_category_name: { $first: '$sub_category_details.title' },
                         attribute: { $first: '$attribute' },
+                        options: { $first: '$options' },
                         createdAt: { $first: '$createdAt' },
                         updatedAt: { $first: '$updatedAt' }
                     }
