@@ -106,6 +106,15 @@ class attributeController {
         }
     };
 
+    async bulkUpdate (req, res) {
+        try {
+            let bulkUpdate = await Attribute.updateMany({}, { $set: { 'options': [] } });
+            res.send({ status: 200, data: bulkUpdate, message: 'Attributes updated successfully' });
+        } catch (e) {
+            res.status(500).send({ message: e.message });
+        }
+    };
+
 }
 
 module.exports = new attributeController();
