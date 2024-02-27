@@ -302,6 +302,7 @@ const JobRepository = {
                         description: { $first: "$description" },
                         status: { $first: '$product_details.status' },
                         skills: { $first: '$skills' },
+                        product_id: { $first: '$product_id' },
                         job_status: { $first: '$job_status' },
                         image: { $first: '$image' },
                         job_type: { $first: '$job_type_details.title' },
