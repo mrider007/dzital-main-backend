@@ -4,6 +4,7 @@ const UserModel = require('../models/user.model');
 const AdminModel = require('../models/admin.model');
 
 const checkAuth = {
+
     Authenticate: async function (req, res, next) {
         const tokens = req.headers.token || req.query.token;
         if (tokens) {
