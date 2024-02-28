@@ -115,6 +115,21 @@ class attributeController {
         }
     };
 
+    /** User side attribute list */
+    async userAttributeList(req, res) {
+        try {
+            let attributes = await attributeRepo.getAllAttributes(req);
+            if (!_.isEmpty(attributes)) {
+                res.status(200).send({ status: 200, data: attributes, message: 'Attribute List fetched successfully' });
+            }   
+            else {
+                res.status(400).send({ status: 400, messaage: 'No Attributes Found' });
+            }        
+        } catch (e) {
+            res.status(500).send({ message: e.message });
+        }
+    };
+
 }
 
 module.exports = new attributeController();
