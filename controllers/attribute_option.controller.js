@@ -35,6 +35,23 @@ class attributeOptionController {
         }
     };
 
+    /** User side Attribute Options List */
+    async userAttributeOptionList(req, res) {
+        try {
+            const attributeId = new mongoose.Types.ObjectId(req.body.attribute_id);
+            let attribute_options = await AttributeOption.find({ attribute_id: attributeId });
+            if (!_.isEmpty(attribute_options)) {
+                res.status(200).send({ status: 200, data: attribute_options, message: 'Attribute Options List fetched successfully' });
+            }
+            else {
+                res.status(400).send({ status: 400, message: 'Attribute Option not found' });
+            }
+        } catch (e) {
+            res.status(500).send({ message: e.message });
+        }
+    };
+
+
 }
 
 module.exports = new attributeOptionController();
