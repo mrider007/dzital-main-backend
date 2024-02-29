@@ -23,7 +23,6 @@ class attributeController {
     /** Admin Attribute Details */
     async attributeDetails(req, res) {
         try {
-            let attribute_id = new mongoose.Types.ObjectId(req.params.id);
             let attributeDetails = await attributeRepo.getAttributeDetails(req);
             if (!_.isEmpty(attributeDetails)) {
                 res.status(200).send({ status: 200, data: attributeDetails, message: 'Attribute details fetched successfully' });
