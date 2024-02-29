@@ -36,6 +36,21 @@ class attributeOptionController {
         }
     };
 
+    /** Attribute Option Details */
+    async attributeOptionDetails(req, res) {
+        try {
+            const attribute_option_id = new mongoose.Types.ObjectId(req.params.id);
+            let attributeoptionDetails = await AttributeOption.findOne({ _id: attribute_option_id });
+            if (!_.isEmpty(attributeoptionDetails)) {
+                res.status(200).send({ status: 200, data: attributeoptionDetails, message: 'Attribute Option details fetched successfully' });
+            } else {
+                res.status(400).send({ status: 400, message: 'Attribute Option not found' });
+            }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+
     async attributeOptionUpdate(req, res) {
         try {
             const attribute_option_id = new mongoose.Types.ObjectId(req.params.id);
