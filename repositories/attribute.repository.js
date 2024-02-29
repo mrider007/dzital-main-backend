@@ -271,6 +271,24 @@ const attributeRepository = {
                 },
                 { $unwind: { path: '$sub_category_details', preserveNullAndEmptyArrays: true } },
                 {
+                    $lookup: {
+                        let: { attributeId: '$_id' },
+                        from: "attribute_options",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $or: [{ $eq: ["$attribute_id", "$$attributeId"] }] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "option_details"
+                    }
+                },
+                {
                     $group: {
                         _id: '$_id',
                         category_id: { $first: '$category_id' },
@@ -278,6 +296,7 @@ const attributeRepository = {
                         category_name: { $first: '$category_details.title' },
                         sub_category_name: { $first: '$sub_category_details.title' },
                         attribute: { $first: '$attribute' },
+                        options: { $first: '$option_details' },
                         createdAt: { $first: '$createdAt' },
                         updatedAt: { $first: '$updatedAt' }
                     }
