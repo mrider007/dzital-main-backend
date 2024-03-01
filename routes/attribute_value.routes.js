@@ -5,6 +5,6 @@ const router = express.Router();
 const multer = require('multer');
 const request_param = multer();
 
-router.post('/product/attribute/value/add', request_param.any(), Authentication.AuthenticateAdmin, attributevalueController.productattributeValueAdd);
+router.post('/product/attribute/value/add', request_param.any(), Authentication.Authenticate, attributevalueController.productattributeValueAdd);
 
 module.exports = router;
