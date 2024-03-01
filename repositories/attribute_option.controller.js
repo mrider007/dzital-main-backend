@@ -25,6 +25,7 @@ const attributeoptionRepository = {
             if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
                 and_clauses.push({
                     $or: [
+                        { 'attribute': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }, 
                         { 'option': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
                     ]
                 });
@@ -37,40 +38,35 @@ const attributeoptionRepository = {
             conditions['$and'] = and_clauses;
 
             let attribute_options = AttributeOption.aggregate([
-                // ttributeId: '$_id' },
-                //         from: 'attribute_options',
-                //         pipeline: [
-                //             {
-                //                 $match: {
-                //                     $expr: {
-                //                         $and: [
-                //                             { $or: [{ $eq: ["$attribute_id", "$$attributeId"] }] },
-                //                         ]
-                //                     }
-                //                 }
-                //             }
-                //         ],
-                //         as: "attribute_options"
-                //     }
-                // },
-                // {
-                //     $addFields: {
-                //         total_attribute_options: { $size: "$attribute_options" },
-                //     }
-                // },
-                // {
-                //     $group: {
-                //         _id: '$_id',
-                //         category_id: { $first: '$category_id' },
-                //         sub_category_id: { $first: '$sub_category_id' },
-                //         category_name: { $first: '$category_details.title' },
-                //         sub_category_name: { $first: '$sub_category_details.title' },
-                //         attribute: { $first: '$attribute' },
-                //         attribute_option_count: { $first: '$total_attribute_options' },
-                //         createdAt: { $first: '$createdAt' },
-                //         updatedAt: { $first: '$updatedAt' }
-                //     }
-                // },
+                {
+                    $lookup: {
+                        let: { attributeId: '$attribute_id' },
+                        from: 'attributes',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $or: [{ $eq: ["$_id", "$$attributeId"] }] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "attribute_details"
+                    }
+                },
+                { $unwind: { path: '$attribute_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: '$_id',
+                        attribute_id: { $first: '$attribute_id' },
+                        attribute: { $first: '$attribute_details.attribute' },
+                        option: { $first: '$option' },
+                        createdAt: { $first: '$createdAt' },
+                        updatedAt: { $first: '$updatedAt' }
+                    }
+                },
                 { $match: conditions },
                 { $sort: { _id: 1 } }
             ]);
