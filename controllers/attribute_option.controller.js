@@ -23,14 +23,35 @@ class attributeOptionController {
     /** Attribute Wise Option List */
     async attributeOptionList(req, res) {
         try {
-            const attributeId = new mongoose.Types.ObjectId(req.body.attribute_id);
-            let attribute_options = await AttributeOption.find({ attribute_id: attributeId });
-            if (!_.isEmpty(attribute_options)) {
-                res.status(200).send({ status: 200, data: attribute_options, message: 'Attribute Options List fetched successfully' });
+            if (!req.body.page) {
+                req.body.page = 1;
             }
             else {
-                res.status(201).send({ status: 201, message: 'No Attribute Option Found' });
+                req.body.page = parseInt(req.body.page);
             }
+
+            if (!req.body.limit) {
+                req.body.limit = 10;
+            }
+            else {
+                req.body.limit = parseInt(req.body.limit);
+            }
+
+            let attributes = await attributeoptionRepo.getAttributeOptions(req);
+            if (!_.isEmpty(attributes)) {
+                res.status(200).send({ status: 200, data: attributes.docs, total: attributes.total, limit: attributes.limit, page: attributes.page, pages: attributes.pages, message: 'Attribute Options list fetched successfully' });
+            }
+            else {
+                res.status(201).send({ status: 201, data: [], message: 'No Attribute Option found' });
+            }
+            // const attributeId = new mongoose.Types.ObjectId(req.body.attribute_id);
+            // let attribute_options = await AttributeOption.find({ attribute_id: attributeId });
+            // if (!_.isEmpty(attribute_options)) {
+            //     res.status(200).send({ status: 200, data: attribute_options, message: 'Attribute Options List fetched successfully' });
+            // }
+            // else {
+            //     res.status(201).send({ status: 201, message: 'No Attribute Option Found' });
+            // }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
         }
