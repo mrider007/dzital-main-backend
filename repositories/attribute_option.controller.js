@@ -15,6 +15,21 @@ const attributeoptionRepository = {
         }
     },
 
+    delete: async (id) => {
+        try {
+            let attribute_option = await AttributeOption.findById(id);
+            if (attribute_option) {
+                let attributeoptionDelete = await AttributeOption.deleteOne({ _id: id }).exec();
+                if (!attributeoptionDelete) {
+                    return null;
+                }
+                return attribute_option;
+            }
+        } catch (e) {
+            throw e;
+        }
+    }
+
 }
 
 module.exports = attributeoptionRepository;

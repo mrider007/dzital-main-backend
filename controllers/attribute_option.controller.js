@@ -65,7 +65,7 @@ class attributeOptionController {
                 }
             } else {
                 res.status(400).send({ status: 400, message: 'Attribute Option not found' });
-            }            
+            }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
         }
@@ -87,6 +87,26 @@ class attributeOptionController {
         }
     };
 
+    /** Admin Attribute Option Delete */
+    async attributeOptionDelete(req, res) {
+        try {
+            const attribute_option_id = new mongoose.Types.ObjectId(req.params.id);
+            let attributeoptionInfo = await AttributeOption.findOne({ _id: attribute_option_id });
+            if (!_.isEmpty(attributeoptionInfo) && attributeoptionInfo._id) {
+                let attributeoptionDelete = await attributeoptionRepo.delete(attribute_option_id);
+                if (!_.isEmpty(attributeoptionDelete) && attributeoptionDelete._id) {
+                    res.status(200).send({ status: 200, data: attributeoptionDelete, message: 'Attribute Option removed successfully' });
+                }
+                else {
+                    res.status(400).send({ status: 400, message: 'Attribute Option not removed' });
+                }
+            } else {
+                res.status(400).send({ status: 400, messaage: 'Attribute not found' });
+            }
+        } catch (e) {
+            res.status(500).send({ message: e.message });
+        }
+    };
 
 }
 
