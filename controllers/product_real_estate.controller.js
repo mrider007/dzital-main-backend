@@ -1,8 +1,10 @@
 const mongoose = require('mongoose');
 const Property = require('../models/product_real_estate.model');
 const Product = require('../models/product.model');
+const AttributeValue = require('../models/attribute_value.model');
 const productRepo = require('../repositories/product.repository');
 const propertyRepo = require('../repositories/product_real_estate.repository');
+const cloudinary = require('cloudinary');
 
 class propertyController {
     constructor() { }
@@ -41,6 +43,16 @@ class propertyController {
             let real_estate_product_save = await Property.create(req.body);
             if (!_.isEmpty(real_estate_product_save) && real_estate_product_save._id) {
                 let productUpdate = await productRepo.updateProductById({ image: real_estate_product_save.photo }, real_estate_product_save.product_id);
+
+                let attribute_values = [];
+
+                for (let x = 0; x < req.body.attributeData.length; x++) {
+                    let attributeData = await AttributeValue.create(req.body.attributeData[x]);
+                    if (!_.isEmpty(attributeData)) {
+                        attribute_values.push(attributeData);
+                    }
+                }
+
                 res.status(200).send({ status: 200, data: real_estate_product_save, message: 'Real Estate Product Saved Successfully' });
             }
             else {
