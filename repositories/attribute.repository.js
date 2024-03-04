@@ -211,7 +211,8 @@ const attributeRepository = {
                         updatedAt: { $first: '$updatedAt' }
                     }
                 },
-                { $match: conditions }
+                { $match: conditions },
+                { $sort: { _id: 1 } }
             ]);
             if (!attributes) {
                 return null;
