@@ -69,7 +69,7 @@ class propertyController {
     async details(req, res) {
         try {
             const property_id = new mongoose.Types.ObjectId(req.params.id);
-            const propertyInfo = await Property.findOne({ _id: property_id });
+            const propertyInfo = await propertyRepo.getRealEstateDetails({ _id: property_id });
             if (!_.isEmpty(propertyInfo) && propertyInfo._id) {
                 res.status(200).send({ status: 200, data: propertyInfo, message: 'Property details has been fetched successfully' });
             }

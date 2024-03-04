@@ -110,6 +110,63 @@ const propertyRepository = {
         } catch (e) {
             throw e;
         }
+    },
+
+    getRealEstateDetails: async (params) => {
+        try {
+            let property = await Property.aggregate([
+                { $match: params },
+                {
+                    $lookup: {
+                        from: 'service_categories',
+                        localField: 'category_id',
+                        foreignField: '_id',
+                        as: 'category_details'
+                    }
+                },
+                { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $lookup: {
+                        from: 'users',
+                        localField: 'user_id',
+                        foreignField: '_id',
+                        as: 'user_details'
+                    }
+                },
+                { $unwind: { path: '$user_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $lookup: {
+                        from: 'products',
+                        localField: 'product_id',
+                        foreignField: '_id',
+                        as: 'product_details'
+                    }
+                },
+                { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: '$_id',
+                        title: { $first: '$title' },
+                        description: { $first: '$description' },
+                        status: { $first: '$product_details.status' },
+                        photo: { $first: '$photo' },
+                        image_1: { $first: '$image_1' },
+                        image_2: { $first: '$image_2' },
+                        image_3: { $first: '$image_3' },
+                        user_id: { $first: '$user_id' },
+                        product_id: { $first: '$product_id' },
+                        category_id: { $first: '$category_id' },
+                        category_name: { $first: '$category_details.title' }
+                    }
+                }
+            ]);
+            if (!property) {
+                return null;
+            }
+            return property[0];            
+        } catch (e) {
+            throw e;
+        }
     }
 
 }
