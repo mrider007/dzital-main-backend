@@ -104,7 +104,8 @@ const serviceRepository = {
                         createdAt: { $first: '$createdAt' },
                     }
                 },
-                { $match: conditions }
+                { $match: conditions },
+                { $sort: { _id: 1 } }
             ]);
             if (!services) {
                 return null;
