@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 const Job = require('../models/product_jobs.model');
-const Product = require('../models/product.model');
-const Category = require('../models/service_master.model');
+const AttributeValue = require('../models/attribute_value.model');
 const jobRepo = require('../repositories/product_job.repository');
+const productRepo = require('../repositories/product_job.repository');
 const cloudinary = require('cloudinary');
 class JobController {
 
     constructor() { }
 
-    /** Admin Job Post */
+    /** User Job Post */
     async jobPost(req, res) {
         try {
             if (!_.has(req.body, 'title')) {
@@ -18,18 +18,38 @@ class JobController {
                 res.status(400).send({ status: 400, message: 'Job Description is required' });
             }
             else {
-                let job_category = await Category.findOne({ title: 'Jobs' });
-                req.body.category_id = job_category._id;
-                let productSave = await Product.create(req.body);
-                if (!_.isEmpty(productSave) && productSave._id) {
-                    req.body.product_id = productSave._id;
-                    let jobData = await Job.create(req.body);
-                    if (!_.isEmpty(jobData) && jobData._id) {
-                        res.status(200).send({ status: 200, data: jobData, message: 'Job saved successfully' });
+                if (req.files && req.files.length > 0) {
+                    var photo;
+                    for (let i = 0; i < req.files.length; i++) {
+                        const element = req.files[i];
+                        if (element.fieldname === 'image') {
+                            photo = element.path;
+                            const uploadImage = await cloudinary.v2.uploader.upload(photo);
+                            req.body.image = uploadImage.secure_url;
+                        }
                     }
-                    else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Job could not be saved' });
+                }
+                req.body.user_id = req.user._id;
+                let jobData = await Job.create(req.body);
+                if (!_.isEmpty(jobData) && jobData._id) {
+                    let productUpdate = await productRepo.updateProductById({ image: jobData.image }, jobData.product_id);
+
+                    let attribute_values = [];
+
+                    for (let x = 0; x < req.body.attributeData.length; x++) {
+
+                        req.body.attributeData[x].product_id = req.body.product_id;
+
+                        let attributeData = await AttributeValue.create(req.body.attributeData[x]);
+                        if (!_.isEmpty(attributeData)) {
+                            attribute_values.push(attributeData);
+                        }
                     }
+
+                    res.status(200).send({ status: 200, data: jobData, message: 'Job saved successfully' });
+                }
+                else {
+                    res.status(400).send({ status: 400, data: {}, message: 'Job could not be saved' });
                 }
             }
         } catch (e) {
