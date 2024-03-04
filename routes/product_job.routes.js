@@ -30,7 +30,7 @@ const uploadFile = multer({ storage: Storage });
 router.get('/product/job/bulk-update', JobController.JobProductsBulkUpdate);
 router.get('/job/delete/:id', request_param.any(), JobController.jobDelete);
 router.get('/job/details/:id', request_param.any(), JobController.jobDetails);
-router.post('/job/post', request_param.any(), JobController.jobPost);
+router.post('/job/post', request_param.any(), Authentication.Authenticate, JobController.jobPost);
 router.post('/job/list', request_param.any(), JobController.jobList);
 router.post('/job/update/:id', uploadFile.any(), JobController.jobUpdate);
 router.post('/job/change-status/:id', request_param.any(), JobController.changeStatus);
