@@ -86,6 +86,37 @@ const propertyRepository = {
                                         ]
                                     }
                                 }
+                            },
+                            {
+                                $lookup: {
+                                    let: { attributeId: '$attribute_id' },
+                                    from: "attributes",
+                                    pipeline: [
+                                        {
+                                            $match: {
+                                                $expr: {
+                                                    $and: [
+                                                        { $or: [{ $eq: ["$_id", "$$attributeId"] }] },
+                                                    ]
+                                                }
+                                            }
+                                        }
+
+                                    ],
+                                    as: "attribute_details"
+                                }
+                            },
+                            { $unwind: { path: '$attribute_details', preserveNullAndEmptyArrays: true } },
+                            {
+                                $group: {
+                                    _id: '$_id',
+                                    product_id: { $first: '$product_id' },
+                                    attribute_id: { $first: '$attribute_id' },
+                                    attribute: { $first: '$attribute_details.attribute' },
+                                    value: { $first: '$value' },
+                                    createdAt: { $first: '$createdAt' },
+                                    updatedAt: { $first: '$updatedAt' }
+                                }
                             }
                         ],
                         as: "attribute_value_details"
