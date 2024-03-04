@@ -206,7 +206,8 @@ const propertyRepository = {
                                     createdAt: { $first: '$createdAt' },
                                     updatedAt: { $first: '$updatedAt' }
                                 }
-                            }
+                            },
+                            { $sort: { _id: 1 } }
                         ],
                         as: "attribute_value_details"
                     }
