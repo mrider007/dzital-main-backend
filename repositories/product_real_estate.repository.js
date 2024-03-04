@@ -144,6 +144,24 @@ const propertyRepository = {
                 },
                 { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
                 {
+                    $lookup: {
+                        let: { productId: '$product_id' },
+                        from: "attribute_values",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $or: [{ $eq: ["$product_id", "$$productId"] }] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "attribute_value_details"
+                    }
+                },
+                {
                     $group: {
                         _id: '$_id',
                         title: { $first: '$title' },
@@ -156,7 +174,8 @@ const propertyRepository = {
                         user_id: { $first: '$user_id' },
                         product_id: { $first: '$product_id' },
                         category_id: { $first: '$category_id' },
-                        category_name: { $first: '$category_details.title' }
+                        category_name: { $first: '$category_details.title' },
+                        attribute_values: { $first: '$attribute_value_details' }
                     }
                 }
             ]);
