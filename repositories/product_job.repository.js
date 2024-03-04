@@ -42,10 +42,6 @@ const JobRepository = {
                         _id: '$_id',
                         title: { $first: '$title' },
                         description: { $first: '$description' },
-                        skills: { $first: '$skills' },
-                        job_type: { $first: '$job_type' },
-                        job_type_title: { $first: '$job_type_details.title' },
-                        job_status: { $first: '$job_status' },
                         createdAt: { $first: '$createdAt' }
                     }
                 }
@@ -220,9 +216,6 @@ const JobRepository = {
                         _id: '$_id',
                         title: { $first: "$title" },
                         description: { $first: "$description" },
-                        skills: { $first: '$skills' },
-                        job_status: { $first: '$job_status' },
-                        job_type: { $first: '$job_type_details.title' },
                         createdAt: { $first: '$createdAt' }
                     }
                 },
@@ -301,11 +294,8 @@ const JobRepository = {
                         title: { $first: "$title" },
                         description: { $first: "$description" },
                         status: { $first: '$product_details.status' },
-                        skills: { $first: '$skills' },
                         product_id: { $first: '$product_id' },
-                        job_status: { $first: '$job_status' },
                         image: { $first: '$image' },
-                        job_type: { $first: '$job_type_details.title' },
                         createdAt: { $first: '$createdAt' }
                     }
                 },
