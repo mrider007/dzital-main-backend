@@ -94,6 +94,24 @@ const productElectronicsRepository = {
                 { $match: params },
                 {
                     $lookup: {
+                        from: 'service_categories',
+                        localField: 'category_id',
+                        foreignField: '_id',
+                        as: 'category_details'
+                    }
+                },
+                { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $lookup: {
+                        from: 'users',
+                        localField: 'user_id',
+                        foreignField: '_id',
+                        as: 'user_details'
+                    }
+                },
+                { $unwind: { path: '$user_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $lookup: {
                         from: 'products',
                         localField: 'product_id',
                         foreignField: '_id',
@@ -102,20 +120,67 @@ const productElectronicsRepository = {
                 },
                 { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
                 {
+                    $lookup: {
+                        let: { productId: '$product_id' },
+                        from: "attribute_values",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $or: [{ $eq: ["$product_id", "$$productId"] }] },
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                $lookup: {
+                                    let: { attributeId: '$attribute_id' },
+                                    from: "attributes",
+                                    pipeline: [
+                                        {
+                                            $match: {
+                                                $expr: {
+                                                    $and: [
+                                                        { $or: [{ $eq: ["$_id", "$$attributeId"] }] },
+                                                    ]
+                                                }
+                                            }
+                                        }
+
+                                    ],
+                                    as: "attribute_details"
+                                }
+                            },
+                            { $unwind: { path: '$attribute_details', preserveNullAndEmptyArrays: true } },
+                            {
+                                $group: {
+                                    _id: '$_id',
+                                    product_id: { $first: '$product_id' },
+                                    attribute_id: { $first: '$attribute_id' },
+                                    attribute: { $first: '$attribute_details.attribute' },
+                                    value: { $first: '$value' },
+                                    createdAt: { $first: '$createdAt' },
+                                    updatedAt: { $first: '$updatedAt' }
+                                }
+                            },
+                            { $sort: { _id: 1 } }
+                        ],
+                        as: "attribute_value_details"
+                    }
+                },
+                {
                     $group: {
                         _id: '$_id',
                         title: { $first: '$title' },
                         description: { $first: '$description' },
-                        price: { $first: '$price' },
-                        product_type: { $first: '$product_type' },
                         photo: { $first: '$photo' },
                         image_1: { $first: '$image_1' },
                         image_2: { $first: '$image_2' },
                         image_3: { $first: '$image_3' },
-                        brand: { $first: '$brand' },
                         product_id: { $first: '$product_id' },
                         category_id: { $first: '$category_id' },
-                        quantity: { $first: '$quantity' },
+                        category_name: { $first: '$category_details.title' },
                         status: { $first: '$product_details.status' },
                         createdAt: { $first: '$createdAt' }
                     }
