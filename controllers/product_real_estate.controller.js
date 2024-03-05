@@ -42,7 +42,7 @@ class propertyController {
             req.body.user_id = req.user._id;
             let real_estate_product_save = await Property.create(req.body);
             if (!_.isEmpty(real_estate_product_save) && real_estate_product_save._id) {
-                let productUpdate = await productRepo.updateProductById({ image: real_estate_product_save.photo }, real_estate_product_save.product_id);
+                //let productUpdate = await productRepo.updateProductById({ image: real_estate_product_save.photo }, real_estate_product_save.product_id);
 
                 let attribute_values = [];
 

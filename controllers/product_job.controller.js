@@ -32,8 +32,7 @@ class JobController {
                 req.body.user_id = req.user._id;
                 let jobData = await Job.create(req.body);
                 if (!_.isEmpty(jobData) && jobData._id) {
-                    let productUpdate = await productRepo.updateProductById({ image: jobData.image }, jobData.product_id);
-
+                    
                     let attribute_values = [];
 
                     for (let x = 0; x < req.body.attributeData.length; x++) {
