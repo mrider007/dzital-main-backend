@@ -414,6 +414,24 @@ class productController {
                         res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
                     }
                 }
+                else if (categoryInfo.title === 'Freelancer') {
+                    let freelancerDetails = await Freelancer.findOne({ product_id: productInfo._id });
+                    if (!_.isEmpty(freelancerDetails) && freelancerDetails._id) {
+                        res.status(200).send({ status: 200, data: goodsDetails, message: 'Product details has been fetched successfully' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                    }
+                }
+                else if (categoryInfo.title === 'Lessons & Courses') {
+                    let lessonDetails = await ProductEducation.findOne({ product_id: productInfo._id });
+                    if (!_.isEmpty(lessonDetails) && lessonDetails._id) {
+                        res.status(200).send({ status: 200, data: lessonDetails, message: 'Product details has been fetched successfully' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                    }                                     
+                }
             } else {
                 res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
             }
