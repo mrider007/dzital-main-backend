@@ -181,7 +181,14 @@ const productElectronicsRepository = {
                         product_id: { $first: '$product_id' },
                         category_id: { $first: '$category_id' },
                         category_name: { $first: '$category_details.title' },
+                        bid_now: { $first: '$product_details.bid_now' },
+                        bid_start_price: { $first: '$product_details.bid_start_price' },
+                        bid_increament_value: { $first: '$product_details.bid_increament_value' },
+                        bid_entry: { $first: '$product_details.bid_entry' },
+                        bid_start_date: { $first: '$product_details.bid_start_date' },
+                        bid_end_date: { $first: '$product_details.bid_end_date' },
                         status: { $first: '$product_details.status' },
+                        attribute_values: { $first: '$attribute_value_details' },
                         createdAt: { $first: '$createdAt' }
                     }
                 }
