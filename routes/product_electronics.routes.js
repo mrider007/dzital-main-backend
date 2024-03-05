@@ -4,6 +4,7 @@ const Authentication = require('../middleware/authentication');
 const router = express.Router();
 const multer = require('multer');
 const request_param = multer();
+const fs = require('fs');
 const cloudinary = require('cloudinary');
 
 cloudinary.v2.config({

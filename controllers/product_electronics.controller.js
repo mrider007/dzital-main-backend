@@ -3,6 +3,7 @@ const ProductElectronics = require('../models/product_electronics.model');
 const AttributeValue = require('../models/attribute_value.model');
 const electronicsRepo = require('../repositories/product_electronics.repository');
 const productRepo = require('../repositories/product.repository');
+const cloudinary = require('cloudinary');
 
 class ProductElectronicsController {
     constructor() { }
