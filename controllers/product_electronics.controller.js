@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const ProductElectronics = require('../models/product_electronics.model');
+const AttributeValue = require('../models/attribute_value.model');
 const electronicsRepo = require('../repositories/product_electronics.repository');
 const productRepo = require('../repositories/product.repository');
 
@@ -89,8 +90,21 @@ class ProductElectronicsController {
             req.body.user_id = req.user._id;
             let electronicsProductSave = await ProductElectronics.create(req.body);
             if (!_.isEmpty(electronicsProductSave) && electronicsProductSave._id) {
+
+                let attribute_values = [];
+
+                for (let x = 0; x < req.body.attributeData.length; x++) {
+                    
+                    req.body.attributeData[x].product_id = req.body.product_id;
+
+                    let attributeData = await AttributeValue.create(req.body.attributeData[x]);
+                    if (!_.isEmpty(attributeData)) {
+                        attribute_values.push(attributeData);
+                    }
+                }
+
                 let productUpdate = await productRepo.updateProductById({ image: electronicsProductSave.photo }, electronicsProductSave.product_id);
-                res.status(200).send({ status: 200, data: lessoncoursesData, message: 'Electronics Product Saved Successfully' });
+                res.status(200).send({ status: 200, data: electronicsProductSave, message: 'Electronics Product Saved Successfully' });
             }
             else {
                 res.status(400).send({ status: 400, data: {}, message: 'Electronics Product could not be added' });
