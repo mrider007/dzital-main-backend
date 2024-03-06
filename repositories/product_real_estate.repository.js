@@ -117,6 +117,7 @@ const propertyRepository = {
                         product_id: { $first: '$product_id' },
                         category_id: { $first: '$category_id' },
                         category_name: { $first: '$category_details.title' },
+                        sub_category_id: { $first: '$sub_category_id' },
                         attribute_values: { $first: '$attribute_value_details' }
                     }
                 }
