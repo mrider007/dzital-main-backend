@@ -5,6 +5,64 @@ const goodsRepo = require('../repositories/product_goods.repository');
 class productGoodsController {
     constructor() { }
 
+    /** User Goods Product Create */
+    async GoodsProductCreate(req, res) {
+        try {
+            if (req.files && req.files.length > 0) {
+
+                var photo, image_1, image_2, image_3;
+
+                for (let i = 0; i < req.files.length; i++) {
+                    const element = req.files[i];
+                    if (element.fieldname === 'photo') {
+                        photo = element.path;
+                        const uploadResultLogo = await cloudinary.v2.uploader.upload(photo);
+                        req.body.photo = uploadResultLogo.secure_url;
+                    }
+                    if (element.fieldname === 'image_1') {
+                        image_1 = element.path;
+                        const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_1);
+                        req.body.image_1 = uploadResultFaviconLogo.secure_url;
+                    }
+                    if (element.fieldname === 'image_2') {
+                        image_2 = element.path;
+                        const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_2);
+                        req.body.image_2 = uploadResultFaviconLogo.secure_url;
+                    }
+                    if (element.fieldname === 'image_3') {
+                        image_3 = element.path;
+                        const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_3);
+                        req.body.image_3 = uploadResultFaviconLogo.secure_url;
+                    }
+                }
+            }
+            req.body.user_id = req.user._id;
+            let fashionProductSave = await ProductFashion.create(req.body);
+            if (!_.isEmpty(fashionProductSave) && fashionProductSave._id) {
+
+                let attribute_values = [];
+
+                for (let x = 0; x < req.body.attributeData.length; x++) {
+                    
+                    req.body.attributeData[x].product_id = req.body.product_id;
+
+                    let attributeData = await AttributeValue.create(req.body.attributeData[x]);
+                    if (!_.isEmpty(attributeData)) {
+                        attribute_values.push(attributeData);
+                    }
+                }
+
+                let productUpdate = await productRepo.updateProductById({ image: fashionProductSave.photo }, fashionProductSave.product_id);
+                res.status(200).send({ status: 200, data: fashionProductSave, message: 'Fashion Product Saved Successfully' });
+            }
+            else {
+                res.status(400).send({ status: 400, data: {}, message: 'Fashion Product could not be added' });
+            }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+
     async list(req, res) {
         try {
             if (!req.body.page) {
