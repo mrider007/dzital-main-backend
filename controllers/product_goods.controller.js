@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const ProductGoods = require('../models/product_goods.model');
+const AttributeValue = require('../models/attribute_value.model');
 const goodsRepo = require('../repositories/product_goods.repository');
+const productRepo = require('../repositories/product.repository');
+const cloudinary = require('cloudinary');
 
 class productGoodsController {
     constructor() { }
@@ -37,8 +40,8 @@ class productGoodsController {
                 }
             }
             req.body.user_id = req.user._id;
-            let fashionProductSave = await ProductFashion.create(req.body);
-            if (!_.isEmpty(fashionProductSave) && fashionProductSave._id) {
+            let goodsProductSave = await ProductGoods.create(req.body);
+            if (!_.isEmpty(goodsProductSave) && goodsProductSave._id) {
 
                 let attribute_values = [];
 
@@ -52,11 +55,11 @@ class productGoodsController {
                     }
                 }
 
-                let productUpdate = await productRepo.updateProductById({ image: fashionProductSave.photo }, fashionProductSave.product_id);
-                res.status(200).send({ status: 200, data: fashionProductSave, message: 'Fashion Product Saved Successfully' });
+                let productUpdate = await productRepo.updateProductById({ image: goodsProductSave.photo }, goodsProductSave.product_id);
+                res.status(200).send({ status: 200, data: goodsProductSave, message: 'Goods Product Added Successfully' });
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'Fashion Product could not be added' });
+                res.status(400).send({ status: 400, data: {}, message: 'Goods Product could not be added' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
