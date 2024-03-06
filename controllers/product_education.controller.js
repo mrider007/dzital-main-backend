@@ -1,4 +1,5 @@
 const ProductEducation = require('../models/product_education.model');
+const AttributeValue = require('../models/attribute_value.model');
 const educationRepo = require('../repositories/product_education.repository');
 const productRepo = require('../repositories/product.repository');
 const mongoose = require('mongoose');
@@ -104,6 +105,19 @@ class productEducationController {
             req.body.user_id = req.user._id;
             let lessoncoursesData = await ProductEducation.create(req.body);
             if (!_.isEmpty(lessoncoursesData) && lessoncoursesData._id) {
+
+                let attribute_values = [];
+
+                for (let x = 0; x < req.body.attributeData.length; x++) {
+
+                    req.body.attributeData[x].product_id = req.body.product_id;
+
+                    let attributeData = await AttributeValue.create(req.body.attributeData[x]);
+                    if (!_.isEmpty(attributeData)) {
+                        attribute_values.push(attributeData);
+                    }
+                }
+
                 let productUpdate = await productRepo.updateProductById({ image: lessoncoursesData.image }, lessoncoursesData.product_id);
                 res.status(200).send({ status: 200, data: lessoncoursesData, message: 'Lesson and Course Product Saved Successfully' });
             }
