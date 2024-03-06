@@ -17,20 +17,91 @@ const freelancerRepository = {
                 },
                 { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
                 {
+                    $lookup: {
+                        from: 'users',
+                        localField: 'user_id',
+                        foreignField: '_id',
+                        as: 'user_details'
+                    }
+                },
+                { $unwind: { path: '$user_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $lookup: {
+                        from: 'products',
+                        localField: 'product_id',
+                        foreignField: '_id',
+                        as: 'product_details'
+                    }
+                },
+                { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $lookup: {
+                        let: { productId: '$product_id' },
+                        from: "attribute_values",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $or: [{ $eq: ["$product_id", "$$productId"] }] },
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                $lookup: {
+                                    let: { attributeId: '$attribute_id' },
+                                    from: "attributes",
+                                    pipeline: [
+                                        {
+                                            $match: {
+                                                $expr: {
+                                                    $and: [
+                                                        { $or: [{ $eq: ["$_id", "$$attributeId"] }] },
+                                                    ]
+                                                }
+                                            }
+                                        }
+
+                                    ],
+                                    as: "attribute_details"
+                                }
+                            },
+                            { $unwind: { path: '$attribute_details', preserveNullAndEmptyArrays: true } },
+                            {
+                                $group: {
+                                    _id: '$_id',
+                                    product_id: { $first: '$product_id' },
+                                    attribute_id: { $first: '$attribute_id' },
+                                    attribute: { $first: '$attribute_details.attribute' },
+                                    value: { $first: '$value' },
+                                    createdAt: { $first: '$createdAt' },
+                                    updatedAt: { $first: '$updatedAt' }
+                                }
+                            },
+                            { $sort: { _id: 1 } }
+                        ],
+                        as: "attribute_value_details"
+                    }
+                },
+                {
                     $group: {
                         _id: '$_id',
                         title: { $first: '$title' },
                         description: { $first: '$description' },
-                        experience: { $first: '$experience' },
-                        skills: { $first: '$skills' },
-                        location: { $first: '$location' },
-                        image: { $first: '$image' },                       
-                        budget: { $first: '$budget' },
-                        user_id: { $first: '$user_id' },
-                        status: { $first: '$status' },
+                        image: { $first: '$image' },
+                        product_id: { $first: '$product_id' },
                         category_id: { $first: '$category_id' },
                         category_name: { $first: '$category_details.title' },
-                        createdAt: { $first: '$createdAt' } 
+                        bid_now: { $first: '$product_details.bid_now' },
+                        bid_start_price: { $first: '$product_details.bid_start_price' },
+                        bid_increament_value: { $first: '$product_details.bid_increament_value' },
+                        bid_entry: { $first: '$product_details.bid_entry' },
+                        bid_start_date: { $first: '$product_details.bid_start_date' },
+                        bid_end_date: { $first: '$product_details.bid_end_date' },
+                        status: { $first: '$product_details.status' },
+                        attribute_values: { $first: '$attribute_value_details' },
+                        createdAt: { $first: '$createdAt' }
                     }
                 }
             ]);

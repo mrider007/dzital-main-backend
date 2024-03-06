@@ -415,7 +415,7 @@ class productController {
                     }
                 }
                 else if (categoryInfo.title === 'Freelancer') {
-                    let freelancerDetails = await Freelancer.findOne({ product_id: productInfo._id });
+                    let freelancerDetails = await freelancerRepo.getDetails({ product_id: productInfo._id });
                     if (!_.isEmpty(freelancerDetails) && freelancerDetails._id) {
                         res.status(200).send({ status: 200, data: goodsDetails, message: 'Product details has been fetched successfully' });
                     }
