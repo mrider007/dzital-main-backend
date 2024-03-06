@@ -47,7 +47,7 @@ class propertyController {
                 let attribute_values = [];
 
                 for (let x = 0; x < req.body.attributeData.length; x++) {
-                    
+
                     req.body.attributeData[x].product_id = req.body.product_id;
 
                     let attributeData = await AttributeValue.create(req.body.attributeData[x]);
