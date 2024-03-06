@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const User = require('../models/user.model');
 const Freelancer = require('../models/product_freelancer.model');
 const AttributeValue = require('../models/attribute_value.model');
 const productRepo = require('../repositories/product.repository');
