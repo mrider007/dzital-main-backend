@@ -25,12 +25,63 @@ const ProductWishlistRepository = {
 
             let wishlist = await ProductWishlist.aggregate([
                 { $match: conditions },
+                // {
+                //     $lookup: {
+                //         from: 'products',
+                //         localField: 'products.product_id',
+                //         foreignField: '_id',
+                //         as: 'wishlist'
+                //     }
+                // },
                 {
                     $lookup: {
-                        from: 'products',
-                        localField: 'products.product_id',
-                        foreignField: '_id',
-                        as: 'wishlist'
+                        let: { productId: '$products.product_id' },
+                        from: "products",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $or: [{ $in: ["$_id", "$$productId"] }] },
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                $lookup: {
+                                    let: { categoryId: '$category_id' },
+                                    from: "service_categories",
+                                    pipeline: [
+                                        {
+                                            $match: {
+                                                $expr: {
+                                                    $and: [
+                                                        { $or: [{ $eq: ["$_id", "$$categoryId"] }] },
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    as: "category_details"
+                                }
+                            },
+                            { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
+                            {
+                                $group: {
+                                    _id: '$_id',
+                                    title: { $first: '$title' },
+                                    description: { $first: '$description' },
+                                    status: { $first: '$status' },
+                                    category_id: { $first: '$category_id' },
+                                    sub_category_id: { $first: '$sub_category_id' },
+                                    category_name: { $first: '$category_details.title' },
+                                    image: { $first: '$image' },
+                                    createdAt: { $first: '$createdAt' },
+                                    updatedAt: { $first: '$updatedAt' }
+                                }
+                            }
+                        ],
+                        as: "wishlist"
                     }
                 },
                 {
