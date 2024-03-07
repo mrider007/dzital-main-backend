@@ -25,14 +25,6 @@ const ProductWishlistRepository = {
 
             let wishlist = await ProductWishlist.aggregate([
                 { $match: conditions },
-                // {
-                //     $lookup: {
-                //         from: 'products',
-                //         localField: 'products.product_id',
-                //         foreignField: '_id',
-                //         as: 'wishlist'
-                //     }
-                // },
                 {
                     $lookup: {
                         let: { productId: '$products.product_id' },
