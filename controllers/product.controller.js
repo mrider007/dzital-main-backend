@@ -636,6 +636,31 @@ class productController {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
                     }
                 }
+                else if (categoryInfo.title === 'Freelancer') {
+                    let freelancerDetails = await Freelancer.findOne({ product_id: productInfo._id });
+
+                    if (req.files && req.files.length > 0) {
+
+                        var photo;
+
+                        for (let i = 0; i < req.files.length; i++) {
+                            const element = req.files[i];
+                            if (element.fieldname === 'image') {
+                                photo = element.path;
+                                const uploadResultLogo = await cloudinary.v2.uploader.upload(photo);
+                                req.body.image = uploadResultLogo.secure_url;
+                            }
+                        }
+                    }
+
+                    let freelancerUpdate = await freelancerRepo.updateById(req.body, freelancerDetails._id);
+                    if (!_.isEmpty(freelancerUpdate) && freelancerUpdate._id) {
+                        let productUpdate = await productRepo.updateProductById({ image: freelancerUpdate.image }, req.params.id);
+                        res.status(200).send({ status: 200, data: freelancerUpdate, message: 'Product has been updated successfully' });
+                    } else {
+                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
+                    }
+                }
             } else {
                 res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
             }

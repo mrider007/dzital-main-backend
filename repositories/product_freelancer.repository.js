@@ -202,7 +202,19 @@ const freelancerRepository = {
         } catch (e) {
             throw e;
         }
-    }
+    },
+
+    updateById: async (data, id) => {
+        try {
+            let freelancerUpdate = await Freelancer.findByIdAndUpdate(id, data, { new: true, upsert: true }).exec();
+            if (!freelancerUpdate) {
+                return null;
+            }
+            return freelancerUpdate;
+        } catch (e) {
+            return e;
+        }
+    },
 
 }
 
