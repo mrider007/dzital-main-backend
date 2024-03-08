@@ -73,7 +73,7 @@ class productEducationController {
 
                 for (let x = 0; x < req.body.attributeData.length; x++) {
 
-                    let attributeData = await attributevalueRepo.updateByField({ attribute_id: req.body.attributeData[x].attribute_id }, req.body.attributeData[x]);
+                    let attributeData = await attributevalueRepo.updateByField({ _id: req.body.attributeData[x]._id }, req.body.attributeData[x]);
                     if (!_.isEmpty(attributeData)) {
                         attribute_values.push(attributeData);
                     }
