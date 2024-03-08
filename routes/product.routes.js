@@ -40,5 +40,6 @@ router.post('/admin/product/approved/list', request_param.any(), Authentication.
 router.post('/category-wise/product/list', request_param.any(), ProductController.categoryWiseProducts);
 router.post('/products/bulk/update', request_param.any(), ProductController.productsBulkUpdate);
 router.post('/user/product/add', request_param.any(), Authentication.Authenticate, ProductController.userProductAdd);
+router.post('/user/product/update/:id', uploadFile.any(), Authentication.Authenticate, ProductController.userProductUpdate);
 
 module.exports = router;
