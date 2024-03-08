@@ -9,7 +9,7 @@ const goodsRepo = require('../repositories/product_goods.repository');
 const freelancerRepo = require('../repositories/product_freelancer.repository');
 const educationRepo = require('../repositories/product_education.repository');
 const Product = require('../models/product.model');
-const Category = require('../models/service_master.model');
+const Category = require('../models/service_category.model');
 const User = require('../models/user.model');
 
 class productWishlistController {

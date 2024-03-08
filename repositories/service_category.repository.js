@@ -1,4 +1,4 @@
-const Service = require('../models/service_master.model');
+const Service = require('../models/service_category.model');
 const mongoose = require('mongoose');
 
 const serviceRepository = {

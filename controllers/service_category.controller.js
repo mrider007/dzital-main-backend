@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const Service = require('../models/service_master.model');
-const serviceRepo = require('../repositories/service_master.repository');
+const Service = require('../models/service_category.model');
+const serviceRepo = require('../repositories/service_category.repository');
 
 class serviceController {
     constructor() { }

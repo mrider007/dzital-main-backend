@@ -22,7 +22,7 @@ const getPort = config.app.getPort;
 connectDB();
 
 const user = require('./routes/user.routes');
-const service = require('./routes/service_master.routes');
+const service = require('./routes/service_category.routes');
 const membership_plan = require('./routes/membership_plan.routes');
 const payment = require('./routes/payment.routes');
 const review = require('./routes/review.routes');

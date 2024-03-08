@@ -1,5 +1,5 @@
 const express = require('express');
-const serviceController = require('../controllers/service_master.controller');
+const serviceController = require('../controllers/service_category.controller');
 const Authentication = require('../middleware/authentication');
 const router = express.Router();
 const multer = require('multer');
