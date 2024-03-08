@@ -417,7 +417,7 @@ class productController {
                 else if (categoryInfo.title === 'Freelancer') {
                     let freelancerDetails = await freelancerRepo.getDetails({ product_id: productInfo._id });
                     if (!_.isEmpty(freelancerDetails) && freelancerDetails._id) {
-                        res.status(200).send({ status: 200, data: goodsDetails, message: 'Product details has been fetched successfully' });
+                        res.status(200).send({ status: 200, data: freelancerDetails, message: 'Product details has been fetched successfully' });
                     }
                     else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
