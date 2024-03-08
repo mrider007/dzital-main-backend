@@ -4,6 +4,10 @@ const productwishlistRepo = require('../repositories/product_wishlist.repository
 const electronicsRepo = require('../repositories/product_electronics.repository');
 const jobRepo = require('../repositories/product_job.repository');
 const propertyRepo = require('../repositories/product_real_estate.repository');
+const fashionRepo = require('../repositories/product_fashion.repository');
+const goodsRepo = require('../repositories/product_goods.repository');
+const freelancerRepo = require('../repositories/product_freelancer.repository');
+const educationRepo = require('../repositories/product_education.repository');
 const Product = require('../models/product.model');
 const Category = require('../models/service_master.model');
 const User = require('../models/user.model');
@@ -98,6 +102,42 @@ class productWishlistController {
                     else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
                     }
+                }
+                else if (categoryInfo.title === 'Fashion & Beauty') {
+                    let fashionDetails = await fashionRepo.getDetails({ product_id: productInfo._id });
+                    if (!_.isEmpty(fashionDetails) && fashionDetails._id) {
+                        res.status(200).send({ status: 200, data: fashionDetails, message: 'Product details has been fetched successfully' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                    }
+                }
+                else if (categoryInfo.title === 'Goods of all kinds') {
+                    let goodsDetails = await goodsRepo.getDetails({ product_id: productInfo._id });
+                    if (!_.isEmpty(goodsDetails) && goodsDetails._id) {
+                        res.status(200).send({ status: 200, data: goodsDetails, message: 'Product details has been fetched successfully' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                    }
+                }
+                else if (categoryInfo.title === 'Freelancer') {
+                    let freelancerDetails = await freelancerRepo.getDetails({ product_id: productInfo._id });
+                    if (!_.isEmpty(freelancerDetails) && freelancerDetails._id) {
+                        res.status(200).send({ status: 200, data: freelancerDetails, message: 'Product details has been fetched successfully' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                    }
+                }
+                else if (categoryInfo.title === 'Lessons & Courses') {
+                    let lessonDetails = await educationRepo.getDetails({ product_id: productInfo._id });
+                    if (!_.isEmpty(lessonDetails) && lessonDetails._id) {
+                        res.status(200).send({ status: 200, data: lessonDetails, message: 'Product details has been fetched successfully' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                    }                                     
                 }
             }        
         } catch (e) {
