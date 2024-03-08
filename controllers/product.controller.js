@@ -431,7 +431,7 @@ class productController {
                     }
                     else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
-                    }                                     
+                    }
                 }
             } else {
                 res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
@@ -507,7 +507,7 @@ class productController {
                     }
 
                     if (_.has(req.body, 'attributeData') && req.body.attributeData.length > 0) {
-                        
+
                         let attribute_values = [];
 
                         for (let x = 0; x < req.body.attributeData.length; x++) {
@@ -560,7 +560,7 @@ class productController {
                     }
 
                     if (_.has(req.body, 'attributeData') && req.body.attributeData.length > 0) {
-                        
+
                         let attribute_values = [];
 
                         for (let x = 0; x < req.body.attributeData.length; x++) {
@@ -598,7 +598,7 @@ class productController {
                     }
 
                     if (_.has(req.body, 'attributeData') && req.body.attributeData.length > 0) {
-                        
+
                         let attribute_values = [];
 
                         for (let x = 0; x < req.body.attributeData.length; x++) {
@@ -651,7 +651,7 @@ class productController {
                     }
 
                     if (_.has(req.body, 'attributeData') && req.body.attributeData.length > 0) {
-                        
+
                         let attribute_values = [];
 
                         for (let x = 0; x < req.body.attributeData.length; x++) {
@@ -689,7 +689,7 @@ class productController {
                     }
 
                     if (_.has(req.body, 'attributeData') && req.body.attributeData.length > 0) {
-                        
+
                         let attribute_values = [];
 
                         for (let x = 0; x < req.body.attributeData.length; x++) {
@@ -745,7 +745,7 @@ class productController {
                         res.status(200).send({ status: 200, data: lessoncourseUpdate, message: 'Product has been updated successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
-                    }                    
+                    }
                 }
                 else if (categoryInfo.title === 'Fashion & Beauty') {
                     let fashionproductInfo = await Fashion.findOne({ product_id: productInfo._id });
@@ -780,7 +780,7 @@ class productController {
                     }
 
                     if (_.has(req.body, 'attributeData') && req.body.attributeData.length > 0) {
-                        
+
                         let attribute_values = [];
 
                         for (let x = 0; x < req.body.attributeData.length; x++) {
@@ -798,7 +798,7 @@ class productController {
                         res.status(200).send({ status: 200, data: fashionproductUpdate, message: 'Product has been updated successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
-                    }                    
+                    }
                 }
             } else {
                 res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
