@@ -466,7 +466,7 @@ class productController {
         }
     };
 
-    /** Admin Product Add */
+    /** Admin Product Update */
     async productUpdate(req, res) {
         try {
             const productInfo = await Product.findOne({ _id: req.params.id });
@@ -567,9 +567,24 @@ class productController {
                 }
                 else if (categoryInfo.title === 'Jobs') {
                     let jobDetails = await Job.findOne({ product_id: productInfo._id });
+
+                    if (req.files && req.files.length > 0) {
+
+                        var photo;
+
+                        for (let i = 0; i < req.files.length; i++) {
+                            const element = req.files[i];
+                            if (element.fieldname === 'image') {
+                                photo = element.path;
+                                const uploadResultLogo = await cloudinary.v2.uploader.upload(photo);
+                                req.body.image = uploadResultLogo.secure_url;
+                            }
+                        }
+                    }
+
                     let jobUpdate = await jobRepo.updateById(req.body, jobDetails._id);
                     if (!_.isEmpty(jobUpdate) && jobUpdate._id) {
-                        //let productUpdate = await productRepo.updateProductById({ image: electronicsUpdate.photo }, req.params.id);
+                        let productUpdate = await productRepo.updateProductById({ image: jobUpdate.image }, req.params.id);
                         res.status(200).send({ status: 200, data: jobUpdate, message: 'Product has been updated successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
