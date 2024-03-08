@@ -18,6 +18,15 @@ const freelancerRepository = {
                 { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
+                        from: 'service_categories',
+                        localField: 'sub_category_id',
+                        foreignField: '_id',
+                        as: 'sub_category_details'
+                    }
+                },
+                { $unwind: { path: '$sub_category_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $lookup: {
                         from: 'users',
                         localField: 'user_id',
                         foreignField: '_id',
@@ -93,6 +102,8 @@ const freelancerRepository = {
                         product_id: { $first: '$product_id' },
                         category_id: { $first: '$category_id' },
                         category_name: { $first: '$category_details.title' },
+                        sub_category_id: { $first: '$sub_category_id' },
+                        sub_category_name: { $first: '$sub_category_details.title' },
                         bid_now: { $first: '$product_details.bid_now' },
                         bid_start_price: { $first: '$product_details.bid_start_price' },
                         bid_increament_value: { $first: '$product_details.bid_increament_value' },
