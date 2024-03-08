@@ -16,6 +16,7 @@ const goodsRepo = require('../repositories/product_goods.repository');
 const fashionRepo = require('../repositories/product_fashion.repository');
 const freelancerRepo = require('../repositories/product_freelancer.repository');
 const educationRepo = require('../repositories/product_education.repository');
+const attributevalueRepo = require('../repositories/attribute_value.repository');
 const cloudinary = require('cloudinary');
 
 class productController {
@@ -674,6 +675,19 @@ class productController {
                                 photo = element.path;
                                 const uploadResultLogo = await cloudinary.v2.uploader.upload(photo);
                                 req.body.image = uploadResultLogo.secure_url;
+                            }
+                        }
+                    }
+
+                    if (_.has(req.body, 'attributeData') && req.body.attributeData.length > 0) {
+                        
+                        let attribute_values = [];
+
+                        for (let x = 0; x < req.body.attributeData.length; x++) {
+
+                            let attributeData = await attributevalueRepo.updateByField({ _id: req.body.attributeData[x]._id }, req.body.attributeData[x]);
+                            if (!_.isEmpty(attributeData)) {
+                                attribute_values.push(attributeData);
                             }
                         }
                     }
