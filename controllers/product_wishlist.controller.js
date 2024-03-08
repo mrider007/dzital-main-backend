@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 const Wishlist = require('../models/product_wishlist.model');
 const productwishlistRepo = require('../repositories/product_wishlist.repository');
+const electronicsRepo = require('../repositories/product_electronics.repository');
+const jobRepo = require('../repositories/product_job.repository');
+const propertyRepo = require('../repositories/product_real_estate.repository');
+const Product = require('../models/product.model');
+const Category = require('../models/service_master.model');
 const User = require('../models/user.model');
 
 class productWishlistController {
@@ -57,6 +62,44 @@ class productWishlistController {
             else {
                 res.status(400).send({ status: 400, data: {}, message: 'You have no product in your wishlist' });
             }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+
+    async productWishlistDetails(req, res) {
+        try {
+            const productInfo = await Product.findOne({ _id: req.params.id });
+            if (!_.isEmpty(productInfo) && productInfo._id) {
+                let categoryInfo = await Category.findOne({ _id: productInfo.category_id });
+                if (categoryInfo.title === 'Real Estate') {
+                    let propertyDetails = await propertyRepo.getPropertyDetails({ product_id: productInfo._id });
+                    if (!_.isEmpty(propertyDetails) && propertyDetails._id) {
+                        res.status(200).send({ status: 200, data: propertyDetails, message: 'Property details has been fetched successfully' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                    }
+                }
+                else if (categoryInfo.title === 'Electronics') {
+                    let electronicsDetails = await electronicsRepo.getDetails({ product_id: productInfo._id });
+                    if (!_.isEmpty(electronicsDetails) && electronicsDetails._id) {
+                        res.status(200).send({ status: 200, data: electronicsDetails, message: 'Product details has been fetched successfully' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                    }
+                }
+                else if (categoryInfo.title === 'Jobs') {
+                    let jobDetails = await jobRepo.getJobDetails({ product_id: productInfo._id });
+                    if (!_.isEmpty(jobDetails) && jobDetails._id) {
+                        res.status(200).send({ status: 200, data: jobDetails, message: 'Product details has been fetched successfully' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                    }
+                }
+            }        
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
         }
