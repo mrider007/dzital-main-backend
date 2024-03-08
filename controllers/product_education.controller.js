@@ -69,13 +69,16 @@ class productEducationController {
                     }
                 }
 
-                let attribute_values = [];
+                if (_.has(req.body, 'attributeData') && req.body.attributeData.length > 0) {
+                        
+                    let attribute_values = [];
 
-                for (let x = 0; x < req.body.attributeData.length; x++) {
+                    for (let x = 0; x < req.body.attributeData.length; x++) {
 
-                    let attributeData = await attributevalueRepo.updateByField({ _id: req.body.attributeData[x]._id }, req.body.attributeData[x]);
-                    if (!_.isEmpty(attributeData)) {
-                        attribute_values.push(attributeData);
+                        let attributeData = await attributevalueRepo.updateByField({ _id: req.body.attributeData[x]._id }, req.body.attributeData[x]);
+                        if (!_.isEmpty(attributeData)) {
+                            attribute_values.push(attributeData);
+                        }
                     }
                 }
 
