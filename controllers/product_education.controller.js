@@ -2,6 +2,7 @@ const ProductEducation = require('../models/product_education.model');
 const AttributeValue = require('../models/attribute_value.model');
 const educationRepo = require('../repositories/product_education.repository');
 const productRepo = require('../repositories/product.repository');
+const attributevalueRepo = require('../repositories/attribute_value.repository');
 const mongoose = require('mongoose');
 const cloudinary = require('cloudinary');
 
@@ -56,14 +57,28 @@ class productEducationController {
             let lesson_course_id = new mongoose.Types.ObjectId(req.params.id);
             let courseInfo = await ProductEducation.findOne({ _id: lesson_course_id });
             if (!_.isEmpty(courseInfo) && courseInfo._id) {
-                for (let i = 0; i < req.files.length; i++) {
-                    const element = req.files[i];
-                    if (element.fieldname === 'image') {
-                        var image = element.path;
-                        const uploadResultImage = await cloudinary.v2.uploader.upload(image);
-                        req.body.image = uploadResultImage.secure_url;
+
+                if (req.files && req.files.length > 0) {
+                    for (let i = 0; i < req.files.length; i++) {
+                        const element = req.files[i];
+                        if (element.fieldname === 'image') {
+                            var image = element.path;
+                            const uploadResultImage = await cloudinary.v2.uploader.upload(image);
+                            req.body.image = uploadResultImage.secure_url;
+                        }
                     }
                 }
+
+                let attribute_values = [];
+
+                for (let x = 0; x < req.body.attributeData.length; x++) {
+
+                    let attributeData = await attributevalueRepo.updateByField({ attribute_id: req.body.attributeData[x].attribute_id }, req.body.attributeData[x]);
+                    if (!_.isEmpty(attributeData)) {
+                        attribute_values.push(attributeData);
+                    }
+                }
+
                 let lessoncourseUpdate = await educationRepo.updateById(req.body, lesson_course_id);
                 if (!_.isEmpty(lessoncourseUpdate) && lessoncourseUpdate._id) {
                     res.status(200).send({ status: 200, data: lessoncourseUpdate, message: 'Course Updated Successfully' })
