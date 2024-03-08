@@ -583,6 +583,19 @@ class productController {
                         }
                     }
 
+                    if (_.has(req.body, 'attributeData') && req.body.attributeData.length > 0) {
+                        
+                        let attribute_values = [];
+
+                        for (let x = 0; x < req.body.attributeData.length; x++) {
+
+                            let attributeData = await attributevalueRepo.updateByField({ _id: req.body.attributeData[x]._id }, req.body.attributeData[x]);
+                            if (!_.isEmpty(attributeData)) {
+                                attribute_values.push(attributeData);
+                            }
+                        }
+                    }
+
                     let jobUpdate = await jobRepo.updateById(req.body, jobDetails._id);
                     if (!_.isEmpty(jobUpdate) && jobUpdate._id) {
                         let productUpdate = await productRepo.updateProductById({ image: jobUpdate.image }, req.params.id);
