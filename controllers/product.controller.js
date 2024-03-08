@@ -551,11 +551,18 @@ class productController {
                             }
                         }
                     }
-                    else {
-                        req.body.photo = propertyInfo.photo;
-                        req.body.image_1 = propertyInfo.image_1;
-                        req.body.image_2 = propertyInfo.image_2;
-                        req.body.image_3 = propertyInfo.image_3;
+
+                    if (_.has(req.body, 'attributeData') && req.body.attributeData.length > 0) {
+                        
+                        let attribute_values = [];
+
+                        for (let x = 0; x < req.body.attributeData.length; x++) {
+
+                            let attributeData = await attributevalueRepo.updateByField({ _id: req.body.attributeData[x]._id }, req.body.attributeData[x]);
+                            if (!_.isEmpty(attributeData)) {
+                                attribute_values.push(attributeData);
+                            }
+                        }
                     }
 
                     let propertyUpdate = await propertyRepo.updateById(req.body, propertyInfo._id);
