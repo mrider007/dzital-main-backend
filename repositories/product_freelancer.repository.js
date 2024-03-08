@@ -64,17 +64,17 @@ const freelancerRepository = {
                                         }
 
                                     ],
-                                    as: "attribute_details"
+                                    as: "attribute_values"
                                 }
                             },
-                            { $unwind: { path: '$attribute_details', preserveNullAndEmptyArrays: true } },
+                            { $unwind: { path: '$attribute_values', preserveNullAndEmptyArrays: true } },
                             {
                                 $group: {
                                     _id: '$_id',
-                                    product_id: { $first: '$attribute_details.product_id' },
-                                    attribute_id: { $first: '$attribute_details.attribute_id' },
+                                    //product_id: { $first: '$product_id' },
+                                    attribute_id: { $first: '$_id' },
                                     attribute: { $first: '$attribute' },
-                                    value: { $first: '$attribute_details.value' },
+                                    value: { $first: '$attribute_values.value' },
                                     createdAt: { $first: '$createdAt' },
                                     updatedAt: { $first: '$updatedAt' }
                                 }
