@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const Job = require('../models/product_jobs.model');
 const AttributeValue = require('../models/attribute_value.model');
 const jobRepo = require('../repositories/product_job.repository');
-const productRepo = require('../repositories/product_job.repository');
 const cloudinary = require('cloudinary');
 class JobController {
 
