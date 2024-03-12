@@ -57,35 +57,23 @@ const freelancerRepository = {
                                     }
                                 }
                             },
+                            { $sort: { _id: 1 } }
+                        ],
+                        as: "attribute_details"
+                    }
+                },
+                {
+                    $lookup: {
+                        let: { productId: '$_id' },
+                        from: "attribute_values",
+                        pipeline: [
                             {
-                                $lookup: {
-                                    let: { attributeId: '$_id' },
-                                    from: "attribute_values",
-                                    pipeline: [
-                                        {
-                                            $match: {
-                                                $expr: {
-                                                    $and: [
-                                                        { $or: [{ $eq: ["$attribute_id", "$$attributeId"] }] },
-                                                    ]
-                                                }
-                                            }
-                                        }
-
-                                    ],
-                                    as: "attribute_values"
-                                }
-                            },
-                            { $unwind: { path: '$attribute_values', preserveNullAndEmptyArrays: true } },
-                            {
-                                $group: {
-                                    _id: '$_id',
-                                    //product_id: { $first: '$product_id' },
-                                    attribute_id: { $first: '$_id' },
-                                    attribute: { $first: '$attribute' },
-                                    value: { $first: '$attribute_values.value' },
-                                    createdAt: { $first: '$createdAt' },
-                                    updatedAt: { $first: '$updatedAt' }
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $or: [{ $eq: ["$product_id", "$$productId"] }] },
+                                        ]
+                                    }
                                 }
                             },
                             { $sort: { _id: 1 } }
@@ -111,6 +99,7 @@ const freelancerRepository = {
                         bid_start_date: { $first: '$product_details.bid_start_date' },
                         bid_end_date: { $first: '$product_details.bid_end_date' },
                         status: { $first: '$product_details.status' },
+                        attributes: { $first: '$attribute_details' },
                         attribute_values: { $first: '$attribute_value_details' },
                         createdAt: { $first: '$createdAt' }
                     }
