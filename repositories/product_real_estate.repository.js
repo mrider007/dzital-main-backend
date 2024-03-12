@@ -92,8 +92,8 @@ const propertyRepository = {
                             { $unwind: { path: '$attribute_values', preserveNullAndEmptyArrays: true } },
                             {
                                 $group: {
-                                    _id: '$_id',
-                                    product_id: { $first: '$product_id' },
+                                    _id: '$attribute_values._id',
+                                    product_id: { $first: '$attribute_values.product_id' },
                                     attribute_id: { $first: '$_id' },
                                     attribute: { $first: '$attribute' },
                                     value: { $first: '$attribute_values.value' },
