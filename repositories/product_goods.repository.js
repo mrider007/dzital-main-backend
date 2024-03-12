@@ -109,7 +109,26 @@ const goodsRepository = {
                 { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
-                        let: { productId: '$product_id' },
+                        let: { subcategoryId: '$sub_category_id' },
+                        from: "attributes",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $or: [{ $eq: ["$sub_category_id", "$$subcategoryId"] }] },
+                                        ]
+                                    }
+                                }
+                            },
+                            { $sort: { _id: 1 } }
+                        ],
+                        as: "attribute_details"
+                    }
+                },
+                {
+                    $lookup: {
+                        let: { productId: '$_id' },
                         from: "attribute_values",
                         pipeline: [
                             {
@@ -119,37 +138,6 @@ const goodsRepository = {
                                             { $or: [{ $eq: ["$product_id", "$$productId"] }] },
                                         ]
                                     }
-                                }
-                            },
-                            {
-                                $lookup: {
-                                    let: { attributeId: '$attribute_id' },
-                                    from: "attributes",
-                                    pipeline: [
-                                        {
-                                            $match: {
-                                                $expr: {
-                                                    $and: [
-                                                        { $or: [{ $eq: ["$_id", "$$attributeId"] }] },
-                                                    ]
-                                                }
-                                            }
-                                        }
-
-                                    ],
-                                    as: "attribute_details"
-                                }
-                            },
-                            { $unwind: { path: '$attribute_details', preserveNullAndEmptyArrays: true } },
-                            {
-                                $group: {
-                                    _id: '$_id',
-                                    product_id: { $first: '$product_id' },
-                                    attribute_id: { $first: '$attribute_id' },
-                                    attribute: { $first: '$attribute_details.attribute' },
-                                    value: { $first: '$value' },
-                                    createdAt: { $first: '$createdAt' },
-                                    updatedAt: { $first: '$updatedAt' }
                                 }
                             },
                             { $sort: { _id: 1 } }
@@ -176,6 +164,7 @@ const goodsRepository = {
                         bid_start_date: { $first: '$product_details.bid_start_date' },
                         bid_end_date: { $first: '$product_details.bid_end_date' },
                         status: { $first: '$product_details.status' },
+                        attributes: { $first: '$attribute_details' },
                         attribute_values: { $first: '$attribute_value_details' },
                         createdAt: { $first: '$createdAt' }
                     }
