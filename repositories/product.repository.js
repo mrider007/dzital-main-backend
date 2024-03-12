@@ -139,7 +139,7 @@ const productRepository = {
             var conditions = {};
             var and_clauses = [];
 
-            and_clauses.push({ status: 'Approved' });
+            and_clauses.push({ userId: req.user._id, status: 'Approved' });
 
             if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
                 and_clauses.push({
