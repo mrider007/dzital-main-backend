@@ -512,6 +512,8 @@ class productController {
 
                         for (let x = 0; x < req.body.attributeData.length; x++) {
 
+                            req.body.attributeData[x].product_id = req.params.id;
+
                             let attributeData = await attributevalueRepo.updateByField({ _id: req.body.attributeData[x]._id }, req.body.attributeData[x]);
                             if (!_.isEmpty(attributeData)) {
                                 attribute_values.push(attributeData);
