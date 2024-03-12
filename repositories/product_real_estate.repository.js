@@ -93,7 +93,7 @@ const propertyRepository = {
                             {
                                 $group: {
                                     _id: '$_id',
-                                    //product_id: { $first: '$product_id' },
+                                    product_id: { $first: '$product_id' },
                                     attribute_id: { $first: '$_id' },
                                     attribute: { $first: '$attribute' },
                                     value: { $first: '$attribute_values.value' },
