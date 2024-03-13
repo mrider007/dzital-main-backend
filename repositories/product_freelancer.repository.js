@@ -76,6 +76,26 @@ const freelancerRepository = {
                                     }
                                 }
                             },
+                            {
+                                $lookup: {
+                                    from: "attributes",
+                                    localField: 'attribute_id',
+                                    foreignField: '_id',
+                                    as: "attribute"
+                                }
+                            },
+                            { $unwind: { path: '$attribute', preserveNullAndEmptyArrays: true } },
+                            {
+                                $group: {
+                                    _id: '$_id',
+                                    product_id: { $first: '$product_id' },
+                                    attribute_id: { $first: '$attribute_id' },
+                                    attribute: { $first: '$attribute.attribute' },
+                                    value: { $first: '$value' },
+                                    createdAt: { $first: '$createdAt' },
+                                    updatedAt: { $first: '$updatedAt' }
+                                }
+                            },
                             { $sort: { _id: 1 } }
                         ],
                         as: "attribute_value_details"
