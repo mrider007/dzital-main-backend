@@ -121,6 +121,7 @@ const productEducationRepository = {
                         as: "attribute_details"
                     }
                 },
+                
                 {
                     $lookup: {
                         let: { productId: '$product_id' },
