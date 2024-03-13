@@ -658,7 +658,7 @@ class productController {
 
                     let jobUpdate = await jobRepo.updateById(req.body, jobDetails._id);
                     if (!_.isEmpty(jobUpdate) && jobUpdate._id) {
-                        let productUpdate = await productRepo.updateProductById({ image: jobUpdate.image }, req.params.id);
+                        let productUpdate = await productRepo.updateProductById({ image: jobUpdate.image, status: req.body.status }, req.params.id);
                         res.status(200).send({ status: 200, data: jobUpdate, message: 'Product has been updated successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
