@@ -128,7 +128,7 @@ const productFashionRepository = {
                 },
                 {
                     $lookup: {
-                        let: { productId: '$_id' },
+                        let: { productId: '$product_id' },
                         from: "attribute_values",
                         pipeline: [
                             {
