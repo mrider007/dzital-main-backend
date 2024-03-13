@@ -572,15 +572,42 @@ class productController {
                         }
                     }
 
+                    // if (_.has(req.body, 'attributeData') && req.body.attributeData.length > 0) {
+
+                    //     let attribute_values = [];
+
+                    //     for (let x = 0; x < req.body.attributeData.length; x++) {
+
+                    //         let attributeData = await attributevalueRepo.updateByField({ _id: req.body.attributeData[x]._id }, req.body.attributeData[x]);
+                    //         if (!_.isEmpty(attributeData)) {
+                    //             attribute_values.push(attributeData);
+                    //         }
+                    //     }
+                    // }
+
                     if (_.has(req.body, 'attributeData') && req.body.attributeData.length > 0) {
 
                         let attribute_values = [];
 
                         for (let x = 0; x < req.body.attributeData.length; x++) {
 
-                            let attributeData = await attributevalueRepo.updateByField({ _id: req.body.attributeData[x]._id }, req.body.attributeData[x]);
-                            if (!_.isEmpty(attributeData)) {
-                                attribute_values.push(attributeData);
+                            let attribute_value = await AttributeValue.findOne({
+                                product_id: req.body.product_id,
+                                attribute_id: req.body.attributeData[x].attribute_id
+                            });
+
+                            if (attribute_value !== null) {
+                                
+                                let attributeData = await attributevalueRepo.updateById(req.body.attributeData[x], attribute_value._id);
+                                if (!_.isEmpty(attributeData)) {
+                                    attribute_values.push(attributeData);
+                                }
+                            }
+                            else {
+                                let attributeValueSave = await AttributeValue.create(req.body.attributeData[x]);
+                                if (!_.isEmpty(attributeValueSave)) {
+                                    attribute_values.push(attributeValueSave);
+                                }
                             }
                         }
                     }
