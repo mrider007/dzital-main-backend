@@ -900,7 +900,7 @@ class productController {
 
                     let fashionproductUpdate = await fashionRepo.updateById(req.body, fashionproductInfo._id);
                     if (!_.isEmpty(fashionproductUpdate) && fashionproductUpdate._id) {
-                        let productUpdate = await productRepo.updateProductById({ image: fashionproductUpdate.photo }, req.params.id);
+                        let productUpdate = await productRepo.updateProductById({ image: fashionproductUpdate.photo, status: req.body.status }, req.params.id);
                         res.status(200).send({ status: 200, data: fashionproductUpdate, message: 'Product has been updated successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
