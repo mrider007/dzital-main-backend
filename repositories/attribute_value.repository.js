@@ -13,7 +13,19 @@ const attributevalueRepository = {
         } catch (err) {
             throw err;
         }
-    }
+    },
+
+    updateById: async (data, id) => {
+        try {
+            let attributeUpdate = await AttributeValue.findByIdAndUpdate(id, data, { new: true, upsert: true }).exec();
+            if (!attributeUpdate) {
+                return null;
+            }
+            return attributeUpdate;
+        } catch (e) {
+            throw e;
+        }
+    },
 
 }
 

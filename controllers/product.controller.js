@@ -512,11 +512,22 @@ class productController {
 
                         for (let x = 0; x < req.body.attributeData.length; x++) {
 
-                            req.body.attributeData[x].product_id = req.params.id;
+                            let attribute_value = await AttributeValue.findOne({
+                                product_id: req.body.product_id,
+                                attribute_id: req.body.attributeData[x].attribute_id
+                            });
 
-                            let attributeData = await attributevalueRepo.updateByField({ _id: req.body.attributeData[x]._id }, req.body.attributeData[x]);
-                            if (!_.isEmpty(attributeData)) {
-                                attribute_values.push(attributeData);
+                            if (attribute_value !== null) {
+                                let attributeData = await attributevalueRepo.updateByField({ _id: req.body.attributeData[x]._id }, req.body.attributeData[x]);
+                                if (!_.isEmpty(attributeData)) {
+                                    attribute_values.push(attributeData);
+                                }
+                            }
+                            else {
+                                let attributeValueSave = await AttributeValue.create(req.body.attributeData[x]);
+                                if (!_.isEmpty(attributeValueSave)) {
+                                    attribute_values.push(attributeValueSave);
+                                }
                             }
                         }
                     }
@@ -1360,7 +1371,7 @@ class productController {
                 }
             } else {
                 res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
-            }                        
+            }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
         }
