@@ -832,7 +832,7 @@ class productController {
 
                     let lessoncourseUpdate = await educationRepo.updateById(req.body, lessoncourseDetails._id);
                     if (!_.isEmpty(lessoncourseUpdate) && lessoncourseUpdate._id) {
-                        let productUpdate = await productRepo.updateProductById({ image: lessoncourseUpdate.image }, req.params.id);
+                        let productUpdate = await productRepo.updateProductById({ image: lessoncourseUpdate.image, status: req.body.status }, req.params.id);
                         res.status(200).send({ status: 200, data: lessoncourseUpdate, message: 'Product has been updated successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
