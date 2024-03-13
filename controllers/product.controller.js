@@ -7,6 +7,7 @@ const Job = require('../models/product_jobs.model');
 const ProductEducation = require('../models/product_education.model');
 const Freelancer = require('../models/product_freelancer.model');
 const Category = require('../models/service_category.model');
+const AttributeValue = require('../models/attribute_value.model');
 const mongoose = require('mongoose');
 const productRepo = require('../repositories/product.repository');
 const electronicsRepo = require('../repositories/product_electronics.repository');
@@ -513,17 +514,19 @@ class productController {
                         for (let x = 0; x < req.body.attributeData.length; x++) {
 
                             let attribute_value = await AttributeValue.findOne({
-                                product_id: req.body.product_id,
+                                product_id: productInfo._id,
                                 attribute_id: req.body.attributeData[x].attribute_id
                             });
 
                             if (attribute_value !== null) {
-                                let attributeData = await attributevalueRepo.updateByField({ _id: req.body.attributeData[x]._id }, req.body.attributeData[x]);
+                                req.body.attributeData[x].product_id = productInfo._id;
+                                let attributeData = await attributevalueRepo.updateById(req.body.attributeData[x], attribute_value._id);
                                 if (!_.isEmpty(attributeData)) {
                                     attribute_values.push(attributeData);
                                 }
                             }
                             else {
+                                req.body.attributeData[x].product_id = productInfo._id;
                                 let attributeValueSave = await AttributeValue.create(req.body.attributeData[x]);
                                 if (!_.isEmpty(attributeValueSave)) {
                                     attribute_values.push(attributeValueSave);
@@ -572,19 +575,6 @@ class productController {
                         }
                     }
 
-                    // if (_.has(req.body, 'attributeData') && req.body.attributeData.length > 0) {
-
-                    //     let attribute_values = [];
-
-                    //     for (let x = 0; x < req.body.attributeData.length; x++) {
-
-                    //         let attributeData = await attributevalueRepo.updateByField({ _id: req.body.attributeData[x]._id }, req.body.attributeData[x]);
-                    //         if (!_.isEmpty(attributeData)) {
-                    //             attribute_values.push(attributeData);
-                    //         }
-                    //     }
-                    // }
-
                     if (_.has(req.body, 'attributeData') && req.body.attributeData.length > 0) {
 
                         let attribute_values = [];
@@ -592,18 +582,19 @@ class productController {
                         for (let x = 0; x < req.body.attributeData.length; x++) {
 
                             let attribute_value = await AttributeValue.findOne({
-                                product_id: req.body.product_id,
+                                product_id: productInfo._id,
                                 attribute_id: req.body.attributeData[x].attribute_id
                             });
 
                             if (attribute_value !== null) {
-                                
+                                req.body.attributeData[x].product_id = productInfo._id;
                                 let attributeData = await attributevalueRepo.updateById(req.body.attributeData[x], attribute_value._id);
                                 if (!_.isEmpty(attributeData)) {
                                     attribute_values.push(attributeData);
                                 }
                             }
                             else {
+                                req.body.attributeData[x].product_id = productInfo._id;
                                 let attributeValueSave = await AttributeValue.create(req.body.attributeData[x]);
                                 if (!_.isEmpty(attributeValueSave)) {
                                     attribute_values.push(attributeValueSave);
