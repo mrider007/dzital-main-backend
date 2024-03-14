@@ -1416,9 +1416,24 @@ class productController {
 
                         for (let x = 0; x < req.body.attributeData.length; x++) {
 
-                            let attributeData = await attributevalueRepo.updateByField({ _id: req.body.attributeData[x]._id }, req.body.attributeData[x]);
-                            if (!_.isEmpty(attributeData)) {
-                                attribute_values.push(attributeData);
+                            let attribute_value = await AttributeValue.findOne({
+                                product_id: productInfo._id,
+                                attribute_id: req.body.attributeData[x].attribute_id
+                            });
+
+                            if (attribute_value !== null) {
+                                req.body.attributeData[x].product_id = productInfo._id;
+                                let attributeData = await attributevalueRepo.updateById(req.body.attributeData[x], attribute_value._id);
+                                if (!_.isEmpty(attributeData)) {
+                                    attribute_values.push(attributeData);
+                                }
+                            }
+                            else {
+                                req.body.attributeData[x].product_id = productInfo._id;
+                                let attributeValueSave = await AttributeValue.create(req.body.attributeData[x]);
+                                if (!_.isEmpty(attributeValueSave)) {
+                                    attribute_values.push(attributeValueSave);
+                                }
                             }
                         }
                     }
