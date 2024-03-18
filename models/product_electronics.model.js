@@ -4,7 +4,7 @@ const mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
 
 const ProductElectronicsSchema = new Schema({
     title: { type: String, index: true, trim: true },
-    description: { type: String, index: true, trim: true },
+    description: { type: String, index: true },
     photo: { type: String, default: '', index: true, trim: true },
     image_1: { type: String, default: '', index: true, trim: true },
     image_2: { type: String, default: '', index: true, trim: true },

@@ -4,7 +4,7 @@ const mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
 
 const FreelancerSchema = new mongoose.Schema({
     title: { type: String, index: true, trim: true },
-    description: { type: String, index: true, trim: true },
+    description: { type: String, index: true },
     image: { type: String, default: '', trim: true },
     user_id: { type: Schema.Types.ObjectId, default: null, ref: 'User', index: true },
     status: { type: String, default: 'Active', index: true },
