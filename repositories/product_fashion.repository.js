@@ -197,7 +197,19 @@ const productFashionRepository = {
         } catch (e) {
             throw e;
         }
-    }
+    },
+
+    updateById: async (data, id) => {
+        try {
+            let fashionUpdate = await ProductFashion.findByIdAndUpdate(id, data, { new: true, upsert: true }).exec();
+            if (!fashionUpdate) {
+                return null;
+            }
+            return fashionUpdate;
+        } catch (e) {
+            throw e;
+        }
+    },
 
 }
 
