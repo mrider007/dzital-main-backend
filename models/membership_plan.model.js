@@ -6,7 +6,8 @@ const MembershipPlanSchema = new Schema({
     title: { type: String, index: true, trim: true },
     amount: { type: Number, default: 0, trim: true },
     status: { type: String, index: true, trim: true },
-    no_of_months: { type: Number, default: 0, trim: true }
+    no_of_months: { type: Number, default: 0, trim: true },
+    benifit: { type: String, default: '' }
 }, { timestamps: true, versionKey: false });
 
 MembershipPlanSchema.plugin(mongooseAggregatePaginate);
