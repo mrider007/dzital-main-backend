@@ -17,7 +17,9 @@ global.appRoot = join(__dirname, '/');
 config = require(resolve(join(__dirname, '/config', 'index')));
 global.project_name = config.app.project_name;
 
-const getPort = config.app.getPort;
+//const getPort = config.app.getPort;
+
+const port = process.env.PORT || 4200 ;
 
 connectDB();
 
@@ -54,7 +56,8 @@ const attribute = require('./routes/attribute.routes');
 const attribute_value = require('./routes/attribute_value.routes');
 const attribute_option = require('./routes/attribute_option.routes');
 
-global.BASE_URL = `http://${process.env.HOST}:${getPort}`;
+global.BASE_URL = `http://${process.env.HOST}:4200`;
+
 
 app.use('/api', user);
 app.use('/api', service);
@@ -89,8 +92,12 @@ app.use('/api', attribute);
 app.use('/api', attribute_value);
 app.use('/api', attribute_option);
 
-app.use('/uploads', express.static('uploads'))
+app.use('/uploads', express.static('uploads'));
 
-const server = http.createServer(app);
-server.listen(getPort);
-console.log(`Server is running on ${(global.BASE_URL && global.BASE_URL !== '') ? global.BASE_URL : `http://${process.env.HOST}:${getPort}`}`);
+app.listen(port, () => {
+    console.log(`server is running on ${port}`)
+})
+
+// const server = http.createServer(app);
+// server.listen(port);
+// console.log(`Server is running on ${(global.BASE_URL && global.BASE_URL !== '') ? global.BASE_URL : `http://${process.env.HOST}:${getPort}`}`);
