@@ -18,6 +18,10 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
+app.get('/admin', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build1', 'index.html'));
+});
+
 app.use(cors());
 
 global.appRoot = join(__dirname, '/');
