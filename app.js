@@ -14,12 +14,14 @@ app.use(express.json());
 
 app.use(express.static(path.join(__dirname, 'build')));
 
+app.use(express.static(path.join(__dirname, 'aws')));
+
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 app.get('/admin', (req, res) => {
-    res.sendFile(path.join(__dirname, 'build1', 'index.html'));
+    res.sendFile(path.join(__dirname, 'aws', 'index.html'));
 });
 
 app.use(cors());
