@@ -1,0 +1,13 @@
+// custom-variables.scss
+
+// Import Bootstrap's variables
+// @import "~bootstrap/scss/bootstrap";
+
+// Override Bootstrap's primary color
+$primary: #168f9f ;
+$primary-contrast: #fff;
+
+// Other customizations go here
+
+// Import Bootstrap to apply the changes
+@import "~bootstrap/scss/bootstrap.scss";

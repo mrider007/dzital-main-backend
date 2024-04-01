@@ -1,0 +1,94 @@
+:root {
+    --theme-color: #77ced9;
+    --theme-color-dark: #168f9f;
+    --theme-background-color : #eee;
+    --bs-btn-active-bg: #168f9f!important;
+}
+
+.bgtheme{
+    background-color: var(--theme-background-color);
+}
+
+.themecolor{
+    color: var(--theme-color);
+}
+
+.themecolordark{
+    background-color: var(--theme-color-dark);
+}
+
+body {
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    background-color: #eee;
+    font-size: 10px;
+  }
+  
+  .small-text {
+    font-size: 10px;
+
+}
+
+.navList{
+    text-decoration: none;
+    color: black;
+    font-weight: 600;
+    margin-bottom: 40px;
+}
+.active{
+    color: #168f9f;
+    text-decoration: none; 
+} 
+
+
+.imgBx{
+    width: 100%;
+    height: 100%;
+}
+.imgBx .allImg{
+    height: 200px;
+    object-fit: cover;
+    /* padding: 2px; */
+}
+
+.box-form .right .formBx {
+    margin-bottom: 15px ;
+    min-height: 220px !important;
+}
+
+/* Style for the scrollbar track */
+body::-webkit-scrollbar {
+    width: 10px;
+    background-color: transparent;
+}
+
+body::-webkit-scrollbar-thumb {
+    background: rgba(18, 224, 235, 0.7);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    transition: background 0.3s; 
+}
+
+body::-webkit-scrollbar-thumb:hover {
+    background: rgba(14, 180, 190, 0.9);
+}
+
+body::-webkit-scrollbar-thumb:active {
+    background: rgba(10, 140, 150, 0.9);
+}
+
+body::-webkit-scrollbar-thumb:vertical {
+    transition: background 0.3s; 
+    background: rgba(18, 224, 235, 0.7);
+}
+
+body::-webkit-scrollbar-thumb:vertical:hover {
+    background: rgba(14, 180, 190, 0.9); 
+}
+
+body::-webkit-scrollbar-thumb:vertical:active {
+    background: rgba(10, 140, 150, 0.9); 
+}
+
+body:not(:hover)::-webkit-scrollbar-thumb {
+    background: transparent;
+}
