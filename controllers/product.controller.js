@@ -19,6 +19,7 @@ const freelancerRepo = require('../repositories/product_freelancer.repository');
 const educationRepo = require('../repositories/product_education.repository');
 const attributevalueRepo = require('../repositories/attribute_value.repository');
 const cloudinary = require('cloudinary');
+const attributevalueRepository = require('../repositories/attribute_value.repository');
 
 class productController {
     constructor() { }
@@ -314,7 +315,6 @@ class productController {
             res.status(500).send({ status: 500, message: e.message });
         }
     };
-
     /** Admin Unapproved Products List */
     async unapprovedProductList(req, res) {
         try {
@@ -441,7 +441,6 @@ class productController {
             res.status(500).send({ status: 500, message: e.message });
         }
     };
-
     /** User Product List */
     async products(req, res) {
         try {
@@ -922,10 +921,10 @@ class productController {
             if (!_.isEmpty(productInfo) && productInfo._id) {
                 let productRemove = await productRepo.delete(product_id);
                 let categoryInfo = await Category.findOne({ _id: productInfo.category_id });
+
                 if (categoryInfo.title === 'Electronics') {
                     let electronics = await ProductElectronics.findOne({ product_id: productInfo._id });
                     let electronicsDelete = await electronicsRepo.delete(electronics._id);
-                    let attribute_values_delete = await AttributeValue.deleteMany({ product_id: productInfo._id });
                     if (!_.isEmpty(electronicsDelete) && electronicsDelete._id) {
                         res.status(200).send({ status: 200, data: electronicsDelete, message: 'Product has been removed successfully' });
                     }
@@ -936,7 +935,6 @@ class productController {
                 else if (categoryInfo.title === 'Jobs') {
                     let job = await Job.findOne({ product_id: productInfo._id });
                     let jobDelete = await jobRepo.delete(job._id);
-                    let attribute_values_delete = await AttributeValue.deleteMany({ product_id: productInfo._id });
                     if (!_.isEmpty(jobDelete) && jobDelete._id) {
                         res.status(200).send({ status: 200, data: jobDelete, message: 'Product has been removed successfully' });
                     }
@@ -947,7 +945,6 @@ class productController {
                 else if (categoryInfo.title === 'Freelancer') {
                     let freelancer = await Freelancer.findOne({ product_id: productInfo._id });
                     let freelancerDelete = await freelancerRepo.delete(freelancer._id);
-                    let attribute_values_delete = await AttributeValue.deleteMany({ product_id: productInfo._id });
                     if (!_.isEmpty(freelancerDelete) && freelancerDelete._id) {
                         res.status(200).send({ status: 200, data: freelancerDelete, message: 'Product has been removed successfully' });
                     }
@@ -958,7 +955,6 @@ class productController {
                 else if (categoryInfo.title === 'Real Estate') {
                     let property = await Property.findOne({ product_id: productInfo._id });
                     let propertyDelete = await propertyRepo.delete(property._id);
-                    let attribute_values_delete = await AttributeValue.deleteMany({ product_id: productInfo._id });
                     if (!_.isEmpty(propertyDelete) && propertyDelete._id) {
                         res.status(200).send({ status: 200, data: propertyDelete, message: 'Product has been removed successfully' });
                     }
@@ -969,7 +965,6 @@ class productController {
                 else if (categoryInfo.title === 'Fashion & Beauty') {
                     let fashion = await Fashion.findOne({ product_id: productInfo._id });
                     let fashionDelete = await fashionRepo.delete(fashion._id);
-                    let attribute_values_delete = await AttributeValue.deleteMany({ product_id: productInfo._id });
                     if (!_.isEmpty(fashionDelete) && fashionDelete._id) {
                         res.status(200).send({ status: 200, data: fashionDelete, message: 'Product has been removed successfully' });
                     }
@@ -980,7 +975,6 @@ class productController {
                 else if (categoryInfo.title === 'Goods of all kinds') {
                     let goods = await Goods.findOne({ product_id: productInfo._id });
                     let goodsDelete = await goodsRepo.delete(goods._id);
-                    let attribute_values_delete = await AttributeValue.deleteMany({ product_id: productInfo._id });
                     if (!_.isEmpty(goodsDelete) && goodsDelete._id) {
                         res.status(200).send({ status: 200, data: goodsDelete, message: 'Product has been removed successfully' });
                     }
@@ -991,7 +985,6 @@ class productController {
                 else if (categoryInfo.title === 'Lessons & Courses') {
                     let lesson_course = await ProductEducation.findOne({ product_id: productInfo._id });
                     let lessonDelete = await educationRepo.delete(lesson_course._id);
-                    let attribute_values_delete = await AttributeValue.deleteMany({ product_id: productInfo._id });
                     if (!_.isEmpty(lessonDelete) && lessonDelete._id) {
                         res.status(200).send({ status: 200, data: lessonDelete, message: 'Product has been removed successfully' });
                     }
@@ -999,6 +992,102 @@ class productController {
                         res.status(400).send({ status: 400, message: 'Product could not be removed' });
                     }
                 }
+                // deleting attribute value
+                let attribute_value_delete = await attributevalueRepository.deleteMany(product_id);
+            }
+            else {
+                res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+            }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+    /** User post delete */
+    async userProductDelete(req, res) {
+        try {
+            const product_id = new mongoose.Types.ObjectId(req.params.id);
+            const productInfo = await Product.findOne({ _id: req.params.id });
+
+            if (!productInfo.userId.equals(req.user._id) && req.user._id.toString() !== productInfo.userId.toString()) {
+                return res.status(401).send({ status: 401, message: "You are not authorized to delete this post" });
+            }
+
+            if (!_.isEmpty(productInfo) && productInfo._id) {
+                let productRemove = await productRepo.delete(product_id);
+                let categoryInfo = await Category.findOne({ _id: productInfo.category_id });
+
+                if (categoryInfo.title === 'Electronics') {
+                    let electronics = await ProductElectronics.findOne({ product_id: productInfo._id });
+                    let electronicsDelete = await electronicsRepo.delete(electronics._id);
+                    if (!_.isEmpty(electronicsDelete) && electronicsDelete._id) {
+                        res.status(200).send({ status: 200, data: electronicsDelete, message: 'Product has been removed successfully' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, message: 'Product could not be removed' });
+                    }
+                }
+                else if (categoryInfo.title === 'Jobs') {
+                    let job = await Job.findOne({ product_id: productInfo._id });
+                    let jobDelete = await jobRepo.delete(job._id);
+                    if (!_.isEmpty(jobDelete) && jobDelete._id) {
+                        res.status(200).send({ status: 200, data: jobDelete, message: 'Product has been removed successfully' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, message: 'Product could not be removed' });
+                    }
+                }
+                else if (categoryInfo.title === 'Freelancer') {
+                    let freelancer = await Freelancer.findOne({ product_id: productInfo._id });
+                    let freelancerDelete = await freelancerRepo.delete(freelancer._id);
+                    if (!_.isEmpty(freelancerDelete) && freelancerDelete._id) {
+                        res.status(200).send({ status: 200, data: freelancerDelete, message: 'Product has been removed successfully' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, message: 'Product could not be removed' });
+                    }
+                }
+                else if (categoryInfo.title === 'Real Estate') {
+                    let property = await Property.findOne({ product_id: productInfo._id });
+                    let propertyDelete = await propertyRepo.delete(property._id);
+                    if (!_.isEmpty(propertyDelete) && propertyDelete._id) {
+                        res.status(200).send({ status: 200, data: propertyDelete, message: 'Product has been removed successfully' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, message: 'Product could not be removed' });
+                    }
+                }
+                else if (categoryInfo.title === 'Fashion & Beauty') {
+                    let fashion = await Fashion.findOne({ product_id: productInfo._id });
+                    let fashionDelete = await fashionRepo.delete(fashion._id);
+                    if (!_.isEmpty(fashionDelete) && fashionDelete._id) {
+                        res.status(200).send({ status: 200, data: fashionDelete, message: 'Product has been removed successfully' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, message: 'Product could not be removed' });
+                    }
+                }
+                else if (categoryInfo.title === 'Goods of all kinds') {
+                    let goods = await Goods.findOne({ product_id: productInfo._id });
+                    let goodsDelete = await goodsRepo.delete(goods._id);
+                    if (!_.isEmpty(goodsDelete) && goodsDelete._id) {
+                        res.status(200).send({ status: 200, data: goodsDelete, message: 'Product has been removed successfully' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, message: 'Product could not be removed' });
+                    }
+                }
+                else if (categoryInfo.title === 'Lessons & Courses') {
+                    let lesson_course = await ProductEducation.findOne({ product_id: productInfo._id });
+                    let lessonDelete = await educationRepo.delete(lesson_course._id);
+                    if (!_.isEmpty(lessonDelete) && lessonDelete._id) {
+                        res.status(200).send({ status: 200, data: lessonDelete, message: 'Product has been removed successfully' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, message: 'Product could not be removed' });
+                    }
+                }
+                // deleting attribute value
+                let attribute_value_delete = await attributevalueRepository.deleteMany(product_id);
             }
             else {
                 res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
@@ -1135,7 +1224,6 @@ class productController {
             res.status(500).send({ status: 500, message: e.message });
         }
     };
-
     /** User Product Update */
     async userProductUpdate(req, res) {
         try {
