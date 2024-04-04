@@ -34,6 +34,7 @@ router.post('/product/list', request_param.any(), Authentication.AuthenticateAdm
 router.post('/product/update/:id', uploadFile.any(), Authentication.AuthenticateAdmin, ProductController.productUpdate);
 router.post('/product/change-status/:id', uploadFile.any(), Authentication.AuthenticateAdmin, ProductController.changeStatus);
 router.post('/user/product/list', request_param.any(), Authentication.Authenticate, ProductController.products);
+
 router.post('/admin/product/rejected/list', request_param.any(), Authentication.AuthenticateAdmin, ProductController.rejectedProductList);
 router.post('/admin/product/unapproved/list', request_param.any(), Authentication.AuthenticateAdmin, ProductController.unapprovedProductList);
 router.post('/admin/product/approved/list', request_param.any(), Authentication.AuthenticateAdmin, ProductController.approvedProductList);
@@ -41,5 +42,12 @@ router.post('/category-wise/product/list', request_param.any(), ProductControlle
 router.post('/products/bulk/update', request_param.any(), ProductController.productsBulkUpdate);
 router.post('/user/product/add', request_param.any(), Authentication.Authenticate, ProductController.userProductAdd);
 router.post('/user/product/update/:id', uploadFile.any(), Authentication.Authenticate, ProductController.userProductUpdate);
+
+/* --- Harsh --- */
+
+// user product delete from user's dashboard 
+router.delete('/user/product/delete/:id', Authentication.Authenticate, ProductController.userProductDelete);
+// user product detail
+router.get('/user/product/detail/:id', Authentication.Authenticate, ProductController.productDetails);
 
 module.exports = router;
