@@ -167,6 +167,41 @@ const freelancerRepository = {
                 },
                 { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
                 {
+                    $lookup: {
+                        let: { productId: '$product_id' },
+                        from: "attribute_values",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $or: [{ $eq: ["$product_id", "$$productId"] }] },
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                $lookup: {
+                                    from: "attributes",
+                                    localField: 'attribute_id',
+                                    foreignField: '_id',
+                                    as: "attribute"
+                                }
+                            },
+                            { $unwind: { path: '$attribute', preserveNullAndEmptyArrays: true } },
+                            {
+                                $group: {
+                                    _id: '$_id',
+                                    attribute: { $first: '$attribute.attribute' },
+                                    value: { $first: '$value' },
+                                }
+                            },
+                            { $sort: { _id: 1 } }
+                        ],
+                        as: "attribute_value_details"
+                    }
+                },
+                {
                     $group: {
                         _id: '$_id',
                         title: { $first: '$title' },
@@ -177,6 +212,7 @@ const freelancerRepository = {
                         location: { $first: '$location' },
                         budget: { $first: '$budget' },
                         status: { $first: '$product_details.status' },
+                        attribute_values: { $first: '$attribute_value_details' },
                         product_id: { $first: '$product_id' },
                         category_id: { $first: '$category_id' },
                         category_name: { $first: '$category_details.title' },
