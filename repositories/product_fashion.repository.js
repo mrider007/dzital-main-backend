@@ -44,6 +44,41 @@ const productFashionRepository = {
                 },
                 { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
                 {
+                    $lookup: {
+                        let: { productId: '$product_id' },
+                        from: "attribute_values",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $or: [{ $eq: ["$product_id", "$$productId"] }] },
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                $lookup: {
+                                    from: "attributes",
+                                    localField: 'attribute_id',
+                                    foreignField: '_id',
+                                    as: "attribute"
+                                }
+                            },
+                            { $unwind: { path: '$attribute', preserveNullAndEmptyArrays: true } },
+                            {
+                                $group: {
+                                    _id: '$_id',
+                                    attribute: { $first: '$attribute.attribute' },
+                                    value: { $first: '$value' },
+                                }
+                            },
+                            { $sort: { _id: 1 } }
+                        ],
+                        as: "attribute_value_details"
+                    }
+                },
+                {
                     $group: {
                         _id: '$_id',
                         title: { $first: '$title' },
@@ -53,6 +88,7 @@ const productFashionRepository = {
                         product_type: { $first: '$product_type' },
                         photo: { $first: '$photo' },
                         image_1: { $first: '$image_1' },
+                        attribute_values: { $first: '$attribute_value_details' },
                         image_2: { $first: '$image_2' },
                         image_3: { $first: '$image_3' },
                         brand: { $first: '$brand' },
