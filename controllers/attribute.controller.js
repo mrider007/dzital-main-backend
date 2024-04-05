@@ -99,13 +99,13 @@ class attributeController {
                 }
             } else {
                 res.status(400).send({ status: 400, messaage: 'Attribute not found' });
-            }            
+            }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
         }
     };
 
-    async bulkUpdate (req, res) {
+    async bulkUpdate(req, res) {
         try {
             let bulkUpdate = await Attribute.updateMany({}, { $set: { 'options': [] } });
             res.send({ status: 200, data: bulkUpdate, message: 'Attributes updated successfully' });
@@ -120,10 +120,10 @@ class attributeController {
             let attributes = await attributeRepo.getAllAttributes(req);
             if (!_.isEmpty(attributes)) {
                 res.status(200).send({ status: 200, data: attributes, message: 'Attribute List fetched successfully' });
-            }   
+            }
             else {
                 res.status(400).send({ status: 400, messaage: 'No Attributes Found' });
-            }        
+            }
         } catch (e) {
             res.status(500).send({ message: e.message });
         }
@@ -138,7 +138,7 @@ class attributeController {
                 res.status(201).send({ status: 201, data: [], message: 'No Filters Found' });
             }
         } catch (e) {
-            res.status(500).send({status: 500, message: e.message})
+            res.status(500).send({ status: 500, message: e.message })
         }
     }
 
