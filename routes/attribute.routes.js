@@ -13,4 +13,7 @@ router.post('/admin/attribute/update/:id', request_param.any(), Authentication.A
 router.get('/attribute/bulk/update', attributeController.bulkUpdate);
 router.post('/attribute/list', request_param.any(), Authentication.Authenticate, attributeController.userAttributeList);
 
+//   -- changes --
+router.post('/attribute/filter/list', request_param.any(), attributeController.filterList);
+
 module.exports = router;
