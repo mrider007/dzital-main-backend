@@ -137,9 +137,9 @@ class productWishlistController {
                     }
                     else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
-                    }                                     
+                    }
                 }
-            }        
+            }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
         }
