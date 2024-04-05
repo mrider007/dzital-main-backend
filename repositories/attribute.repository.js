@@ -339,34 +339,32 @@ const attributeRepository = {
             throw e;
         }
     },
-    
+
     // product filter list
     getFilterList: async (req) => {
         try {
             var conditions = {};
             var and_clauses = [];
 
-            if(_.isEmpty(req.body)){
+            if (_.isEmpty(req.body)) {
                 return null;
             }
 
             if (_.isObject(req.body) && _.has(req.body, 'category_id')) {
                 and_clauses.push({ 'category_id': new mongoose.Types.ObjectId(req.body.category_id) });
-                // and_clauses.push({ 'is_master_filter': true });
             }
             if (_.isObject(req.body) && _.has(req.body, 'sub_category_id')) {
                 and_clauses.push({ 'sub_category_id': new mongoose.Types.ObjectId(req.body.sub_category_id) });
-                // and_clauses.push({ 'is_sub_filter': true });
             }
 
             conditions['$and'] = and_clauses;
-            // console.log(and_clauses);
+
             let attributes = await Attribute.aggregate([
                 { $match: conditions },
                 {
                     $lookup: {
                         from: 'attribute_values',
-                        pipeline:[
+                        pipeline: [
                             {
                                 $group: {
                                     _id: '$_id',
