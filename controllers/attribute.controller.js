@@ -128,6 +128,19 @@ class attributeController {
             res.status(500).send({ message: e.message });
         }
     };
+    // to get filter list
+    async filterList(req, res) {
+        try {
+            let filters = await attributeRepo.getFilterList(req)
+            if (!_.isEmpty(filters)) {
+                res.status(200).send({ status: 200, data: filters, message: 'Job Filter List fetched Successfully' });
+            } else {
+                res.status(201).send({ status: 201, data: [], message: 'No Filters Found' });
+            }
+        } catch (e) {
+            res.status(500).send({status: 500, message: e.message})
+        }
+    }
 
 }
 
