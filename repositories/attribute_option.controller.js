@@ -25,7 +25,7 @@ const attributeoptionRepository = {
             if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
                 and_clauses.push({
                     $or: [
-                        { 'attribute': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }, 
+                        { 'attribute': { $regex: (req.body.keyword_search).trim(), $options: 'i' } },
                         { 'option': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
                     ]
                 });
