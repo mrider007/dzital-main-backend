@@ -25,7 +25,7 @@ class freelancerController {
             req.body.user_id = req.user._id;
             let freelancerData = await Freelancer.create(req.body);
             if (!_.isEmpty(freelancerData) && freelancerData._id) {
-                
+
                 let attribute_values = [];
 
                 for (let x = 0; x < req.body.attributeData.length; x++) {
