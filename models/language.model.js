@@ -7,7 +7,7 @@ const languageSchema = new Schema({
     country_code: { type: String, index: true, trim: true },
     language: { type: String, index: true, trim: true },
     country_id: { type: Schema.Types.ObjectId, ref: 'Country', default: null },
-    is_default: { type: Boolean, default: false, enum: [true, false] }   
+    is_default: { type: Boolean, default: false, enum: [true, false] }
 }, { timestamps: true, versionKey: false });
 
 languageSchema.plugin(mongooseAggregatePaginate);
