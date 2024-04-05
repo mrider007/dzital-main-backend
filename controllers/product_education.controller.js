@@ -70,7 +70,7 @@ class productEducationController {
                 }
 
                 if (_.has(req.body, 'attributeData') && req.body.attributeData.length > 0) {
-                        
+
                     let attribute_values = [];
 
                     for (let x = 0; x < req.body.attributeData.length; x++) {
