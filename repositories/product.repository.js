@@ -325,7 +325,7 @@ const productRepository = {
             }
 
             let allProducts = await Product.aggregatePaginate(products, options);
-            return allProducts;            
+            return allProducts;
         } catch (e) {
             throw e;
         }
