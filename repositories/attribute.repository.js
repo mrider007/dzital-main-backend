@@ -338,6 +338,63 @@ const attributeRepository = {
         } catch (e) {
             throw e;
         }
+    },
+    
+    // product filter list
+    getFilterList: async (req) => {
+        try {
+            var conditions = {};
+            var and_clauses = [];
+
+            if(_.isEmpty(req.body)){
+                return null;
+            }
+
+            if (_.isObject(req.body) && _.has(req.body, 'category_id')) {
+                and_clauses.push({ 'category_id': new mongoose.Types.ObjectId(req.body.category_id) });
+                // and_clauses.push({ 'is_master_filter': true });
+            }
+            if (_.isObject(req.body) && _.has(req.body, 'sub_category_id')) {
+                and_clauses.push({ 'sub_category_id': new mongoose.Types.ObjectId(req.body.sub_category_id) });
+                // and_clauses.push({ 'is_sub_filter': true });
+            }
+
+            conditions['$and'] = and_clauses;
+            // console.log(and_clauses);
+            let attributes = await Attribute.aggregate([
+                { $match: conditions },
+                {
+                    $lookup: {
+                        from: 'attribute_values',
+                        pipeline:[
+                            {
+                                $group: {
+                                    _id: '$_id',
+                                    value: { $first: '$value' },
+                                }
+                            }
+                        ],
+                        localField: '_id',
+                        foreignField: 'attribute_id',
+                        as: 'attribute_values'
+                    }
+                },
+                {
+                    $group: {
+                        _id: '$_id',
+                        attribute: { $first: '$attribute' },
+                        attribute_values: { $first: '$attribute_values' },
+                    }
+                },
+                { $sort: { _id: 1 } }
+            ]);
+            if (!attributes) {
+                return null;
+            }
+            return attributes;
+        } catch (error) {
+            throw error
+        }
     }
 
 }
