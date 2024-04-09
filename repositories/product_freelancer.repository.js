@@ -139,10 +139,42 @@ const freelancerRepository = {
             var conditions = {};
             var and_clauses = [];
 
-            and_clauses.push({});
+            and_clauses.push({ status: 'Approved' });
+
+            if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
+                and_clauses.push({
+                    $or: [
+                        { 'title': { $regex: (req.body.keyword_search).trim(), $options: 'i' } },
+                        { 'description': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
+                    ]
+                });
+            }
 
             if (_.isObject(req.body) && _.has(req.body, 'category_id')) {
                 and_clauses.push({ 'category_id': new mongoose.Types.ObjectId(req.body.category_id) });
+            }
+
+            let filter = req.body.filter;
+
+            if (filter && _.isArray(filter)) {
+                filter.forEach((item) => {
+                    if (!!item && _.isObject(item) && _.has(item, 'attribute') && _.has(item, 'value')) {
+                        and_clauses.push(
+                            {
+                                'attribute_values': {
+                                    $elemMatch: item
+                                }
+                            }
+                        );
+                    }
+                })
+            }
+            
+            // Filter based on sub category
+            let sub_category_id = req.body.sub_category_id
+
+            if (sub_category_id) {
+                and_clauses.push({ 'sub_category_id': new mongoose.Types.ObjectId(sub_category_id) });
             }
 
             conditions['$and'] = and_clauses;
