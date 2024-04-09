@@ -441,6 +441,7 @@ const JobRepository = {
                         _id: '$_id',
                         title: { $first: "$title" },
                         description: { $first: "$description" },
+                        sub_category_id: { $first: "$sub_category_id" },
                         status: { $first: '$product_details.status' },
                         attribute_values: { $first: '$attribute_value_details' },
                         product_id: { $first: '$product_id' },
