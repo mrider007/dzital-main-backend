@@ -297,6 +297,8 @@ const attributeRepository = {
                         category_name: { $first: '$category_details.title' },
                         sub_category_name: { $first: '$sub_category_details.title' },
                         attribute: { $first: '$attribute' },
+                        is_master_filter: { $first: '$is_master_filter' },
+                        is_sub_filter: { $first: '$is_sub_filter' },
                         options: { $first: '$option_details' },
                         createdAt: { $first: '$createdAt' },
                         updatedAt: { $first: '$updatedAt' }
@@ -345,7 +347,7 @@ const attributeRepository = {
             var conditions = {};
             var and_clauses = [];
 
-            if (_.isEmpty(req.body)) {
+            if(_.isEmpty(req.body)){
                 return null;
             }
 
@@ -359,13 +361,13 @@ const attributeRepository = {
             }
 
             conditions['$and'] = and_clauses;
-
+            // console.log(and_clauses);
             let attributes = await Attribute.aggregate([
                 { $match: conditions },
                 {
                     $lookup: {
                         from: 'attribute_values',
-                        pipeline: [
+                        pipeline:[
                             {
                                 $group: {
                                     _id: '$_id',
