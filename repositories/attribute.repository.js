@@ -339,7 +339,6 @@ const attributeRepository = {
             throw e;
         }
     },
-
     // product filter list
     getFilterList: async (req) => {
         try {
@@ -352,9 +351,11 @@ const attributeRepository = {
 
             if (_.isObject(req.body) && _.has(req.body, 'category_id')) {
                 and_clauses.push({ 'category_id': new mongoose.Types.ObjectId(req.body.category_id) });
+                and_clauses.push({ 'is_master_filter': true });
             }
             if (_.isObject(req.body) && _.has(req.body, 'sub_category_id')) {
                 and_clauses.push({ 'sub_category_id': new mongoose.Types.ObjectId(req.body.sub_category_id) });
+                and_clauses.push({ 'is_sub_filter': true });
             }
 
             conditions['$and'] = and_clauses;
