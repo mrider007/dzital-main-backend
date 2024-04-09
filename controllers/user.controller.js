@@ -240,15 +240,15 @@ class userController {
 
             const response = await axios.post(apiUrl, requestData, {
                 headers: {
-                  'Content-Type': 'application/json',
+                    'Content-Type': 'application/json',
                 },
-              });
-          
-              // Assuming the response contains the token
-              
-              const agoraToken = response.data.token;
-          
-              console.log('Agora Token:', agoraToken);
+            });
+
+            // Assuming the response contains the token
+
+            const agoraToken = response.data.token;
+
+            console.log('Agora Token:', agoraToken);
         } catch (e) {
             res.send({ message: e.message });
         }

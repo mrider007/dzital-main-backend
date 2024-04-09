@@ -32,7 +32,7 @@ global.project_name = config.app.project_name;
 
 const getPort = config.app.getPort;
 
-const port = process.env.PORT || 4200 ;
+const port = process.env.PORT || 4200;
 
 connectDB();
 
@@ -71,7 +71,6 @@ const attribute_option = require('./routes/attribute_option.routes');
 
 global.BASE_URL = `http://${process.env.HOST}:${getPort}`;
 
-
 app.use('/api', user);
 app.use('/api', service);
 app.use('/api', membership_plan);
@@ -106,7 +105,6 @@ app.use('/api', attribute_value);
 app.use('/api', attribute_option);
 
 app.use('/uploads', express.static('uploads'));
-
 
 const server = http.createServer(app);
 server.listen(port);

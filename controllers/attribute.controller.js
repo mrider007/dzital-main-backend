@@ -128,7 +128,8 @@ class attributeController {
             res.status(500).send({ message: e.message });
         }
     };
-    // to get filter list
+
+    /** Attribute Filter List */
     async filterList(req, res) {
         try {
             let filters = await attributeRepo.getFilterList(req)
