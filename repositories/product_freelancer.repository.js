@@ -169,7 +169,6 @@ const freelancerRepository = {
                     }
                 })
             }
-            
             // Filter based on sub category
             let sub_category_id = req.body.sub_category_id
 
@@ -237,6 +236,7 @@ const freelancerRepository = {
                     $group: {
                         _id: '$_id',
                         title: { $first: '$title' },
+                        sub_category_id: { $first: '$sub_category_id' },
                         description: { $first: '$description' },
                         experience: { $first: '$experience' },
                         skills: { $first: '$skills' },
