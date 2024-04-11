@@ -68,6 +68,7 @@ const language = require('./routes/language.routes');
 const attribute = require('./routes/attribute.routes');
 const attribute_value = require('./routes/attribute_value.routes');
 const attribute_option = require('./routes/attribute_option.routes');
+const bid_history = require('./routes/bid_history.routes')
 
 global.BASE_URL = `http://${process.env.HOST}:${getPort}`;
 
@@ -103,6 +104,7 @@ app.use('/api', language);
 app.use('/api', attribute);
 app.use('/api', attribute_value);
 app.use('/api', attribute_option);
+app.use('/api', bid_history);
 
 app.use('/uploads', express.static('uploads'));
 
