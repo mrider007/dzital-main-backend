@@ -1,6 +1,6 @@
 const productModel = require('../models/product.model');
 const bid_historyModel = require('../models/bid_history.model');
-const bidHistoryRepository = require('../repositories/bid_history_repository');
+const bidHistoryRepository = require('../repositories/bid_history.repository');
 
 class bidHistoryController {
     constructor() { }
