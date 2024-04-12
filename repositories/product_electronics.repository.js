@@ -95,7 +95,7 @@ class ProductElectronicsController {
                 let attribute_values = [];
 
                 for (let x = 0; x < req.body.attributeData.length; x++) {
-                    
+
                     req.body.attributeData[x].product_id = req.body.product_id;
 
                     let attributeData = await AttributeValue.create(req.body.attributeData[x]);
@@ -104,7 +104,7 @@ class ProductElectronicsController {
                     }
                 }
                 let update_obj = { image: electronicsProductSave.photo }
-                if(req.body.bid_now === true || req.body.bid_now === "true"){
+                if (req.body.bid_now === true || req.body.bid_now === "true") {
                     update_obj.bid_now = req.body.bid_now
                     update_obj.bid_start_price = req.body.bid_start_price
                     update_obj.bid_increament_value = req.body.bid_increament_value
