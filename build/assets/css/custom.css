@@ -95,6 +95,8 @@ body {background:#eee;font-size:15px;}
 .text-bg-secondery{background:#168f9f; color:#fff;}
 /*common classes style here end*/
 
+.proListImg{width:100%!important;height:200px!important;}
+
 .mainMenuBx>.container{display:block;}
 .mainMenuBx>.container .rightBx .navBtnRow{}
 .navListInline{margin:0px;padding:0px;}
