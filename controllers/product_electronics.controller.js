@@ -103,8 +103,16 @@ class ProductElectronicsController {
                         attribute_values.push(attributeData);
                     }
                 }
-
-                let productUpdate = await productRepo.updateProductById({ image: electronicsProductSave.photo }, electronicsProductSave.product_id);
+                let update_obj = { image: electronicsProductSave.photo }
+                if (req.body.bid_now === true) {
+                    update_obj.bid_now = req.body.bid_now
+                    update_obj.bid_start_price = req.body.bid_start_price
+                    update_obj.bid_increament_value = req.body.bid_increament_value
+                    update_obj.bid_entry = req.body.bid_start_price + req.body.bid_increament_value
+                    update_obj.bid_start_date = req.body.bid_start_date
+                    update_obj.bid_end_date = req.body.bid_end_date
+                }
+                let productUpdate = await productRepo.updateProductById(update_obj, electronicsProductSave.product_id);
                 res.status(200).send({ status: 200, data: electronicsProductSave, message: 'Electronics Product Saved Successfully' });
             }
             else {
