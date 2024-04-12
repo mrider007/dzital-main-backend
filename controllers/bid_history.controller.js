@@ -1,6 +1,7 @@
 const productModel = require('../models/product.model');
 const bid_historyModel = require('../models/bid_history.model');
 const bidHistoryRepository = require('../repositories/bid_history.repository');
+const productRepository = require('../repositories/product.repository');
 
 class bidHistoryController {
     constructor() { }
@@ -47,6 +48,8 @@ class bidHistoryController {
             });
 
             if (!_.isEmpty(bidSave) && bidSave._id) {
+                const bid_entry = check.bid_increament_value + bidSave.bid_amount
+                await productRepository.updateProductById({ bid_entry }, check._id)
                 res.status(200).send({ status: 200, data: bidSave, message: 'bid has been added successfully' });
             }
             else {
