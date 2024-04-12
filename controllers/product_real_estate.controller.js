@@ -61,7 +61,7 @@ class propertyController {
                     update_obj.bid_now = req.body.bid_now
                     update_obj.bid_start_price = req.body.bid_start_price
                     update_obj.bid_increament_value = req.body.bid_increament_value
-                    update_obj.bid_entry = req.body.bid_start_price + req.body.bid_increament_value
+                    update_obj.bid_entry = Number(req.body.bid_start_price) + Number(req.body.bid_increament_value)
                     update_obj.bid_start_date = req.body.bid_start_date
                     update_obj.bid_end_date = req.body.bid_end_date
                 }
