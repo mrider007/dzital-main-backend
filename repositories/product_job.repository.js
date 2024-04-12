@@ -158,7 +158,7 @@ const JobRepository = {
                 return job;
             }
         } catch (e) {
-            return e;
+            throw e
         }
     },
 
