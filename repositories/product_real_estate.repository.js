@@ -414,6 +414,21 @@ const propertyRepository = {
         } catch (e) {
             throw e;
         }
+    },
+
+    delete: async (id) => {
+        try {
+            let property = await Property.findById(id);
+            if (property) {
+                let propertyDelete = await Property.deleteOne({ _id: id }).exec();
+                if (!propertyDelete) {
+                    return null;
+                }
+                return property;
+            }
+        } catch (e) {
+            throw e;
+        }
     }
 
 }
