@@ -56,6 +56,17 @@ class propertyController {
                     }
                 }
 
+                let update_obj = { image: real_estate_product_save.photo }
+                if (req.body.bid_now === true) {
+                    update_obj.bid_now = req.body.bid_now
+                    update_obj.bid_start_price = req.body.bid_start_price
+                    update_obj.bid_increament_value = req.body.bid_increament_value
+                    update_obj.bid_entry = req.body.bid_start_price + req.body.bid_increament_value
+                    update_obj.bid_start_date = req.body.bid_start_date
+                    update_obj.bid_end_date = req.body.bid_end_date
+                }
+                let productUpdate = await productRepo.updateProductById(update_obj, real_estate_product_save.product_id);
+
                 res.status(200).send({ status: 200, data: real_estate_product_save, message: 'Real Estate Product Saved Successfully' });
             }
             else {
