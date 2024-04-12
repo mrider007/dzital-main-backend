@@ -20,7 +20,7 @@ const bidHistoryRepository = {
                         from: 'users',
                         pipeline: [{
                             $group: {
-                                _id: '$userId',
+                                _id: '$_id',
                                 name: { $first: '$name' },
                                 image: { $first: '$image' },
                             }
@@ -36,7 +36,7 @@ const bidHistoryRepository = {
                         _id: '$_id',
                         productId: { $first: '$productId' },
                         user: { $first: '$user' },
-                        bidAmount: { $first: '$bidAmount' },
+                        bidAmount: { $first: '$bid_amount' },
                         createdAt: { $first: '$createdAt' }
                     }
                 }
