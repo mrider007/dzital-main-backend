@@ -247,6 +247,21 @@ const productFashionRepository = {
         }
     },
 
+    delete: async (id) => {
+        try {
+            let fashion = await ProductFashion.findById(id);
+            if (fashion) {
+                let fashionDelete = await ProductFashion.deleteOne({ _id: id }).exec();
+                if (!fashionDelete) {
+                    return null;
+                }
+                return fashion;
+            }
+        } catch (e) {
+            throw e;
+        }
+    }
+
 }
 
 module.exports = productFashionRepository;
