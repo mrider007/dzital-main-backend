@@ -57,7 +57,7 @@ class propertyController {
                 }
 
                 let update_obj = { image: real_estate_product_save.photo }
-                if (req.body.bid_now === true) {
+                if (req.body.bid_now === true || req.body.bid_now === "true") {
                     update_obj.bid_now = req.body.bid_now
                     update_obj.bid_start_price = req.body.bid_start_price
                     update_obj.bid_increament_value = req.body.bid_increament_value
