@@ -245,6 +245,21 @@ const goodsRepository = {
         } catch (e) {
             return e;
         }
+    },
+
+    delete: async (id) => {
+        try {
+            let goods = await ProductGoods.findById(id);
+            if (goods) {
+                let goodsDelete = await ProductGoods.deleteOne({ _id: id }).exec();
+                if (!goodsDelete) {
+                    return null;
+                }
+                return goods;
+            }
+        } catch (e) {
+            throw e;
+        }
     }
 }
 
