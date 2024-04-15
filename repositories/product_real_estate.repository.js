@@ -174,6 +174,29 @@ const propertyRepository = {
                 }
             }
 
+            // Filter based on in attribute & its value
+            let filter = req.body.filter;
+
+            if (filter && _.isArray(filter)) {
+                filter.forEach((item) => {
+                    if (!!item && _.isObject(item) && _.has(item, 'attribute') && _.has(item, 'value')) {
+                        and_clauses.push(
+                            {
+                                'attribute_values': {
+                                    $elemMatch: item
+                                }
+                            }
+                        );
+                    }
+                })
+            }
+            // Filter based on sub category
+            let sub_category_id = req.body.sub_category_id
+
+            if (sub_category_id) {
+                and_clauses.push({ 'sub_category_id': new mongoose.Types.ObjectId(sub_category_id) });
+            }
+
             if (_.isObject(req.body) && _.has(req.body, 'category_id')) {
                 and_clauses.push({ 'category_id': new mongoose.Types.ObjectId(req.body.category_id) });
             }
@@ -269,6 +292,7 @@ const propertyRepository = {
                         image_3: { $first: '$image_3' },
                         user_id: { $first: '$user_id' },
                         product_id: { $first: '$product_id' },
+                        sub_category_id: { $first: "$sub_category_id" },
                         category_id: { $first: '$category_id' },
                         category_name: { $first: '$category_details.title' },
                         attribute_values: { $first: '$attribute_value_details' }
