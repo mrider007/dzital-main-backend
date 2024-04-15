@@ -17,6 +17,29 @@ const goodsRepository = {
                     ]
                 });
             }
+            // Filter based on in attribute & its value
+            let filter = req.body.filter;
+
+            if (filter && _.isArray(filter)) {
+                filter.forEach((item) => {
+                    if (!!item && _.isObject(item) && _.has(item, 'attribute') && _.has(item, 'value')) {
+                        and_clauses.push(
+                            {
+                                'attribute_values': {
+                                    $elemMatch: item
+                                }
+                            }
+                        );
+                    }
+                })
+            }
+            // Filter based on sub category
+            let sub_category_id = req.body.sub_category_id
+
+            if (sub_category_id) {
+                and_clauses.push({ 'sub_category_id': new mongoose.Types.ObjectId(sub_category_id) });
+            }
+            //   console.log(and_clauses)
 
             if (_.isObject(req.body) && _.has(req.body, 'category_id')) {
                 and_clauses.push({ 'category_id': new mongoose.Types.ObjectId(req.body.category_id) });
@@ -94,6 +117,7 @@ const goodsRepository = {
                         brand: { $first: '$brand' },
                         product_id: { $first: '$product_id' },
                         category_id: { $first: '$category_id' },
+                        sub_category_id: { $first: "$sub_category_id" },
                         quantity: { $first: '$quantity' },
                         createdAt: { $first: '$createdAt' }
                     }
