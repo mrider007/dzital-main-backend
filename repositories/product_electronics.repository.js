@@ -209,7 +209,7 @@ const productElectronicsRepository = {
                                 $match: {
                                     $expr: {
                                         $and: [
-                                            { $or: [{ $eq: ["$product_id", "$$productId"] }] },
+                                            { $eq: ["$product_id", "$$productId"] },
                                         ]
                                     }
                                 }
