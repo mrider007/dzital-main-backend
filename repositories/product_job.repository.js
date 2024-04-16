@@ -64,7 +64,7 @@ const JobRepository = {
                                 $match: {
                                     $expr: {
                                         $and: [
-                                            { $or: [{ $eq: ["$sub_category_id", "$$subcategoryId"] }] },
+                                            { $eq: ["$sub_category_id", "$$subcategoryId"] },
                                         ]
                                     }
                                 }
@@ -83,7 +83,7 @@ const JobRepository = {
                                 $match: {
                                     $expr: {
                                         $and: [
-                                            { $or: [{ $eq: ["$product_id", "$$productId"] }] },
+                                            { $eq: ["$product_id", "$$productId"] },
                                         ]
                                     }
                                 }
@@ -229,7 +229,6 @@ const JobRepository = {
                         skills: { $first: '$skills' },
                         job_type: { $first: '$job_type' },
                         category_id: { $first: '$category_id' },
-                        //user_name: { $first: '$user_details.name' },
                         category_name: { $first: '$category_details.title' }
                     }
                 },
@@ -412,7 +411,7 @@ const JobRepository = {
                                 $match: {
                                     $expr: {
                                         $and: [
-                                            { $or: [{ $eq: ["$product_id", "$$productId"] }] },
+                                            { $eq: ["$product_id", "$$productId"] },
                                         ]
                                     }
                                 }
