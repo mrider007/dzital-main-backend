@@ -108,6 +108,7 @@ const productFashionRepository = {
                         title: { $first: '$title' },
                         description: { $first: '$description' },
                         status: { $first: '$product_details.status' },
+                        bid_now: { $first: '$product_details.bid_now' },
                         price: { $first: '$price' },
                         product_type: { $first: '$product_type' },
                         photo: { $first: '$photo' },
@@ -286,6 +287,7 @@ const productFashionRepository = {
             throw e;
         }
     }
+
 
 }
 
