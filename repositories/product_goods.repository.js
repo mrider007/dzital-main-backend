@@ -75,7 +75,7 @@ const goodsRepository = {
                                 $match: {
                                     $expr: {
                                         $and: [
-                                            { $or: [{ $eq: ["$product_id", "$$productId"] }] },
+                                            { $eq: ["$product_id", "$$productId"] },
                                         ]
                                     }
                                 }
@@ -177,7 +177,7 @@ const goodsRepository = {
                                 $match: {
                                     $expr: {
                                         $and: [
-                                            { $or: [{ $eq: ["$sub_category_id", "$$subcategoryId"] }] },
+                                            { $eq: ["$sub_category_id", "$$subcategoryId"] },
                                         ]
                                     }
                                 }
@@ -196,7 +196,7 @@ const goodsRepository = {
                                 $match: {
                                     $expr: {
                                         $and: [
-                                            { $or: [{ $eq: ["$product_id", "$$productId"] }] },
+                                            { $eq: ["$product_id", "$$productId"] },
                                         ]
                                     }
                                 }
