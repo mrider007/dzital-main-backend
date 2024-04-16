@@ -65,7 +65,7 @@ const propertyRepository = {
                                 $match: {
                                     $expr: {
                                         $and: [
-                                            { $or: [{ $eq: ["$sub_category_id", "$$subcategoryId"] }] },
+                                            { $eq: ["$sub_category_id", "$$subcategoryId"] },
                                         ]
                                     }
                                 }
@@ -84,7 +84,7 @@ const propertyRepository = {
                                 $match: {
                                     $expr: {
                                         $and: [
-                                            { $or: [{ $eq: ["$product_id", "$$productId"] }] },
+                                            { $eq: ["$product_id", "$$productId"] },
                                         ]
                                     }
                                 }
@@ -245,7 +245,7 @@ const propertyRepository = {
                                 $match: {
                                     $expr: {
                                         $and: [
-                                            { $or: [{ $eq: ["$product_id", "$$productId"] }] },
+                                            { $eq: ["$product_id", "$$productId"] },
                                         ]
                                     }
                                 }
@@ -259,7 +259,7 @@ const propertyRepository = {
                                             $match: {
                                                 $expr: {
                                                     $and: [
-                                                        { $or: [{ $eq: ["$_id", "$$attributeId"] }] },
+                                                        { $eq: ["$_id", "$$attributeId"] },
                                                     ]
                                                 }
                                             }
@@ -376,7 +376,7 @@ const propertyRepository = {
                                 $match: {
                                     $expr: {
                                         $and: [
-                                            { $or: [{ $eq: ["$sub_category_id", "$$subcategoryId"] }] },
+                                            { $eq: ["$sub_category_id", "$$subcategoryId"] },
                                         ]
                                     }
                                 }
@@ -390,7 +390,7 @@ const propertyRepository = {
                                             $match: {
                                                 $expr: {
                                                     $and: [
-                                                        { $or: [{ $eq: ["$attribute_id", "$$attributeId"] }] },
+                                                        { $eq: ["$attribute_id", "$$attributeId"] },
                                                     ]
                                                 }
                                             }
@@ -404,7 +404,6 @@ const propertyRepository = {
                             {
                                 $group: {
                                     _id: '$_id',
-                                    //product_id: { $first: '$product_id' },
                                     attribute_id: { $first: '$_id' },
                                     attribute: { $first: '$attribute' },
                                     value: { $first: '$attribute_values.value' },
