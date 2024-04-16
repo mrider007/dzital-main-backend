@@ -2,6 +2,7 @@ const BidHistory = require('../models/bid_history.model');
 const mongoose = require('mongoose');
 
 const bidHistoryRepository = {
+
     list: async (req) => {
         try {
             var conditions = {};
@@ -11,23 +12,34 @@ const bidHistoryRepository = {
                 return null;
             }
 
-            and_clauses.push({ 'productId': new mongoose.Types.ObjectId(req.body.productId) })
+            and_clauses.push({ 'productId': new mongoose.Types.ObjectId(req.body.productId) });
+
             conditions['$and'] = and_clauses;
 
             let bidHistory = BidHistory.aggregate([
                 {
                     $lookup: {
-                        from: 'users',
-                        pipeline: [{
-                            $group: {
-                                _id: '$_id',
-                                name: { $first: '$name' },
-                                image: { $first: '$image' },
+                        let: { user: '$userId' },
+                        from: "users",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$user"] }
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                $project: {
+                                    _id: '$_id',
+                                    name: "$name",
+                                    image: "$image"
+                                }
                             }
-                        }],
-                        localField: 'userId',
-                        foreignField: '_id',
-                        as: 'user',
+                        ],
+                        as: "user"
                     }
                 },
                 { $unwind: { path: '$user', preserveNullAndEmptyArrays: true } },
