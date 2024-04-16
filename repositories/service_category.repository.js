@@ -57,7 +57,7 @@ const serviceRepository = {
                                 $match: {
                                     $expr: {
                                         $and: [
-                                            { $or: [{ $eq: ["$parentId", "$$category_id"] }] },
+                                            { $eq: ["$parentId", "$$category_id"] },
                                         ]
                                     }
                                 }
@@ -80,7 +80,7 @@ const serviceRepository = {
                                 $match: {
                                     $expr: {
                                         $and: [
-                                            { $or: [{ $eq: ["$category_id", "$$categoryId"] }] },
+                                            { $eq: ["$category_id", "$$categoryId"] },
                                         ]
                                     }
                                 }
