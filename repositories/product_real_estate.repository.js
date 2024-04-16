@@ -286,6 +286,7 @@ const propertyRepository = {
                         title: { $first: '$title' },
                         description: { $first: '$description' },
                         status: { $first: '$product_details.status' },
+                        bid_now: { $first: '$product_details.bid_now' },
                         photo: { $first: '$photo' },
                         image_1: { $first: '$image_1' },
                         image_2: { $first: '$image_2' },
