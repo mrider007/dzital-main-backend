@@ -34,7 +34,7 @@ const ProductWishlistRepository = {
                                 $match: {
                                     $expr: {
                                         $and: [
-                                            { $or: [{ $in: ["$_id", "$$productId"] }] },
+                                            { $in: ["$_id", "$$productId"] },
                                         ]
                                     }
                                 }
@@ -48,7 +48,7 @@ const ProductWishlistRepository = {
                                             $match: {
                                                 $expr: {
                                                     $and: [
-                                                        { $or: [{ $eq: ["$_id", "$$categoryId"] }] },
+                                                        { $eq: ["$_id", "$$categoryId"] },
                                                     ]
                                                 }
                                             }
