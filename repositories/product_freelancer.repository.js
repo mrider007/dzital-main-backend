@@ -3,7 +3,7 @@ const Freelancer = require('../models/product_freelancer.model');
 
 const freelancerRepository = {
 
-    getDetails: async (params) => {
+    getDetails: async (params, userId) => {
         try {
             let products = await Freelancer.aggregate([
                 { $match: params },
@@ -43,6 +43,42 @@ const freelancerRepository = {
                     }
                 },
                 { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $lookup: {
+                        from: "product_wishlists",
+                        let: { productId: "$product_id", user_id: userId },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $in: ["$$productId", "$products.product_id"] },
+                                            { $eq: ["$user_id", "$$user_id"] }
+                                        ],
+                                    },
+                                },
+                            },
+                        ],
+                        as: "wishlists",
+                    },
+                },
+                { $unwind: { path: '$wishlists', preserveNullAndEmptyArrays: true } },
+                {
+                    $addFields: {
+                        'isWishlist': {
+                            $cond: {
+                                if: { $eq: [userId, null] }, then: false,
+                                else: {
+                                    $cond: {
+                                        if: { $eq: ['$wishlists.user_id', userId] },
+                                        then: true,
+                                        else: false
+                                    }
+                                },
+                            }
+                        },
+                    }
+                },
                 {
                     $lookup: {
                         let: { subcategoryId: '$sub_category_id' },
@@ -118,6 +154,8 @@ const freelancerRepository = {
                         bid_entry: { $first: '$product_details.bid_entry' },
                         bid_start_date: { $first: '$product_details.bid_start_date' },
                         bid_end_date: { $first: '$product_details.bid_end_date' },
+                        //wishlists: { $addToSet: '$wishlists' },
+                        isWishlist: { $first: '$isWishlist' },
                         status: { $first: '$product_details.status' },
                         attributes: { $first: '$attribute_details' },
                         attribute_values: { $first: '$attribute_value_details' },
