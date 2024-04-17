@@ -382,7 +382,8 @@ class productController {
                     }
                 }
                 else if (categoryInfo.title === 'Electronics') {
-                    let electronicsDetails = await electronicsRepo.getDetails({ product_id: productInfo._id });
+                    let userId = req.user._id;
+                    let electronicsDetails = await electronicsRepo.getDetails({ product_id: productInfo._id }, userId);
                     if (!_.isEmpty(electronicsDetails) && electronicsDetails._id) {
                         res.status(200).send({ status: 200, data: electronicsDetails, message: 'Product details has been fetched successfully' });
                     }
