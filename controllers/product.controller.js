@@ -392,7 +392,8 @@ class productController {
                     }
                 }
                 else if (categoryInfo.title === 'Jobs') {
-                    let jobDetails = await jobRepo.getJobDetails({ product_id: productInfo._id });
+                    let userId = req.user._id;
+                    let jobDetails = await jobRepo.getJobDetails({ product_id: productInfo._id }, userId);
                     if (!_.isEmpty(jobDetails) && jobDetails._id) {
                         res.status(200).send({ status: 200, data: jobDetails, message: 'Product details has been fetched successfully' });
                     }

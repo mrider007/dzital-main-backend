@@ -15,7 +15,7 @@ const JobRepository = {
         }
     },
 
-    getJobDetails: async (params) => {
+    getJobDetails: async (params, userId) => {
         try {
             let jobInfo = await Job.aggregate([
                 { $match: params },
@@ -55,6 +55,42 @@ const JobRepository = {
                     }
                 },
                 { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $lookup: {
+                        from: "product_wishlists",
+                        let: { productId: "$product_id", user_id: userId },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $in: ["$$productId", "$products.product_id"] },
+                                            { $eq: ["$user_id", "$$user_id"] }
+                                        ],
+                                    },
+                                },
+                            },
+                        ],
+                        as: "wishlists",
+                    },
+                },
+                { $unwind: { path: '$wishlists', preserveNullAndEmptyArrays: true } },
+                {
+                    $addFields: {
+                        'isWishlist': {
+                            $cond: {
+                                if: { $eq: [userId, null] }, then: false,
+                                else: {
+                                    $cond: {
+                                        if: { $eq: ['$wishlists.user_id', userId] },
+                                        then: true,
+                                        else: false
+                                    }
+                                },
+                            }
+                        },
+                    }
+                },
                 {
                     $lookup: {
                         let: { subcategoryId: '$sub_category_id' },
@@ -128,6 +164,8 @@ const JobRepository = {
                         bid_entry: { $first: '$product_details.bid_entry' },
                         bid_start_date: { $first: '$product_details.bid_start_date' },
                         bid_end_date: { $first: '$product_details.bid_end_date' },
+                        //wishlists: { $addToSet: '$wishlists' },
+                        isWishlist: { $first: '$isWishlist' },
                         category_id: { $first: '$category_id' },
                         category_name: { $first: '$category_details.title' },
                         sub_category_id: { $first: '$sub_category_id' },
