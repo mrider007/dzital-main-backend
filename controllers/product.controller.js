@@ -402,7 +402,8 @@ class productController {
                     }
                 }
                 else if (categoryInfo.title === 'Fashion & Beauty') {
-                    let fashionDetails = await fashionRepo.getDetails({ product_id: productInfo._id });
+                    let userId = req.user._id;
+                    let fashionDetails = await fashionRepo.getDetails({ product_id: productInfo._id }, userId);
                     if (!_.isEmpty(fashionDetails) && fashionDetails._id) {
                         res.status(200).send({ status: 200, data: fashionDetails, message: 'Product details has been fetched successfully' });
                     }
