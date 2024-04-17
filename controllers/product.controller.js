@@ -432,7 +432,8 @@ class productController {
                     }
                 }
                 else if (categoryInfo.title === 'Lessons & Courses') {
-                    let lessonDetails = await educationRepo.getDetails({ product_id: productInfo._id });
+                    let userId = req.user._id;
+                    let lessonDetails = await educationRepo.getDetails({ product_id: productInfo._id }, userId);
                     if (!_.isEmpty(lessonDetails) && lessonDetails._id) {
                         res.status(200).send({ status: 200, data: lessonDetails, message: 'Product details has been fetched successfully' });
                     }
