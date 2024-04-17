@@ -372,7 +372,8 @@ class productController {
             if (!_.isEmpty(productInfo) && productInfo._id) {
                 let categoryInfo = await Category.findOne({ _id: productInfo.category_id });
                 if (categoryInfo.title === 'Real Estate') {
-                    let propertyDetails = await propertyRepo.getPropertyDetails({ product_id: productInfo._id });
+                    let userId = req.user._id;
+                    let propertyDetails = await propertyRepo.getPropertyDetails({ product_id: productInfo._id }, userId);
                     if (!_.isEmpty(propertyDetails) && propertyDetails._id) {
                         res.status(200).send({ status: 200, data: propertyDetails, message: 'Property details has been fetched successfully' });
                     }
