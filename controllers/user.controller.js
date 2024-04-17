@@ -64,7 +64,7 @@ class userController {
                     }
                     else {
                         let token = jsonwebtoken.sign({ email: userDetails.email, id: userDetails._id }, process.env.JWTSECERT, { expiresIn: process.env.JWTTIME });
-                        res.status(200).send({ status: 200, data: userDetails, token: token, isLoggedIn: true, message: 'Logged in successfully!' });
+                        res.status(200).send({ status: 200, data: userDetails, token: token, isLoggedIn: true, message: 'Logged In Successfully' });
                     }
                 }
                 else {
