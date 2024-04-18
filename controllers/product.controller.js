@@ -1219,12 +1219,24 @@ class productController {
                         }
                     }
                     else if (categoryDetails.title === 'Freelancer') {
-                        let freelancer_products = await freelancerRepo.list(req);
-                        if (!_.isEmpty(freelancer_products)) {
-                            res.status(200).send({ status: 200, data: freelancer_products.docs, total: freelancer_products.total, limit: freelancer_products.limit, page: freelancer_products.page, pages: freelancer_products.pages, message: 'Freelancer Products fetched successfully' });
+                        if (_.has(req.body, 'userId')) {
+                            const userId = new mongoose.Types.ObjectId(req.body.userId);
+                            let freelancer_products = await freelancerRepo.getAll(req, userId);
+                            if (!_.isEmpty(freelancer_products)) {
+                                res.status(200).send({ status: 200, data: freelancer_products.docs, total: freelancer_products.total, limit: freelancer_products.limit, page: freelancer_products.page, pages: freelancer_products.pages, message: 'Freelancer Products fetched successfully' });
+                            }
+                            else {
+                                res.status(400).send({ status: 400, data: {}, message: 'No Freelancer Products found' });
+                            }
                         }
                         else {
-                            res.status(400).send({ status: 400, data: {}, message: 'No Freelancer Products found' });
+                            let freelancer_products = await freelancerRepo.list(req);
+                            if (!_.isEmpty(freelancer_products)) {
+                                res.status(200).send({ status: 200, data: freelancer_products.docs, total: freelancer_products.total, limit: freelancer_products.limit, page: freelancer_products.page, pages: freelancer_products.pages, message: 'Freelancer Products fetched successfully' });
+                            }
+                            else {
+                                res.status(400).send({ status: 400, data: {}, message: 'No Freelancer Products found' });
+                            }
                         }
                     }
                     else if (categoryDetails.title === 'Lessons & Courses') {
