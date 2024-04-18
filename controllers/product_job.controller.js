@@ -106,13 +106,26 @@ class JobController {
 
     async jobDetails(req, res) {
         try {
-            const job_id = new mongoose.Types.ObjectId(req.params.id);
-            let jobInfo = await jobRepo.getJobDetails({ _id: job_id });
-            if (!_.isEmpty(jobInfo)) {
-                res.status(200).send({ status: 200, data: jobInfo, message: 'Job Details fetched successfully' });
+            if (_.has(req.query, 'userId')) {
+                const userId = new mongoose.Types.ObjectId(req.query.userId);
+                const job_id = new mongoose.Types.ObjectId(req.params.id);
+                let jobInfo = await jobRepo.getJobDetails({ _id: job_id }, userId);
+                if (!_.isEmpty(jobInfo)) {
+                    res.status(200).send({ status: 200, data: jobInfo, message: 'Job Details fetched successfully' });
+                }
+                else {
+                    res.status(400).send({ status: 400, message: 'Job not found' });
+                }
             }
             else {
-                res.status(400).send({ status: 400, message: 'Job not found' });
+                const job_id = new mongoose.Types.ObjectId(req.params.id);
+                let jobInfo = await jobRepo.getJobDetails({ _id: job_id });
+                if (!_.isEmpty(jobInfo)) {
+                    res.status(200).send({ status: 200, data: jobInfo, message: 'Job Details fetched successfully' });
+                }
+                else {
+                    res.status(400).send({ status: 400, message: 'Job not found' });
+                }
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
