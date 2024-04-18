@@ -1242,7 +1242,7 @@ class productController {
                     else if (categoryDetails.title === 'Lessons & Courses') {
                         if (_.has(req.body, 'userId')) {
                             const userId = new mongoose.Types.ObjectId(req.body.userId);
-                            let course_products = await educationRepo.list(req, userId);
+                            let course_products = await educationRepo.getAll(req, userId);
                             if (!_.isEmpty(course_products)) {
                                 res.status(200).send({ status: 200, data: course_products.docs, total: course_products.total, limit: course_products.limit, page: course_products.page, pages: course_products.pages, message: 'Lesson & Courses Products fetched successfully' });
                             }
