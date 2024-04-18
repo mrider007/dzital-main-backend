@@ -50,13 +50,26 @@ class freelancerController {
 
     async details(req, res) {
         try {
-            const freelancer_id = new mongoose.Types.ObjectId(req.params.id);
-            let freelancerInfo = await freelancerRepo.getDetails({ _id: freelancer_id });
-            if (!_.isEmpty(freelancerInfo) && freelancerInfo._id) {
-                res.status(200).send({ status: 200, data: freelancerInfo, message: 'Product Freelancer details has been fetched successfully' });
+            if (_.has(req.query, 'userId')) {
+                const userId = new mongoose.Types.ObjectId(req.query.userId);
+                const freelancer_id = new mongoose.Types.ObjectId(req.params.id);
+                let freelancerInfo = await freelancerRepo.getDetails({ _id: freelancer_id }, userId);
+                if (!_.isEmpty(freelancerInfo) && freelancerInfo._id) {
+                    res.status(200).send({ status: 200, data: freelancerInfo, message: 'Product Freelancer details has been fetched successfully' });
+                }
+                else {
+                    res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                }
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                const freelancer_id = new mongoose.Types.ObjectId(req.params.id);
+                let freelancerInfo = await freelancerRepo.getDetails({ _id: freelancer_id });
+                if (!_.isEmpty(freelancerInfo) && freelancerInfo._id) {
+                    res.status(200).send({ status: 200, data: freelancerInfo, message: 'Product Freelancer details has been fetched successfully' });
+                }
+                else {
+                    res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                }
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
