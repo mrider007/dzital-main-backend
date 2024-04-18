@@ -36,13 +36,26 @@ class ProductElectronicsController {
     async details(req, res) {
         try {
             //const userId = req.user._id;
-            const electronic_id = new mongoose.Types.ObjectId(req.params.id);
-            let electronicsInfo = await electronicsRepo.getDetails({ _id: electronic_id });
-            if (!_.isEmpty(electronicsInfo) && electronicsInfo._id) {
-                res.status(200).send({ status: 200, data: electronicsInfo, message: 'Electronic product details has been fetched successfully' });
+            if (_.has(req.body, 'userId')) {
+                const userId = new mongoose.Types.ObjectId(req.body.userId);
+                const electronic_id = new mongoose.Types.ObjectId(req.params.id);
+                let electronicsInfo = await electronicsRepo.getDetails({ _id: electronic_id }, userId);
+                if (!_.isEmpty(electronicsInfo) && electronicsInfo._id) {
+                    res.status(200).send({ status: 200, data: electronicsInfo, message: 'Electronic product details has been fetched successfully' });
+                }
+                else {
+                    res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                }
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                const electronic_id = new mongoose.Types.ObjectId(req.params.id);
+                let electronicsInfo = await electronicsRepo.getDetails({ _id: electronic_id });
+                if (!_.isEmpty(electronicsInfo) && electronicsInfo._id) {
+                    res.status(200).send({ status: 200, data: electronicsInfo, message: 'Electronic product details has been fetched successfully' });
+                }
+                else {
+                    res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                }
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
