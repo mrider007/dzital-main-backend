@@ -39,13 +39,26 @@ class productEducationController {
 
     async lessonCourseDetails(req, res) {
         try {
-            const lesson_course_id = new mongoose.Types.ObjectId(req.params.id);
-            let lessonDetails = await educationRepo.getDetails({ _id: lesson_course_id });
-            if (!_.isEmpty(lessonDetails)) {
-                res.status(200).send({ status: 200, data: lessonDetails, message: 'Lesson and Course details fetched successfully' });
+            if (_.has(req.query, 'userId')) {
+                const userId = new mongoose.Types.ObjectId(req.query.userId);
+                const lesson_course_id = new mongoose.Types.ObjectId(req.params.id);
+                let lessonDetails = await educationRepo.getDetails({ _id: lesson_course_id }, userId);
+                if (!_.isEmpty(lessonDetails)) {
+                    res.status(200).send({ status: 200, data: lessonDetails, message: 'Lesson and Course details fetched successfully' });
+                }
+                else {
+                    res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                }
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                const lesson_course_id = new mongoose.Types.ObjectId(req.params.id);
+                let lessonDetails = await educationRepo.getDetails({ _id: lesson_course_id });
+                if (!_.isEmpty(lessonDetails)) {
+                    res.status(200).send({ status: 200, data: lessonDetails, message: 'Lesson and Course details fetched successfully' });
+                }
+                else {
+                    res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                }
             }
         } catch (e) {
             res.status(500).send({ message: e.message });

@@ -35,7 +35,6 @@ class ProductElectronicsController {
 
     async details(req, res) {
         try {
-            //const userId = req.user._id;
             if (_.has(req.query, 'userId')) {
                 const userId = new mongoose.Types.ObjectId(req.query.userId);
                 const electronic_id = new mongoose.Types.ObjectId(req.params.id);
