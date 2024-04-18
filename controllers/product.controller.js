@@ -1263,7 +1263,7 @@ class productController {
                     else if (categoryDetails.title === 'Electronics') {
                         if (_.has(req.body, 'userId')) {
                             const userId = new mongoose.Types.ObjectId(req.body.userId);
-                            let electronics_products = await electronicsRepo.List(req, userId);
+                            let electronics_products = await electronicsRepo.getAll(req, userId);
                             if (!_.isEmpty(electronics_products)) {
                                 res.status(200).send({ status: 200, data: electronics_products.docs, total: electronics_products.total, limit: electronics_products.limit, page: electronics_products.page, pages: electronics_products.pages, message: 'Electronics Products fetched successfully' });
                             }
