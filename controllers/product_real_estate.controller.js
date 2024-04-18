@@ -79,13 +79,26 @@ class propertyController {
 
     async details(req, res) {
         try {
-            const property_id = new mongoose.Types.ObjectId(req.params.id);
-            const propertyInfo = await propertyRepo.getRealEstateDetails({ _id: property_id });
-            if (!_.isEmpty(propertyInfo) && propertyInfo._id) {
-                res.status(200).send({ status: 200, data: propertyInfo, message: 'Property details has been fetched successfully' });
+            if (_.has(req.query, 'userId')) {
+                const userId = new mongoose.Types.ObjectId(req.query.userId);
+                const property_id = new mongoose.Types.ObjectId(req.params.id);
+                const propertyInfo = await propertyRepo.getRealEstateDetails({ _id: property_id }, userId);
+                if (!_.isEmpty(propertyInfo) && propertyInfo._id) {
+                    res.status(200).send({ status: 200, data: propertyInfo, message: 'Property details has been fetched successfully' });
+                }
+                else {
+                    res.status(400).send({ status: 400, data: {}, message: 'Property not found' });
+                }
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'Property not found' });
+                const property_id = new mongoose.Types.ObjectId(req.params.id);
+                const propertyInfo = await propertyRepo.getRealEstateDetails({ _id: property_id });
+                if (!_.isEmpty(propertyInfo) && propertyInfo._id) {
+                    res.status(200).send({ status: 200, data: propertyInfo, message: 'Property details has been fetched successfully' });
+                }
+                else {
+                    res.status(400).send({ status: 400, data: {}, message: 'Property not found' });
+                }
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
