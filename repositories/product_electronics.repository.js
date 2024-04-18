@@ -152,7 +152,6 @@ const productElectronicsRepository = {
 
     getDetails: async (params, userId) => {
         try {
-            console.log('user id', userId);
             let product = await ProductElectronics.aggregate([
                 { $match: params },
                 {
