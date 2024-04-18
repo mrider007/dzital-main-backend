@@ -1170,7 +1170,7 @@ class productController {
     async categoryWiseProducts(req, res) {
         try {
             if (!_.has(req.body, 'category_id')) {
-                res.status(400).send({ status: 400, message: 'Category Id is required' });
+                res.status(400).send({ status: 400, message: 'Category Id is Required' });
             }
             else {
                 const category_id = new mongoose.Types.ObjectId(req.body.category_id);

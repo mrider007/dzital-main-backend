@@ -212,10 +212,6 @@ const propertyRepository = {
                 }
             }
 
-            if (_.isObject(req.body) && _.has(req.body, 'category_id')) {
-                and_clauses.push({ 'category_id': new mongoose.Types.ObjectId(req.body.category_id) });
-            }
-
             // Filter based on in attribute & its value
             let filter = req.body.filter;
 
@@ -232,14 +228,14 @@ const propertyRepository = {
                     }
                 })
             }
+
             // Filter based on sub category
             let sub_category_id = req.body.sub_category_id
 
             if (sub_category_id) {
                 and_clauses.push({ 'sub_category_id': new mongoose.Types.ObjectId(sub_category_id) });
             }
-            //   console.log(and_clauses)
-
+            
             if (_.isObject(req.body) && _.has(req.body, 'category_id')) {
                 and_clauses.push({ 'category_id': new mongoose.Types.ObjectId(req.body.category_id) });
             }
