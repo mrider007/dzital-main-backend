@@ -38,13 +38,26 @@ class productFashionController {
 
     async details(req, res) {
         try {
-            const fashion_id = new mongoose.Types.ObjectId(req.params.id);
-            const FashionProduct = await fashionRepo.getDetails({ _id: fashion_id });
-            if (!_.isEmpty(FashionProduct)) {
-                res.status(200).send({ status: 200, data: FashionProduct, message: 'Fashion Product details fetched successfully' });
+            if (_.has(req.query, 'userId')) {
+                const userId = new mongoose.Types.ObjectId(req.query.userId);
+                const fashion_id = new mongoose.Types.ObjectId(req.params.id);
+                const FashionProduct = await fashionRepo.getDetails({ _id: fashion_id }, userId);
+                if (!_.isEmpty(FashionProduct)) {
+                    res.status(200).send({ status: 200, data: FashionProduct, message: 'Fashion Product details fetched successfully' });
+                }
+                else {
+                    res.status(400).send({ status: 400, message: 'Product Not Found' });
+                }
             }
             else {
-                res.status(400).send({ status: 400, message: 'Product Not Found' });
+                const fashion_id = new mongoose.Types.ObjectId(req.params.id);
+                const FashionProduct = await fashionRepo.getDetails({ _id: fashion_id });
+                if (!_.isEmpty(FashionProduct)) {
+                    res.status(200).send({ status: 200, data: FashionProduct, message: 'Fashion Product details fetched successfully' });
+                }
+                else {
+                    res.status(400).send({ status: 400, message: 'Product Not Found' });
+                }
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
