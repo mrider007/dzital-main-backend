@@ -292,7 +292,7 @@ const JobRepository = {
             throw e;
         }
     },
-    
+
     getAll: async (req, userId) => {
         try {
             var conditions = {};
@@ -397,7 +397,7 @@ const JobRepository = {
                         job_type: { $first: '$job_type' },
                         category_id: { $first: '$category_id' },
                         category_name: { $first: '$category_details.title' },
-                        //wishlists: { $addToSet: '$wishlists' },
+                        ////wishlists: { $addToSet: '$wishlists' },
                         isWishlist: { $first: '$isWishlist' }
                     }
                 },
@@ -526,28 +526,28 @@ const JobRepository = {
                     req.body.limit = undefined;
                 }
             }
-              // Filter based on in attribute & its value
-              let filter = req.body.filter;
-           
-              if (filter && _.isArray(filter)) {
-                  filter.forEach((item) => {
-                      if (!!item && _.isObject(item) && _.has(item, 'attribute') && _.has(item, 'value')) {
-                          and_clauses.push(
-                              {
-                                  'attribute_values': {
-                                      $elemMatch: item
-                                  }
-                              }
-                          );
-                      }
-                  })
-              }
-              // Filter based on sub category
-              let sub_category_id = req.body.sub_category_id
-  
-              if(sub_category_id){
-                  and_clauses.push({ 'sub_category_id': new mongoose.Types.ObjectId(sub_category_id) });
-              }
+            // Filter based on in attribute & its value
+            let filter = req.body.filter;
+
+            if (filter && _.isArray(filter)) {
+                filter.forEach((item) => {
+                    if (!!item && _.isObject(item) && _.has(item, 'attribute') && _.has(item, 'value')) {
+                        and_clauses.push(
+                            {
+                                'attribute_values': {
+                                    $elemMatch: item
+                                }
+                            }
+                        );
+                    }
+                })
+            }
+            // Filter based on sub category
+            let sub_category_id = req.body.sub_category_id
+
+            if (sub_category_id) {
+                and_clauses.push({ 'sub_category_id': new mongoose.Types.ObjectId(sub_category_id) });
+            }
             //   console.log(and_clauses)
 
             conditions['$and'] = and_clauses;
