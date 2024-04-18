@@ -39,8 +39,9 @@ class productEducationController {
 
     async lessonCourseDetails(req, res) {
         try {
+            const userId = req.user._id;
             const lesson_course_id = new mongoose.Types.ObjectId(req.params.id);
-            let lessonDetails = await educationRepo.getDetails({ _id: lesson_course_id });
+            let lessonDetails = await educationRepo.getDetails({ _id: lesson_course_id }, userId);
             if (!_.isEmpty(lessonDetails)) {
                 res.status(200).send({ status: 200, data: lessonDetails, message: 'Lesson and Course details fetched successfully' });
             }
