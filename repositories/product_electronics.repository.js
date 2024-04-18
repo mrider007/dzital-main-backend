@@ -152,6 +152,7 @@ const productElectronicsRepository = {
 
     getDetails: async (params, userId) => {
         try {
+            console.log('user id', userId);
             let product = await ProductElectronics.aggregate([
                 { $match: params },
                 {
@@ -293,7 +294,7 @@ const productElectronicsRepository = {
                         bid_entry: { $first: '$product_details.bid_entry' },
                         bid_start_date: { $first: '$product_details.bid_start_date' },
                         bid_end_date: { $first: '$product_details.bid_end_date' },
-                        //wishlists: { $addToSet: '$wishlists' },
+                        wishlists: { $addToSet: '$wishlists' },
                         isWishlist: { $first: '$isWishlist' },
                         status: { $first: '$product_details.status' },
                         attributes: { $first: '$attribute_details' },
