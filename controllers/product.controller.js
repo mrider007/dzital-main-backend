@@ -1282,12 +1282,24 @@ class productController {
                         }
                     }
                     else if (categoryDetails.title === 'Fashion & Beauty') {
-                        let fashion_products = await fashionRepo.list(req);
-                        if (!_.isEmpty(fashion_products)) {
-                            res.status(200).send({ status: 200, data: fashion_products.docs, total: fashion_products.total, limit: fashion_products.limit, page: fashion_products.page, pages: fashion_products.pages, message: 'Fashion & Beauty Products fetched successfully' });
+                        if (_.has(req.body, 'userId')) {
+                            const userId = new mongoose.Types.ObjectId(req.body.userId);
+                            let fashion_products = await fashionRepo.list(req, userId);
+                            if (!_.isEmpty(fashion_products)) {
+                                res.status(200).send({ status: 200, data: fashion_products.docs, total: fashion_products.total, limit: fashion_products.limit, page: fashion_products.page, pages: fashion_products.pages, message: 'Fashion & Beauty Products fetched successfully' });
+                            }
+                            else {
+                                res.status(400).send({ status: 400, data: {}, message: 'No Fashion & Beauty Products found' });
+                            }
                         }
                         else {
-                            res.status(400).send({ status: 400, data: {}, message: 'No Fashion & Beauty Products found' });
+                            let fashion_products = await fashionRepo.list(req);
+                            if (!_.isEmpty(fashion_products)) {
+                                res.status(200).send({ status: 200, data: fashion_products.docs, total: fashion_products.total, limit: fashion_products.limit, page: fashion_products.page, pages: fashion_products.pages, message: 'Fashion & Beauty Products fetched successfully' });
+                            }
+                            else {
+                                res.status(400).send({ status: 400, data: {}, message: 'No Fashion & Beauty Products found' });
+                            }
                         }
                     }
                     else if (categoryDetails.title === 'Goods of all kinds') {
