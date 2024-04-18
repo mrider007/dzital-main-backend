@@ -36,8 +36,8 @@ class ProductElectronicsController {
     async details(req, res) {
         try {
             //const userId = req.user._id;
-            if (_.has(req.body, 'userId')) {
-                const userId = new mongoose.Types.ObjectId(req.body.userId);
+            if (_.has(req.query, 'userId')) {
+                const userId = new mongoose.Types.ObjectId(req.query.userId);
                 const electronic_id = new mongoose.Types.ObjectId(req.params.id);
                 let electronicsInfo = await electronicsRepo.getDetails({ _id: electronic_id }, userId);
                 if (!_.isEmpty(electronicsInfo) && electronicsInfo._id) {
