@@ -44,10 +44,7 @@ router.post('/user/product/add', request_param.any(), Authentication.Authenticat
 router.post('/user/product/update/:id', uploadFile.any(), Authentication.Authenticate, ProductController.userProductUpdate);
 
 /* --- Harsh --- */
-
-// user product delete from user's dashboard 
-router.delete('/user/product/delete/:id', Authentication.Authenticate, ProductController.userProductDelete);
-// user product detail
 router.get('/user/product/detail/:id', Authentication.Authenticate, ProductController.productDetails);
+router.delete('/user/product/delete/:id', Authentication.Authenticate, ProductController.userProductDelete);
 
 module.exports = router;
