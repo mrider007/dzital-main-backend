@@ -259,6 +259,11 @@ const JobRepository = {
                 },
                 { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
                 {
+                    $addFields: {
+                        'isWishlist': false
+                    }
+                },
+                {
                     $group: {
                         _id: '$_id',
                         title: { $first: '$title' },
@@ -267,7 +272,8 @@ const JobRepository = {
                         skills: { $first: '$skills' },
                         job_type: { $first: '$job_type' },
                         category_id: { $first: '$category_id' },
-                        category_name: { $first: '$category_details.title' }
+                        category_name: { $first: '$category_details.title' },
+                        isWishlist: { $first: '$isWishlist' }
                     }
                 },
                 { $match: conditions },
