@@ -106,13 +106,26 @@ class productGoodsController {
 
     async details(req, res) {
         try {
-            const goods_id = new mongoose.Types.ObjectId(req.params.id);
-            let goodsInfo = await goodsRepo.getDetails({ _id: goods_id });
-            if (!_.isEmpty(goodsInfo) && goodsInfo._id) {
-                res.status(200).send({ status: 200, data: goodsInfo, message: 'Product details has been fetched successfully' });
+            if (_.has(req.query, 'userId')) {
+                const userId = new mongoose.Types.ObjectId(req.query.userId);
+                const goods_id = new mongoose.Types.ObjectId(req.params.id);
+                let goodsInfo = await goodsRepo.getDetails({ _id: goods_id }, userId);
+                if (!_.isEmpty(goodsInfo) && goodsInfo._id) {
+                    res.status(200).send({ status: 200, data: goodsInfo, message: 'Product details has been fetched successfully' });
+                }
+                else {
+                    res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                }
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                const goods_id = new mongoose.Types.ObjectId(req.params.id);
+                let goodsInfo = await goodsRepo.getDetails({ _id: goods_id });
+                if (!_.isEmpty(goodsInfo) && goodsInfo._id) {
+                    res.status(200).send({ status: 200, data: goodsInfo, message: 'Product details has been fetched successfully' });
+                }
+                else {
+                    res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                }
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
