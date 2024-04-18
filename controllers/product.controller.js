@@ -1261,12 +1261,24 @@ class productController {
                         }
                     }
                     else if (categoryDetails.title === 'Electronics') {
-                        let electronics_products = await electronicsRepo.List(req);
-                        if (!_.isEmpty(electronics_products)) {
-                            res.status(200).send({ status: 200, data: electronics_products.docs, total: electronics_products.total, limit: electronics_products.limit, page: electronics_products.page, pages: electronics_products.pages, message: 'Electronics Products fetched successfully' });
+                        if (_.has(req.body, 'userId')) {
+                            const userId = new mongoose.Types.ObjectId(req.body.userId);
+                            let electronics_products = await electronicsRepo.List(req, userId);
+                            if (!_.isEmpty(electronics_products)) {
+                                res.status(200).send({ status: 200, data: electronics_products.docs, total: electronics_products.total, limit: electronics_products.limit, page: electronics_products.page, pages: electronics_products.pages, message: 'Electronics Products fetched successfully' });
+                            }
+                            else {
+                                res.status(400).send({ status: 400, data: {}, message: 'No Electronics Products found' });
+                            }
                         }
                         else {
-                            res.status(400).send({ status: 400, data: {}, message: 'No Electronics Products found' });
+                            let electronics_products = await electronicsRepo.List(req);
+                            if (!_.isEmpty(electronics_products)) {
+                                res.status(200).send({ status: 200, data: electronics_products.docs, total: electronics_products.total, limit: electronics_products.limit, page: electronics_products.page, pages: electronics_products.pages, message: 'Electronics Products fetched successfully' });
+                            }
+                            else {
+                                res.status(400).send({ status: 400, data: {}, message: 'No Electronics Products found' });
+                            }
                         }
                     }
                     else if (categoryDetails.title === 'Fashion & Beauty') {
