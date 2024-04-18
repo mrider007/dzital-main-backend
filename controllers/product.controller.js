@@ -1198,12 +1198,24 @@ class productController {
                         }
                     }
                     else if (categoryDetails.title === 'Jobs') {
-                        let job_products = await jobRepo.List(req);
-                        if (!_.isEmpty(real_estate_products)) {
-                            res.status(200).send({ status: 200, data: job_products.docs, total: job_products.total, limit: job_products.limit, page: job_products.page, pages: job_products.pages, message: 'Job Products fetched successfully' });
+                        if (_.has(req.body, 'userId')) {
+                            const userId = new mongoose.Types.ObjectId(req.body.userId);
+                            let job_products = await jobRepo.getAll(req, userId);
+                            if (!_.isEmpty(real_estate_products)) {
+                                res.status(200).send({ status: 200, data: job_products.docs, total: job_products.total, limit: job_products.limit, page: job_products.page, pages: job_products.pages, message: 'Job Products fetched successfully' });
+                            }
+                            else {
+                                res.status(400).send({ status: 400, data: {}, message: 'No Job Products found' });
+                            }
                         }
                         else {
-                            res.status(400).send({ status: 400, data: {}, message: 'No Job Products found' });
+                            let job_products = await jobRepo.List(req);
+                            if (!_.isEmpty(real_estate_products)) {
+                                res.status(200).send({ status: 200, data: job_products.docs, total: job_products.total, limit: job_products.limit, page: job_products.page, pages: job_products.pages, message: 'Job Products fetched successfully' });
+                            }
+                            else {
+                                res.status(400).send({ status: 400, data: {}, message: 'No Job Products found' });
+                            }
                         }
                     }
                     else if (categoryDetails.title === 'Freelancer') {
