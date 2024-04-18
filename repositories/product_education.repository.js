@@ -59,6 +59,131 @@ const productEducationRepository = {
                 },
                 { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
                 {
+                    $addFields: {
+                        'isWishlist': false
+                    }
+                },
+                {
+                    $group: {
+                        _id: '$_id',
+                        title: { $first: '$title' },
+                        description: { $first: '$description' },
+                        status: { $first: '$product_details.status' },
+                        isWishlist: { $first: '$isWishlist' },
+                        image: { $first: '$image' },
+                        product_id: { $first: '$product_id' },
+                        category_id: { $first: '$category_id' },
+                        sub_category_id: { $first: "$sub_category_id" },
+                        createdAt: { $first: '$createdAt' }
+                    }
+                },
+                { $match: conditions },
+                { $sort: { _id: -1 } }
+            ]);
+
+            if (!products) {
+                return null;
+            }
+            var options = { page: req.body.page, limit: req.body.limit };
+            let allProducts = await ProductEducation.aggregatePaginate(products, options);
+            return allProducts;
+        } catch (e) {
+            throw e;
+        }
+    },
+
+    getAll: async (req, userId) => {
+        try {
+            var conditions = {};
+            var and_clauses = [];
+
+            and_clauses.push({ status: 'Approved' });
+
+            if (_.isObject(req.body) && _.has(req.body, 'category_id')) {
+                and_clauses.push({ 'category_id': new mongoose.Types.ObjectId(req.body.category_id) });
+            }
+
+            // Filter based on in attribute & its value
+            let filter = req.body.filter;
+
+            if (filter && _.isArray(filter)) {
+                filter.forEach((item) => {
+                    if (!!item && _.isObject(item) && _.has(item, 'attribute') && _.has(item, 'value')) {
+                        and_clauses.push(
+                            {
+                                'attribute_values': {
+                                    $elemMatch: item
+                                }
+                            }
+                        );
+                    }
+                })
+            }
+            // Filter based on sub category
+            let sub_category_id = req.body.sub_category_id
+
+            if (sub_category_id) {
+                and_clauses.push({ 'sub_category_id': new mongoose.Types.ObjectId(sub_category_id) });
+            }
+
+            conditions['$and'] = and_clauses;
+
+            let products = ProductEducation.aggregate([
+                {
+                    $lookup: {
+                        from: 'service_categories',
+                        localField: 'category_id',
+                        foreignField: '_id',
+                        as: 'category_details'
+                    }
+                },
+                { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $lookup: {
+                        from: 'products',
+                        localField: 'product_id',
+                        foreignField: '_id',
+                        as: 'product_details'
+                    }
+                },
+                { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $lookup: {
+                        from: "product_wishlists",
+                        let: { productId: "$product_id", user_id: userId },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $in: ["$$productId", "$products.product_id"] },
+                                            { $eq: ["$user_id", "$$user_id"] }
+                                        ],
+                                    },
+                                },
+                            },
+                        ],
+                        as: "wishlists",
+                    },
+                },
+                { $unwind: { path: '$wishlists', preserveNullAndEmptyArrays: true } },
+                {
+                    $addFields: {
+                        'isWishlist': {
+                            $cond: {
+                                if: { $eq: [userId, null] }, then: false,
+                                else: {
+                                    $cond: {
+                                        if: { $eq: ['$wishlists.user_id', userId] },
+                                        then: true,
+                                        else: false
+                                    }
+                                },
+                            }
+                        },
+                    }
+                },
+                {
                     $group: {
                         _id: '$_id',
                         title: { $first: '$title' },
@@ -68,7 +193,9 @@ const productEducationRepository = {
                         product_id: { $first: '$product_id' },
                         category_id: { $first: '$category_id' },
                         sub_category_id: { $first: "$sub_category_id" },
-                        createdAt: { $first: '$createdAt' }
+                        createdAt: { $first: '$createdAt' },
+                        //wishlists: { $addToSet: '$wishlists' },
+                        isWishlist: { $first: '$isWishlist' }
                     }
                 },
                 { $match: conditions },

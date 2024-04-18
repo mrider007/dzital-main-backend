@@ -1240,12 +1240,24 @@ class productController {
                         }
                     }
                     else if (categoryDetails.title === 'Lessons & Courses') {
-                        let course_products = await educationRepo.list(req);
-                        if (!_.isEmpty(course_products)) {
-                            res.status(200).send({ status: 200, data: course_products.docs, total: course_products.total, limit: course_products.limit, page: course_products.page, pages: course_products.pages, message: 'Lesson & Courses Products fetched successfully' });
+                        if (_.has(req.body, 'userId')) {
+                            const userId = new mongoose.Types.ObjectId(req.body.userId);
+                            let course_products = await educationRepo.list(req, userId);
+                            if (!_.isEmpty(course_products)) {
+                                res.status(200).send({ status: 200, data: course_products.docs, total: course_products.total, limit: course_products.limit, page: course_products.page, pages: course_products.pages, message: 'Lesson & Courses Products fetched successfully' });
+                            }
+                            else {
+                                res.status(400).send({ status: 400, data: {}, message: 'No Lesson & Courses Products found' });
+                            }
                         }
                         else {
-                            res.status(400).send({ status: 400, data: {}, message: 'No Lesson & Courses Products found' });
+                            let course_products = await educationRepo.list(req);
+                            if (!_.isEmpty(course_products)) {
+                                res.status(200).send({ status: 200, data: course_products.docs, total: course_products.total, limit: course_products.limit, page: course_products.page, pages: course_products.pages, message: 'Lesson & Courses Products fetched successfully' });
+                            }
+                            else {
+                                res.status(400).send({ status: 400, data: {}, message: 'No Lesson & Courses Products found' });
+                            }
                         }
                     }
                     else if (categoryDetails.title === 'Electronics') {
