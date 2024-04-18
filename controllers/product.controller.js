@@ -1284,7 +1284,7 @@ class productController {
                     else if (categoryDetails.title === 'Fashion & Beauty') {
                         if (_.has(req.body, 'userId')) {
                             const userId = new mongoose.Types.ObjectId(req.body.userId);
-                            let fashion_products = await fashionRepo.list(req, userId);
+                            let fashion_products = await fashionRepo.getAll(req, userId);
                             if (!_.isEmpty(fashion_products)) {
                                 res.status(200).send({ status: 200, data: fashion_products.docs, total: fashion_products.total, limit: fashion_products.limit, page: fashion_products.page, pages: fashion_products.pages, message: 'Fashion & Beauty Products fetched successfully' });
                             }
