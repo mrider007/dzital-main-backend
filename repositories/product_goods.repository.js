@@ -67,6 +67,11 @@ const goodsRepository = {
                 },
                 { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
                 {
+                    $addFields: {
+                        'isWishlist': false
+                    }
+                },
+                {
                     $lookup: {
                         let: { productId: '$product_id' },
                         from: "attribute_values",
@@ -120,7 +125,180 @@ const goodsRepository = {
                         category_id: { $first: '$category_id' },
                         sub_category_id: { $first: "$sub_category_id" },
                         quantity: { $first: '$quantity' },
-                        createdAt: { $first: '$createdAt' }
+                        createdAt: { $first: '$createdAt' },
+                        isWishlist: { $first: '$isWishlist' }
+                    }
+                },
+                { $match: conditions },
+                { $sort: { _id: -1 } }
+            ]);
+            if (!products) {
+                return null;
+            }
+            var options = { page: req.body.page, limit: req.body.limit };
+            let allGoods = await ProductGoods.aggregatePaginate(products, options);
+            return allGoods;
+        } catch (e) {
+            throw e;
+        }
+    },
+
+    getAll: async (req, userId) => {
+        try {
+            var conditions = {};
+            var and_clauses = [];
+
+            and_clauses.push({ status: 'Approved' });
+
+            if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
+                and_clauses.push({
+                    $or: [
+                        { 'title': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
+                    ]
+                });
+            }
+            // Filter based on in attribute & its value
+            let filter = req.body.filter;
+
+            if (filter && _.isArray(filter)) {
+                filter.forEach((item) => {
+                    if (!!item && _.isObject(item) && _.has(item, 'attribute') && _.has(item, 'value')) {
+                        and_clauses.push(
+                            {
+                                'attribute_values': {
+                                    $elemMatch: item
+                                }
+                            }
+                        );
+                    }
+                })
+            }
+            // Filter based on sub category
+            let sub_category_id = req.body.sub_category_id
+
+            if (sub_category_id) {
+                and_clauses.push({ 'sub_category_id': new mongoose.Types.ObjectId(sub_category_id) });
+            }
+            //   console.log(and_clauses)
+
+            if (_.isObject(req.body) && _.has(req.body, 'category_id')) {
+                and_clauses.push({ 'category_id': new mongoose.Types.ObjectId(req.body.category_id) });
+            }
+
+            conditions['$and'] = and_clauses;
+
+            let products = ProductGoods.aggregate([
+                {
+                    $lookup: {
+                        from: 'service_categories',
+                        localField: 'category_id',
+                        foreignField: '_id',
+                        as: 'category_details'
+                    }
+                },
+                { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $lookup: {
+                        from: 'products',
+                        localField: 'product_id',
+                        foreignField: '_id',
+                        as: 'product_details'
+                    }
+                },
+                { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $lookup: {
+                        from: "product_wishlists",
+                        let: { productId: "$product_id", user_id: userId },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $in: ["$$productId", "$products.product_id"] },
+                                            { $eq: ["$user_id", "$$user_id"] }
+                                        ],
+                                    },
+                                },
+                            },
+                        ],
+                        as: "wishlists",
+                    },
+                },
+                { $unwind: { path: '$wishlists', preserveNullAndEmptyArrays: true } },
+                {
+                    $addFields: {
+                        'isWishlist': {
+                            $cond: {
+                                if: { $eq: [userId, null] }, then: false,
+                                else: {
+                                    $cond: {
+                                        if: { $eq: ['$wishlists.user_id', userId] },
+                                        then: true,
+                                        else: false
+                                    }
+                                },
+                            }
+                        },
+                    }
+                },
+                {
+                    $lookup: {
+                        let: { productId: '$product_id' },
+                        from: "attribute_values",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$product_id", "$$productId"] },
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                $lookup: {
+                                    from: "attributes",
+                                    localField: 'attribute_id',
+                                    foreignField: '_id',
+                                    as: "attribute"
+                                }
+                            },
+                            { $unwind: { path: '$attribute', preserveNullAndEmptyArrays: true } },
+                            {
+                                $group: {
+                                    _id: '$_id',
+                                    attribute: { $first: '$attribute.attribute' },
+                                    value: { $first: '$value' },
+                                }
+                            },
+                            { $sort: { _id: 1 } }
+                        ],
+                        as: "attribute_value_details"
+                    }
+                },
+                {
+                    $group: {
+                        _id: '$_id',
+                        title: { $first: '$title' },
+                        description: { $first: '$description' },
+                        status: { $first: '$product_details.status' },
+                        bid_now: { $first: '$product_details.bid_now' },
+                        price: { $first: '$price' },
+                        product_type: { $first: '$product_type' },
+                        attribute_values: { $first: '$attribute_value_details' },
+                        photo: { $first: '$photo' },
+                        image_1: { $first: '$image_1' },
+                        image_2: { $first: '$image_2' },
+                        image_3: { $first: '$image_3' },
+                        brand: { $first: '$brand' },
+                        product_id: { $first: '$product_id' },
+                        category_id: { $first: '$category_id' },
+                        sub_category_id: { $first: "$sub_category_id" },
+                        quantity: { $first: '$quantity' },
+                        createdAt: { $first: '$createdAt' },
+                        //wishlists: { $addToSet: '$wishlists' },
+                        isWishlist: { $first: '$isWishlist' }
                     }
                 },
                 { $match: conditions },

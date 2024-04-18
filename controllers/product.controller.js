@@ -1303,12 +1303,24 @@ class productController {
                         }
                     }
                     else if (categoryDetails.title === 'Goods of all kinds') {
-                        let goods_products = await goodsRepo.List(req);
-                        if (!_.isEmpty(goods_products)) {
-                            res.status(200).send({ status: 200, data: goods_products.docs, total: goods_products.total, limit: goods_products.limit, page: goods_products.page, pages: goods_products.pages, message: 'Goods of all kinds Products fetched successfully' });
+                        if (_.has(req.body, 'userId')) {
+                            const userId = new mongoose.Types.ObjectId(req.body.userId);
+                            let goods_products = await goodsRepo.getAll(req, userId);
+                            if (!_.isEmpty(goods_products)) {
+                                res.status(200).send({ status: 200, data: goods_products.docs, total: goods_products.total, limit: goods_products.limit, page: goods_products.page, pages: goods_products.pages, message: 'Goods of all kinds Products fetched successfully' });
+                            }
+                            else {
+                                res.status(400).send({ status: 400, data: {}, message: 'No Goods of all kinds Products found' });
+                            }
                         }
                         else {
-                            res.status(400).send({ status: 400, data: {}, message: 'No Goods of all kinds Products found' });
+                            let goods_products = await goodsRepo.List(req);
+                            if (!_.isEmpty(goods_products)) {
+                                res.status(200).send({ status: 200, data: goods_products.docs, total: goods_products.total, limit: goods_products.limit, page: goods_products.page, pages: goods_products.pages, message: 'Goods of all kinds Products fetched successfully' });
+                            }
+                            else {
+                                res.status(400).send({ status: 400, data: {}, message: 'No Goods of all kinds Products found' });
+                            }
                         }
                     }
                 }
