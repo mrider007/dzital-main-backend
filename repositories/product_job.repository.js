@@ -397,7 +397,7 @@ const JobRepository = {
                         job_type: { $first: '$job_type' },
                         category_id: { $first: '$category_id' },
                         category_name: { $first: '$category_details.title' },
-                        ////wishlists: { $addToSet: '$wishlists' },
+                        //wishlists: { $addToSet: '$wishlists' },
                         isWishlist: { $first: '$isWishlist' }
                     }
                 },

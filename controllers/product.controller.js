@@ -1201,7 +1201,7 @@ class productController {
                         if (_.has(req.body, 'userId')) {
                             const userId = new mongoose.Types.ObjectId(req.body.userId);
                             let job_products = await jobRepo.getAll(req, userId);
-                            if (!_.isEmpty(real_estate_products)) {
+                            if (!_.isEmpty(job_products)) {
                                 res.status(200).send({ status: 200, data: job_products.docs, total: job_products.total, limit: job_products.limit, page: job_products.page, pages: job_products.pages, message: 'Job Products fetched successfully' });
                             }
                             else {
@@ -1210,7 +1210,7 @@ class productController {
                         }
                         else {
                             let job_products = await jobRepo.List(req);
-                            if (!_.isEmpty(real_estate_products)) {
+                            if (!_.isEmpty(job_products)) {
                                 res.status(200).send({ status: 200, data: job_products.docs, total: job_products.total, limit: job_products.limit, page: job_products.page, pages: job_products.pages, message: 'Job Products fetched successfully' });
                             }
                             else {
