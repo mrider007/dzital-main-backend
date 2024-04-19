@@ -229,7 +229,7 @@ const propertyRepository = {
                 })
             }
 
-            if (_.isObject(req.body) && _.has(req.body, 'sub_category_id')) {
+            if (_.isObject(req.body) && _.has(req.body, 'sub_category_id') && req.body.sub_category_id !== '') {
                 and_clauses.push({ 'sub_category_id': new mongoose.Types.ObjectId(req.body.sub_category_id) });
             }
 
@@ -405,7 +405,7 @@ const propertyRepository = {
                 })
             }
 
-            if (_.isObject(req.body) && _.has(req.body, 'sub_category_id')) {
+            if (_.isObject(req.body) && _.has(req.body, 'sub_category_id') && req.body.sub_category_id !== '') {
                 and_clauses.push({ 'sub_category_id': new mongoose.Types.ObjectId(req.body.sub_category_id) });
             }
 
