@@ -578,26 +578,6 @@ const JobRepository = {
                 },
                 { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
                 {
-                    $lookup: {
-                        from: "product_wishlists",
-                        let: { productId: "$product_id", user_id: userId },
-                        pipeline: [
-                            {
-                                $match: {
-                                    $expr: {
-                                        $and: [
-                                            { $in: ["$$productId", "$products.product_id"] },
-                                            { $eq: ["$user_id", "$$user_id"] }
-                                        ],
-                                    },
-                                },
-                            },
-                        ],
-                        as: "wishlists",
-                    },
-                },
-                { $unwind: { path: '$wishlists', preserveNullAndEmptyArrays: true } },
-                {
                     $addFields: {
                         'isWishlist': false
                     }
@@ -678,6 +658,7 @@ const JobRepository = {
     /** Product Job List */
     getJobs: async (req, userId) => {
         try {
+            
             var conditions = {};
             var and_clauses = [];
 
