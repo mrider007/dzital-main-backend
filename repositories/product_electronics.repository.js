@@ -34,16 +34,13 @@ const productElectronicsRepository = {
                     }
                 })
             }
-            // Filter based on sub category
-            let sub_category_id = req.body.sub_category_id
-
-            if (sub_category_id) {
-                and_clauses.push({ 'sub_category_id': new mongoose.Types.ObjectId(sub_category_id) });
-            }
-            //   console.log(and_clauses)
 
             if (_.isObject(req.body) && _.has(req.body, 'category_id')) {
                 and_clauses.push({ 'category_id': new mongoose.Types.ObjectId(req.body.category_id) });
+            }
+
+            if (_.isObject(req.body) && _.has(req.body, 'sub_category_id') && req.body.sub_category_id !== '') {
+                and_clauses.push({ 'sub_category_id': new mongoose.Types.ObjectId(req.body.sub_category_id) });
             }
 
             conditions['$and'] = and_clauses;
@@ -175,16 +172,13 @@ const productElectronicsRepository = {
                     }
                 })
             }
-            // Filter based on sub category
-            let sub_category_id = req.body.sub_category_id
-
-            if (sub_category_id) {
-                and_clauses.push({ 'sub_category_id': new mongoose.Types.ObjectId(sub_category_id) });
-            }
-            //   console.log(and_clauses)
 
             if (_.isObject(req.body) && _.has(req.body, 'category_id')) {
                 and_clauses.push({ 'category_id': new mongoose.Types.ObjectId(req.body.category_id) });
+            }
+
+            if (_.isObject(req.body) && _.has(req.body, 'sub_category_id') && req.body.sub_category_id !== '') {
+                and_clauses.push({ 'sub_category_id': new mongoose.Types.ObjectId(req.body.sub_category_id) });
             }
 
             conditions['$and'] = and_clauses;
