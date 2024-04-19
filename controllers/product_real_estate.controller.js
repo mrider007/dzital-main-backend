@@ -105,7 +105,7 @@ class propertyController {
         }
     };
 
-    async list(req, res) {
+    async productRealEstateList(req, res) {
         try {
             if (!req.body.page) {
                 req.body.page = 1;
@@ -121,12 +121,25 @@ class propertyController {
                 req.body.limit = parseInt(req.body.limit);
             }
 
-            let properties = await propertyRepo.list(req);
-            if (!_.isEmpty(properties)) {
-                res.status(200).send({ status: 200, data: properties.docs, total: properties.total, limit: properties.limit, page: properties.page, pages: properties.pages, message: 'Property list has been fetched successfully' });
+            const userId = new mongoose.Types.ObjectId(req.body.userId);
+
+            if (_.has(req.body, 'userId')) {
+                let properties = await propertyRepo.getAll(req, userId);
+                if (!_.isEmpty(properties)) {
+                    res.status(200).send({ status: 200, data: properties.docs, total: properties.total, limit: properties.limit, page: properties.page, pages: properties.pages, message: 'Property list has been fetched successfully' });
+                }
+                else {
+                    res.status(201).send({ status: 201, data: [], message: 'No property found' });
+                }
             }
             else {
-                res.status(201).send({ status: 201, data: [], message: 'No property found' });
+                let properties = await propertyRepo.list(req);
+                if (!_.isEmpty(properties)) {
+                    res.status(200).send({ status: 200, data: properties.docs, total: properties.total, limit: properties.limit, page: properties.page, pages: properties.pages, message: 'Property list has been fetched successfully' });
+                }
+                else {
+                    res.status(201).send({ status: 201, data: [], message: 'No property found' });
+                }
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });

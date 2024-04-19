@@ -30,6 +30,6 @@ const uploadFile = multer({ storage: Storage });
 router.get('/product/real-estate/bulk-update', propertyController.RealEstateProductsBulkUpdate);
 router.get('/property/details/:id', request_param.any(), propertyController.details);
 router.post('/property/add', uploadFile.any(), Authentication.Authenticate, propertyController.add);
-router.post('/property/list', request_param.any(), propertyController.list);
+router.post('/property/list', request_param.any(), propertyController.productRealEstateList);
 
 module.exports = router;
