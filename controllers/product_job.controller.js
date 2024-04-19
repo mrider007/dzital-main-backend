@@ -68,11 +68,22 @@ class JobController {
             } else {
                 req.body.limit = parseInt(req.body.limit);
             }
-            let jobs = await jobRepo.getJobs(req);
-            if (!_.isEmpty(jobs)) {
-                res.status(200).send({ status: 200, data: jobs.docs, total: jobs.total, limit: jobs.limit, page: jobs.page, pages: jobs.pages, message: 'Product Job list fetched Successfully' });
-            } else {
-                res.status(201).send({ status: 201, data: [], message: 'No Jobs Found' });
+            if (_.has(req.body, 'userId')) {
+                const userId = new mongoose.Types.ObjectId(req.body.userId);
+                let jobs = await jobRepo.getJobs(req, userId);
+                if (!_.isEmpty(jobs)) {
+                    res.status(200).send({ status: 200, data: jobs.docs, total: jobs.total, limit: jobs.limit, page: jobs.page, pages: jobs.pages, message: 'Product Job list fetched Successfully' });
+                } else {
+                    res.status(201).send({ status: 201, data: [], message: 'No Jobs Found' });
+                }
+            }
+            else {
+                let jobs = await jobRepo.getAllJobs(req);
+                if (!_.isEmpty(jobs)) {
+                    res.status(200).send({ status: 200, data: jobs.docs, total: jobs.total, limit: jobs.limit, page: jobs.page, pages: jobs.pages, message: 'Product Job list fetched Successfully' });
+                } else {
+                    res.status(201).send({ status: 201, data: [], message: 'No Jobs Found' });
+                }
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
