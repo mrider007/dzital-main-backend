@@ -65,6 +65,7 @@ const ProductWishlistRepository = {
                                     description: { $first: '$description' },
                                     status: { $first: '$status' },
                                     category_id: { $first: '$category_id' },
+                                    product_id:  { $first: '$_id'},
                                     sub_category_id: { $first: '$sub_category_id' },
                                     category_name: { $first: '$category_details.title' },
                                     image: { $first: '$image' },
