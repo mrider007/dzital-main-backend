@@ -91,13 +91,24 @@ class productGoodsController {
             else {
                 req.body.limit = parseInt(req.body.limit);
             }
-
-            const goods = await goodsRepo.List(req);
-            if (!_.isEmpty(goods)) {
-                res.status(200).send({ status: 200, data: goods.docs, total: goods.total, limit: goods.limit, page: goods.page, pages: goods.pages, message: 'Goods of all kinds Products fetched successfully' });
+            if (_.has(req.body, 'userId')) {
+                const userId = new mongoose.Types.ObjectId(req.body.userId);
+                const goods = await goodsRepo.getAll(req, userId);
+                if (!_.isEmpty(goods)) {
+                    res.status(200).send({ status: 200, data: goods.docs, total: goods.total, limit: goods.limit, page: goods.page, pages: goods.pages, message: 'Goods of all kinds Products fetched successfully' });
+                }
+                else {
+                    res.status(201).send({ status: 201, data: [], message: 'No Products found' });
+                }
             }
             else {
-                res.status(201).send({ status: 201, data: [], message: 'No Products found' });
+                const goods = await goodsRepo.List(req);
+                if (!_.isEmpty(goods)) {
+                    res.status(200).send({ status: 200, data: goods.docs, total: goods.total, limit: goods.limit, page: goods.page, pages: goods.pages, message: 'Goods of all kinds Products fetched successfully' });
+                }
+                else {
+                    res.status(201).send({ status: 201, data: [], message: 'No Products found' });
+                }
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
