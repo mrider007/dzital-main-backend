@@ -49,6 +49,7 @@ const ProductWishlistRepository = {
                                                 $expr: {
                                                     $and: [
                                                         { $eq: ["$_id", "$$categoryId"] },
+                                                        { $eq: ['$parentId', null] }
                                                     ]
                                                 }
                                             }
@@ -65,7 +66,7 @@ const ProductWishlistRepository = {
                                     description: { $first: '$description' },
                                     status: { $first: '$status' },
                                     category_id: { $first: '$category_id' },
-                                    product_id:  { $first: '$_id'},
+                                    category_slug: { $first: '$category_details.slug' },
                                     sub_category_id: { $first: '$sub_category_id' },
                                     category_name: { $first: '$category_details.title' },
                                     image: { $first: '$image' },
