@@ -21,12 +21,24 @@ class ProductElectronicsController {
             } else {
                 req.body.limit = parseInt(req.body.limit);
             }
-            const electronics = await electronicsRepo.List(req);
-            if (!_.isEmpty(electronics)) {
-                res.status(200).send({ status: 200, data: electronics.docs, total: electronics.total, limit: electronics.limit, page: electronics.page, pages: electronics.pages, message: 'Electronic Products fetched successfully' });
+            if (_.has(req.body, 'userId')) {
+                const userId = new mongoose.Types.ObjectId(req.body.userId);
+                const electronics = await electronicsRepo.getAll(req, userId);
+                if (!_.isEmpty(electronics)) {
+                    res.status(200).send({ status: 200, data: electronics.docs, total: electronics.total, limit: electronics.limit, page: electronics.page, pages: electronics.pages, message: 'Electronic Products fetched successfully' });
+                }
+                else {
+                    res.status(201).send({ status: 201, data: [], message: 'No Products found' });
+                }
             }
             else {
-                res.status(201).send({ status: 201, data: [], message: 'No Products found' });
+                const electronics = await electronicsRepo.List(req);
+                if (!_.isEmpty(electronics)) {
+                    res.status(200).send({ status: 200, data: electronics.docs, total: electronics.total, limit: electronics.limit, page: electronics.page, pages: electronics.pages, message: 'Electronic Products fetched successfully' });
+                }
+                else {
+                    res.status(201).send({ status: 201, data: [], message: 'No Products found' });
+                }
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
