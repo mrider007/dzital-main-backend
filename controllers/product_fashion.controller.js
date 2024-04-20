@@ -24,12 +24,24 @@ class productFashionController {
                 req.body.limit = parseInt(req.body.limit);
             }
 
-            const fashion = await fashionRepo.list(req);
-            if (!_.isEmpty(fashion)) {
-                res.status(200).send({ status: 200, data: fashion.docs, total: fashion.total, limit: fashion.limit, page: fashion.page, pages: fashion.pages, message: 'Fashion Products fetched successfully' });
+            if (_.has(req.body, 'userId')) {
+                const userId = new mongoose.Types.ObjectId(req.body.userId);
+                const fashion = await fashionRepo.getAll(req, userId);
+                if (!_.isEmpty(fashion)) {
+                    res.status(200).send({ status: 200, data: fashion.docs, total: fashion.total, limit: fashion.limit, page: fashion.page, pages: fashion.pages, message: 'Fashion Products fetched successfully' });
+                }
+                else {
+                    res.status(201).send({ status: 201, data: [], message: 'No Products found' });
+                }
             }
             else {
-                res.status(201).send({ status: 201, data: [], message: 'No Products found' });
+                const fashion = await fashionRepo.list(req);
+                if (!_.isEmpty(fashion)) {
+                    res.status(200).send({ status: 200, data: fashion.docs, total: fashion.total, limit: fashion.limit, page: fashion.page, pages: fashion.pages, message: 'Fashion Products fetched successfully' });
+                }
+                else {
+                    res.status(201).send({ status: 201, data: [], message: 'No Products found' });
+                }
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
