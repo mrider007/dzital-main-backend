@@ -121,9 +121,8 @@ class propertyController {
                 req.body.limit = parseInt(req.body.limit);
             }
 
-            const userId = new mongoose.Types.ObjectId(req.body.userId);
-
             if (_.has(req.body, 'userId')) {
+                const userId = new mongoose.Types.ObjectId(req.body.userId);
                 let properties = await propertyRepo.getAll(req, userId);
                 if (!_.isEmpty(properties)) {
                     res.status(200).send({ status: 200, data: properties.docs, total: properties.total, limit: properties.limit, page: properties.page, pages: properties.pages, message: 'Property list has been fetched successfully' });
