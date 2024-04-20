@@ -91,11 +91,22 @@ class freelancerController {
             else {
                 req.body.limit = parseInt(req.body.limit);
             }
-            const freelancer = await freelancerRepo.list(req);
-            if (!_.isEmpty(freelancer)) {
-                res.status(200).send({ status: 200, data: freelancer.docs, total: freelancer.total, limit: freelancer.limit, page: freelancer.page, pages: freelancer.pages, message: 'Freelancer Products fetched successfully' });
-            } else {
-                res.status(201).send({ status: 201, data: [], message: 'No Products Found' });
+            if (_.has(req.body, 'userId')) {
+                const userId = new mongoose.Types.ObjectId(req.body.userId);
+                const freelancer = await freelancerRepo.getAll(req, userId);
+                if (!_.isEmpty(freelancer)) {
+                    res.status(200).send({ status: 200, data: freelancer.docs, total: freelancer.total, limit: freelancer.limit, page: freelancer.page, pages: freelancer.pages, message: 'Freelancer Products fetched successfully' });
+                } else {
+                    res.status(201).send({ status: 201, data: [], message: 'No Products Found' });
+                }
+            }
+            else {
+                const freelancer = await freelancerRepo.list(req);
+                if (!_.isEmpty(freelancer)) {
+                    res.status(200).send({ status: 200, data: freelancer.docs, total: freelancer.total, limit: freelancer.limit, page: freelancer.page, pages: freelancer.pages, message: 'Freelancer Products fetched successfully' });
+                } else {
+                    res.status(201).send({ status: 201, data: [], message: 'No Products Found' });
+                }
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
