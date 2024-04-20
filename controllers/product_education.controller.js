@@ -25,12 +25,24 @@ class productEducationController {
                 req.body.limit = parseInt(req.body.limit);
             }
 
-            const lesson_courses = await educationRepo.list(req);
-            if (!_.isEmpty(lesson_courses)) {
-                res.status(200).send({ status: 200, data: lesson_courses.docs, total: lesson_courses.total, limit: lesson_courses.limit, page: lesson_courses.page, pages: lesson_courses.pages, message: 'Lesson & Courses Products fetched Successfully' });
+            if (_.has(req.body, 'userId')) {
+                const userId = new mongoose.Types.ObjectId(req.body.userId);
+                const lesson_courses = await educationRepo.getAll(req, userId);
+                if (!_.isEmpty(lesson_courses)) {
+                    res.status(200).send({ status: 200, data: lesson_courses.docs, total: lesson_courses.total, limit: lesson_courses.limit, page: lesson_courses.page, pages: lesson_courses.pages, message: 'Lesson & Courses Products fetched Successfully' });
+                }
+                else {
+                    res.status(201).send({ status: 201, data: [], message: 'No Products Found' });
+                }
             }
             else {
-                res.status(201).send({ status: 201, data: [], message: 'No Products Found' });
+                const lesson_courses = await educationRepo.list(req);
+                if (!_.isEmpty(lesson_courses)) {
+                    res.status(200).send({ status: 200, data: lesson_courses.docs, total: lesson_courses.total, limit: lesson_courses.limit, page: lesson_courses.page, pages: lesson_courses.pages, message: 'Lesson & Courses Products fetched Successfully' });
+                }
+                else {
+                    res.status(201).send({ status: 201, data: [], message: 'No Products Found' });
+                }
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
