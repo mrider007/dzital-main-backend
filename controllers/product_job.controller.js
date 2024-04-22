@@ -57,19 +57,19 @@ class JobController {
 
     async productJobList(req, res) {
         try {
-            const userId = new mongoose.Types.ObjectId(req.body.userId);
-            if (_.has(req.body, 'userId')) {
-                if (!req.body.page) {
-                    req.body.page = 1;
-                } else {
-                    req.body.page = parseInt(req.body.page);
-                }
+            if (!req.body.page) {
+                req.body.page = 1;
+            } else {
+                req.body.page = parseInt(req.body.page);
+            }
 
-                if (!req.body.limit) {
-                    req.body.limit = 10;
-                } else {
-                    req.body.limit = parseInt(req.body.limit);
-                }
+            if (!req.body.limit) {
+                req.body.limit = 10;
+            } else {
+                req.body.limit = parseInt(req.body.limit);
+            }
+            if (_.has(req.body, 'userId')) {
+                const userId = new mongoose.Types.ObjectId(req.body.userId);
                 let jobs = await jobRepo.getJobs(req, userId);
                 if (!_.isEmpty(jobs)) {
                     res.status(200).send({ status: 200, data: jobs.docs, total: jobs.total, limit: jobs.limit, page: jobs.page, pages: jobs.pages, message: 'Product Job list fetched Successfully' });
@@ -78,17 +78,6 @@ class JobController {
                 }
             }
             else {
-                if (!req.body.page) {
-                    req.body.page = 1;
-                } else {
-                    req.body.page = parseInt(req.body.page);
-                }
-
-                if (!req.body.limit) {
-                    req.body.limit = 10;
-                } else {
-                    req.body.limit = parseInt(req.body.limit);
-                }
                 let jobs = await jobRepo.getAllJobs(req);
                 if (!_.isEmpty(jobs)) {
                     res.status(200).send({ status: 200, data: jobs.docs, total: jobs.total, limit: jobs.limit, page: jobs.page, pages: jobs.pages, message: 'Product Job list fetched Successfully' });
