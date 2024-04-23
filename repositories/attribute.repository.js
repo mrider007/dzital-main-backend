@@ -401,7 +401,8 @@ const attributeRepository = {
                                     _id: '$_id',
                                     value: { $first: '$option' },
                                 }
-                            }
+                            },
+                            { $sort: { value: 1 } }
                         ],
                         as: "option_details"
                     }
