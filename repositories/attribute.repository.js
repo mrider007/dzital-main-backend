@@ -342,6 +342,7 @@ const attributeRepository = {
             throw e;
         }
     },
+
     // product filter list
     getFilterList: async (req) => {
         try {
@@ -410,7 +411,7 @@ const attributeRepository = {
                         _id: '$_id',
                         attribute: { $first: '$attribute' },
                         attribute_values: { $first: '$attribute_values' },
-                        options: { $first: '$option_details' },
+                        options: { $push: '$option_details' },
                     }
                 },
                 { $sort: { _id: 1 } }
@@ -419,8 +420,8 @@ const attributeRepository = {
                 return null;
             }
             return attributes;
-        } catch (error) {
-            throw error
+        } catch (e) {
+            throw e;
         }
     }
 
