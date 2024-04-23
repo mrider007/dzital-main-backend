@@ -412,7 +412,7 @@ const attributeRepository = {
                         _id: '$_id',
                         attribute: { $first: '$attribute' },
                         attribute_values: { $first: '$attribute_values' },
-                        options: { $start: '$option_details' },
+                        options: { $first: '$option_details' },
                     }
                 },
                 { $sort: { _id: 1 } }
