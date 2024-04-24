@@ -73,6 +73,41 @@ const productEducationRepository = {
                     }
                 },
                 {
+                    $lookup: {
+                        let: { productId: '$product_id' },
+                        from: "attribute_values",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$product_id", "$$productId"] },
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                $lookup: {
+                                    from: "attributes",
+                                    localField: 'attribute_id',
+                                    foreignField: '_id',
+                                    as: "attribute"
+                                }
+                            },
+                            { $unwind: { path: '$attribute', preserveNullAndEmptyArrays: true } },
+                            {
+                                $group: {
+                                    _id: '$_id',
+                                    attribute: { $first: '$attribute.attribute' },
+                                    value: { $first: '$value' },
+                                }
+                            },
+                            { $sort: { _id: 1 } }
+                        ],
+                        as: "attribute_value_details"
+                    }
+                },
+                {
                     $group: {
                         _id: '$_id',
                         title: { $first: '$title' },
@@ -81,6 +116,7 @@ const productEducationRepository = {
                         isWishlist: { $first: '$isWishlist' },
                         image: { $first: '$image' },
                         product_id: { $first: '$product_id' },
+                        attribute_values: { $first: '$attribute_value_details' },
                         category_id: { $first: '$category_id' },
                         sub_category_id: { $first: "$sub_category_id" },
                         createdAt: { $first: '$createdAt' }
@@ -178,6 +214,41 @@ const productEducationRepository = {
                 },
                 { $unwind: { path: '$wishlists', preserveNullAndEmptyArrays: true } },
                 {
+                    $lookup: {
+                        let: { productId: '$product_id' },
+                        from: "attribute_values",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$product_id", "$$productId"] },
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                $lookup: {
+                                    from: "attributes",
+                                    localField: 'attribute_id',
+                                    foreignField: '_id',
+                                    as: "attribute"
+                                }
+                            },
+                            { $unwind: { path: '$attribute', preserveNullAndEmptyArrays: true } },
+                            {
+                                $group: {
+                                    _id: '$_id',
+                                    attribute: { $first: '$attribute.attribute' },
+                                    value: { $first: '$value' },
+                                }
+                            },
+                            { $sort: { _id: 1 } }
+                        ],
+                        as: "attribute_value_details"
+                    }
+                },
+                {
                     $addFields: {
                         'isWishlist': {
                             $cond: {
@@ -204,6 +275,7 @@ const productEducationRepository = {
                         category_id: { $first: '$category_id' },
                         sub_category_id: { $first: "$sub_category_id" },
                         createdAt: { $first: '$createdAt' },
+                        attribute_values: { $first: '$attribute_value_details' },
                         //wishlists: { $addToSet: '$wishlists' },
                         isWishlist: { $first: '$isWishlist' }
                     }
