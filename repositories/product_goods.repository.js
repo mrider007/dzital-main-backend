@@ -22,11 +22,14 @@ const goodsRepository = {
 
             if (filter && _.isArray(filter)) {
                 filter.forEach((item) => {
-                    if (!!item && _.isObject(item) && _.has(item, 'attribute') && _.has(item, 'value')) {
+                    if (!!item && _.isObject(item) && _.has(item, 'attribute') && _.has(item, 'value') && _.isArray(item.value) && item.value.length > 0) {
                         and_clauses.push(
                             {
                                 'attribute_values': {
-                                    $elemMatch: item
+                                    $elemMatch: {
+                                        attribute: item.attribute,
+                                        value: { $in: item.value }
+                                    }
                                 }
                             }
                         );
@@ -159,11 +162,14 @@ const goodsRepository = {
 
             if (filter && _.isArray(filter)) {
                 filter.forEach((item) => {
-                    if (!!item && _.isObject(item) && _.has(item, 'attribute') && _.has(item, 'value')) {
+                    if (!!item && _.isObject(item) && _.has(item, 'attribute') && _.has(item, 'value') && _.isArray(item.value) && item.value.length > 0) {
                         and_clauses.push(
                             {
                                 'attribute_values': {
-                                    $elemMatch: item
+                                    $elemMatch: {
+                                        attribute: item.attribute,
+                                        value: { $in: item.value }
+                                    }
                                 }
                             }
                         );
