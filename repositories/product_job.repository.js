@@ -541,7 +541,6 @@ const JobRepository = {
                         and_clauses.push(
                             {
                                 'attribute_values': {
-                                    $elemMatch: item,
                                     $elemMatch: {
                                         attribute: item.attribute,
                                         value: { $in: item.value }
@@ -695,7 +694,6 @@ const JobRepository = {
                         and_clauses.push(
                             {
                                 'attribute_values': {
-                                    $elemMatch: item,
                                     $elemMatch: {
                                         attribute: item.attribute,
                                         value: { $in: item.value }
