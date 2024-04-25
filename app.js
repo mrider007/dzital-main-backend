@@ -51,6 +51,7 @@ const product_job_proposal = require('./routes/product_job_proposal.routes');
 const product_electronics = require('./routes/product_electronics.routes');
 const product_real_estate = require('./routes/product_real_estate.routes');
 const product_wishlist = require('./routes/product_wishlist.routes');
+const product_cart = require('./routes/product_cart.routes');
 const product_fashion = require('./routes/product_fashion.routes');
 const product_goods = require('./routes/product_goods.routes');
 const product_education = require('./routes/product_education.routes');
@@ -105,6 +106,7 @@ app.use('/api', attribute);
 app.use('/api', attribute_value);
 app.use('/api', attribute_option);
 app.use('/api', bid_history);
+app.use('/api', product_cart);
 
 app.use('/uploads', express.static('uploads'));
 
