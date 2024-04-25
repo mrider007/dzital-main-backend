@@ -1,4 +1,4 @@
-const Cart = require('../models/product_cart_model')
+const Cart = require('../models/product_cart.model')
 const Product = require('../models/product.model')
 const ProductCartRepository = require('../repositories/product_cart.repository')
 
