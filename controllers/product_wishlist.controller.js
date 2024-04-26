@@ -64,7 +64,7 @@ class productWishlistController {
                 res.status(200).send({ status: 200, data: userwishlistInfo, message: 'User Wishlist fetched successfully' });
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'You have no product in your wishlist' });
+                res.status(201).send({ status: 201, data: {}, message: 'You have no product in your wishlist' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
