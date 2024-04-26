@@ -7,15 +7,15 @@ class productCartController {
     async addToCart(req, res) {
         try {
             if (req.user && req.user._id) {
-                const {quantity, price, product_id} = req.body
+                const { quantity, price, product_id } = req.body
 
-                if(!quantity || !price || !product_id) {
-                    return res.status(400).send({status: 400, message: "Inavalid data"})
+                if (!price || !product_id || price === '') {
+                    return res.status(400).send({ status: 400, message: "Invalid Data" });
                 }
 
                 const product = await Product.findById(product_id)
-                if(!product || !product._id) {
-                    return res.status(404).send({message: "product not found", status: 404})
+                if (!product || !product._id) {
+                    return res.status(404).send({ status: 404, message: "Product Not Found" })
                 }
 
                 let productCartAdd = await Cart.findOne({ user_id: req.user._id, 'items.product_id': { $in: product_id } });
@@ -24,14 +24,14 @@ class productCartController {
                     productCartAdd.items[index].quantity = productCartAdd.items[index].quantity + quantity
                     productCartAdd.items[index].total_price = price * productCartAdd.items[index].quantity
                     await productCartAdd.save()
-                    return res.status(200).send({message: "Product quantity updated successfully", status: 200, data: productCartAdd})
+                    return res.status(200).send({ message: "Product quantity updated successfully", status: 200, data: productCartAdd })
                 }
                 else {
                     let cart_exist = await Cart.findOne({ user_id: req.user._id });
                     if (_.isEmpty(cart_exist)) {
-                        let data = {user_id: req.user._id}
+                        let data = { user_id: req.user._id }
                         let arr = [];
-                        arr.push({ "product_id": product_id, "quantity": quantity, "total_price": price * quantity})
+                        arr.push({ "product_id": product_id, "quantity": quantity, "total_price": price * quantity })
                         data.items = arr;
                         let cartAdd = await Cart.create(data);
                         if (!_.isEmpty(cartAdd) && cartAdd._id) {
@@ -60,8 +60,8 @@ class productCartController {
         }
     };
 
-     /** User cart */
-     async userProductCart(req, res) {
+    /** User cart */
+    async userProductCart(req, res) {
         try {
             let userCartInfo = await ProductCartRepository.getUserCart(req);
             if (!_.isEmpty(userCartInfo)) {
