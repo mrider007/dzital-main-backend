@@ -202,6 +202,78 @@ const productRepository = {
         }
     },
 
+    relatedProductList: async (req) => {
+        try {
+            var conditions = {};
+            var and_clauses = [];
+
+            and_clauses.push({ status: "Approved" })
+
+            if (_.isObject(req.body) && _.has(req.body, 'category_id')) {
+                and_clauses.push({ 'category_id': new mongoose.Types.ObjectId(req.body.category_id) });
+            }
+
+            if (_.isObject(req.body) && _.has(req.body, 'sub_category_id')) {
+                and_clauses.push({ 'sub_category_id': new mongoose.Types.ObjectId(req.body.sub_category_id) });
+            }
+
+            if (_.isObject(req.body) && _.has(req.body, 'product_id')) {
+                and_clauses.push({ '_id': { $ne: new mongoose.Types.ObjectId(req.body.product_id) } });
+            }
+
+            conditions['$and'] = and_clauses;
+
+            let products = Product.aggregate([
+                { $match: conditions },
+                {
+                    $lookup: {
+                        from: 'service_categories',
+                        localField: 'category_id',
+                        foreignField: '_id',
+                        as: 'category_details'
+                    }
+                },
+                { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $lookup: {
+                        from: 'service_categories',
+                        localField: 'sub_category_id',
+                        foreignField: '_id',
+                        as: 'sub_category_details'
+                    }
+                },
+                { $unwind: { path: '$sub_category_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: '$_id',
+                        title: { $first: '$title' },
+                        description: { $first: '$description' },
+                        category_id: { $first: '$category_id' },
+                        category_name: { $first: '$category_details.title' },
+                        category_slug: { $first: '$category_details.slug' },
+                        sub_category_id: { $first: '$sub_category_id' },
+                        sub_category_name: { $first: '$sub_category_details.title' },
+                        image: { $first: '$image' },
+                        status: { $first: '$status' },
+                        createdAt: { $first: '$createdAt' },
+                        updatedAt: { $first: '$updatedAt' }
+                    }
+                },
+                { $sort: { createdAt: -1 } }
+            ]);
+
+            if (!products) {
+                return null;
+            }
+            var options = { page: req.body.page, limit: req.body.limit };
+            let allProducts = await Product.aggregatePaginate(products, options);
+            return allProducts;
+
+        } catch (error) {
+            throw error;
+        }
+    },
+
     approvedProducts: async (req) => {
         try {
             var conditions = {};
