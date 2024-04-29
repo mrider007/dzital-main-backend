@@ -71,7 +71,7 @@ class productCartController {
                 res.status(200).send({ status: 200, data: userCartInfo, message: 'User cart fetched successfully' });
             }
             else {
-                res.status(201).send({ status: 400, data: {}, message: 'You have no items in your cart' });
+                res.status(201).send({ status: 201, data: {}, message: 'You have no items in your cart' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -96,6 +96,64 @@ class productCartController {
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
+        }
+    }
+
+    async updateQuantity(req, res) {
+        try {
+            let userId = req.user._id;
+            if (!req.body.product_id) {
+                return res.status(404).send({ status: 404, message: "product not found" });
+            }
+            let cart_exist = await Cart.findOne({ user_id: userId, 'items.product_id': { $in: new mongoose.Types.ObjectId(req.body.product_id) } });
+            if (_.isEmpty(cart_exist)) {
+                res.status(400).send({ status: 400, data: {}, message: 'Product is not in your cart' });
+            } else {
+                if (req.body.quantity === 0) {
+                    let updateCart = await ProductCartRepository.updateCart({ user_id: userId }, { $pull: { 'items': { product_id: req.body.product_id } } });
+                    if (!_.isEmpty(updateCart)) {
+                        let user_cart = await Cart.findOne({ user_id: userId });
+                        res.status(200).send({ status: 200, data: user_cart, message: 'Product is removed from your cart' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be removed from cart' });
+                    }
+                } else {
+                    const index = cart_exist.items.findIndex(item => item.product_id.toString() === req.body.product_id)
+                    const price = cart_exist.items[index].total_price / cart_exist.items[index].quantity
+
+                    cart_exist.items[index].quantity = req.body.quantity
+                    cart_exist.items[index].total_price = req.body.quantity * price
+
+                    let updateCart = await ProductCartRepository.updateCart({ user_id: userId, 'items.product_id': { $in: new mongoose.Types.ObjectId(req.body.product_id) } }, { items: cart_exist.items });
+                    if (!_.isEmpty(updateCart)) {
+                        let user_cart = await Cart.findOne({ user_id: userId });
+                        res.status(200).send({ status: 200, data: user_cart, message: 'Quantity updated for that product in cart' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, data: {}, message: 'quantity could not be updated' });
+                    }
+                }
+            }
+        } catch (error) {
+            res.status(500).send({ status: 500, message: error.message });
+        }
+    }
+
+    async clearCart(req, res) {
+        try {
+            const userId = req.user._id
+            let updateCart = await ProductCartRepository.updateCart({ user_id: userId }, { 'items': [] });
+            if (!_.isEmpty(updateCart)) {
+                let user_cart = await Cart.findOne({ user_id: userId });
+                res.status(200).send({ status: 200, data: user_cart, message: 'all items removed from the card' });
+            }
+            else {
+                res.status(400).send({ status: 400, data: {}, message: 'Items can not be removed from the cart' });
+            }
+        } catch (error) {
+            console.log(error)
+            res.status(500).send({ status: 500, message: error.message });
         }
     }
 

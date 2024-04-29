@@ -20,24 +20,22 @@ const ProductCartRepository = {
             var and_clauses = [];
 
             and_clauses.push({ user_id: req.user._id });
+            
             conditions['$and'] = and_clauses;
 
-            let cart = await ProductCart.aggregate([
-                { $match: conditions },
+            const aggregationPipeline = [
+                {
+                    $match: conditions
+
+                },
+                {
+                    $unwind: "$items"
+                },
                 {
                     $lookup: {
-                        let: { productId: '$items.product_id' },
                         from: "products",
+                        localField: "items.product_id",
                         pipeline: [
-                            {
-                                $match: {
-                                    $expr: {
-                                        $and: [
-                                            { $in: ["$_id", "$$productId"] },
-                                        ]
-                                    }
-                                }
-                            },
                             {
                                 $lookup: {
                                     let: { categoryId: '$category_id' },
@@ -70,33 +68,36 @@ const ProductCartRepository = {
                                     category_name: { $first: '$category_details.title' },
                                     image: { $first: '$image' },
                                     createdAt: { $first: '$createdAt' },
-                                    updatedAt: { $first: '$updatedAt' }
+                                    updatedAt: { $first: '$updatedAt' },
                                 }
                             }
                         ],
-                        as: "product_details"
+                        foreignField: "_id",
+                        as: "items.product"
                     }
                 },
-                { $unwind: "$items" }, // Unwind the items array
+                {
+                    $unwind: "$items.product"
+                },
                 {
                     $group: {
-                        _id: '$_id',
-                        user_id: { $first: '$user_id' },
+                        _id: "$_id",
+                        user_id: { $first: "$user_id" },
                         createdAt: { $first: '$createdAt' },
                         updatedAt: { $first: '$updatedAt' },
-                        quantity: { $sum: '$items.quantity' }, // Summing up quantity of items
-                        total_price: { $sum: '$items.total_price' },// Summing up total_price of items
+                        total_price: { $sum: '$items.total_price' },
                         items: {
                             $push: {
-                                // Construct each item object with product details, quantity, and total_price
+                                item_details: "$items.product",
                                 quantity: "$items.quantity",
-                                total_price: "$items.total_price",
-                                item_details: { $arrayElemAt: ["$product_details", 0] },
+                                total_price: "$items.total_price"
                             }
-                        },
+                        }
                     }
                 }
-            ]);
+            ];
+
+            let cart = await ProductCart.aggregate(aggregationPipeline);
 
             if (!cart) {
                 return null;
@@ -106,6 +107,7 @@ const ProductCartRepository = {
             throw e;
         }
     }
+
 }
 
 module.exports = ProductCartRepository;
