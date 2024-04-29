@@ -209,15 +209,15 @@ const productRepository = {
 
             and_clauses.push({ status: "Approved" })
 
-            if (_.isObject(req.body) && _.has(req.body, 'category_id')) {
+            if (_.isObject(req.body) && _.has(req.body, 'category_id') && req.body.category_id !== '') {
                 and_clauses.push({ 'category_id': new mongoose.Types.ObjectId(req.body.category_id) });
             }
 
-            if (_.isObject(req.body) && _.has(req.body, 'sub_category_id')) {
+            if (_.isObject(req.body) && _.has(req.body, 'sub_category_id') && req.body.sub_category_id !== '') {
                 and_clauses.push({ 'sub_category_id': new mongoose.Types.ObjectId(req.body.sub_category_id) });
             }
 
-            if (_.isObject(req.body) && _.has(req.body, 'product_id')) {
+            if (_.isObject(req.body) && _.has(req.body, 'product_id') && req.body.product_id !== '') {
                 and_clauses.push({ '_id': { $ne: new mongoose.Types.ObjectId(req.body.product_id) } });
             }
 
