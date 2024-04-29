@@ -290,6 +290,32 @@ class productController {
         }
     };
 
+    /** Related Products List */
+    async relatedProducts(req, res) {
+        try {
+            if (!req.body.page) {
+                req.body.page = 1;
+            } else {
+                req.body.page = parseInt(req.body.page);
+            }
+
+            if (!req.body.limit) {
+                req.body.limit = 10;
+            } else {
+                req.body.limit = parseInt(req.body.limit);
+            }
+            let products = await productRepo.relatedProductList(req);
+            if (!_.isEmpty(products)) {
+                res.status(200).send({ status: 200, data: products.docs, total: products.total, limit: products.limit, page: products.page, pages: products.pages, message: 'Related Products list fetched successfully' });
+            } else {
+                res.status(400).send({ status: 400, data: [], message: 'No Products Found' });
+            }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+
+    /** Approved Products List */
     async approvedProductList(req, res) {
         try {
             if (!req.body.page) {
@@ -315,6 +341,7 @@ class productController {
             res.status(500).send({ status: 500, message: e.message });
         }
     };
+
     /** Admin Unapproved Products List */
     async unapprovedProductList(req, res) {
         try {
