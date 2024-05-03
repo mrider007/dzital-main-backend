@@ -60,45 +60,6 @@ const orderRepository = {
                         as: "items.product"
                     }
                 },
-                // {
-                //     $lookup: {
-                //         from: "products",
-                //         localField: "items.product_id",
-                //         pipeline: [
-                //             {
-                //                 $lookup: {
-                //                     let: { categoryId: '$category_id' },
-                //                     from: "service_categories",
-                //                     pipeline: [
-                //                         {
-                //                             $match: {
-                //                                 $expr: {
-                //                                     $and: [
-                //                                         { $eq: ["$_id", "$$categoryId"] },
-                //                                         { $eq: ['$parentId', null] }
-                //                                     ]
-                //                                 }
-                //                             }
-                //                         }
-                //                     ],
-                //                     as: "category_details"
-                //                 }
-                //             },
-                //             { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
-                //             {
-                //                 $group: {
-                //                     _id: '$_id',
-                //                     title: { $first: '$title' },
-                //                     category_slug: { $first: '$category_details.slug' },
-                //                     category_name: { $first: '$category_details.title' },
-                //                     image: { $first: '$image' }
-                //                 }
-                //             }
-                //         ],
-                //         foreignField: "_id",
-                //         as: "items.product"
-                //     }
-                // },
                 { $unwind: "$items.product" },
                 {
                     $group: {
@@ -108,7 +69,6 @@ const orderRepository = {
                         total_amount: { $first: '$total_amount' },
                         items: {
                             $push: {
-                                //item_details: "$items.product",
                                 title: '$items.product.title',
                                 category_slug: '$items.product.category_slug',
                                 category_name: '$items.product.category_name',
