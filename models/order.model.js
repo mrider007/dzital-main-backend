@@ -11,6 +11,7 @@ const orderSchema = new Schema({
         }
     ],
     total_amount: { type: Number, default: 0 },
+    status: { type: String, default: 'Success', enum: ['Success', 'Failed'] },
     order_date: { type: Date, default: Date.now() },
     user_id: { type: Schema.Types.ObjectId, ref: 'User', index: true }
 }, { versionKey: false });
