@@ -10,5 +10,6 @@ router.post('/user/product/cart/add', request_param.any(), Authentication.Authen
 router.post('/user/product/cart/remove', Authentication.Authenticate, productCartController.removeProductCart);
 router.post('/user/product/cart/quantity', Authentication.Authenticate, productCartController.updateQuantity);
 router.post('/user/product/cart/clear', Authentication.Authenticate, productCartController.clearCart);
+router.get('/cart/product/details/:id', Authentication.Authenticate, productCartController.productCartDetails);
 
 module.exports = router;
