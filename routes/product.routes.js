@@ -45,6 +45,7 @@ router.post('/user/product/update/:id', uploadFile.any(), Authentication.Authent
 
 /* --- Harsh --- */
 router.get('/user/product/detail/:id', Authentication.Authenticate, ProductController.productDetails);
+router.get('/common/product/detail/:id', ProductController.productDetails);
 router.delete('/user/product/delete/:id', Authentication.Authenticate, ProductController.userProductDelete);
 router.post('/product/related/list', ProductController.relatedProducts);
 
