@@ -10,7 +10,7 @@ const productEducationRepository = {
 
             and_clauses.push({ status: 'Approved' });
 
-            if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
+            if (_.isObject(req.body) && _.has(req.body, 'keyword_search') && req.body.keyword_search !== '') {
                 and_clauses.push({
                     $or: [
                         { 'title': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
@@ -143,6 +143,14 @@ const productEducationRepository = {
             var and_clauses = [];
 
             and_clauses.push({ status: 'Approved' });
+
+            if (_.isObject(req.body) && _.has(req.body, 'keyword_search') && req.body.keyword_search !== '') {
+                and_clauses.push({
+                    $or: [
+                        { 'title': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
+                    ]
+                });
+            }
 
             // Filter based on in attribute & its value
             let filter = req.body.filter;
