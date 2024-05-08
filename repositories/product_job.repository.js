@@ -155,7 +155,6 @@ const JobRepository = {
                         title: { $first: '$title' },
                         description: { $first: '$description' },
                         image: { $first: '$image' },
-                        user_id: { $first: '$user_id' },
                         product_id: { $first: '$product_id' },
                         status: { $first: '$product_details.status' },
                         userId: { $first: '$product_details.userId' },
