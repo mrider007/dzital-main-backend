@@ -10,12 +10,12 @@ class JobApplyController {
             const userId = req.user._id
             req.body.user_id = userId;
             if (!req.file) {
-                return res.status(400).send({ status: 400, message: 'No file uploaded.' });
+                return res.status(400).send({ status: 400, message: 'No File Uploaded' });
             }
+            const checkApplication = await JobApply.findOne({ user_id: userId, job_id: req.body.job_id })
 
-            const checkApplication = await JobApply.findOne({ user_id: userId })
             if (!_.isEmpty(checkApplication) && checkApplication._id) {
-                return res.status(400).send({ status: 400, message: "User already applied for this job" })
+                return res.status(400).send({ status: 400, message: "You Already Applied For This Job" })
             }
 
             const jobData = await product_jobsModel.findById(req.body.job_id)
