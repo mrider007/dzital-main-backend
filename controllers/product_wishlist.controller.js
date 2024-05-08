@@ -20,6 +20,11 @@ class productWishlistController {
         try {
             let user = await User.findOne({ _id: req.user._id });
             if (!_.isEmpty(user) && user._id) {
+                /***  user can not add his product   ***/
+                const product = await Product.findOne({ _id: req.body.product_id })
+                if (_.isEmpty(product) || !product._id) return res.status(404).send({ message: 'product not found', status: 404 })
+                if (product.userId === user._id) return res.status(400).send({ message: 'can not add own product into wishlist', status: 400 })
+
                 let productwishlistAdd = await Wishlist.findOne({ user_id: req.user._id, 'products.product_id': { $in: req.body.product_id } });
                 if (!_.isEmpty(productwishlistAdd) && productwishlistAdd._id) {
                     res.status(200).send({ status: 200, data: {}, message: 'Product is already present in your wishlist' });
