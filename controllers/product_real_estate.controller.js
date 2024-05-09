@@ -84,20 +84,20 @@ class propertyController {
                 const property_id = new mongoose.Types.ObjectId(req.params.id);
                 const propertyInfo = await propertyRepo.getRealEstateDetails({ _id: property_id }, userId);
                 if (!_.isEmpty(propertyInfo) && propertyInfo._id) {
-                    res.status(200).send({ status: 200, data: propertyInfo, message: 'Property details has been fetched successfully' });
+                    res.status(200).send({ status: 200, data: propertyInfo, message: 'Real Estate Details has been fetched Successfully' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Property not found' });
+                    res.status(400).send({ status: 400, data: {}, message: 'Real Estate Not Found' });
                 }
             }
             else {
                 const property_id = new mongoose.Types.ObjectId(req.params.id);
                 const propertyInfo = await propertyRepo.getRealEstateDetails({ _id: property_id });
                 if (!_.isEmpty(propertyInfo) && propertyInfo._id) {
-                    res.status(200).send({ status: 200, data: propertyInfo, message: 'Property details has been fetched successfully' });
+                    res.status(200).send({ status: 200, data: propertyInfo, message: 'Real Estate Details has been fetched Successfully' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Property not found' });
+                    res.status(400).send({ status: 400, data: {}, message: 'Real Estate Not Found' });
                 }
             }
         } catch (e) {
@@ -125,19 +125,19 @@ class propertyController {
                 const userId = new mongoose.Types.ObjectId(req.body.userId);
                 let properties = await propertyRepo.getAll(req, userId);
                 if (!_.isEmpty(properties)) {
-                    res.status(200).send({ status: 200, data: properties.docs, total: properties.total, limit: properties.limit, page: properties.page, pages: properties.pages, message: 'Property list has been fetched successfully' });
+                    res.status(200).send({ status: 200, data: properties.docs, total: properties.total, limit: properties.limit, page: properties.page, pages: properties.pages, message: 'Real Estate Product List has been fetched Successfully' });
                 }
                 else {
-                    res.status(201).send({ status: 201, data: [], message: 'No property found' });
+                    res.status(201).send({ status: 201, data: [], message: 'No Real Estate Found' });
                 }
             }
             else {
                 let properties = await propertyRepo.list(req);
                 if (!_.isEmpty(properties)) {
-                    res.status(200).send({ status: 200, data: properties.docs, total: properties.total, limit: properties.limit, page: properties.page, pages: properties.pages, message: 'Property list has been fetched successfully' });
+                    res.status(200).send({ status: 200, data: properties.docs, total: properties.total, limit: properties.limit, page: properties.page, pages: properties.pages, message: 'Real Estate Product List has been fetched Successfully' });
                 }
                 else {
-                    res.status(201).send({ status: 201, data: [], message: 'No property found' });
+                    res.status(201).send({ status: 201, data: [], message: 'No Real Estate Found' });
                 }
             }
         } catch (e) {
@@ -148,7 +148,7 @@ class propertyController {
     async RealEstateProductsBulkUpdate(req, res) {
         try {
             let productsUpdate = await Property.updateMany({}, { $set: { 'sub_category_id': null } });
-            res.status(200).send({ status: 200, data: productsUpdate, message: 'Real Estate Job Products Updated Successfully' });
+            res.status(200).send({ status: 200, data: productsUpdate, message: 'Real Estate Products Updated Successfully' });
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
         }
