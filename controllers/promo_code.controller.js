@@ -9,10 +9,10 @@ class promocodeController {
         try {
             const saveData = await Promocode.create(req.body);
             if (!_.isEmpty(saveData) && saveData._id) {
-                res.status(200).send({ status: 200, data: saveData, message: 'Promocode has been added successfully' });
+                res.status(200).send({ status: 200, data: saveData, message: 'Promocode Added Successfully' });
             }
             else {
-                res.status(400).send({ status: 400, message: 'Promocode could not be added' });
+                res.status(400).send({ status: 400, message: 'Promocode could not be Added' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -40,7 +40,7 @@ class promocodeController {
                 res.status(200).send({ status: 200, data: promocodes.docs, total: promocodes.total, limit: promocodes.limit, page: promocodes.page, pages: promocodes.pages, message: 'Promocode list has been fetched successfully' });
             }
             else {
-                res.status(201).send({ status: 201, data: [], message: 'No promocode found' });
+                res.status(201).send({ status: 201, data: [], message: 'No Promocode Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -52,10 +52,10 @@ class promocodeController {
             const promocode_id = new mongoose.Types.ObjectId(req.params.id);
             let PromocodeInfo = await Promocode.findOne({ _id: promocode_id });
             if (!_.isEmpty(PromocodeInfo) && PromocodeInfo._id) {
-                res.status(200).send({ status: 200, data: PromocodeInfo, message: 'Promocode details has been fetched successfully' });
+                res.status(200).send({ status: 200, data: PromocodeInfo, message: 'Promocode Details has been fetched Successfully' });
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'Promocode not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Promocode Not Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -69,14 +69,14 @@ class promocodeController {
             if (!_.isEmpty(PromocodeInfo) && PromocodeInfo._id) {
                 let updateData = await promocodeRepo.updateById(req.body, promocode_id);
                 if (!_.isEmpty(updateData) && updateData._id) {
-                    res.status(200).send({ status: 200, data: updateData, message: 'Promocode has been updated successfully' });
+                    res.status(200).send({ status: 200, data: updateData, message: 'Promocode Updated Successfully' });
                 }
                 else {
                     res.status(400).send({ status: 400, data: {}, message: 'Promocode could not be updated' });
                 }
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'Promocode not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Promocode Not Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -90,13 +90,13 @@ class promocodeController {
             if (!_.isEmpty(PromocodeInfo) && PromocodeInfo._id) {
                 let deleteData = await promocodeRepo.delete(promocode_id);
                 if (!_.isEmpty(deleteData) && deleteData._id) {
-                    res.status(200).send({ status: 200, data: deleteData, message: 'Promocode has been removed' });
+                    res.status(200).send({ status: 200, data: deleteData, message: 'Promocode Removed Successfully' });
                 } else {
                     res.status(400).send({ status: 400, message: 'Promocode could not be removed' });
                 }
             }
             else {
-                res.status(400).send({ status: 400, message: 'Promocode not found' });
+                res.status(400).send({ status: 400, message: 'Promocode Not Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
