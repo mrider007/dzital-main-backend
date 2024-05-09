@@ -10,11 +10,11 @@ class serviceController {
         try {
             let serviceCheck = await Service.findOne({ title: req.body.title });
             if (!_.isEmpty(serviceCheck) && serviceCheck._id) {
-                res.status(400).send({ status: 400, data: {}, message: 'Service already exists' });
+                res.status(400).send({ status: 400, data: {}, message: 'Category Already Exists' });
             } else {
                 let saveService = await Service.create(req.body);
                 if (!_.isEmpty(saveService) && saveService._id) {
-                    res.status(200).send({ status: 200, data: saveService, message: 'Sub Category added successfully' });
+                    res.status(200).send({ status: 200, data: saveService, message: 'Sub Category Added successfully' });
                 } else {
                     res.status(400).send({ status: 400, message: 'Sub Category could not be added' });
                 }
