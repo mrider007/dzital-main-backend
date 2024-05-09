@@ -16,7 +16,7 @@ class serviceController {
                 if (!_.isEmpty(saveService) && saveService._id) {
                     res.status(200).send({ status: 200, data: saveService, message: 'Sub Category added successfully' });
                 } else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Sub Category could not be added' });
+                    res.status(400).send({ status: 400, message: 'Sub Category could not be added' });
                 }
             }
         } catch (e) {
@@ -118,10 +118,10 @@ class serviceController {
                     res.status(200).send({ status: 200, data: serviceUpdate, message: 'Sub Category has been updated successfully' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Sub Category could not be updated' });
+                    res.status(400).send({ status: 400, message: 'Sub Category could not be updated' });
                 }
             } else {
-                res.status(400).send({ status: 400, data: {}, message: 'Sub Category not found' });
+                res.status(400).send({ status: 400, message: 'Sub Category not found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -156,7 +156,7 @@ class serviceController {
                 res.status(200).send({ status: 200, data: serviceInfo, message: 'Sub Category details fetched successfully' });
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'Sub Category not found' });
+                res.status(400).send({ status: 400, message: 'Sub Category not found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
