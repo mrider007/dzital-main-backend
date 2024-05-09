@@ -10,13 +10,13 @@ class serviceController {
         try {
             let serviceCheck = await Service.findOne({ title: req.body.title });
             if (!_.isEmpty(serviceCheck) && serviceCheck._id) {
-                res.status(400).send({ status: 400, data: {}, message: 'Category Already Exists' });
+                res.status(400).send({ status: 400, message: 'Category Already Exists' });
             } else {
                 let saveService = await Service.create(req.body);
                 if (!_.isEmpty(saveService) && saveService._id) {
-                    res.status(200).send({ status: 200, data: saveService, message: 'Sub Category Added successfully' });
+                    res.status(200).send({ status: 200, data: saveService, message: 'Sub Category Added Successfully' });
                 } else {
-                    res.status(400).send({ status: 400, message: 'Sub Category could not be added' });
+                    res.status(400).send({ status: 400, message: 'Sub Category could not be Added' });
                 }
             }
         } catch (e) {
@@ -28,9 +28,9 @@ class serviceController {
         try {
             let services = await Service.find({ parentId: null });
             if (!_.isEmpty(services)) {
-                res.status(200).send({ status: 200, data: services, message: 'Categories list fetched successfully' });
+                res.status(200).send({ status: 200, data: services, message: 'Categories List fetched Successfully' });
             } else {
-                res.status(400).send({ status: 400, data: [], message: 'No Category found' });
+                res.status(400).send({ status: 400, data: [], message: 'No Category Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -67,7 +67,7 @@ class serviceController {
                 const parent_id = new mongoose.Types.ObjectId(req.body.parentId);
                 let service_sub_category = await Service.find({ parentId: parent_id });
                 if (!_.isEmpty(service_sub_category)) {
-                    res.status(200).send({ status: 200, data: service_sub_category, message: 'Service Sub Category List fetched successfully' });
+                    res.status(200).send({ status: 200, data: service_sub_category, message: 'Service Sub Category List fetched Successfully' });
                 }
                 else {
                     res.status(400).send({ status: 400, message: 'No Sub Category Found' });
@@ -97,10 +97,10 @@ class serviceController {
 
             let categories = await serviceRepo.getCategories(req);
             if (!_.isEmpty(categories)) {
-                res.status(200).send({ status: 200, data: categories.docs, total: categories.total, limit: categories.limit, page: categories.page, pages: categories.pages, message: 'Categories list fetched successfully' });
+                res.status(200).send({ status: 200, data: categories.docs, total: categories.total, limit: categories.limit, page: categories.page, pages: categories.pages, message: 'Categories List fetched Successfully' });
             }
             else {
-                res.status(201).send({ status: 201, data: [], message: 'No category found' });
+                res.status(201).send({ status: 201, data: [], message: 'No Category Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -115,13 +115,13 @@ class serviceController {
             if (!_.isEmpty(serviceInfo) && serviceInfo._id) {
                 let serviceUpdate = await serviceRepo.updateById(req.body, service_id);
                 if (!_.isEmpty(serviceUpdate) && serviceUpdate._id) {
-                    res.status(200).send({ status: 200, data: serviceUpdate, message: 'Sub Category has been updated successfully' });
+                    res.status(200).send({ status: 200, data: serviceUpdate, message: 'Sub Category Updated Successfully' });
                 }
                 else {
                     res.status(400).send({ status: 400, message: 'Sub Category could not be updated' });
                 }
             } else {
-                res.status(400).send({ status: 400, message: 'Sub Category not found' });
+                res.status(400).send({ status: 400, message: 'Sub Category Not Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -135,13 +135,13 @@ class serviceController {
             if (!_.isEmpty(serviceInfo) && serviceInfo._id) {
                 let serviceDelete = await serviceRepo.delete(service_id);
                 if (!_.isEmpty(serviceDelete) && serviceDelete._id) {
-                    res.status(200).send({ status: 200, data: serviceDelete, message: 'Sub Category has been removed successfully' });
+                    res.status(200).send({ status: 200, data: serviceDelete, message: 'Sub Category Removed Successfully' });
                 }
                 else {
-                    res.status(400).send({ status: 400, message: 'Sub Category not removed' });
+                    res.status(400).send({ status: 400, message: 'Sub Category Not Removed' });
                 }
             } else {
-                res.status(400).send({ status: 400, messaage: 'Sub Category not found' });
+                res.status(400).send({ status: 400, messaage: 'Sub Category Not Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -153,10 +153,10 @@ class serviceController {
             let service_id = new mongoose.Types.ObjectId(req.params.id);
             let serviceInfo = await Service.findOne({ _id: service_id });
             if (!_.isEmpty(serviceInfo) && serviceInfo._id) {
-                res.status(200).send({ status: 200, data: serviceInfo, message: 'Sub Category details fetched successfully' });
+                res.status(200).send({ status: 200, data: serviceInfo, message: 'Sub Category Details fetched Successfully' });
             }
             else {
-                res.status(400).send({ status: 400, message: 'Sub Category not found' });
+                res.status(400).send({ status: 400, message: 'Sub Category Not Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
