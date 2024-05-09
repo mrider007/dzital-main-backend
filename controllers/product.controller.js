@@ -46,7 +46,7 @@ class productController {
                     let jobData = await Job.create(req.body);
                     if (!_.isEmpty(jobData) && jobData._id) {
                         let productUpdate = await productRepo.updateProductById({ image: jobData.image }, productSave._id);
-                        res.status(200).send({ status: 200, data: jobData, message: 'Product saved successfully' });
+                        res.status(200).send({ status: 200, data: jobData, message: 'Product Added Successfully' });
                     }
                     else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
@@ -86,7 +86,7 @@ class productController {
                     let propertyData = await Property.create(req.body);
                     if (!_.isEmpty(propertyData) && propertyData._id) {
                         let productUpdate = await productRepo.updateProductById({ image: propertyData.photo }, productSave._id);
-                        res.status(200).send({ status: 200, data: propertyData, message: 'Product saved successfully' });
+                        res.status(200).send({ status: 200, data: propertyData, message: 'Product Added Successfully' });
                     }
                     else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
@@ -126,7 +126,7 @@ class productController {
                     let ElectronicsData = await ProductElectronics.create(req.body);
                     if (!_.isEmpty(ElectronicsData) && ElectronicsData._id) {
                         let productUpdate = await productRepo.updateProductById({ image: ElectronicsData.photo }, productSave._id);
-                        res.status(200).send({ status: 200, data: ElectronicsData, message: 'Product saved successfully' });
+                        res.status(200).send({ status: 200, data: ElectronicsData, message: 'Product Added Successfully' });
                     }
                     else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
@@ -166,7 +166,7 @@ class productController {
                     let GoodsSave = await Goods.create(req.body);
                     if (!_.isEmpty(GoodsSave) && GoodsSave._id) {
                         let productUpdate = await productRepo.updateProductById({ image: GoodsSave.photo }, productSave._id);
-                        res.status(200).send({ status: 200, data: GoodsSave, message: 'Product saved successfully' });
+                        res.status(200).send({ status: 200, data: GoodsSave, message: 'Product Added Successfully' });
                     }
                     else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
@@ -206,7 +206,7 @@ class productController {
                     let FashionSave = await Fashion.create(req.body);
                     if (!_.isEmpty(FashionSave) && FashionSave._id) {
                         let productUpdate = await productRepo.updateProductById({ image: FashionSave.photo }, productSave._id);
-                        res.status(200).send({ status: 200, data: FashionSave, message: 'Product saved successfully' });
+                        res.status(200).send({ status: 200, data: FashionSave, message: 'Product Added Successfully' });
                     }
                     else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
@@ -228,7 +228,7 @@ class productController {
                     let lessoncoursesData = await ProductEducation.create(req.body);
                     if (!_.isEmpty(lessoncoursesData) && lessoncoursesData._id) {
                         let productUpdate = await productRepo.updateProductById({ image: lessoncoursesData.image }, productSave._id);
-                        res.status(200).send({ status: 200, data: lessoncoursesData, message: 'Product saved successfully' });
+                        res.status(200).send({ status: 200, data: lessoncoursesData, message: 'Product Added Successfully' });
                     }
                     else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
@@ -250,7 +250,7 @@ class productController {
                     let freelancerData = await Freelancer.create(req.body);
                     if (!_.isEmpty(freelancerData) && freelancerData._id) {
                         let productUpdate = await productRepo.updateProductById({ image: freelancerData.image }, productSave._id);
-                        res.status(200).send({ status: 200, data: freelancerData, message: 'Product saved successfully' });
+                        res.status(200).send({ status: 200, data: freelancerData, message: 'Product Added Successfully' });
                     }
                     else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
@@ -281,7 +281,7 @@ class productController {
             }
             let products = await productRepo.allProducts(req);
             if (!_.isEmpty(products)) {
-                res.status(200).send({ status: 200, data: products.docs, total: products.total, limit: products.limit, page: products.page, pages: products.pages, message: 'Products list fetched successfully' });
+                res.status(200).send({ status: 200, data: products.docs, total: products.total, limit: products.limit, page: products.page, pages: products.pages, message: 'Products List fetched Successfully' });
             } else {
                 res.status(400).send({ status: 400, data: [], message: 'No products found' });
             }
@@ -306,7 +306,7 @@ class productController {
             }
             let products = await productRepo.relatedProductList(req);
             if (!_.isEmpty(products)) {
-                res.status(200).send({ status: 200, data: products.docs, total: products.total, limit: products.limit, page: products.page, pages: products.pages, message: 'Related Products list fetched successfully' });
+                res.status(200).send({ status: 200, data: products.docs, total: products.total, limit: products.limit, page: products.page, pages: products.pages, message: 'Related Products List fetched Successfully' });
             } else {
                 res.status(400).send({ status: 400, data: [], message: 'No Products Found' });
             }
@@ -333,7 +333,7 @@ class productController {
             }
             let products = await productRepo.approvedProducts(req);
             if (!_.isEmpty(products)) {
-                res.status(200).send({ status: 200, data: products.docs, total: products.total, limit: products.limit, page: products.page, pages: products.pages, message: 'Approved Products list fetched successfully' });
+                res.status(200).send({ status: 200, data: products.docs, total: products.total, limit: products.limit, page: products.page, pages: products.pages, message: 'Approved Products List fetched Successfully' });
             } else {
                 res.status(400).send({ status: 400, data: [], message: 'No Approved Products found' });
             }
@@ -358,9 +358,9 @@ class productController {
             }
             let products = await productRepo.unapprovedProducts(req);
             if (!_.isEmpty(products)) {
-                res.status(200).send({ status: 200, data: products.docs, total: products.total, limit: products.limit, page: products.page, pages: products.pages, message: 'Unapproved Products list fetched successfully' });
+                res.status(200).send({ status: 200, data: products.docs, total: products.total, limit: products.limit, page: products.page, pages: products.pages, message: 'Unapproved Products List fetched Successfully' });
             } else {
-                res.status(400).send({ status: 400, data: [], message: 'No Unapprved Products Found' });
+                res.status(400).send({ status: 400, data: [], message: 'No Unapproved Products Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -383,9 +383,9 @@ class productController {
             }
             let products = await productRepo.rejectedProducts(req);
             if (!_.isEmpty(products)) {
-                res.status(200).send({ status: 200, data: products.docs, total: products.total, limit: products.limit, page: products.page, pages: products.pages, message: 'Rejected Products list fetched successfully' });
+                res.status(200).send({ status: 200, data: products.docs, total: products.total, limit: products.limit, page: products.page, pages: products.pages, message: 'Rejected Products List fetched Successfully' });
             } else {
-                res.status(400).send({ status: 400, data: [], message: 'No products found' });
+                res.status(400).send({ status: 400, data: [], message: 'No Rejected Products Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -402,74 +402,74 @@ class productController {
                     let userId = req.user._id;
                     let propertyDetails = await propertyRepo.getPropertyDetails({ product_id: productInfo._id }, userId);
                     if (!_.isEmpty(propertyDetails) && propertyDetails._id) {
-                        res.status(200).send({ status: 200, data: propertyDetails, message: 'Property details has been fetched successfully' });
+                        res.status(200).send({ status: 200, data: propertyDetails, message: 'Property Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
                     }
                 }
                 else if (categoryInfo.title === 'Electronics') {
                     let userId = req.user._id;
                     let electronicsDetails = await electronicsRepo.getDetails({ product_id: productInfo._id }, userId);
                     if (!_.isEmpty(electronicsDetails) && electronicsDetails._id) {
-                        res.status(200).send({ status: 200, data: electronicsDetails, message: 'Product details has been fetched successfully' });
+                        res.status(200).send({ status: 200, data: electronicsDetails, message: 'Product Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
                     }
                 }
                 else if (categoryInfo.title === 'Jobs') {
                     let userId = req.user._id;
                     let jobDetails = await jobRepo.getJobDetails({ product_id: productInfo._id }, userId);
                     if (!_.isEmpty(jobDetails) && jobDetails._id) {
-                        res.status(200).send({ status: 200, data: jobDetails, message: 'Product details has been fetched successfully' });
+                        res.status(200).send({ status: 200, data: jobDetails, message: 'Product Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
                     }
                 }
                 else if (categoryInfo.title === 'Fashion & Beauty') {
                     let userId = req.user._id;
                     let fashionDetails = await fashionRepo.getDetails({ product_id: productInfo._id }, userId);
                     if (!_.isEmpty(fashionDetails) && fashionDetails._id) {
-                        res.status(200).send({ status: 200, data: fashionDetails, message: 'Product details has been fetched successfully' });
+                        res.status(200).send({ status: 200, data: fashionDetails, message: 'Product Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
                     }
                 }
                 else if (categoryInfo.title === 'Goods of all kinds') {
                     let userId = req.user._id;
                     let goodsDetails = await goodsRepo.getDetails({ product_id: productInfo._id }, userId);
                     if (!_.isEmpty(goodsDetails) && goodsDetails._id) {
-                        res.status(200).send({ status: 200, data: goodsDetails, message: 'Product details has been fetched successfully' });
+                        res.status(200).send({ status: 200, data: goodsDetails, message: 'Product Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
                     }
                 }
                 else if (categoryInfo.title === 'Freelancer') {
                     let userId = req.user._id;
                     let freelancerDetails = await freelancerRepo.getDetails({ product_id: productInfo._id }, userId);
                     if (!_.isEmpty(freelancerDetails) && freelancerDetails._id) {
-                        res.status(200).send({ status: 200, data: freelancerDetails, message: 'Product details has been fetched successfully' });
+                        res.status(200).send({ status: 200, data: freelancerDetails, message: 'Product Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
                     }
                 }
                 else if (categoryInfo.title === 'Lessons & Courses') {
                     let userId = req.user._id;
                     let lessonDetails = await educationRepo.getDetails({ product_id: productInfo._id }, userId);
                     if (!_.isEmpty(lessonDetails) && lessonDetails._id) {
-                        res.status(200).send({ status: 200, data: lessonDetails, message: 'Product details has been fetched successfully' });
+                        res.status(200).send({ status: 200, data: lessonDetails, message: 'Product Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
                     }
                 }
             } else {
-                res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -485,64 +485,64 @@ class productController {
                 if (categoryInfo.title === 'Real Estate') {
                     let propertyDetails = await propertyRepo.getPropertyDetails({ product_id: productInfo._id });
                     if (!_.isEmpty(propertyDetails) && propertyDetails._id) {
-                        res.status(200).send({ status: 200, data: propertyDetails, message: 'Property details has been fetched successfully' });
+                        res.status(200).send({ status: 200, data: propertyDetails, message: 'Real Estate Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
                     }
                 }
                 else if (categoryInfo.title === 'Electronics') {
                     let electronicsDetails = await electronicsRepo.getDetails({ product_id: productInfo._id });
                     if (!_.isEmpty(electronicsDetails) && electronicsDetails._id) {
-                        res.status(200).send({ status: 200, data: electronicsDetails, message: 'Product details has been fetched successfully' });
+                        res.status(200).send({ status: 200, data: electronicsDetails, message: 'Electronics Product Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
                     }
                 }
                 else if (categoryInfo.title === 'Jobs') {
                     let jobDetails = await jobRepo.getJobDetails({ product_id: productInfo._id });
                     if (!_.isEmpty(jobDetails) && jobDetails._id) {
-                        res.status(200).send({ status: 200, data: jobDetails, message: 'Product details has been fetched successfully' });
+                        res.status(200).send({ status: 200, data: jobDetails, message: 'Job Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
                     }
                 }
                 else if (categoryInfo.title === 'Fashion & Beauty') {
                     let fashionDetails = await fashionRepo.getDetails({ product_id: productInfo._id });
                     if (!_.isEmpty(fashionDetails) && fashionDetails._id) {
-                        res.status(200).send({ status: 200, data: fashionDetails, message: 'Product details has been fetched successfully' });
+                        res.status(200).send({ status: 200, data: fashionDetails, message: 'Fashion Product Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
                     }
                 }
                 else if (categoryInfo.title === 'Goods of all kinds') {
                     let goodsDetails = await goodsRepo.getDetails({ product_id: productInfo._id });
                     if (!_.isEmpty(goodsDetails) && goodsDetails._id) {
-                        res.status(200).send({ status: 200, data: goodsDetails, message: 'Product details has been fetched successfully' });
+                        res.status(200).send({ status: 200, data: goodsDetails, message: 'Goods of All Kinds Product Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
                     }
                 }
                 else if (categoryInfo.title === 'Freelancer') {
                     let freelancerDetails = await freelancerRepo.getDetails({ product_id: productInfo._id });
                     if (!_.isEmpty(freelancerDetails) && freelancerDetails._id) {
-                        res.status(200).send({ status: 200, data: freelancerDetails, message: 'Product details has been fetched successfully' });
+                        res.status(200).send({ status: 200, data: freelancerDetails, message: 'Freelancer Product Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
                     }
                 }
                 else if (categoryInfo.title === 'Lessons & Courses') {
                     let lessonDetails = await educationRepo.getDetails({ product_id: productInfo._id });
                     if (!_.isEmpty(lessonDetails) && lessonDetails._id) {
-                        res.status(200).send({ status: 200, data: lessonDetails, message: 'Product details has been fetched successfully' });
+                        res.status(200).send({ status: 200, data: lessonDetails, message: 'Lesson & Course Product Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
                     }
                 }
             }
@@ -567,10 +567,10 @@ class productController {
             }
             const products = await productRepo.productList(req);
             if (!_.isEmpty(products)) {
-                res.status(200).send({ status: 200, data: products.docs, total: products.total, limit: products.limit, page: products.page, pages: products.pages, message: 'Products fetched successfully' });
+                res.status(200).send({ status: 200, data: products.docs, total: products.total, limit: products.limit, page: products.page, pages: products.pages, message: 'User Own Products List fetched Successfully' });
             }
             else {
-                res.status(400).send({ status: 400, data: [], message: 'No Products found' });
+                res.status(400).send({ status: 400, data: [], message: 'No Products Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -647,7 +647,7 @@ class productController {
                     let electronicsUpdate = await electronicsRepo.updateById(req.body, electronicsInfo._id);
                     if (!_.isEmpty(electronicsUpdate) && electronicsUpdate._id) {
                         let productUpdate = await productRepo.updateProductById({ image: electronicsUpdate.photo, status: req.body.status }, req.params.id);
-                        res.status(200).send({ status: 200, data: electronicsUpdate, message: 'Product has been updated successfully' });
+                        res.status(200).send({ status: 200, data: electronicsUpdate, message: 'Product Updated Successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
                     }
@@ -715,7 +715,7 @@ class productController {
                     let propertyUpdate = await propertyRepo.updateById(req.body, propertyInfo._id);
                     if (!_.isEmpty(propertyUpdate) && propertyUpdate._id) {
                         let productUpdate = await productRepo.updateProductById({ image: propertyUpdate.photo, status: req.body.status }, req.params.id);
-                        res.status(200).send({ status: 200, data: propertyUpdate, message: 'Product has been updated successfully' });
+                        res.status(200).send({ status: 200, data: propertyUpdate, message: 'Product Updated Successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
                     }
@@ -768,7 +768,7 @@ class productController {
                     let jobUpdate = await jobRepo.updateById(req.body, jobDetails._id);
                     if (!_.isEmpty(jobUpdate) && jobUpdate._id) {
                         let productUpdate = await productRepo.updateProductById({ image: jobUpdate.image, status: req.body.status }, req.params.id);
-                        res.status(200).send({ status: 200, data: jobUpdate, message: 'Product has been updated successfully' });
+                        res.status(200).send({ status: 200, data: jobUpdate, message: 'Product Updated Successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
                     }
@@ -836,7 +836,7 @@ class productController {
                     let goodsUpdate = await goodsRepo.updateById(req.body, goodsInfo._id);
                     if (!_.isEmpty(goodsUpdate) && goodsUpdate._id) {
                         let productUpdate = await productRepo.updateProductById({ image: goodsUpdate.photo, status: req.body.status }, req.params.id);
-                        res.status(200).send({ status: 200, data: goodsUpdate, message: 'Product has been updated successfully' });
+                        res.status(200).send({ status: 200, data: goodsUpdate, message: 'Product Updated Successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
                     }
@@ -889,7 +889,7 @@ class productController {
                     let freelancerUpdate = await freelancerRepo.updateById(req.body, freelancerDetails._id);
                     if (!_.isEmpty(freelancerUpdate) && freelancerUpdate._id) {
                         let productUpdate = await productRepo.updateProductById({ image: freelancerUpdate.image, status: req.body.status }, req.params.id);
-                        res.status(200).send({ status: 200, data: freelancerUpdate, message: 'Product has been updated successfully' });
+                        res.status(200).send({ status: 200, data: freelancerUpdate, message: 'Product Updated Successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
                     }
@@ -942,7 +942,7 @@ class productController {
                     let lessoncourseUpdate = await educationRepo.updateById(req.body, lessoncourseDetails._id);
                     if (!_.isEmpty(lessoncourseUpdate) && lessoncourseUpdate._id) {
                         let productUpdate = await productRepo.updateProductById({ image: lessoncourseUpdate.image, status: req.body.status }, req.params.id);
-                        res.status(200).send({ status: 200, data: lessoncourseUpdate, message: 'Product has been updated successfully' });
+                        res.status(200).send({ status: 200, data: lessoncourseUpdate, message: 'Product Updated Successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
                     }
@@ -1010,13 +1010,13 @@ class productController {
                     let fashionproductUpdate = await fashionRepo.updateById(req.body, fashionproductInfo._id);
                     if (!_.isEmpty(fashionproductUpdate) && fashionproductUpdate._id) {
                         let productUpdate = await productRepo.updateProductById({ image: fashionproductUpdate.photo, status: req.body.status }, req.params.id);
-                        res.status(200).send({ status: 200, data: fashionproductUpdate, message: 'Product has been updated successfully' });
+                        res.status(200).send({ status: 200, data: fashionproductUpdate, message: 'Product Updated Successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
                     }
                 }
             } else {
-                res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -1044,7 +1044,7 @@ class productController {
                     if (!!electronics && electronics._id) {
                         let electronicsDelete = await electronicsRepo.delete(electronics._id);
                         if (!_.isEmpty(electronicsDelete) && electronicsDelete._id) {
-                            return res.status(200).send({ status: 200, data: electronicsDelete, message: 'Product has been removed successfully' });
+                            return res.status(200).send({ status: 200, data: electronicsDelete, message: 'Product Removed Successfully' });
                         }
                         else {
                             return res.status(400).send({ status: 400, message: 'Product could not be removed' });
@@ -1056,7 +1056,7 @@ class productController {
                     if (!!job && job._id) {
                         let jobDelete = await jobRepo.delete(job._id);
                         if (!_.isEmpty(jobDelete) && jobDelete._id) {
-                            return res.status(200).send({ status: 200, data: jobDelete, message: 'Product has been removed successfully' });
+                            return res.status(200).send({ status: 200, data: jobDelete, message: 'Product Removed Successfully' });
                         }
                         else {
                             return res.status(400).send({ status: 400, message: 'Product could not be removed' });
@@ -1068,7 +1068,7 @@ class productController {
                     if (!!freelancer && freelancer._id) {
                         let freelancerDelete = await freelancerRepo.delete(freelancer._id);
                         if (!_.isEmpty(freelancerDelete) && freelancerDelete._id) {
-                            return res.status(200).send({ status: 200, data: freelancerDelete, message: 'Product has been removed successfully' });
+                            return res.status(200).send({ status: 200, data: freelancerDelete, message: 'Product Removed Successfully' });
                         }
                         else {
                             return res.status(400).send({ status: 400, message: 'Product could not be removed' });
@@ -1080,7 +1080,7 @@ class productController {
                     if (!!property && property._id) {
                         let propertyDelete = await propertyRepo.delete(property._id);
                         if (!_.isEmpty(propertyDelete) && propertyDelete._id) {
-                            return res.status(200).send({ status: 200, data: propertyDelete, message: 'Product has been removed successfully' });
+                            return res.status(200).send({ status: 200, data: propertyDelete, message: 'Product Removed Successfully' });
                         }
                         else {
                             return res.status(400).send({ status: 400, message: 'Product could not be removed' });
@@ -1092,7 +1092,7 @@ class productController {
                     if (!!fashion && fashion._id) {
                         let fashionDelete = await fashionRepo.delete(fashion._id);
                         if (!_.isEmpty(fashionDelete) && fashionDelete._id) {
-                            return res.status(200).send({ status: 200, data: fashionDelete, message: 'Product has been removed successfully' });
+                            return res.status(200).send({ status: 200, data: fashionDelete, message: 'Product Removed Successfully' });
                         }
                         else {
                             return res.status(400).send({ status: 400, message: 'Product could not be removed' });
@@ -1104,7 +1104,7 @@ class productController {
                     if (!!goods && goods._id) {
                         let goodsDelete = await goodsRepo.delete(goods._id);
                         if (!_.isEmpty(goodsDelete) && goodsDelete._id) {
-                            return res.status(200).send({ status: 200, data: goodsDelete, message: 'Product has been removed successfully' });
+                            return res.status(200).send({ status: 200, data: goodsDelete, message: 'Product Removed Successfully' });
                         }
                         else {
                             return res.status(400).send({ status: 400, message: 'Product could not be removed' });
@@ -1116,22 +1116,23 @@ class productController {
                     if (!!lesson_course && lesson_course._id) {
                         let lessonDelete = await educationRepo.delete(lesson_course._id);
                         if (!_.isEmpty(lessonDelete) && lessonDelete._id) {
-                            return res.status(200).send({ status: 200, data: lessonDelete, message: 'Product has been removed successfully' });
+                            return res.status(200).send({ status: 200, data: lessonDelete, message: 'Product Removed Successfully' });
                         }
                         else {
                             return res.status(400).send({ status: 400, message: 'Product could not be removed' });
                         }
                     }
                 }
-                return res.status(200).send({ status: 200, data: productRemove, message: 'Product has been removed successfully' });
+                return res.status(200).send({ status: 200, data: productRemove, message: 'Product Removed Successfully' });
             }
             else {
-                return res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                return res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
             }
         } catch (e) {
             return res.status(500).send({ status: 500, message: e.message });
         }
     };
+
     /** User post delete */
     async userProductDelete(req, res) {
         try {
@@ -1141,13 +1142,13 @@ class productController {
             if (!_.isEmpty(productInfo) && productInfo._id) {
 
                 if (!productInfo.userId.equals(req.user._id) && req.user._id.toString() !== productInfo.userId.toString()) {
-                    return res.status(401).send({ status: 401, message: "You are not authorized to delete this post" });
+                    return res.status(401).send({ status: 401, message: "You are not authorized to delete this Product" });
                 }
 
                 let productRemove = await productRepo.delete(product_id);
 
                 if (_.isEmpty(productRemove) || !productRemove) {
-                    return res.status(400).send({ status: 400, message: 'Product could not be removed' });
+                    return res.status(400).send({ status: 400, message: 'Product could not be Removed' });
                 }
 
                 let categoryInfo = await Category.findOne({ _id: productInfo.category_id });
@@ -1159,7 +1160,7 @@ class productController {
                     if (!!electronics && electronics._id) {
                         let electronicsDelete = await electronicsRepo.delete(electronics._id);
                         if (!_.isEmpty(electronicsDelete) && electronicsDelete._id) {
-                            return res.status(200).send({ status: 200, data: electronicsDelete, message: 'Product has been removed successfully' });
+                            return res.status(200).send({ status: 200, data: electronicsDelete, message: 'Product Removed Successfully' });
                         }
                         else {
                             return res.status(400).send({ status: 400, message: 'Product could not be removed' });
@@ -1171,7 +1172,7 @@ class productController {
                     if (!!job && job._id) {
                         let jobDelete = await jobRepo.delete(job._id);
                         if (!_.isEmpty(jobDelete) && jobDelete._id) {
-                            return res.status(200).send({ status: 200, data: jobDelete, message: 'Product has been removed successfully' });
+                            return res.status(200).send({ status: 200, data: jobDelete, message: 'Product Removed Successfully' });
                         }
                         else {
                             return res.status(400).send({ status: 400, message: 'Product could not be removed' });
@@ -1183,7 +1184,7 @@ class productController {
                     if (!!freelancer && freelancer._id) {
                         let freelancerDelete = await freelancerRepo.delete(freelancer._id);
                         if (!_.isEmpty(freelancerDelete) && freelancerDelete._id) {
-                            return res.status(200).send({ status: 200, data: freelancerDelete, message: 'Product has been removed successfully' });
+                            return res.status(200).send({ status: 200, data: freelancerDelete, message: 'Product Removed Successfully' });
                         }
                         else {
                             return res.status(400).send({ status: 400, message: 'Product could not be removed' });
@@ -1195,7 +1196,7 @@ class productController {
                     if (!!property && property._id) {
                         let propertyDelete = await propertyRepo.delete(property._id);
                         if (!_.isEmpty(propertyDelete) && propertyDelete._id) {
-                            return res.status(200).send({ status: 200, data: propertyDelete, message: 'Product has been removed successfully' });
+                            return res.status(200).send({ status: 200, data: propertyDelete, message: 'Product Removed Successfully' });
                         }
                         else {
                             return res.status(400).send({ status: 400, message: 'Product could not be removed' });
@@ -1207,7 +1208,7 @@ class productController {
                     if (!!fashion && fashion._id) {
                         let fashionDelete = await fashionRepo.delete(fashion._id);
                         if (!_.isEmpty(fashionDelete) && fashionDelete._id) {
-                            return res.status(200).send({ status: 200, data: fashionDelete, message: 'Product has been removed successfully' });
+                            return res.status(200).send({ status: 200, data: fashionDelete, message: 'Product Removed Successfully' });
                         }
                         else {
                             return res.status(400).send({ status: 400, message: 'Product could not be removed' });
@@ -1219,7 +1220,7 @@ class productController {
                     if (!!goods && goods._id) {
                         let goodsDelete = await goodsRepo.delete(goods._id);
                         if (!_.isEmpty(goodsDelete) && goodsDelete._id) {
-                            return res.status(200).send({ status: 200, data: goodsDelete, message: 'Product has been removed successfully' });
+                            return res.status(200).send({ status: 200, data: goodsDelete, message: 'Product Removed Successfully' });
                         }
                         else {
                             return res.status(400).send({ status: 400, message: 'Product could not be removed' });
@@ -1231,17 +1232,17 @@ class productController {
                     if (!!lesson_course && lesson_course._id) {
                         let lessonDelete = await educationRepo.delete(lesson_course._id);
                         if (!_.isEmpty(lessonDelete) && lessonDelete._id) {
-                            return res.status(200).send({ status: 200, data: lessonDelete, message: 'Product has been removed successfully' });
+                            return res.status(200).send({ status: 200, data: lessonDelete, message: 'Product Removed Successfully' });
                         }
                         else {
                             return res.status(400).send({ status: 400, message: 'Product could not be removed' });
                         }
                     }
                 }
-                return res.status(200).send({ status: 200, data: productRemove, message: 'Product has been removed successfully' });
+                return res.status(200).send({ status: 200, data: productRemove, message: 'Product Removed Successfully' });
             }
             else {
-                return res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                return res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
             }
 
         } catch (e) {
@@ -1256,13 +1257,13 @@ class productController {
             if (!_.isEmpty(productData) && productData._id) {
                 let statusUpdate = await productRepo.updateProductById(req.body, productData._id);
                 if (!_.isEmpty(statusUpdate) && statusUpdate._id) {
-                    res.status(200).send({ status: 200, data: statusUpdate, message: 'Product status has been updated successfully' });
+                    res.status(200).send({ status: 200, data: statusUpdate, message: 'Product Status Updated Successfully' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Product status could not be updated' });
+                    res.status(400).send({ status: 400, data: {}, message: 'Product Status could not be updated' });
                 }
             } else {
-                res.status(400).send({ status: 400, data: {}, message: 'Product not found!' });
+                res.status(400).send({ status: 400, data: {}, message: 'Product Not Found!' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -1530,7 +1531,7 @@ class productController {
                     let electronicsUpdate = await electronicsRepo.updateById(req.body, electronicsInfo._id);
                     if (!_.isEmpty(electronicsUpdate) && electronicsUpdate._id) {
                         let productUpdate = await productRepo.updateProductById({ image: electronicsUpdate.photo }, req.params.id);
-                        res.status(200).send({ status: 200, data: electronicsUpdate, message: 'Product has been updated successfully' });
+                        res.status(200).send({ status: 200, data: electronicsUpdate, message: 'Product Updated Successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
                     }
@@ -1598,7 +1599,7 @@ class productController {
                     let propertyUpdate = await propertyRepo.updateById(req.body, propertyInfo._id);
                     if (!_.isEmpty(propertyUpdate) && propertyUpdate._id) {
                         let productUpdate = await productRepo.updateProductById({ image: propertyUpdate.photo }, req.params.id);
-                        res.status(200).send({ status: 200, data: propertyUpdate, message: 'Product has been updated successfully' });
+                        res.status(200).send({ status: 200, data: propertyUpdate, message: 'Product Updated Successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
                     }
@@ -1651,7 +1652,7 @@ class productController {
                     let jobUpdate = await jobRepo.updateById(req.body, jobDetails._id);
                     if (!_.isEmpty(jobUpdate) && jobUpdate._id) {
                         let productUpdate = await productRepo.updateProductById({ image: jobUpdate.image }, req.params.id);
-                        res.status(200).send({ status: 200, data: jobUpdate, message: 'Product has been updated successfully' });
+                        res.status(200).send({ status: 200, data: jobUpdate, message: 'Product Updated Successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
                     }
@@ -1719,7 +1720,7 @@ class productController {
                     let goodsUpdate = await goodsRepo.updateById(req.body, goodsInfo._id);
                     if (!_.isEmpty(goodsUpdate) && goodsUpdate._id) {
                         let productUpdate = await productRepo.updateProductById({ image: goodsUpdate.photo }, req.params.id);
-                        res.status(200).send({ status: 200, data: goodsUpdate, message: 'Product has been updated successfully' });
+                        res.status(200).send({ status: 200, data: goodsUpdate, message: 'Product Updated Successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
                     }
@@ -1772,7 +1773,7 @@ class productController {
                     let freelancerUpdate = await freelancerRepo.updateById(req.body, freelancerDetails._id);
                     if (!_.isEmpty(freelancerUpdate) && freelancerUpdate._id) {
                         let productUpdate = await productRepo.updateProductById({ image: freelancerUpdate.image }, req.params.id);
-                        res.status(200).send({ status: 200, data: freelancerUpdate, message: 'Product has been updated successfully' });
+                        res.status(200).send({ status: 200, data: freelancerUpdate, message: 'Product Updated Successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
                     }
@@ -1825,7 +1826,7 @@ class productController {
                     let lessoncourseUpdate = await educationRepo.updateById(req.body, lessoncourseDetails._id);
                     if (!_.isEmpty(lessoncourseUpdate) && lessoncourseUpdate._id) {
                         let productUpdate = await productRepo.updateProductById({ image: lessoncourseUpdate.image }, req.params.id);
-                        res.status(200).send({ status: 200, data: lessoncourseUpdate, message: 'Product has been updated successfully' });
+                        res.status(200).send({ status: 200, data: lessoncourseUpdate, message: 'Product Updated Successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
                     }
@@ -1893,13 +1894,13 @@ class productController {
                     let fashionproductUpdate = await fashionRepo.updateById(req.body, fashionproductInfo._id);
                     if (!_.isEmpty(fashionproductUpdate) && fashionproductUpdate._id) {
                         let productUpdate = await productRepo.updateProductById({ image: fashionproductUpdate.photo }, req.params.id);
-                        res.status(200).send({ status: 200, data: fashionproductUpdate, message: 'Product has been updated successfully' });
+                        res.status(200).send({ status: 200, data: fashionproductUpdate, message: 'Product Updated Successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
                     }
                 }
             } else {
-                res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
