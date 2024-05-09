@@ -12,13 +12,13 @@ class userController {
     async registration(req, res) {
         try {
             if (!_.has(req.body, 'name')) {
-                res.status(400).send({ status: 400, data: {}, message: 'Name is required' });
+                res.status(400).send({ status: 400, data: {}, message: 'Name is Required' });
             }
             else if (!_.has(req.body, 'email')) {
-                res.status(400).send({ status: 400, data: {}, message: 'Email is required' });
+                res.status(400).send({ status: 400, data: {}, message: 'Email is Required' });
             }
             else if (!_.has(req.body, 'password')) {
-                res.status(400).send({ status: 400, data: {}, message: 'Password is required' });
+                res.status(400).send({ status: 400, data: {}, message: 'Password is Required' });
             }
             else {
                 const userExist = await User.findOne({ email: req.body.email });
@@ -48,10 +48,10 @@ class userController {
     async login(req, res) {
         try {
             if (!_.has(req.body, 'email')) {
-                res.status(400).send({ status: 400, data: {}, message: 'Email is required' });
+                res.status(400).send({ status: 400, data: {}, message: 'Email is Required' });
             }
             else if (!_.has(req.body, 'password')) {
-                res.status(400).send({ status: 400, data: {}, message: 'Password is required' });
+                res.status(400).send({ status: 400, data: {}, message: 'Password is Required' });
             }
             else {
                 let password = req.body.password;
@@ -60,7 +60,7 @@ class userController {
                 if (!_.isEmpty(userDetails)) {
                     let isPasswordMatched = await bcrypt.compareSync(password, userDetails.password);
                     if (!isPasswordMatched) {
-                        res.status(400).send({ status: 400, data: {}, message: 'Password not matched' });
+                        res.status(400).send({ status: 400, data: {}, message: 'Password Not Matched' });
                     }
                     else {
                         let token = jsonwebtoken.sign({ email: userDetails.email, id: userDetails._id }, process.env.JWTSECERT, { expiresIn: process.env.JWTTIME });
@@ -80,10 +80,10 @@ class userController {
         try {
             let userInfo = await userRepo.getUserDetails(req);
             if (!_.isEmpty(userInfo) && userInfo._id) {
-                res.status(200).send({ status: 200, data: userInfo, message: 'Profile details fetched successfully' });
+                res.status(200).send({ status: 200, data: userInfo, message: 'Profile Details fetched Successfully' });
             }
             else {
-                res.status(400).send({ status: 400, message: 'User not found' });
+                res.status(400).send({ status: 400, message: 'User Not Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -104,7 +104,7 @@ class userController {
                 from: process.env.FROM,
                 to: req.body.email,
                 subject: "Forget Password",
-                html: `<h1>Your Password Reset Link - https://www.abc.com</h1> <br />`,
+                html: `<h1>Your Password Reset Link - http://13.201.212.185:4200/</h1> <br />`,
             }
 
             transporter.sendMail(mailOptions, (error, info) => {
@@ -134,10 +134,10 @@ class userController {
 
             let updateUser = await userRepo.updateById(req.body, req.user._id);
             if (!_.isEmpty(updateUser) && updateUser._id) {
-                res.status(200).send({ status: 200, data: updateUser, message: 'Profile details updated successfully' });
+                res.status(200).send({ status: 200, data: updateUser, message: 'Profile Details Updated Successfully' });
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'Profile details could not be updated' });
+                res.status(400).send({ status: 400, data: {}, message: 'Profile Details could not be Updated' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -153,7 +153,7 @@ class userController {
             req.body.password = userInfo.generateHash(req.body.newPassword);
             let updatePassword = await userRepo.updateById(req.body, req.user._id);
             if (!_.isEmpty(updatePassword)) {
-                res.status(200).send({ status: 200, data: updatePassword, message: 'Password updated successfully' });
+                res.status(200).send({ status: 200, data: updatePassword, message: 'Password Updated Successfully' });
             }
             else {
                 res.status(400).send({ status: 400, message: 'Password could not be updated' });
@@ -172,7 +172,7 @@ class userController {
                 const token = jsonwebtoken.sign(payload, process.env.JWTSECERT, { expiresIn: 0 });
                 res.status(200).send({ status: 200, isLoggedIn: false, message: 'Logout Successfully' });
             } else {
-                res.status(400).send({ status: 400, message: 'User not found' });
+                res.status(400).send({ status: 400, message: 'User Not Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -186,9 +186,9 @@ class userController {
                 if (checkUser.social_id === req.body.social_id) {
                     const payload = { id: checkUser._id };
                     const token = jsonwebtoken.sign(payload, process.env.JWTSECERT, { expiresIn: 86400 });
-                    res.status(200).send({ status: 200, data: checkUser, token: token, message: "User have successfully logged in" });
+                    res.status(200).send({ status: 200, data: checkUser, token: token, message: "Login Successful" });
                 } else {
-                    res.status(400).send({ status: 400, message: 'User already registered' });
+                    res.status(400).send({ status: 400, message: 'You Already Registered' });
                 }
             } else {
                 req.body.status = 'Active';
@@ -197,7 +197,7 @@ class userController {
                 let userData = await User.create(req.body);
                 const payload = { id: userData._id };
                 const token = jsonwebtoken.sign(payload, process.env.JWTSECERT, { expiresIn: 86400 });
-                res.status(200).send({ status: 200, data: userData, token: token, message: "User have successfully registered" });
+                res.status(200).send({ status: 200, data: userData, token: token, message: "Registered Successfully" });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -208,10 +208,10 @@ class userController {
         try {
             let allUsers = await User.find();
             if (!_.isEmpty(allUsers)) {
-                res.send({ status: 200, data: allUsers, message: 'Users list has been fetched successfully' });
+                res.send({ status: 200, data: allUsers, message: 'Users List fetched Successfully' });
             }
             else {
-                res.send({ status: 400, data: {}, message: 'No Users found' });
+                res.send({ status: 400, data: {}, message: 'No Users Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -221,7 +221,7 @@ class userController {
     async userBioAddressUpdate(req, res) {
         try {
             const userUpdate = await User.updateMany({}, { $set: { bio: '', address: '' } });
-            res.status(200).send({ status: 200, data: userUpdate, message: 'User bio added updated successfully' });
+            res.status(200).send({ status: 200, data: userUpdate, message: 'User Bio updated successfully' });
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
         }
