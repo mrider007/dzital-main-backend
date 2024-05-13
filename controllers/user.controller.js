@@ -6,6 +6,8 @@ const cloudinary = require('cloudinary');
 const nodemailer = require('nodemailer');
 const Membership_Plan = require('../models/membership_plan.model');
 const axios = require('axios');
+const { ChatTokenBuilder } = require('agora-token');
+
 class userController {
     constructor() { }
 
@@ -251,6 +253,63 @@ class userController {
             console.log('Agora Token:', agoraToken);
         } catch (e) {
             res.send({ message: e.message });
+        }
+    };
+
+    async createAgoraAppToken(req, res) {
+        try {
+            const agoraAppId = process.env.AGORA_APP_ID;
+            const agoraAppCertificate = process.env.AGORA_APP_PROJECT_ID;
+            let expireTimeInSeconds = req.body.expiretime || 3600; // Default expire time if not provided
+
+            // Generate the token
+            const token = ChatTokenBuilder.buildAppToken(agoraAppId, agoraAppCertificate, expireTimeInSeconds);
+
+            if (token) {
+                res.status(200).json({
+                    status: 200,
+                    message: 'Token generated successfully',
+                    data: token,
+                    token_type: 'Bearer',
+                    exptimeinsec: expireTimeInSeconds
+                });
+            } else {
+                res.status(500).json({
+                    status: 500,
+                    message: 'Failed to generate token',
+                    data: null,
+                });
+            }
+        } catch (error) {
+            res.status(500).send({ status: 500, message: error.message });
+        }
+    };
+
+    async createAgoraChatToken(req, res) {
+        try {
+            const userId = req.user._id
+            const agoraAppId = process.env.AGORA_APP_ID;
+            const agoraAppCertificate = process.env.AGORA_APP_PROJECT_ID;
+            const tokenExpirationInSecond = 36000;
+
+            const token = ChatTokenBuilder.buildUserToken(agoraAppId, agoraAppCertificate, userId, tokenExpirationInSecond);
+
+            if (token) {
+                res.status(200).json({
+                    status: 200,
+                    message: 'Token generated successfully',
+                    data: token,
+                    exptimeinsec: tokenExpirationInSecond
+                });
+            } else {
+                res.status(500).json({
+                    status: 500,
+                    message: 'Failed to generate token',
+                    data: null
+                });
+            }
+        } catch (error) {
+            res.status(500).send({ status: 500, message: error.message });
         }
     };
 

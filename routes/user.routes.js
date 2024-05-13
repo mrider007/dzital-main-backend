@@ -31,6 +31,7 @@ const uploadFile = multer({ storage: Storage });
 router.get('/profile/details', request_param.any(), Authentication.Authenticate, UserController.profileDetails);
 router.get('/logout', request_param.any(), Authentication.Authenticate, UserController.logout);
 router.get('/user/list', Authentication.AuthenticateAdmin, UserController.userList);
+router.get('/user/chat-token/agora', UserController.fetchAgoraToken);
 router.post('/register', request_param.any(), UserController.registration);
 router.post('/login', request_param.any(), UserController.login);
 router.post('/social-login', request_param.any(), UserController.socialSignup);
@@ -39,6 +40,7 @@ router.post('/change-password', request_param.any(), Authentication.Authenticate
 router.post('/social-login', request_param.any(), UserController.socialSignup);
 router.post('/user/bio/address/update', UserController.userBioAddressUpdate);
 router.post('/user/forget-password', request_param.any(), UserController.forgetPassword);
-router.get('/user/chat-token/agora', UserController.fetchAgoraToken);
+router.post('/create/app/token/create', UserController.createAgoraAppToken)
+router.post('/chat/user/token/create', Authentication.Authenticate, UserController.createAgoraChatToken)
 
 module.exports = router;
