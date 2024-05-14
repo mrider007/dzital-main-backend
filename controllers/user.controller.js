@@ -123,7 +123,7 @@ class userController {
                 from: process.env.FROM,
                 to: req.body.email,
                 subject: "Forget Password",
-                html: `<h1>Your Password Reset Link - https://www.abc.com</h1> <br />`,
+                html: `<h1>Your Password Reset Link - http://13.201.212.185:4200/</h1> <br />`,
             }
 
             transporter.sendMail(mailOptions, (error, info) => {
