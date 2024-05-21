@@ -219,7 +219,7 @@ class userController {
                 if (agora_token) {
                     const body = {
                         username: userData._id,
-                        password: userData.password,
+                        password: userData?.password || 123456,
                         nickname: userData.name
                     }
                     try {
