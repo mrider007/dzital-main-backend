@@ -24,8 +24,8 @@ class RoomController {
                 return res.status(400).send({ status: 400, message: "Invalid User Id" });
             }
 
-            const token = RtcTokenBuilder.buildTokenWithUid(agoraAppId, agoraAppCertificate, channelName, userId, role, tokenExpirationInSeconds, privilegeExpirationInSeconds)
-
+            //const token = RtcTokenBuilder.buildTokenWithUid(agoraAppId, agoraAppCertificate, channelName, userId, role, tokenExpirationInSeconds, privilegeExpirationInSeconds)
+            const token = RtcTokenBuilder.buildTokenWithUid(agoraAppId, agoraAppCertificate, channelName, 0, role, tokenExpirationInSeconds, privilegeExpirationInSeconds )
             if (token) {
                 const newRoom = await RoomModel.create({ channelName, creator: userId, room_type, token, members });
                 res.status(200).json({ status: 200, message: 'Token Generated Successfully', data: newRoom, exptimeinsec: tokenExpirationInSeconds });
