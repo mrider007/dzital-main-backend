@@ -72,6 +72,7 @@ const attribute_option = require('./routes/attribute_option.routes');
 const bid_history = require('./routes/bid_history.routes');
 const order = require('./routes/order.routes');
 const job_apply = require('./routes/job_apply.routes');
+const room = require('./routes/room.routes');
 
 global.BASE_URL = `http://${process.env.HOST}:${getPort}`;
 
@@ -111,6 +112,7 @@ app.use('/api', bid_history);
 app.use('/api', product_cart);
 app.use('/api', order);
 app.use('/api', job_apply);
+app.use('/api', room);
 
 app.use('/uploads', express.static('uploads'));
 
