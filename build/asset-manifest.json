@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.cbe58959.css",
-    "main.js": "/static/js/main.2a112c7a.js",
+    "main.css": "/static/css/main.daa470be.css",
+    "main.js": "/static/js/main.79276c3e.js",
     "static/media/Inter-italic.var.woff2?v=3.19": "/static/media/Inter-italic.var.30807be7abc48ba8c73c.woff2",
     "static/media/no-poster.png": "/static/media/no-poster.de8cb0a7786e6bf2b2de.png",
     "static/media/Inter-roman.var.woff2?v=3.19": "/static/media/Inter-roman.var.ba4caefcdf5b36b438db.woff2",
@@ -12,11 +12,11 @@
     "static/media/user-Profil-icon.svg": "/static/media/user-Profil-icon.1799ea636bdd9de53cdd6b5b76e2d766.svg",
     "static/media/white-search-icon.svg": "/static/media/white-search-icon.da1f0489fa7377e5ca7b2d1ee0b4f2aa.svg",
     "static/media/map-marker-icon.svg": "/static/media/map-marker-icon.fa9e8102c6f1b6ed0772a0cd64f7f1b5.svg",
-    "main.cbe58959.css.map": "/static/css/main.cbe58959.css.map",
-    "main.2a112c7a.js.map": "/static/js/main.2a112c7a.js.map"
+    "main.daa470be.css.map": "/static/css/main.daa470be.css.map",
+    "main.79276c3e.js.map": "/static/js/main.79276c3e.js.map"
   },
   "entrypoints": [
-    "static/css/main.cbe58959.css",
-    "static/js/main.2a112c7a.js"
+    "static/css/main.daa470be.css",
+    "static/js/main.79276c3e.js"
   ]
 }
