@@ -17,11 +17,8 @@ class MeetingController {
     // Endpoint to create a Zoom meeting
     async createMeeting(req, res) {
         try {
-            //const token = this.generateZoomToken(); // Call the token generation function
-
+            
             const token = process.env.TOKEN;
-
-            //console.log('Generated Token:', token);
 
             const response = await axios.post('https://api.zoom.us/v2/users/me/meetings', {
                 topic: req.body.topic,
@@ -47,9 +44,6 @@ class MeetingController {
                     'Content-Type': 'application/json'
                 }
             });
-
-            //console.log('Request Body:', req.body);
-            //console.log('Zoom API Response:', response.data);
 
             res.json(response.data);
         } catch (error) {
