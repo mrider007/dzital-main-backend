@@ -48,8 +48,8 @@ class MeetingController {
                 }
             });
 
-            console.log('Request Body:', req.body);
-            console.log('Zoom API Response:', response.data);
+            //console.log('Request Body:', req.body);
+            //console.log('Zoom API Response:', response.data);
 
             res.json(response.data);
         } catch (error) {
