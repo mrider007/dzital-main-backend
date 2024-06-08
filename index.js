@@ -51,7 +51,7 @@ async function createMeeting(topic, start_time, type, duration, timezone, agenda
 }
 
 (async () => {
-    console.log(await getMeetings());
-    console.log(await createMeeting('CodingWithAdo new meeting', '2023-11-20T10:00:00', 2, 45, 'UTC', 'Team meeting for future videos'));
-    console.log(await getMeetings());
+    console.log('pppp', await getMeetings());
+    console.log('tttt', await createMeeting('General app 77 new meeting', '2024-06-08T12:00:00', 2, 45, 'UTC', 'Team meeting for future videos'));
+    console.log('xxxxx', await getMeetings());
 })()
