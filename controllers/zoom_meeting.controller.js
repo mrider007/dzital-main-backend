@@ -21,10 +21,10 @@ class MeetingController {
 
             const token = process.env.TOKEN;
 
-            console.log('Generated Token:', token);
+            //console.log('Generated Token:', token);
 
             const response = await axios.post('https://api.zoom.us/v2/users/me/meetings', {
-                topic: req.body.topic, // Corrected property
+                topic: req.body.topic,
                 type: 2, // Scheduled meeting
                 start_time: req.body.start_time,
                 duration: req.body.duration,
