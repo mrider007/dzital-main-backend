@@ -2,7 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/dbconfig');
 const { join, resolve } = require('path');
-const http = require('http');
+// const http = require('http');
+const https = require('https');
+const fs = require('fs')
 _ = require("underscore");
 const dotenv = require("dotenv");
 const path = require('path');
@@ -75,6 +77,12 @@ const job_apply = require('./routes/job_apply.routes');
 const room = require('./routes/room.routes');
 const zoom_meeting = require('./routes/zoom_meeting.routes');
 
+const options = {
+    key: fs.readFileSync('./config/private.key'),
+    cert: fs.readFileSync('./config/certificate.crt'),
+    ca: fs.readFileSync('./config/ca_bundle.crt')
+};
+
 global.BASE_URL = `http://${process.env.HOST}:${getPort}`;
 
 app.use('/api', user);
@@ -118,6 +126,8 @@ app.use('/api', zoom_meeting);
 
 app.use('/uploads', express.static('uploads'));
 
-const server = http.createServer(app);
+// const server = http.createServer(app);
+const server = https.createServer(options, app);
+
 server.listen(port);
 console.log(`Server is running on ${(global.BASE_URL && global.BASE_URL !== '') ? global.BASE_URL : `http://${process.env.HOST}:${getPort}`}`);
