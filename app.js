@@ -26,6 +26,8 @@ app.get('/admin', (req, res) => {
 
 app.use(cors());
 
+
+
 global.appRoot = join(__dirname, '/');
 config = require(resolve(join(__dirname, '/config', 'index')));
 global.project_name = config.app.project_name;
