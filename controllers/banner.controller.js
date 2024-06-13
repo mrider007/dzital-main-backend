@@ -49,7 +49,7 @@ class BannerController {
         try {
             const bannerInfo = await BannerRepo.list(req);
             if (!_.isEmpty(bannerInfo)) {
-                res.status(200).send({ status: 200, data: bannerInfo, message: "Admin Banner List Fetched Successfully" });
+                res.status(200).send({ status: 200, data: bannerInfo.docs, total: bannerInfo.total, limit: bannerInfo.limit, page: bannerInfo.page, pages: bannerInfo.pages, message: "Admin Banner List Fetched Successfully" });
             } else {
                 res.status(400).send({ status: 400, data: [], message: "No Banner Found" });
             }
