@@ -2,6 +2,7 @@ const express = require('express');
 const Authentication = require('../middleware/authentication');
 const router = express.Router();
 const multer = require('multer');
+const request_param = multer();
 const fs = require('fs');
 const cloudinary = require('cloudinary');
 const bannerController = require('../controllers/banner.controller');
@@ -27,8 +28,9 @@ const Storage = multer.diskStorage({
 const uploadFile = multer({ storage: Storage });
 
 router.get('/banner/banner-list', bannerController.getBanners)
+router.post('/admin/banner/list', request_param.any(), Authentication.AuthenticateAdmin, bannerController.adminBannerList);
 router.post('/banner/add', uploadFile.any(), Authentication.AuthenticateAdmin, bannerController.newBanner)
-router.put('/banner/update/:id', Authentication.AuthenticateAdmin, bannerController.updateBanner)
+router.put('/banner/update/:id', request_param.any(), Authentication.AuthenticateAdmin, bannerController.updateBanner)
 router.delete('/banner/delete/:id', Authentication.AuthenticateAdmin, bannerController.deleteBanner)
 
 module.exports = router;

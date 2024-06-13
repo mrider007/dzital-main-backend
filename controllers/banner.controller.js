@@ -25,21 +25,36 @@ class BannerController {
             else {
                 res.status(400).send({ status: 400, message: "Banner could not be saved" });
             }
-        } catch (error) {
-            res.status(500).send({ status: 500, message: error.message });
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
+    /** Frontend Banner List */
     async getBanners(req, res) {
         try {
-            const data = await BannerRepo.getAll()
-            if (!_.isEmpty(data) && data.length > 0) {
-                res.status(200).send({ status: 200, data: data, message: "Banner List Fetched Successfully" });
+            const bannerList = await BannerRepo.getAll()
+            if (!_.isEmpty(bannerList)) {
+                res.status(200).send({ status: 200, data: bannerList, message: "Banner List Fetched Successfully" });
             } else {
                 res.status(400).send({ status: 400, data: [], message: "No Banner Found" });
             }
-        } catch (error) {
-            res.status(500).send({ status: 500, message: error.message });
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+
+    /** Admin Banner List */
+    async adminBannerList(req, res) {
+        try {
+            const bannerInfo = await BannerRepo.list(req);
+            if (!_.isEmpty(bannerInfo)) {
+                res.status(200).send({ status: 200, data: bannerInfo, message: "Admin Banner List Fetched Successfully" });
+            } else {
+                res.status(400).send({ status: 400, data: [], message: "No Banner Found" });
+            }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -51,8 +66,8 @@ class BannerController {
             } else {
                 res.status(400).send({ status: 400, message: "Banner could not be updated" });
             }
-        } catch (error) {
-            res.status(500).send({ status: 500, message: error.message });
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 
@@ -64,8 +79,8 @@ class BannerController {
             } else {
                 res.status(400).send({ status: 400, message: "Banner could not be deleted" });
             }
-        } catch (error) {
-            res.status(500).send({ status: 500, message: error.message })
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message })
         }
     };
 }

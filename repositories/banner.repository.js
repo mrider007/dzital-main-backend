@@ -1,7 +1,56 @@
 const Banner = require("../models/banner.model");
 
 const BannerRepo = {
-    
+
+    list: async (req) => {
+        try {
+            var conditions = {};
+            var and_clauses = [];
+
+            and_clauses.push({});
+
+            let key = req.body.keyword_search;
+
+            if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
+                and_clauses.push({
+                    $or: [
+                        { 'title': { $regex: (req.body.keyword_search).trim(), $options: 'i' } },
+                        { 'title2': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
+                    ]
+                });
+
+                // Check if keyword_search has length greater than 0
+                if (key.length > 0) {
+                    // Disable req.body.page and req.body.limit
+                    req.body.page = undefined;
+                    req.body.limit = undefined;
+                }
+            }
+
+            conditions['$and'] = and_clauses;
+
+            let banners = Banner.aggregate([
+                { $match: conditions },
+                { $sort: { _id: -1 } }
+            ]);
+            if (!banners) {
+                return null;
+            }
+
+            var options = {};
+            if (req.body.page !== undefined) {
+                options.page = req.body.page;
+            }
+            if (req.body.limit !== undefined) {
+                options.limit = req.body.limit;
+            }
+            let bannerList = await Banner.aggregatePaginate(banners, options);
+            return bannerList;
+        } catch (e) {
+            throw e;
+        }
+    },
+
     getAll: async () => {
         try {
             const data = await Banner.aggregate([
