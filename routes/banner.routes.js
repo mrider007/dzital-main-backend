@@ -26,7 +26,7 @@ const Storage = multer.diskStorage({
 
 const uploadFile = multer({ storage: Storage });
 
-router.get('/banner/banner-list', Authentication.AuthenticateAdmin, bannerController.getBanners)
+router.get('/banner/banner-list', bannerController.getBanners)
 router.post('/banner/add', uploadFile.any(), Authentication.AuthenticateAdmin, bannerController.newBanner)
 router.put('/banner/update/:id', Authentication.AuthenticateAdmin, bannerController.updateBanner)
 router.delete('/banner/delete/:id', Authentication.AuthenticateAdmin, bannerController.deleteBanner)
