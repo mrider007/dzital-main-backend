@@ -80,8 +80,19 @@ const BannerRepo = {
                                 $limit: 5
                             }
                         ],
+                        as: "sub_category_details"
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "service_categories",
+                        localField: 'category_id',
+                        foreignField: '_id',
                         as: "category_details"
                     }
+                },
+                {
+                    $unwind: '$category_details'
                 },
                 {
                     $project: {
@@ -91,7 +102,8 @@ const BannerRepo = {
                         description: 1,
                         status: 1,
                         category_id: 1,
-                        sub_category: '$category_details',
+                        sub_category: '$sub_category_details',
+                        category_details: '$category_details',
                         image: 1,
                         primary_color: 1,
                         secondary_color: 1,
