@@ -26,8 +26,6 @@ app.get('/admin', (req, res) => {
 
 app.use(cors());
 
-
-
 global.appRoot = join(__dirname, '/');
 config = require(resolve(join(__dirname, '/config', 'index')));
 global.project_name = config.app.project_name;
@@ -76,6 +74,7 @@ const order = require('./routes/order.routes');
 const job_apply = require('./routes/job_apply.routes');
 const room = require('./routes/room.routes');
 const zoom_meeting = require('./routes/zoom_meeting.routes');
+const Banner = require('./routes/banner.routes');
 
 global.BASE_URL = `http://${process.env.HOST}:${getPort}`;
 
@@ -117,6 +116,7 @@ app.use('/api', order);
 app.use('/api', job_apply);
 app.use('/api', room);
 app.use('/api', zoom_meeting);
+app.use('/api', Banner);
 
 app.use('/uploads', express.static('uploads'));
 
