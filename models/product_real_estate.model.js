@@ -12,6 +12,8 @@ const ProductRealEstateSchema = new Schema({
     user_id: { type: Schema.Types.ObjectId, default: null, ref: 'User', index: true },
     category_id: { type: Schema.Types.ObjectId, ref: 'service_category', index: true },
     sub_category_id: { type: Schema.Types.ObjectId, ref: 'service_category', default: null, index: true },
+    lat: { type: Number, default: 0 },
+    lng: { type: Number, default: 0 },
     product_id: { type: Schema.Types.ObjectId, ref: 'Product', index: true },
     status: { type: String, index: true, trim: true }
 }, { timestamps: true, versionKey: false });
