@@ -47,8 +47,22 @@ const BannerRepo = {
                         ],
                         as: "category_details"
                     }
-                }, 
+                },
                 { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: '$_id',
+                        title: { $first: '$title' },
+                        primary_color: { $first: '$primary_color' },
+                        secondary_color: { $first: '$secondary_color' },
+                        image: { $first: '$image' },
+                        status: { $first: '$status' },
+                        category_id: { $first: '$category_id' },
+                        category_name: { $first: '$category_details.title' },
+                        createdAt: { $first: '$createdAt' },
+                        updatedAt: { $first: '$updatedAt' }
+                    }
+                },
                 { $match: conditions },
                 { $sort: { _id: -1 } }
             ]);
