@@ -1,55 +1,36 @@
-const axios = require('axios');
-const jwt = require('jsonwebtoken');
+const ZoomToken = require('../models/zoom_token.model');
+const meeting_service = require('../services/meeting_service');
 
 class MeetingController {
     constructor() {
         this.createMeeting = this.createMeeting.bind(this);
     }
 
-    generateZoomToken() {
-        const payload = {
-            iss: process.env.ZOOM_API_KEY,
-            exp: Math.floor(Date.now() / 1000) + (60 * 60) // 1 hour expiration
-        };
-        return jwt.sign(payload, process.env.ZOOM_API_SECRET);
-    }
-
-    // Endpoint to create a Zoom meeting
     async createMeeting(req, res) {
         try {
-            
-            const token = process.env.TOKEN;
-
-            const response = await axios.post('https://api.zoom.us/v2/users/me/meetings', {
-                topic: req.body.topic,
-                type: 2, // Scheduled meeting
-                start_time: req.body.start_time,
-                duration: req.body.duration,
-                timezone: 'UTC',
-                agenda: 'Team meeting for future videos',
-                settings: {
-                    host_video: true,
-                    participant_video: true,
-                    join_before_host: false,
-                    mute_upon_entry: true,
-                    watermark: false,
-                    use_pmi: false,
-                    approval_type: 0,
-                    audio: 'both',
-                    auto_recording: 'none'
+            const zoomToken = await ZoomToken.findOne({})
+            if (!_.isEmpty(zoomToken) && zoomToken?._id) {
+                const expirationTime = new Date(zoomToken.updatedAt + zoomToken.exp * 1000);
+                const currentTime = new Date();
+                if (currentTime < expirationTime) {
+                    const data = await meeting_service.create_meeting(req, zoomToken.access_token)
+                    res.status(200).send({ status: 200, data, message: "Meeting Created Successfully" });
+                } else {
+                    const newToken = await meeting_service.refreshToken(zoomToken)
+                    if (newToken) {
+                        const data = await meeting_service.create_meeting(req, newToken)
+                        res.status(200).send({ status: 200, data, message: "Meeting Created Successfully" });
+                    } else {
+                        res.status(400).send({ status: 400, message: `Meeting can't be Created`, data: {} });
+                    }
                 }
-            }, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            res.json(response.data);
+            } else {
+                res.status(400).send({ status: 400, message: `Meeting can't be Created`, data: {} });
+            }
         } catch (error) {
-            res.status(400).json({ error: error.message });
+            res.status(500).json({ status: 500, message: error.message });
         }
-    }
+    };
 }
 
 module.exports = new MeetingController();
