@@ -30,6 +30,25 @@ const BannerRepo = {
             conditions['$and'] = and_clauses;
 
             let banners = Banner.aggregate([
+                {
+                    $lookup: {
+                        let: { categoryId: '$category_id' },
+                        from: "service_categories",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$categoryId"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "category_details"
+                    }
+                }, 
+                { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
                 { $match: conditions },
                 { $sort: { _id: -1 } }
             ]);
