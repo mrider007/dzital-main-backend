@@ -75,6 +75,7 @@ const job_apply = require('./routes/job_apply.routes');
 const room = require('./routes/room.routes');
 const zoom_meeting = require('./routes/zoom_meeting.routes');
 const Banner = require('./routes/banner.routes');
+const contact_to_supplier = require('./routes/contact_to_supplier.routes');
 
 global.BASE_URL = `http://${process.env.HOST}:${getPort}`;
 
@@ -117,6 +118,7 @@ app.use('/api', job_apply);
 app.use('/api', room);
 app.use('/api', zoom_meeting);
 app.use('/api', Banner);
+app.use('/api', contact_to_supplier);
 
 app.use('/uploads', express.static('uploads'));
 
