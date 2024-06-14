@@ -60,6 +60,17 @@ class BannerController {
 
     async updateBanner(req, res) {
         try {
+            if (req.files && req.files.length > 0) {
+                var photo;
+                for (let i = 0; i < req.files.length; i++) {
+                    const element = req.files[i];
+                    if (element.fieldname === 'image') {
+                        photo = element.path;
+                        const uploadImage = await cloudinary.v2.uploader.upload(photo);
+                        req.body.image = uploadImage.secure_url;
+                    }
+                }
+            }
             const updateBanner = await BannerRepo.updateBanner({ _id: req.params?.id }, req.body)
             if (!_.isEmpty(updateBanner)) {
                 res.status(200).send({ status: 200, data: updateBanner, message: "Banner Updated Successfully" });

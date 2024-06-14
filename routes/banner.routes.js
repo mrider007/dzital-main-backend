@@ -30,7 +30,7 @@ const uploadFile = multer({ storage: Storage });
 router.get('/banner/banner-list', bannerController.getBanners)
 router.post('/admin/banner/list', request_param.any(), Authentication.AuthenticateAdmin, bannerController.adminBannerList);
 router.post('/banner/add', uploadFile.any(), Authentication.AuthenticateAdmin, bannerController.newBanner)
-router.put('/banner/update/:id', request_param.any(), Authentication.AuthenticateAdmin, bannerController.updateBanner)
+router.put('/banner/update/:id', uploadFile.any(), Authentication.AuthenticateAdmin, bannerController.updateBanner)
 router.delete('/banner/delete/:id', Authentication.AuthenticateAdmin, bannerController.deleteBanner)
 
 module.exports = router;
