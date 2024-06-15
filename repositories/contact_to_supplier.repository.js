@@ -7,13 +7,12 @@ const ContactToProviderRepository = {
         try {
             var conditions = {};
             var and_clauses = [];
-
+    
             and_clauses.push({ productId: new mongoose.Types.ObjectId(req.body.productId) });
-
+    
             let key = req.body.keyword_search;
-
+    
             if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
-
                 // Check if keyword_search has length greater than 0
                 if (key.length > 0) {
                     // Disable req.body.page and req.body.limit
@@ -21,9 +20,9 @@ const ContactToProviderRepository = {
                     req.body.limit = undefined;
                 }
             }
-
+    
             conditions['$and'] = and_clauses;
-
+    
             let enquiryList = ContactToSupplier.aggregate([
                 {
                     $lookup: {
@@ -45,7 +44,7 @@ const ContactToProviderRepository = {
                 },
                 { $unwind: { path: '$user_details', preserveNullAndEmptyArrays: true } },
                 {
-                    group: {
+                    $group: {
                         _id: '$_id',
                         userId: { $first: '$userId' },
                         productId: { $first: '$productId' },
@@ -58,14 +57,15 @@ const ContactToProviderRepository = {
                         user_address: { $first: '$user_details.address' },
                         createdAt: { $first: '$createdAt' }
                     }
-                },            
+                },
                 { $match: conditions },
                 { $sort: { _id: -1 } }
             ]);
+    
             if (!enquiryList) {
                 return null;
             }
-
+    
             // Only set options if they are not disabled
             var options = {};
             if (req.body.page !== undefined) {
@@ -74,12 +74,13 @@ const ContactToProviderRepository = {
             if (req.body.limit !== undefined) {
                 options.limit = req.body.limit;
             }
+    
             let productEnqueries = await ContactToSupplier.aggregatePaginate(enquiryList, options);
             return productEnqueries;
         } catch (e) {
             throw e;
         }
-    },
+    },    
 
     getUserOwnContactToSupplierList: async (req) => {
         try {
