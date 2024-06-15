@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const ContactToSupplier = require('../models/contact_to_supplier.model');
+const contactsupplierRepo = require('../repositories/contact_to_supplier.repository');
 
 class ContactToSupplierController {
     constructor() { }
@@ -24,6 +25,31 @@ class ContactToSupplierController {
                 else {
                     res.status(400).send({ status: 400, message: 'Contact To Supplier Information could not be saved' });
                 }
+            }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+
+    async sellerProductInquiryList(req, res) {
+        try {
+            if (!req.body.page) {
+                req.body.page = 1;
+            } else {
+                req.body.page = parseInt(req.body.page);
+            }
+
+            if (!req.body.limit) {
+                req.body.limit = 10;
+            } else {
+                req.body.limit = parseInt(req.body.limit);
+            }
+
+            let enqueriesList = await contactsupplierRepo.getContactToSupplierList(req);
+            if (!_.isEmpty(enqueriesList)) {
+                res.status(200).send({ status: 200, data: enqueriesList.docs, total: enqueriesList.total, limit: enqueriesList.limit, page: enqueriesList.page, pages: enqueriesList.pages, message: 'Contact To Supplier Enqueries List' });
+            } else {
+                res.status(400).send({ status: 400, data: [], message: 'No Contact To Supplier Enquiry Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
