@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const ContactToSupplier = require('../models/contact_to_supplier.model');
 
 const ContactToProviderRepository = {
@@ -7,7 +8,7 @@ const ContactToProviderRepository = {
             var conditions = {};
             var and_clauses = [];
 
-            and_clauses.push({ 'sellerId': req.user._id });
+            and_clauses.push({ productId: new mongoose.Types.ObjectId(req.body.productId) });
 
             let key = req.body.keyword_search;
 
