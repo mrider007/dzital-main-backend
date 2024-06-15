@@ -7,5 +7,6 @@ const request_param = multer();
 
 router.post('/contact-to-supplier', request_param.any(), Authentication.Authenticate, ContactToSupplierController.contactSupplierProductInquiry);
 router.post('/seller/contact-to-supplier/list', request_param.any(), Authentication.Authenticate, ContactToSupplierController.sellerProductInquiryList);
+router.post('/user/own/contact-to-supplier/enquiry/list', request_param.any(), Authentication.Authenticate, ContactToSupplierController.userProductEnquiryList);
 
 module.exports = router;

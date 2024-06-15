@@ -55,6 +55,31 @@ class ContactToSupplierController {
             res.status(500).send({ status: 500, message: e.message });
         }
     };
+
+    async userProductEnquiryList(req, res) {
+        try {
+            if (!req.body.page) {
+                req.body.page = 1;
+            } else {
+                req.body.page = parseInt(req.body.page);
+            }
+
+            if (!req.body.limit) {
+                req.body.limit = 10;
+            } else {
+                req.body.limit = parseInt(req.body.limit);
+            }
+
+            let enquiriesList = await contactsupplierRepo.getUserOwnContactToSupplierList(req);
+            if (!_.isEmpty(enquiriesList)) {
+                res.status(200).send({ status: 200, data: enquiriesList.docs, total: enquiriesList.total, limit: enquiriesList.limit, page: enquiriesList.page, pages: enquiriesList.pages, message: 'User Own Contact To Supplier Enquiries List' });
+            } else {
+                res.status(400).send({ status: 400, data: [], message: 'No Contact To Supplier Enquiry Found' });
+            }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
 }
 
 module.exports = new ContactToSupplierController();
