@@ -13,11 +13,6 @@ const ContactToProviderRepository = {
             let key = req.body.keyword_search;
 
             if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
-                // and_clauses.push({
-                //     $or: [
-                //         //{ 'title': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
-                //     ]
-                // });
 
                 // Check if keyword_search has length greater than 0
                 if (key.length > 0) {
@@ -26,14 +21,6 @@ const ContactToProviderRepository = {
                     req.body.limit = undefined;
                 }
             }
-
-            // if (_.isObject(req.body) && _.has(req.body, 'status')) {
-            //     if (req.body.status !== 'All') {
-            //         and_clauses.push({ 'status': req.body.status });
-            //     }
-            // }
-
-            //console.log('and', and_clauses);
 
             conditions['$and'] = and_clauses;
 
@@ -70,12 +57,7 @@ const ContactToProviderRepository = {
             let key = req.body.keyword_search;
 
             if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
-                // and_clauses.push({
-                //     $or: [
-                //         //{ 'title': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
-                //     ]
-                // });
-
+                
                 // Check if keyword_search has length greater than 0
                 if (key.length > 0) {
                     // Disable req.body.page and req.body.limit
@@ -83,14 +65,6 @@ const ContactToProviderRepository = {
                     req.body.limit = undefined;
                 }
             }
-
-            // if (_.isObject(req.body) && _.has(req.body, 'status')) {
-            //     if (req.body.status !== 'All') {
-            //         and_clauses.push({ 'status': req.body.status });
-            //     }
-            // }
-
-            //console.log('and', and_clauses);
 
             conditions['$and'] = and_clauses;
 
