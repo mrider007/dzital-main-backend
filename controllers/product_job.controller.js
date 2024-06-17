@@ -18,13 +18,27 @@ class JobController {
             }
             else {
                 if (req.files && req.files.length > 0) {
-                    var photo;
+                    // var photo;
+                    // for (let i = 0; i < req.files.length; i++) {
+                    //     const element = req.files[i];
+                    //     if (element.fieldname === 'image') {
+                    //         photo = element.path;
+                    //         const uploadImage = await cloudinary.v2.uploader.upload(photo);
+                    //         req.body.image = uploadImage.secure_url;
+                    //     }
+                    // }
+
                     for (let i = 0; i < req.files.length; i++) {
                         const element = req.files[i];
                         if (element.fieldname === 'image') {
-                            photo = element.path;
-                            const uploadImage = await cloudinary.v2.uploader.upload(photo);
-                            req.body.image = uploadImage.secure_url;
+                            var image = element.path;
+                            const uploadImageResult = await cloudinary.v2.uploader.upload(image);
+                            req.body.image = uploadImageResult.secure_url;
+                        }
+                        if (element.fieldname === 'company_logo') {
+                            var company_logo = element.path;
+                            const uploadCompanyLogo = await cloudinary.v2.uploader.upload(company_logo);
+                            req.body.company_logo = uploadCompanyLogo.secure_url;
                         }
                     }
                 }
