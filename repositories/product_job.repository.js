@@ -186,7 +186,6 @@ const JobRepository = {
                         bid_entry: { $first: '$product_details.bid_entry' },
                         bid_start_date: { $first: '$product_details.bid_start_date' },
                         bid_end_date: { $first: '$product_details.bid_end_date' },
-                        //wishlists: { $addToSet: '$wishlists' },
                         isWishlist: { $first: '$isWishlist' },
                         category_id: { $first: '$category_id' },
                         category_name: { $first: '$category_details.title' },
