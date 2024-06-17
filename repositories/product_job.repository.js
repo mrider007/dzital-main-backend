@@ -655,6 +655,7 @@ const JobRepository = {
                         attribute_values: { $first: '$attribute_value_details' },
                         product_id: { $first: '$product_id' },
                         image: { $first: '$image' },
+                        company_logo: { $first: '$company_logo' },
                         createdAt: { $first: '$createdAt' },
                         isWishlist: { $first: '$isWishlist' }
                     }
@@ -840,6 +841,7 @@ const JobRepository = {
                         attribute_values: { $first: '$attribute_value_details' },
                         product_id: { $first: '$product_id' },
                         image: { $first: '$image' },
+                        company_logo: { $first: '$company_logo' },
                         createdAt: { $first: '$createdAt' },
                         //wishlists: { $addToSet: '$wishlists' },
                         isWishlist: { $first: '$isWishlist' }
