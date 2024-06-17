@@ -1461,6 +1461,7 @@ class productController {
             res.status(500).send({ status: 500, message: e.message });
         }
     };
+
     /** User Product Update */
     async userProductUpdate(req, res) {
         try {
@@ -1609,15 +1610,40 @@ class productController {
 
                     if (req.files && req.files.length > 0) {
 
-                        var photo;
+                        // var photo;
+
+                        // for (let i = 0; i < req.files.length; i++) {
+                        //     const element = req.files[i];
+                        //     if (element.fieldname === 'image') {
+                        //         photo = element.path;
+                        //         const uploadResultLogo = await cloudinary.v2.uploader.upload(photo);
+                        //         req.body.image = uploadResultLogo.secure_url;
+                        //     }
+                        // }
+
+                        var photo, company_logo;
 
                         for (let i = 0; i < req.files.length; i++) {
                             const element = req.files[i];
                             if (element.fieldname === 'image') {
                                 photo = element.path;
-                                const uploadResultLogo = await cloudinary.v2.uploader.upload(photo);
-                                req.body.image = uploadResultLogo.secure_url;
+                                const uploadImageResult = await cloudinary.v2.uploader.upload(photo);
+                                req.body.image = uploadImageResult.secure_url;
                             }
+                            if (element.fieldname === 'company_logo') {
+                                company_logo = element.path;
+                                const uploadCompanyLogo = await cloudinary.v2.uploader.upload(company_logo);
+                                req.body.company_logo = uploadCompanyLogo.secure_url;
+                            }
+                            //  image_2 = element.path;
+                            //     const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_2);
+                            //     req.body.image_2 = uploadResultFaviconLogo.secure_url;
+                            // }
+                            // if (element.fieldname === 'image_3') {
+                            //     image_3 = element.path;
+                            //     const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_3);
+                            //     req.body.image_3 = uploadResultFaviconLogo.secure_url;
+                            // }
                         }
                     }
 
