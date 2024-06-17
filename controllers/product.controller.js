@@ -1610,15 +1610,6 @@ class productController {
 
                     if (req.files && req.files.length > 0) {
 
-                        // for (let i = 0; i < req.files.length; i++) {
-                        //     const element = req.files[i];
-                        //     if (element.fieldname === 'image') {
-                        //         photo = element.path;
-                        //         const uploadResultLogo = await cloudinary.v2.uploader.upload(photo);
-                        //         req.body.image = uploadResultLogo.secure_url;
-                        //     }
-                        // }
-
                         var photo, company_logo;
 
                         for (let i = 0; i < req.files.length; i++) {
