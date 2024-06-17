@@ -503,6 +503,8 @@ const JobRepository = {
                     $group: {
                         _id: '$_id',
                         title: { $first: "$title" },
+                        image: { $first: '$image' },
+                        company_logo: { $first: '$company_logo' },
                         description: { $first: "$description" },
                         createdAt: { $first: '$createdAt' }
                     }
