@@ -172,14 +172,6 @@ class JobController {
             let job_id = new mongoose.Types.ObjectId(req.params.id);
             let jobInfo = await Job.findOne({ _id: job_id });
             if (!_.isEmpty(jobInfo) && jobInfo._id) {
-                // for (let i = 0; i < req.files.length; i++) {
-                //     const element = req.files[i];
-                //     if (element.fieldname === 'image') {
-                //         var image = element.path;
-                //         const uploadResultImage = await cloudinary.v2.uploader.upload(image);
-                //         req.body.image = uploadResultImage.secure_url;
-                //     }
-                // }
 
                 for (let i = 0; i < req.files.length; i++) {
                     const element = req.files[i];
