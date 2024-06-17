@@ -1610,8 +1610,6 @@ class productController {
 
                     if (req.files && req.files.length > 0) {
 
-                        // var photo;
-
                         // for (let i = 0; i < req.files.length; i++) {
                         //     const element = req.files[i];
                         //     if (element.fieldname === 'image') {
@@ -1635,15 +1633,6 @@ class productController {
                                 const uploadCompanyLogo = await cloudinary.v2.uploader.upload(company_logo);
                                 req.body.company_logo = uploadCompanyLogo.secure_url;
                             }
-                            //  image_2 = element.path;
-                            //     const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_2);
-                            //     req.body.image_2 = uploadResultFaviconLogo.secure_url;
-                            // }
-                            // if (element.fieldname === 'image_3') {
-                            //     image_3 = element.path;
-                            //     const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_3);
-                            //     req.body.image_3 = uploadResultFaviconLogo.secure_url;
-                            // }
                         }
                     }
 
