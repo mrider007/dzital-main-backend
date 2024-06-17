@@ -11,10 +11,10 @@ class JobController {
     async jobPost(req, res) {
         try {
             if (!_.has(req.body, 'title')) {
-                res.status(400).send({ status: 400, message: 'Job Title is required' });
+                res.status(400).send({ status: 400, message: 'Job Title is Required' });
             }
             else if (!_.has(req.body, 'description')) {
-                res.status(400).send({ status: 400, message: 'Job Description is required' });
+                res.status(400).send({ status: 400, message: 'Job Description is Required' });
             }
             else {
                 if (req.files && req.files.length > 0) {
@@ -49,7 +49,7 @@ class JobController {
                         }
                     }
 
-                    res.status(200).send({ status: 200, data: jobData, message: 'Job saved successfully' });
+                    res.status(200).send({ status: 200, data: jobData, message: 'Job Saved Successfully' });
                 }
                 else {
                     res.status(400).send({ status: 400, data: {}, message: 'Job could not be saved' });
