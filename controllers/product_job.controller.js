@@ -172,13 +172,37 @@ class JobController {
             let job_id = new mongoose.Types.ObjectId(req.params.id);
             let jobInfo = await Job.findOne({ _id: job_id });
             if (!_.isEmpty(jobInfo) && jobInfo._id) {
+                // for (let i = 0; i < req.files.length; i++) {
+                //     const element = req.files[i];
+                //     if (element.fieldname === 'image') {
+                //         var image = element.path;
+                //         const uploadResultImage = await cloudinary.v2.uploader.upload(image);
+                //         req.body.image = uploadResultImage.secure_url;
+                //     }
+                // }
+
+                //var photo, company_logo;
+
                 for (let i = 0; i < req.files.length; i++) {
                     const element = req.files[i];
                     if (element.fieldname === 'image') {
                         var image = element.path;
-                        const uploadResultImage = await cloudinary.v2.uploader.upload(image);
-                        req.body.image = uploadResultImage.secure_url;
+                        const uploadImageResult = await cloudinary.v2.uploader.upload(image);
+                        req.body.image = uploadImageResult.secure_url;
                     }
+                    if (element.fieldname === 'company_logo') {
+                        var company_logo = element.path;
+                        const uploadCompanyLogo = await cloudinary.v2.uploader.upload(company_logo);
+                        req.body.company_logo = uploadCompanyLogo.secure_url;
+                    }
+                    //                     //     const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_2);
+                    //     req.body.image_2 = uploadResultFaviconLogo.secure_url;
+                    // }
+                    // if (element.fieldname === 'image_3') {
+                    //     image_3 = element.path;
+                    //     const uploadResultFaviconLogo = await cloudinary.v2.uploader.upload(image_3);
+                    //     req.body.image_3 = uploadResultFaviconLogo.secure_url;
+                    // }
                 }
                 let jobUpdate = await jobRepo.updateById(req.body, req.params.id);
                 if (!_.isEmpty(jobUpdate) && jobUpdate._id) {
