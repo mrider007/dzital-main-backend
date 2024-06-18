@@ -168,7 +168,6 @@ const propertyRepository = {
                         bid_entry: { $first: '$product_details.bid_entry' },
                         bid_start_date: { $first: '$product_details.bid_start_date' },
                         bid_end_date: { $first: '$product_details.bid_end_date' },
-                        //wishlists: { $addToSet: '$wishlists' },
                         isWishlist: { $first: '$isWishlist' },
                         status: { $first: '$product_details.status' },
                         userId: { $first: '$product_details.userId' },
@@ -240,6 +239,10 @@ const propertyRepository = {
 
             if (_.isObject(req.body) && _.has(req.body, 'category_id')) {
                 and_clauses.push({ 'category_id': new mongoose.Types.ObjectId(req.body.category_id) });
+            }
+
+            if (_.isObject(req.body) && _.has(req.body, 'property_type') && req.body.property_type !== '') {
+                and_clauses.push({ 'property_type': req.body.property_type });
             }
 
             conditions['$and'] = and_clauses;
@@ -418,6 +421,10 @@ const propertyRepository = {
 
             if (_.isObject(req.body) && _.has(req.body, 'category_id')) {
                 and_clauses.push({ 'category_id': new mongoose.Types.ObjectId(req.body.category_id) });
+            }
+
+            if (_.isObject(req.body) && _.has(req.body, 'property_type') && req.body.property_type !== '') {
+                and_clauses.push({ 'property_type': req.body.property_type });
             }
 
             conditions['$and'] = and_clauses;
