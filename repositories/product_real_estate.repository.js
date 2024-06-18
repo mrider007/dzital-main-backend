@@ -245,6 +245,10 @@ const propertyRepository = {
                 and_clauses.push({ 'property_type': req.body.property_type });
             }
 
+            if (_.isObject(req.body) && _.has(req.body, 'address') && req.body.address !== '') {
+                and_clauses.push({ 'address': { $regex: (req.body.address).trim(), $options: 'i' } });
+            }
+
             conditions['$and'] = and_clauses;
 
             let property = Property.aggregate([
@@ -342,6 +346,9 @@ const propertyRepository = {
                         image_2: { $first: '$image_2' },
                         image_3: { $first: '$image_3' },
                         user_id: { $first: '$user_id' },
+                        lat: { $first: '$lat' },
+                        lng: { $first: '$lng' },
+                        address: { $first: 'address' },
                         product_id: { $first: '$product_id' },
                         property_type: { $first: '$property_type' },
                         isWishlist: { $first: '$isWishlist' },
@@ -425,6 +432,10 @@ const propertyRepository = {
 
             if (_.isObject(req.body) && _.has(req.body, 'property_type') && req.body.property_type !== '') {
                 and_clauses.push({ 'property_type': req.body.property_type });
+            }
+
+            if (_.isObject(req.body) && _.has(req.body, 'address') && req.body.address !== '') {
+                and_clauses.push({ 'address': { $regex: (req.body.address).trim(), $options: 'i' } });
             }
 
             conditions['$and'] = and_clauses;
@@ -555,6 +566,9 @@ const propertyRepository = {
                         image_2: { $first: '$image_2' },
                         image_3: { $first: '$image_3' },
                         user_id: { $first: '$user_id' },
+                        lat: { $first: '$lat' },
+                        lng: { $first: '$lng' },
+                        address: { $first: '$address' },
                         isWishlist: { $first: '$isWishlist' },
                         property_type: { $first: '$property_type' },
                         product_id: { $first: '$product_id' },
