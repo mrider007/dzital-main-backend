@@ -348,7 +348,7 @@ const propertyRepository = {
                         user_id: { $first: '$user_id' },
                         lat: { $first: '$lat' },
                         lng: { $first: '$lng' },
-                        address: { $first: 'address' },
+                        address: { $first: '$address' },
                         product_id: { $first: '$product_id' },
                         property_type: { $first: '$property_type' },
                         isWishlist: { $first: '$isWishlist' },
