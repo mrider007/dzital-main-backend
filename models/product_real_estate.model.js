@@ -9,6 +9,7 @@ const ProductRealEstateSchema = new Schema({
     image_1: { type: String, default: '', index: true },
     image_2: { type: String, default: '', index: true },
     image_3: { type: String, default: '', index: true },
+    property_type: { type: String, default: '', enum: ['Buy', 'Rent', 'Lease'] },
     user_id: { type: Schema.Types.ObjectId, default: null, ref: 'User', index: true },
     category_id: { type: Schema.Types.ObjectId, ref: 'service_category', index: true },
     sub_category_id: { type: Schema.Types.ObjectId, ref: 'service_category', default: null, index: true },
