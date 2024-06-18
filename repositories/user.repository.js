@@ -208,7 +208,7 @@ const userRepository = {
                         mobile: { $first: '$mobile' },
                         address: { $first: '$address' },
                         bio: { $first: '$bio' },
-                        seller_products_list: { $first: '$user_own_products' }
+                        seller_own_products: { $first: '$seller_own_products' }
                     }
                 }
             ]);
