@@ -40,6 +40,7 @@ router.post('/change-password', request_param.any(), Authentication.Authenticate
 router.post('/social-login', request_param.any(), UserController.socialSignup);
 router.post('/user/bio/address/update', UserController.userBioAddressUpdate);
 router.post('/user/forget-password', request_param.any(), UserController.forgetPassword);
-router.post('/chat/user/token/create', Authentication.Authenticate, UserController.createAgoraChatToken)
+router.post('/chat/user/token/create', Authentication.Authenticate, UserController.createAgoraChatToken);
+router.post('/seller/profile/details', UserController.sellerProfileDetails);
 
 module.exports = router;

@@ -99,10 +99,10 @@ class userController {
         try {
             let userInfo = await userRepo.getUserDetails(req);
             if (!_.isEmpty(userInfo) && userInfo._id) {
-                res.status(200).send({ status: 200, data: userInfo, message: 'Profile details fetched successfully' });
+                res.status(200).send({ status: 200, data: userInfo, message: 'Profile Details fetched Successfully' });
             }
             else {
-                res.status(400).send({ status: 400, message: 'User not found' });
+                res.status(400).send({ status: 400, message: 'User Not Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -316,6 +316,20 @@ class userController {
             }
         } catch (error) {
             res.status(500).send({ status: 500, message: error.message });
+        }
+    };
+
+    /** Seller Profile Details */
+    async sellerProfileDetails(req, res) {
+        try {
+            const sellerInfo = await userRepo.getSellerProfile(req);
+            if (!_.isEmpty(sellerInfo)) {
+                res.status(200).send({ status: 200, data: sellerInfo, message: 'Seller Profile Details fetched Successfully' });
+            } else {
+                res.status(400).send({ status: 400, message: 'Seller Not Found' });
+            }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 

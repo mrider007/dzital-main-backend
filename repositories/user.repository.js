@@ -147,6 +147,42 @@ const userRepository = {
         } catch (e) {
             throw e;
         }
+    },
+
+    getSellerProfile: async (req) => {
+        try {
+            var conditions = {};
+            var and_clauses = [];
+
+            and_clauses.push({ _id: new mongoose.Types.ObjectId(req.body.sellerId) });
+
+            conditions['$and'] = and_clauses;
+
+            let data = await User.aggregate([
+                { $match: conditions },
+                {
+                    $group: {
+                        _id: '$_id',
+                        name: { $first: '$name' },
+                        email: { $first: '$email' },
+                        image: { $first: '$image' },
+                        mobile: { $first: '$mobile' },
+                        address: { $first: '$address' },
+                        bio: { $first: '$bio' },
+                        social_id: { $first: '$social_id' },
+                        register_type: { $first: '$register_type' },
+                        plan_id: { $first: '$plan_id' },
+                        plan_title: { $first: '$plan_details.title' }
+                    }
+                }
+            ]);
+            if (!data) {
+                return null;
+            }
+            return data[0];
+        } catch (e) {
+            throw e;
+        }
     }
 
 }
