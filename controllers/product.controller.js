@@ -555,8 +555,8 @@ class productController {
         }
     };
 
-    /** User Product List */
-    async products(req, res) {
+    /** User Own Product List */
+    async userOwnProducts(req, res) {
         try {
             if (!req.body.page) {
                 req.body.page = 1;

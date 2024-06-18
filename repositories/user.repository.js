@@ -161,6 +161,45 @@ const userRepository = {
             let data = await User.aggregate([
                 { $match: conditions },
                 {
+                    $lookup: {
+                        let: { sellerID: '$_id' },
+                        from: "products",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $eq: ["$userId", "$$sellerID"]
+                                    }
+                                }
+                            },
+                            // {
+                            //     $group: {
+                            //         _id: '$_id',
+                            //         booking_id: { $first: '$booking_id' },
+                            //         description: { $first: '$description' },
+                            //         booking_date: { $first: '$booking_date' },
+                            //         patient_name: { $first: '$patient_name' },
+                            //         patient_number: { $first: '$patient_number' },
+                            //         doctor_name: { $first: '$doctor_name' },
+                            //         doctor_number: { $first: '$doctor_number' },
+                            //         partner_name: { $first: '$partner_name' },
+                            //         partner_number: { $first: '$partner_number' },
+                            //         tc_margin_commission: { $first: '$tc_margin_commission' },
+                            //         discount_price: { $first: '$discount_price' },
+                            //         final_amount: { $first: { $round: ['$final_amount', 2] } }, // Round final_amount to 2 decimal places
+                            //         prescription: { $first: '$prescription' },
+                            //         status: { $first: '$status' },
+                            //         payment_status: { $first: '$payment_status' },
+                            //         report: { $first: '$report' },
+                            //         createdAt: { $first: '$createdAt' },
+                            //         updatedAt: { $first: '$updatedAt' }
+                            //     }
+                            // }
+                        ],
+                        as: "seller_own_products"
+                    }
+                },
+                {
                     $group: {
                         _id: '$_id',
                         name: { $first: '$name' },
@@ -168,7 +207,8 @@ const userRepository = {
                         image: { $first: '$image' },
                         mobile: { $first: '$mobile' },
                         address: { $first: '$address' },
-                        bio: { $first: '$bio' }
+                        bio: { $first: '$bio' },
+                        seller_products_list: { $first: '$user_own_products' }
                     }
                 }
             ]);
