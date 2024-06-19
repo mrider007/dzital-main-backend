@@ -1,3 +1,4 @@
+const Meeting = require('../models/meeting.model');
 const ZoomToken = require('../models/zoom_token.model');
 const meeting_service = require('../services/meeting_service');
 
@@ -5,27 +6,57 @@ class MeetingController {
     constructor() {
         this.createMeeting = this.createMeeting.bind(this);
     }
-
     async createMeeting(req, res) {
         try {
+            if (!req.body.product_id) {
+                return res.status(404).send({ status: 404, message: "product not found" })
+            }
             const zoomToken = await ZoomToken.findOne({})
-            if (!_.isEmpty(zoomToken) && zoomToken?._id) {
-                const expirationTime = new Date(zoomToken.updatedAt + zoomToken.exp * 1000);
-                const currentTime = new Date();
-                if (currentTime < expirationTime) {
-                    const data = await meeting_service.create_meeting(req, zoomToken.access_token)
-                    res.status(200).send({ status: 200, data, message: "Meeting Created Successfully" });
+
+            if (_.isEmpty(zoomToken) || !zoomToken._id) {
+                return res.status(400).send({ status: 400, message: 'Meeting can not be created', data: {} });
+            }
+            // console.log(zoomToken)
+            const expirationTime = new Date(zoomToken.updatedAt + zoomToken.exp * 1000);
+            const currentTime = new Date();
+
+            if (currentTime < expirationTime) {
+                const data = await meeting_service.create_meeting(req, zoomToken.access_token)
+                if (data) {
+                    const saveMeeting = await Meeting.create({
+                        product_id: req?.body?.product_id,
+                        duration: data?.duration,
+                        meeting_agenda: data?.agenda,
+                        meeting_join_url: data?.join_url,
+                        meeting_password: data?.password,
+                        meetingAt: data?.start_time,
+                        meeting_start_url: data?.start_url
+                    })
+                    res.status(200).send({ status: 200, data: saveMeeting, message: "meeting created successfully" });
                 } else {
-                    const newToken = await meeting_service.refreshToken(zoomToken)
-                    if (newToken) {
-                        const data = await meeting_service.create_meeting(req, newToken)
-                        res.status(200).send({ status: 200, data, message: "Meeting Created Successfully" });
+                    res.status(400).send({ status: 400, message: 'Meeting can not be created', data: {} });
+                }
+            } else {
+                const newToken = await meeting_service.refreshToken(zoomToken)
+                if (newToken) {
+                    const data = await meeting_service.create_meeting(req, newToken)
+                    if (data) {
+                        const saveMeeting = await Meeting.create({
+                            product_id: req?.body?.product_id,
+                            duration: data?.duration,
+                            meeting_agenda: data?.agenda,
+                            meeting_join_url: data?.join_url,
+                            meeting_password: data?.password,
+                            meetingAt: data?.start_time,
+                            meeting_start_url: data?.start_url
+                        })
+                        res.status(200).send({ status: 200, data: saveMeeting, message: "meeting created successfully" });
                     } else {
                         res.status(400).send({ status: 400, message: `Meeting can't be Created`, data: {} });
                     }
+                } else {
+                    res.status(400).send({ status: 400, message: `Meeting can't be Created`, data: {} });
                 }
-            } else {
-                res.status(400).send({ status: 400, message: `Meeting can't be Created`, data: {} });
             }
         } catch (error) {
             res.status(500).json({ status: 500, message: error.message });
