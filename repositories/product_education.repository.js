@@ -524,6 +524,7 @@ const productEducationRepository = {
                                     $expr: {
                                         $and: [
                                             { $eq: ["$product_id", "$$productId"] },
+                                            { $gt: ["$meetingAt", new Date()] }
                                         ]
                                     }
                                 }
@@ -534,10 +535,13 @@ const productEducationRepository = {
                                     duration: { $first: '$duration' },
                                     meetingAt: { $first: '$meetingAt' },
                                     meeting_agenda: { $first: '$meeting_agenda' },
+                                    meeting_password: { $first: '$meeting_password' },
+                                    meeting_join_url: { $first: '$meeting_join_url' },
+                                    meeting_start_url: { $first: '$meeting_start_url' },
                                 }
                             },
                             {
-                                $sort: { meetingAt: -1 }
+                                $sort: { meetingAt: 1 }
                             },
                             {
                                 $limit: 5
