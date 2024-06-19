@@ -20,6 +20,10 @@ const educationRepo = require('../repositories/product_education.repository');
 const attributevalueRepo = require('../repositories/attribute_value.repository');
 const cloudinary = require('cloudinary');
 const attributevalueRepository = require('../repositories/attribute_value.repository');
+const Product_Plan = require('../models/product_plan.model');
+const Product_Plan_Repo = require('../repositories/product_plan.repository');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+
 class productController {
     constructor() { }
 
@@ -31,18 +35,13 @@ class productController {
                 let categoryInfo = await Category.findOne({ _id: productSave.category_id });
                 if (categoryInfo.title === 'Jobs') {
                     if (req.files && req.files.length > 0) {
-
+                        var photo;
                         for (let i = 0; i < req.files.length; i++) {
                             const element = req.files[i];
                             if (element.fieldname === 'image') {
-                                var image = element.path;
-                                const uploadImageResult = await cloudinary.v2.uploader.upload(image);
-                                req.body.image = uploadImageResult.secure_url;
-                            }
-                            if (element.fieldname === 'company_logo') {
-                                var company_logo = element.path;
-                                const uploadCompanyLogo = await cloudinary.v2.uploader.upload(company_logo);
-                                req.body.company_logo = uploadCompanyLogo.secure_url;
+                                photo = element.path;
+                                const uploadImage = await cloudinary.v2.uploader.upload(photo);
+                                req.body.image = uploadImage.secure_url;
                             }
                         }
                     }
@@ -947,6 +946,46 @@ class productController {
                     }
 
                     let lessoncourseUpdate = await educationRepo.updateById(req.body, lessoncourseDetails._id);
+                    if (req.body.status === 'Approved') { // will add and condition for if the payment support subscription
+                        const checkSubscription = await Product_Plan.findOne({ product_id: productInfo._id })
+                        if (checkSubscription && checkSubscription._id) {
+                            let updated_data = {
+                                plan_status: 'Active'
+                            }
+                            if (!checkSubscription.stripe_price_id && !checkSubscription?.stripe_product_id) {
+                                const product = await stripe.products.create({
+                                    name: checkSubscription?.plan_name,
+                                });
+                                const stripePrice = await stripe.prices.create({
+                                    unit_amount: checkSubscription.plan_price * 100,
+                                    currency: 'usd',
+                                    recurring: { interval: checkSubscription?.plan_interval, interval_count: 1 },
+                                    product: product.id,
+                                });
+                                updated_data.stripe_product_id = product.id;
+                                updated_data.stripe_price_id = stripePrice.id;
+                            } else {
+                                await stripe.prices.update(
+                                    checkSubscription.stripe_price_id,
+                                    {
+                                        active: true
+                                    }
+                                )
+                            }
+                            await Product_Plan_Repo.updateById({ _id: checkSubscription._id }, updated_data)
+                        }
+                    } else if (req.body.status !== 'Approved') {
+                        const checkSubscription = await Product_Plan.findOne({ product_id: productInfo._id })
+                        if (checkSubscription && checkSubscription._id && checkSubscription.stripe_price_id) {
+                            await stripe.prices.update(
+                                checkSubscription.stripe_price_id,
+                                {
+                                    active: false
+                                }
+                            )
+                            await Product_Plan_Repo.updateById({ _id: checkSubscription._id }, { plan_status: 'Inactive' })
+                        }
+                    }
                     if (!_.isEmpty(lessoncourseUpdate) && lessoncourseUpdate._id) {
                         let productUpdate = await productRepo.updateProductById({ image: lessoncourseUpdate.image, status: req.body.status }, req.params.id);
                         res.status(200).send({ status: 200, data: lessoncourseUpdate, message: 'Product Updated Successfully' });
@@ -1468,7 +1507,6 @@ class productController {
             res.status(500).send({ status: 500, message: e.message });
         }
     };
-
     /** User Product Update */
     async userProductUpdate(req, res) {
         try {
