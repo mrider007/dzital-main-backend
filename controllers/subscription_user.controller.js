@@ -1,6 +1,6 @@
 const subscriptionUserRepo = require("../repositories/subscription_user.repository");
 
-class Subs_User_Controller {
+class SubscriptionUserController {
 
     constructor() { }
 
@@ -20,4 +20,4 @@ class Subs_User_Controller {
 
 }
 
-module.exports = new Subs_User_Controller()
+module.exports = new SubscriptionUserController()

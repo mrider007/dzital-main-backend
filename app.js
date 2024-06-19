@@ -7,10 +7,29 @@ _ = require("underscore");
 const dotenv = require("dotenv");
 const path = require('path');
 dotenv.config()
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
 const app = express();
 
 app.use(express.json());
+
+app.post('/webhook', express.raw({ type: 'application/json' }), (request, response) => {
+    const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET || 'whsec_WPKmuw4mCnhhJVjdCjG5P4YYwqTai3Wx';
+    const sig = request.headers['stripe-signature'];
+
+    let event;
+
+    try {
+        event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
+    } catch (err) {
+        console.error(`Webhook Error: ${err.message}`);
+        response.status(400).send(`Webhook Error: ${err.message}`);
+        return;
+    }
+    console.log(`Unhandled event type ${event.type}`);
+    console.log('Unhandled event data', event.data);
+    response.status(200).send();
+});
 
 app.use(express.static(path.join(__dirname, 'build')));
 
@@ -76,7 +95,9 @@ const room = require('./routes/room.routes');
 const zoom_meeting = require('./routes/zoom_meeting.routes');
 const Banner = require('./routes/banner.routes');
 const contact_to_supplier = require('./routes/contact_to_supplier.routes');
-const product_plan = require('./routes/product_plan.routes');
+const Product_Plan = require('./routes/product_plan.routes');
+const Stripe_Payment = require('./routes/stripe_payment.routes');
+const Subscription_User = require('./routes/subscription_user.routes');
 
 global.BASE_URL = `http://${process.env.HOST}:${getPort}`;
 
@@ -120,7 +141,9 @@ app.use('/api', room);
 app.use('/api', zoom_meeting);
 app.use('/api', Banner);
 app.use('/api', contact_to_supplier);
-app.use('/api', product_plan);
+app.use('/api', Product_Plan);
+app.use('/api', Stripe_Payment);
+app.use('/api', Subscription_User);
 
 app.use('/uploads', express.static('uploads'));
 

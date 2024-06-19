@@ -1,5 +1,5 @@
 const Product_Plan = require('../models/product_plan.model');
-const SubscriptionPayment = require('../models/subs_payment_history.model');
+const SubscriptionPayment = require('../models/subscription_history.model');
 const Product = require('../models/product.model');
 const Product_Payment = require('../models/product_payment.model');
 const SubscriptionUser = require('../models/subscription_user.model');
