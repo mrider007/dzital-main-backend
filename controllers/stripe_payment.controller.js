@@ -2,7 +2,7 @@ const Product_Plan = require('../models/product_plan.model');
 const SubscriptionPayment = require('../models/subs_payment_history.model');
 const Product = require('../models/product.model');
 const Product_Payment = require('../models/product_payment.model');
-const Subs_User = require('../models/subs_user.model');
+const SubscriptionUser = require('../models/subscription_user.model');
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
@@ -69,8 +69,8 @@ class StripePaymentController {
 
             const DOMAIN = redirect || redirect_url
 
-            const subscription = await Subs_User.findOne({ product_id: plan_details?.product_id, user_id: req.user?._id });
-            // console.log(checkUserSubscription)
+            const subscription = await SubscriptionUser.findOne({ product_id: plan_details?.product_id, user_id: req.user?._id });
+            
             if (subscription && subscription.status === 'Active') {
                 return res.status(400).send({ status: 400, message: "You already have active subscription for this product" })
             }
@@ -127,7 +127,7 @@ class StripePaymentController {
 
                     subs_data.current_plan_start = new Date(subsData?.current_period_start * 1000)
                     subs_data.current_plan_end = new Date(subsData?.current_period_end * 1000)
-                    const newSubscription = await Subs_User.create(subs_data)
+                    const newSubscription = await SubscriptionUser.create(subs_data)
 
                     const saveData = await SubscriptionPayment.create({
                         plan_id: session?.metadata?.plan_id,
@@ -146,7 +146,7 @@ class StripePaymentController {
                         res.status(200).send({ status: 200, data: saveData, message: 'Payment Successful' });
                     }
                 } else {
-                    const newSubscription = await Subs_User.create(subs_data)
+                    const newSubscription = await SubscriptionUser.create(subs_data)
 
                     const saveData = await Product_Payment.create({
                         product_id: session?.metadata?.product_id,
