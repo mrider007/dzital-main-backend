@@ -460,6 +460,93 @@ const productEducationRepository = {
                     }
                 },
                 {
+                    $lookup: {
+                        let: { productId: '$product_id' },
+                        from: "product_plans",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$product_id", "$$productId"] },
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                $group: {
+                                    _id: '$_id',
+                                    plan_name: { $first: '$plan_name' },
+                                    plan_price: { $first: '$plan_price' },
+                                    plan_status: { $first: '$plan_status' },
+                                    plan_interval: { $first: '$plan_interval' },
+                                    plan_interval_count: { $first: '$plan_interval_count' },
+                                    createdAt: { $first: '$createdAt' },
+                                }
+                            }
+                        ],
+                        as: "product_plans"
+                    }
+                },
+                {
+                    $unwind: {
+                        path: '$product_plans',
+                        preserveNullAndEmptyArrays: true
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "subs_users",
+                        let: { productId: "$product_id", user_id: userId },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$product_id", "$$productId"] },
+                                            { $eq: ["$user_id", "$$user_id"] },
+                                        ],
+                                    },
+                                },
+                            },
+                        ],
+                        as: "subs_users",
+                    },
+                },
+                { $unwind: { path: '$subs_users', preserveNullAndEmptyArrays: true } },
+                {
+                    $lookup: {
+                        let: { productId: '$product_id' },
+                        from: "meetings",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$product_id", "$$productId"] },
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                $group: {
+                                    _id: '$_id',
+                                    duration: { $first: '$duration' },
+                                    meetingAt: { $first: '$meetingAt' },
+                                    meeting_agenda: { $first: '$meeting_agenda' },
+                                }
+                            },
+                            {
+                                $sort: { meetingAt: -1 }
+                            },
+                            {
+                                $limit: 5
+                            }
+                        ],
+                        as: "upcoming_meetings"
+                    }
+                },
+                {
                     $group: {
                         _id: '$_id',
                         title: { $first: '$title' },
@@ -480,9 +567,12 @@ const productEducationRepository = {
                         bid_start_date: { $first: '$product_details.bid_start_date' },
                         bid_end_date: { $first: '$product_details.bid_end_date' },
                         isWishlist: { $first: '$isWishlist' },
+                        user_subscription: { $first: '$subs_users' },
+                        upcoming_meetings: { $first: '$upcoming_meetings' },
                         status: { $first: '$product_details.status' },
                         attributes: { $first: '$attribute_details' },
                         attribute_values: { $first: '$attribute_value_details' },
+                        product_plans: { $first: '$product_plans' },
                         createdAt: { $first: '$createdAt' }
                     }
                 }
