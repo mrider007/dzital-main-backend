@@ -496,7 +496,7 @@ const productEducationRepository = {
                 },
                 {
                     $lookup: {
-                        from: "subs_users",
+                        from: "subscription_users",
                         let: { productId: "$product_id", user_id: userId },
                         pipeline: [
                             {
