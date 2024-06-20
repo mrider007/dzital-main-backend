@@ -81,6 +81,17 @@ const subscriptionUserRepository = {
                 },
                 { $unwind: { path: '$upcoming_meetings', preserveNullAndEmptyArrays: true } },
                 {
+                    $addFields: {
+                        upcoming_meetings: {
+                            $cond: {
+                                if: { $eq: ['$status', 'Active'] },
+                                then: '$upcoming_meetings',
+                                else: null
+                            }
+                        }
+                    }
+                },
+                {
                     $group: {
                         _id: '$_id',
                         product_details: { $first: '$product_details' },
@@ -102,6 +113,19 @@ const subscriptionUserRepository = {
         }
         catch (err) {
             throw err;
+        }
+    },
+
+    updateOne: async (field, value) => {
+        try {
+            const updatedSubscription = await SubscriptionUser.findOneAndUpdate(field, value, { $new: true, $upsert: true });
+            if (_.isEmpty(updatedSubscription) && !updatedSubscription._id) {
+                return null;
+            } else {
+                return updatedSubscription;
+            }
+        } catch (e) {
+            throw e
         }
     }
 }
