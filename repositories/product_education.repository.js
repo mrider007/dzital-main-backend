@@ -566,6 +566,8 @@ const productEducationRepository = {
                         seller_details: { $first: '$seller_details' },
                         bid_now: { $first: '$product_details.bid_now' },
                         bid_start_price: { $first: '$product_details.bid_start_price' },
+                        product_price: { $first: '$product_details.product_price' },
+                        purchase_mode: { $first: '$product_details.purchase_mode' },
                         bid_increament_value: { $first: '$product_details.bid_increament_value' },
                         bid_entry: { $first: '$product_details.bid_entry' },
                         bid_start_date: { $first: '$product_details.bid_start_date' },
