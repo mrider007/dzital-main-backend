@@ -15,7 +15,9 @@ const ProductSchema = new Schema({
     bid_increament_value: { type: Number, default: 0 },
     bid_entry: { type: Number, default: 0 },
     bid_start_date: { type: Date },
-    bid_end_date: { type: Date }
+    bid_end_date: { type: Date },
+    product_price: { type: Number, default: 0 },
+    purchase_type: { type: String, default: 'Free', enum: ['Free', 'Paid', 'Subscription'] }
 }, { timestamps: true, versionKey: false });
 
 ProductSchema.plugin(mongooseAggregatePaginate);
