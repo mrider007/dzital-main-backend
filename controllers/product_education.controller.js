@@ -161,7 +161,18 @@ class productEducationController {
                     }
                 }
 
-                let productUpdate = await productRepo.updateProductById({ image: lessoncoursesData.image }, lessoncoursesData.product_id);
+                let updated_product_data = {
+                    image: lessoncoursesData.image,
+                }
+                
+                if(_.has(req.body, 'product_price')){
+                    updated_product_data.product_price = req.body.product_price;
+                }
+                if(_.has(req.body, 'purchase_type')){
+                    updated_product_data.purchase_type = req.body.purchase_type;
+                }
+
+                let productUpdate = await productRepo.updateProductById(updated_product_data, lessoncoursesData.product_id);
                 res.status(200).send({ status: 200, data: lessoncoursesData, message: 'Lesson and Course Product Saved Successfully' });
             }
             else {
