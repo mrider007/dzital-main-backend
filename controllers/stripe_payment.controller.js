@@ -3,6 +3,7 @@ const SubscriptionPayment = require('../models/subscription_history.model');
 const Product = require('../models/product.model');
 const Product_Payment = require('../models/product_payment.model');
 const SubscriptionUser = require('../models/subscription_user.model');
+const stripe_webhook = require('../services/stripe-webhook');
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
@@ -14,11 +15,15 @@ class StripePaymentController {
 
     async create_payment(req, res) {
         try {
-            const { product_amount, product_id, quantity, redirect } = req.body
+            const { product_id, quantity, redirect } = req.body;
             const productInfo = await Product.findOne({ _id: product_id })
 
             if (!productInfo) {
                 return res.status(404).send({ status: 404, message: 'Product not found' });
+            }
+
+            if (productInfo.purchase_mode !== 'Paid' || !productInfo.product_price || productInfo.product_price === 0) {
+                return res.status(400).send({ status: 400, message: "Product does not support payment" })
             }
 
             const DOMAIN = redirect || redirect_url
@@ -34,7 +39,7 @@ class StripePaymentController {
                                 name: productInfo.title,
                                 description: productInfo.description,
                             },
-                            unit_amount: product_amount * 100, // Amount in cents (e.g., $20.00)
+                            unit_amount: productInfo.product_price * 100, // Amount in cents (e.g., $20.00)
                         },
                         quantity: quantity || 1,
                     },
@@ -70,7 +75,7 @@ class StripePaymentController {
             const DOMAIN = redirect || redirect_url
 
             const subscription = await SubscriptionUser.findOne({ product_id: plan_details?.product_id, user_id: req.user?._id });
-            
+
             if (subscription && subscription.status === 'Active') {
                 return res.status(400).send({ status: 400, message: "You already have active subscription for this product" })
             }
@@ -109,9 +114,7 @@ class StripePaymentController {
         try {
             const { id } = req.body;
             const session = await stripe.checkout.sessions.retrieve(id);
-            console.log(session);
             if (session?.payment_status === 'paid' && session?.status === 'complete') {
-                console.log(session.mode)
                 let subs_data = {
                     product_id: session?.metadata?.product_id,
                     user_id: req.user?._id,
@@ -125,6 +128,7 @@ class StripePaymentController {
                         session.subscription
                     );
 
+                    subs_data.payment_id = subsData.id;
                     subs_data.current_plan_start = new Date(subsData?.current_period_start * 1000)
                     subs_data.current_plan_end = new Date(subsData?.current_period_end * 1000)
                     const newSubscription = await SubscriptionUser.create(subs_data)
@@ -169,7 +173,27 @@ class StripePaymentController {
             res.status(500).send({ status: 500, message: error.message });
         }
     }
-}
 
+    async subscription_webhook(req, res) {
+        try {
+            const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+            const sig = req.headers['stripe-signature'];
+
+            let event;
+            event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+
+            if (event.type === 'invoice.payment_succeeded' || event.type === 'invoice.payment_failed') {
+                const session = event.data?.object
+                if (session && session?.type === 'subscription' && session.subscription) {
+                    await stripe_webhook.invoice_payment(session)
+                }
+            }
+            res.status(200).send();
+        } catch (e) {
+            console.log(e.message, 'Webhook')
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    }
+}
 
 module.exports = new StripePaymentController();
