@@ -171,6 +171,42 @@ const userRepository = {
                                         $eq: ["$userId", "$$sellerID"]
                                     }
                                 }
+                            },
+                            {
+                                $lookup: {
+                                    let: { categoryID: '$category_id' },
+                                    from: "service_categories",
+                                    pipeline: [
+                                        {
+                                            $match: {
+                                                $expr: {
+                                                    $eq: ["$_id", "$$categoryID"]
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    as: "category_details"
+                                }
+                            },
+                            { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
+                            {
+                                $group: {
+                                    _id: '$_id',
+                                    title: { $first: '$title' },
+                                    description: { $first: '$description' },
+                                    userId: { $first: '$userId' },
+                                    status: { $first: '$status' },
+                                    image: { $first: '$image' },
+                                    category_id: { $first: '$category_id' },
+                                    category_name: { $first: '$category_details.title' },
+                                    category_slug: { $first: '$category_details.slug' },
+                                    sub_category_id: { $first: '$sub_category_id' },
+                                    bid_now: { $first: '$bid_now' },
+                                    bid_start_price: { $first: '$bid_start_price' },
+                                    bid_increament_value: { $first: '$bid_increament_value' },
+                                    bid_entry: { $first: '$bid_entry' },
+                                    createdAt: { $first: '$createdAt' }
+                                }
                             }
                         ],
                         as: "seller_own_products"
