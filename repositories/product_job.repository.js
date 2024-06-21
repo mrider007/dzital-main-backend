@@ -62,10 +62,10 @@ const JobRepository = {
                                 }
                             }
                         ],
-                        as: "job_posted_by"
+                        as: "seller_details"
                     },
                 },
-                { $unwind: { path: '$job_posted_by', preserveNullAndEmptyArrays: true } },
+                { $unwind: { path: '$seller_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
                         from: 'products',
@@ -179,7 +179,7 @@ const JobRepository = {
                         product_id: { $first: '$product_id' },
                         status: { $first: '$product_details.status' },
                         userId: { $first: '$product_details.userId' },
-                        job_posted_by: { $first: '$job_posted_by' },
+                        seller_details: { $first: '$seller_details' },
                         bid_now: { $first: '$product_details.bid_now' },
                         bid_start_price: { $first: '$product_details.bid_start_price' },
                         bid_increament_value: { $first: '$product_details.bid_increament_value' },
