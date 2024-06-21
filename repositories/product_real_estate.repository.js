@@ -40,13 +40,33 @@ const propertyRepository = {
                 { $unwind: { path: '$sub_category_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
-                        from: 'users',
-                        localField: 'user_id',
-                        foreignField: '_id',
-                        as: 'user_details'
+                        from: "users",
+                        let: { userID: "$user_id" },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$userID"] }
+                                        ],
+                                    },
+                                },
+                            },
+                            {
+                                $project: {
+                                    _id: 1,
+                                    name: 1,
+                                    image: 1,
+                                    email: 1,
+                                    mobile: 1,
+                                    address: 1
+                                }
+                            }
+                        ],
+                        as: "seller_details"
                     }
                 },
-                { $unwind: { path: '$user_details', preserveNullAndEmptyArrays: true } },
+                { $unwind: { path: '$seller_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
                         from: 'products',
@@ -172,6 +192,7 @@ const propertyRepository = {
                         status: { $first: '$product_details.status' },
                         userId: { $first: '$product_details.userId' },
                         user_id: { $first: '$user_id' },
+                        seller_details: { $first: '$seller_details' },
                         property_type: { $first: '$property_type' }, 
                         product_id: { $first: '$product_id' },
                         category_id: { $first: '$category_id' },
