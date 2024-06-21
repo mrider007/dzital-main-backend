@@ -332,13 +332,33 @@ const goodsRepository = {
                 { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
-                        from: 'users',
-                        localField: 'user_id',
-                        foreignField: '_id',
-                        as: 'user_details'
-                    }
+                        from: "users",
+                        let: { userID: "$user_id" },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$userID"] }
+                                        ],
+                                    },
+                                },
+                            },
+                            {
+                                $project: {
+                                    _id: 1,
+                                    name: 1,
+                                    image: 1,
+                                    email: 1,
+                                    mobile: 1,
+                                    address: 1
+                                }
+                            }
+                        ],
+                        as: "seller_details"
+                    },
                 },
-                { $unwind: { path: '$user_details', preserveNullAndEmptyArrays: true } },
+                { $unwind: { path: '$seller_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
                         from: 'products',
@@ -456,13 +476,13 @@ const goodsRepository = {
                         category_name: { $first: '$category_details.title' },
                         category_slug: { $first: '$category_details.slug' },
                         userId: { $first: '$product_details.userId' },
+                        seller_details: { $first: '$seller_details' },
                         bid_now: { $first: '$product_details.bid_now' },
                         bid_start_price: { $first: '$product_details.bid_start_price' },
                         bid_increament_value: { $first: '$product_details.bid_increament_value' },
                         bid_entry: { $first: '$product_details.bid_entry' },
                         bid_start_date: { $first: '$product_details.bid_start_date' },
                         bid_end_date: { $first: '$product_details.bid_end_date' },
-                        //wishlists: { $addToSet: '$wishlists' },
                         isWishlist: { $first: '$isWishlist' },
                         status: { $first: '$product_details.status' },
                         attributes: { $first: '$attribute_details' },
