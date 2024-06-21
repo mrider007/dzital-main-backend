@@ -7,7 +7,6 @@ _ = require("underscore");
 const dotenv = require("dotenv");
 const path = require('path');
 dotenv.config()
-//const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 const stripe_payment_controller = require('./controllers/stripe_payment.controller');
 
 const app = express();
