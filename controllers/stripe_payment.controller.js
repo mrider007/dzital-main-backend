@@ -125,7 +125,7 @@ class StripePaymentController {
                     status: session?.payment_status === 'paid' ? 'Active' : 'Inactive'
                 }
                 if (session?.mode === 'subscription') {
-                    const subsData = await await stripe.subscriptions.retrieve(
+                    const subsData = await stripe.subscriptions.retrieve(
                         session.subscription
                     );
                     subs_data.payment_id = subsData.id;
@@ -143,6 +143,30 @@ class StripePaymentController {
                         amount: session?.amount_total / 100,
                         payment_status: session?.payment_status === 'paid' ? 'Success' : 'Failed'
                     })
+
+                    const planDetails = await Product_Plan.findById(session?.metadata?.plan_id)
+                    const startDate = new Date(subsData?.created * 1000);
+                    const endDate = new Date(startDate);
+                    switch (planDetails.plan_interval) {
+                        case 'day':
+                            endDate.setDate(endDate.getDate() + planDetails.plan_interval_count);
+                            break;
+                        case 'week':
+                            endDate.setDate(endDate.getDate() + (planDetails.plan_interval_count * 7));
+                            break;
+                        case 'month':
+                            endDate.setMonth(endDate.getMonth() + planDetails.plan_interval_count);
+                            break;
+                        case 'year':
+                            endDate.setFullYear(endDate.getFullYear() + planDetails.plan_interval_count);
+                            break;
+                        default:
+                            throw new Error('Unsupported interval type');
+                    }
+
+                    await stripe.subscriptions.update(session.subscription, {
+                        cancel_at: Math.floor(endDate.getTime() / 1000),
+                    });
 
                     if (_.isEmpty(saveData) || !saveData._id) {
                         res.status(400).send({ status: 400, data: {}, message: 'Payment could not be verified' });
@@ -184,7 +208,7 @@ class StripePaymentController {
             // console.log(`Unhandled event type ${event.type}`);
             if (event.type === 'invoice.payment_succeeded' || event.type === 'invoice.payment_failed') {
                 const session = event.data?.object
-                if (session && session?.type === 'subscription' && session.subscription) {
+                if (session && session.subscription) {
                     await stripe_webhook.invoice_payment(session)
                 }
             }

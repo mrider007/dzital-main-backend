@@ -9,27 +9,29 @@ const stripe_webhook = {
             const subsData = await stripe.subscriptions.retrieve(
                 session?.subscription
             );
-            if (subsData && subsData.create !== subsData.current_period_start) {
-                const subscribedUser = await SubscriptionUser.findOne({ payment_id: subsData.id })
-                if (!_.isEmpty(subscribedUser) && subscribedUser._id && subscribedUser.purchase_mode === 'Subscription') {
-                    subscribedUser.current_plan_start = new Date(subsData?.current_period_start * 1000)
-                    subscribedUser.current_plan_end = new Date(subsData?.current_period_end * 1000)
-                    subscribedUser.status = session?.payment_status === 'paid' ? 'Active' : 'Inactive'
-                    await subscribedUser.save()
+
+            if (subsData && subsData.created !== subsData.current_period_start) {
+                const subscribedUser = await SubscriptionPayment.findOne({ stripe_subs_id: subsData.id }).sort({createdAt: -1})
+                if ( !_.isEmpty(subscribedUser) && subscribedUser._id ) {
+                    let current_plan_start = new Date(subsData?.current_period_start * 1000)
+                    let current_plan_end = new Date(subsData?.current_period_end * 1000)
+                    let status = session?.status === 'paid' ? 'Active' : 'Inactive'
+                    await SubscriptionUser.findOneAndUpdate({payment_id: subsData.id}, {current_plan_start, current_plan_end, status})
                     await SubscriptionPayment.create({
-                        plan_id: session?.metadata?.plan_id,
+                        plan_id: subscribedUser.plan_id,
                         current_plan_start: new Date(subsData?.current_period_start * 1000),
                         current_plan_end: new Date(subsData?.current_period_end * 1000),
                         payment_id: session.id,
                         stripe_subs_id: subsData.id,
                         user_id: subscribedUser.user_id,
-                        amount: session?.amount_total / 100,
-                        payment_status: session?.payment_status === 'paid' ? 'Success' : 'Failed'
+                        amount: session?.amount_paid / 100,
+                        payment_status: session?.status === 'paid' ? 'Success' : 'Failed'
                     })
                 }
             }
             return
         } catch (e) {
+            console.log(e)
             throw e
         }
     }
