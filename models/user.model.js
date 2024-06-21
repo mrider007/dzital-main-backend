@@ -22,7 +22,7 @@ const UserSchema = new mongoose.Schema({
     bio: { type: String, default: '' },
     address: { type: String, default: '' },
     lat: { type: String, trim: true },
-    long: { type: String, trim: true },
+    lng: { type: String, trim: true },
     plan_id: { type: Schema.Types.ObjectId, ref: 'Membership_Plan', index: true },
     member_type: { type: String, index: true, trim: true },
     organization_name: { type: String, index: true, trim: true },
