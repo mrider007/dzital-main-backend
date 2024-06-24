@@ -13,9 +13,17 @@ const stripe_webhook = {
             if (subsData && subsData.created !== subsData.current_period_start) {
                 const subscribedUser = await SubscriptionPayment.findOne({ stripe_subs_id: subsData.id }).sort({createdAt: -1})
                 if ( !_.isEmpty(subscribedUser) && subscribedUser._id ) {
+                    const dateObject = new Date(subsData.current_period_start * 1000); 
+                    const dateObject2 = new Date(subscribedUser.current_plan_start)
+
+                    if(dateObject.getTime() === dateObject2.getTime()) {
+                        return
+                    }
+
                     let current_plan_start = new Date(subsData?.current_period_start * 1000)
                     let current_plan_end = new Date(subsData?.current_period_end * 1000)
                     let status = session?.status === 'paid' ? 'Active' : 'Inactive'
+
                     await SubscriptionUser.findOneAndUpdate({payment_id: subsData.id}, {current_plan_start, current_plan_end, status})
                     await SubscriptionPayment.create({
                         plan_id: subscribedUser.plan_id,
