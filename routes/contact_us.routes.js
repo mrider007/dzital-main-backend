@@ -6,6 +6,6 @@ const multer = require('multer');
 const request_param = multer();
 
 router.post('/contact-us/message', request_param.any(), Authentication.Authenticate, ContactUsController.contactUsMessageSave);
-
+router.post('/contact-us/admin/list', Authentication.AuthenticateAdmin, ContactUsController.adminContactUsList);
 
 module.exports = router;
