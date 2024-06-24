@@ -9,5 +9,6 @@ router.post('/user/free/subscription/create', request_param.any(), Authenticatio
 router.post('/user/subscription/list', Authentication.Authenticate, SubscriptionUserController.getAllSubsription);
 router.put('/user/subsription/cancel/:id', Authentication.Authenticate, SubscriptionUserController.cancel_subscription);
 router.put('/user/subsription/resume/:id', Authentication.Authenticate, SubscriptionUserController.resume_subscription);
+router.get('/user/subsription/detail/:id', Authentication.Authenticate, SubscriptionUserController.getSubscriptionDetails);
 
 module.exports = router;
