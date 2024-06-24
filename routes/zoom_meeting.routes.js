@@ -6,5 +6,6 @@ const multer = require('multer');
 const request_param = multer();
 
 router.post('/zoom/meeting/create', Authentication.Authenticate, request_param.any(), meetingController.createMeeting);
+router.post('/zoom/meetings/list', Authentication.Authenticate, meetingController.meetingList);
 
 module.exports = router;
