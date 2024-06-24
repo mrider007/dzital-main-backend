@@ -44,7 +44,7 @@ const subscriptionUserRepository = {
                         as: 'product_details'
                     }
                 },
-                { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
+                { $unwind: '$product_details' },
                 {
                     $lookup: {
                         let: { productId: '$product_id' },
