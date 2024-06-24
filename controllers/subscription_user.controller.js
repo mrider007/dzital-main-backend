@@ -53,7 +53,7 @@ class SubscriptionUserController {
         }
     }
 
-    async cancel_subscription(req, res) {
+    async pause_subscription(req, res) {
         try {
             const { id } = req.params
             const updatedSubscription = await subscriptionUserRepo.updateOne({ _id: id }, { status: 'Inactive' })
@@ -75,12 +75,32 @@ class SubscriptionUserController {
         }
     }
 
+    async cancel_subscription(req, res) {
+        try {
+            const { id } = req.params
+            const subscription = await subscriptionUserRepo.updateOne({ _id: id }, {
+                status: 'Inactive',
+                isEnded: true
+            })
+            if (_.isEmpty(subscription) || !subscription._id) {
+                res.status(400).send({ status: 400, message: 'Subscription could not be cancelled', data: {} });
+            } else {
+                await stripe.subscriptions.cancel(
+                    subscription?.payment_id
+                );
+                res.status(200).send({ status: 200, data: subscription, message: 'Subscription has been cancelled successfully' });
+            }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    }
+
     async resume_subscription(req, res) {
         try {
             const { id } = req.params;
             const updatedSubscription = await subscriptionUserRepo.updateOne({ _id: id }, { status: 'Active' })
             if (!_.isEmpty(updatedSubscription) && updatedSubscription._id) {
-                const plan_detail = await product_plan.findOne({product_id: updatedSubscription.product_id})
+                const plan_detail = await product_plan.findOne({ product_id: updatedSubscription.product_id })
                 const newCancelAt = time_calculation.cancel_at(updatedSubscription.createdAt, updatedSubscription.current_plan_start, plan_detail.plan_interval, plan_detail.plan_interval_count)
                 if (updatedSubscription.purchase_mode === 'Subscription') {
                     await stripe.subscriptions.update(updatedSubscription?.payment_id, {
