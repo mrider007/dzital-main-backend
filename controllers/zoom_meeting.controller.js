@@ -74,9 +74,9 @@ class MeetingController {
                 res.status(200).send({ status: 200, data: meeting_list, message: 'Meeting List Fetched Successfully' });
             }
         } catch (e) {
-            res.status(500).send({ status: 500, message: e.message })
+            res.status(500).send({ status: 500, message: e.message });
         }
-    }
+    };
 
 }
 
