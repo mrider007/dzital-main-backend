@@ -1,5 +1,6 @@
 const Meeting = require('../models/meeting.model');
 const ZoomToken = require('../models/zoom_token.model');
+const MeetingRepo = require('../repositories/zoom_meeting.repository');
 const meeting_service = require('../services/meeting_service');
 
 class MeetingController {
@@ -62,6 +63,19 @@ class MeetingController {
             res.status(500).json({ status: 500, message: error.message });
         }
     };
+
+    async list_meeting(req, res) {
+        try {
+            const meeting_list = await MeetingRepo.list(req)
+            if(_.isEmpty(meeting_list) || meeting_list.length === 0){
+                res.status(201).send({ status: 201, data: [], message: 'No Meeting Found' });
+            }else{
+                res.status(200).send({ status: 200, data: meeting_list, message: 'Meeting List Fetched Successfully' });
+            }
+        } catch (e) {
+            res.status(500).send({status: 500, message: e.message})
+        }
+    }
 }
 
 module.exports = new MeetingController();
