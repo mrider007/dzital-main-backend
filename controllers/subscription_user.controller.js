@@ -1,6 +1,8 @@
 const Product = require("../models/product.model");
+const product_plan = require("../models/product_plan.model");
 const subscription_user = require("../models/subscription_user.model");
 const subscriptionUserRepo = require("../repositories/subscription_user.repository");
+const time_calculation = require("../services/time-calculation");
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 class SubscriptionUserController {
@@ -59,6 +61,7 @@ class SubscriptionUserController {
                         pause_collection: {
                             behavior: 'mark_uncollectible',
                         },
+                        cancel_at: null
                     });
                 }
                 res.status(200).send({ status: 200, data: updatedSubscription, message: 'Subscription has been cancelled successfully' });
@@ -75,9 +78,12 @@ class SubscriptionUserController {
             const { id } = req.params;
             const updatedSubscription = await subscriptionUserRepo.updateOne({ _id: id }, { status: 'Active' });
             if (!_.isEmpty(updatedSubscription) && updatedSubscription._id) {
+                const plan_detail = await product_plan.findOne({ product_id: updatedSubscription.product_id })
+                const newCancelAt = time_calculation.cancel_at(updatedSubscription.createdAt, updatedSubscription.current_plan_start, plan_detail.plan_interval, plan_detail.plan_interval_count)
                 if (updatedSubscription.purchase_mode === 'Subscription') {
                     await stripe.subscriptions.update(updatedSubscription?.payment_id, {
-                        pause_collection: ''
+                        pause_collection: '',
+                        cancel_at: newCancelAt
                     });
                 }
                 res.status(200).send({ status: 200, data: updatedSubscription, message: 'Subscription has been resumed successfully' });
