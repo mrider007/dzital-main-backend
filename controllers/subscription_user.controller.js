@@ -1,6 +1,8 @@
 const Product = require("../models/product.model");
+const product_plan = require("../models/product_plan.model");
 const subscription_user = require("../models/subscription_user.model");
 const subscriptionUserRepo = require("../repositories/subscription_user.repository");
+const time_calculation = require("../services/time-calculation");
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 class SubscriptionUserController {
@@ -11,11 +13,11 @@ class SubscriptionUserController {
         try {
             const product_data = await Product.findById(req.body.product_id)
 
-            if(!product_data || !product_data._id){
+            if (!product_data || !product_data._id) {
                 return res.status(404).send({ status: 404, message: 'Product not found' });
             }
 
-            if(product_data.purchase_mode !== 'Free'){
+            if (product_data.purchase_mode !== 'Free') {
                 return res.status(400).send({ status: 400, message: 'This product does not support free subscription' });
             }
 
@@ -61,6 +63,7 @@ class SubscriptionUserController {
                         pause_collection: {
                             behavior: 'mark_uncollectible',
                         },
+                        cancel_at: null
                     });
                 }
                 res.status(200).send({ status: 200, data: updatedSubscription, message: 'Subscription has been cancelled successfully' });
@@ -72,14 +75,17 @@ class SubscriptionUserController {
         }
     }
 
-    async resume_subscription (req, res) {
+    async resume_subscription(req, res) {
         try {
             const { id } = req.params;
             const updatedSubscription = await subscriptionUserRepo.updateOne({ _id: id }, { status: 'Active' })
             if (!_.isEmpty(updatedSubscription) && updatedSubscription._id) {
+                const plan_detail = await product_plan.findOne({product_id: updatedSubscription.product_id})
+                const newCancelAt = time_calculation.cancel_at(updatedSubscription.createdAt, updatedSubscription.current_plan_start, plan_detail.plan_interval, plan_detail.plan_interval_count)
                 if (updatedSubscription.purchase_mode === 'Subscription') {
                     await stripe.subscriptions.update(updatedSubscription?.payment_id, {
-                        pause_collection: ''
+                        pause_collection: '',
+                        cancel_at: newCancelAt
                     });
                 }
                 res.status(200).send({ status: 200, data: updatedSubscription, message: 'Subscription has been resumed successfully' });
@@ -87,11 +93,11 @@ class SubscriptionUserController {
                 res.status(400).send({ status: 400, message: 'Subscription could not be resumed', data: {} });
             }
         } catch (e) {
-            res.status(500).send({status: 500, message: e.message})
+            res.status(500).send({ status: 500, message: e.message })
         }
     }
 
-    async getSubscriptionDetails(req, res){
+    async getSubscriptionDetails(req, res) {
         try {
             const { id } = req.params;
             const userSubscriptionInfo = await subscriptionUserRepo.getDetails(id, req.user._id)
