@@ -211,9 +211,13 @@ class StripePaymentController {
                     await stripe_webhook.invoice_payment(session)
                 }
             }
+            if (event.type === 'customer.subscription.deleted' || event.type === 'customer.subscription.updated') {
+                const session = event.data?.object
+                await stripe_webhook.cancel_subscription(session)
+            }
             res.status(200).send();
         } catch (e) {
-            console.log(e.message, 'Webhook')
+            console.log(e, 'Webhook')
             res.status(500).send({ status: 500, message: e.message });
         }
     }
