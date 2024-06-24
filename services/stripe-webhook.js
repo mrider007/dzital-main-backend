@@ -1,5 +1,6 @@
 const SubscriptionUser = require('../models/subscription_user.model');
 const SubscriptionPayment = require('../models/subscription_history.model');
+const subscriptionUserRepo = require('../repositories/subscription_user.repository');
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
@@ -40,6 +41,27 @@ const stripe_webhook = {
             return
         } catch (e) {
             console.log(e)
+            throw e
+        }
+    },
+    
+    cancel_subscription: async (session) => {
+        try {
+            if(!session && !session.id){
+                return 
+            }
+
+            if(session?.status === 'canceled'){
+                const subscription = await subscriptionUserRepo.updateOne({payment_id: session.id}, {
+                    status: 'Inactive',
+                    isEnded: true
+                })
+                 console.log(subscription)
+            }
+
+            return
+
+        }catch (e) {
             throw e
         }
     }

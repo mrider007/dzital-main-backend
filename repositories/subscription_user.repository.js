@@ -288,7 +288,7 @@ const subscriptionUserRepository = {
     updateOne: async (field, value) => {
         try {
             const updatedSubscription = await SubscriptionUser.findOneAndUpdate(field, value, { $new: true, $upsert: true });
-            if (_.isEmpty(updatedSubscription) && !updatedSubscription._id) {
+            if (_.isEmpty(updatedSubscription) || !updatedSubscription?._id) {
                 return null;
             } else {
                 return updatedSubscription;
