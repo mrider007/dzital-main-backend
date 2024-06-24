@@ -12,7 +12,7 @@ const ContactUsSchema = new Schema({
         index: true,
         trim: true
     },
-    mobile_number: { type: String, default: '' },
+    mobile: { type: String, default: '' },
     message: { type: String, trim: true, index: true }
 }, { timestamps: true, versionKey: false });
 

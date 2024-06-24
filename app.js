@@ -82,6 +82,7 @@ const contact_to_supplier = require('./routes/contact_to_supplier.routes');
 const Product_Plan = require('./routes/product_plan.routes');
 const Stripe_Payment = require('./routes/stripe_payment.routes');
 const Subscription_User = require('./routes/subscription_user.routes');
+const contact_us = require('./routes/contact_us.routes');
 
 global.BASE_URL = `http://${process.env.HOST}:${getPort}`;
 
@@ -128,6 +129,7 @@ app.use('/api', contact_to_supplier);
 app.use('/api', Product_Plan);
 app.use('/api', Stripe_Payment);
 app.use('/api', Subscription_User);
+app.use('/api', contact_us);
 
 app.use('/uploads', express.static('uploads'));
 
