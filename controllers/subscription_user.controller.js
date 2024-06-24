@@ -51,7 +51,7 @@ class SubscriptionUserController {
         }
     };
 
-    async cancel_subscription(req, res) {
+    async pause_subscription(req, res) {
         try {
             const { id } = req.params
             const updatedSubscription = await subscriptionUserRepo.updateOne({ _id: id }, { status: 'Inactive' })
@@ -59,7 +59,7 @@ class SubscriptionUserController {
                 if (updatedSubscription.purchase_mode === 'Subscription') {
                     await stripe.subscriptions.update(updatedSubscription?.payment_id, {
                         pause_collection: {
-                            behavior: 'mark_uncollectible',
+                            behavior: 'mark_uncollectable',
                         },
                         cancel_at: null
                     });
@@ -67,6 +67,23 @@ class SubscriptionUserController {
                 res.status(200).send({ status: 200, data: updatedSubscription, message: 'Subscription has been cancelled successfully' });
             } else {
                 res.status(400).send({ status: 400, message: 'Subscription could not be cancelled' });
+            }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+
+    async cancel_subscription(req, res) {
+        try {
+            const { id } = req.params
+            const subscription = await subscriptionUserRepo.updateOne({ _id: id }, { status: 'Inactive', isEnded: true });
+            if (_.isEmpty(subscription) || !subscription._id) {
+                res.status(400).send({ status: 400, message: 'Subscription could not be cancelled' });
+            } else {
+                await stripe.subscriptions.cancel(
+                    subscription?.payment_id
+                );
+                res.status(200).send({ status: 200, data: subscription, message: 'Subscription has been cancelled successfully' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
