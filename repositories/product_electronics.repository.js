@@ -68,6 +68,32 @@ const productElectronicsRepository = {
                 },
                 { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
                 {
+                    $lookup: {
+                        from: "users",
+                        let: { userID: "$user_id" },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$userID"] }
+                                        ],
+                                    },
+                                },
+                            },
+                            {
+                                $project: {
+                                    _id: 1,
+                                    name: 1,
+                                    address: 1
+                                }
+                            }
+                        ],
+                        as: "seller_details"
+                    }
+                },
+                { $unwind: { path: '$seller_details', preserveNullAndEmptyArrays: true } },
+                {
                     $addFields: {
                         'isWishlist': false
                     }
@@ -114,6 +140,7 @@ const productElectronicsRepository = {
                         description: { $first: '$description' },
                         status: { $first: '$product_details.status' },
                         userId: { $first: '$product_details.userId' },
+                        seller_name: { $first: '$seller_details.name' },
                         bid_now: { $first: '$product_details.bid_now' },
                         price: { $first: '$price' },
                         product_type: { $first: '$product_type' },
@@ -211,6 +238,32 @@ const productElectronicsRepository = {
                 { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
+                        from: "users",
+                        let: { userID: "$user_id" },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$userID"] }
+                                        ],
+                                    },
+                                },
+                            },
+                            {
+                                $project: {
+                                    _id: 1,
+                                    name: 1,
+                                    address: 1
+                                }
+                            }
+                        ],
+                        as: "seller_details"
+                    }
+                },
+                { $unwind: { path: '$seller_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $lookup: {
                         from: "product_wishlists",
                         let: { productId: "$product_id", user_id: userId },
                         pipeline: [
@@ -287,6 +340,7 @@ const productElectronicsRepository = {
                         description: { $first: '$description' },
                         status: { $first: '$product_details.status' },
                         userId: { $first: '$product_details.userId' },
+                        seller_name: { $first: '$seller_details.name' },
                         bid_now: { $first: '$product_details.bid_now' },
                         price: { $first: '$price' },
                         product_type: { $first: '$product_type' },
@@ -301,7 +355,6 @@ const productElectronicsRepository = {
                         quantity: { $first: '$quantity' },
                         attribute_values: { $first: '$attribute_value_details' },
                         createdAt: { $first: '$createdAt' },
-                        //wishlists: { $addToSet: '$wishlists' },
                         isWishlist: { $first: '$isWishlist' }
                     }
                 },
