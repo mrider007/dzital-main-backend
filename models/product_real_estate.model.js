@@ -16,6 +16,7 @@ const ProductRealEstateSchema = new Schema({
     address: { type: String, default: '', trim: true, index: true },
     lat: { type: Number, default: 0 },
     lng: { type: Number, default: 0 },
+    price: { type: Number, default: 0 },
     product_id: { type: Schema.Types.ObjectId, ref: 'Product', index: true },
     status: { type: String, index: true, trim: true }
 }, { timestamps: true, versionKey: false });
