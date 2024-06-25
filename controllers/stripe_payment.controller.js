@@ -4,6 +4,8 @@ const Product = require('../models/product.model');
 const Product_Payment = require('../models/product_payment.model');
 const SubscriptionUser = require('../models/subscription_user.model');
 const stripe_webhook = require('../services/stripe-webhook');
+const membership_plan = require('../models/membership_plan.model');
+const membership_user = require('../models/membership_user.model');
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
@@ -65,11 +67,12 @@ class StripePaymentController {
     }
 
     async subscribe_payment(req, res) {
-        const { plan_id, redirect } = req.body;
         try {
+            const { plan_id, redirect } = req.body;
+
             const plan_details = await Product_Plan.findById(plan_id);
             if (!plan_details) {
-                return res.status(404).send({ error: 'plan not found' });
+                return res.status(404).send({ error: 'Plan Not Found' });
             }
 
             const DOMAIN = redirect || redirect_url
@@ -103,11 +106,59 @@ class StripePaymentController {
             } else {
                 res.status(200).json({ status: 200, data: session.id, message: "checkout session created successfully" });
             }
-
         } catch (error) {
             res.status(500).send({ status: 500, message: error.message });
         }
+    }
 
+    async membership_payment(req, res) {
+        try {
+            const { membership_id, redirect } = req.body;
+            const plan_details = await membership_plan.findById(membership_id);
+            if (!_.isEmpty(plan_details) && plan_details._id) {
+                const membership = await membership_user.findOne({ _id: membership_id, user_id: req.user?._id });
+                const currentDate = new Date();
+
+                if (membership && membership.status === 'Active' && currentDate < membership.membership_end_date) {
+                    return res.status(400).send({ status: 400, message: "You already have active membership" })
+                }
+
+                const DOMAIN = redirect || redirect_url
+
+                const session = await stripe.checkout.sessions.create({
+                    payment_method_types: ['card'],
+                    mode: 'payment',
+                    line_items: [
+                        {
+                            price_data: {
+                                currency: 'usd',
+                                product_data: {
+                                    name: plan_details.title,
+                                },
+                                unit_amount: Number(plan_details.amount) * 100,
+                            },
+                            quantity: 1,
+                        },
+                    ],
+                    metadata: {
+                        membership_id: plan_details?._id?.toString(),
+                    },
+                    customer_email: req?.user?.email,
+                    success_url: `${DOMAIN}/#/membership/stripe-response?session_id={CHECKOUT_SESSION_ID}`,
+                    cancel_url: `${DOMAIN}/#/membership/stripe-response?session_id={CHECKOUT_SESSION_ID}`,
+                });
+
+                if (_.isEmpty(session) || !session.id) {
+                    res.status(400).send({ status: 400, data: {}, message: 'session can not be created' })
+                } else {
+                    res.status(200).json({ status: 200, data: session.id, message: "checkout session created successfully" });
+                }
+            } else {
+                res.status(404).send({ status: 404, message: 'membership not found' });
+            }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
     }
 
     async verify_payment(req, res) {
@@ -194,6 +245,40 @@ class StripePaymentController {
             }
         } catch (error) {
             res.status(500).send({ status: 500, message: error.message });
+        }
+    }
+
+    async membership_payment_verfication(req, res) {
+        try {
+            const { id } = req.body;
+            const session = await stripe.checkout.sessions.retrieve(id);
+            if (session?.payment_status === 'paid' && session?.status === 'complete') {
+                const membership_details = await membership_plan.findById(session?.metadata?.membership_id)
+                if (!membership_details || !membership_details._id) {
+                    return res.status(404).send({ status: 404, message: 'membership not found' });
+                }
+                const currentDate = new Date();
+                currentDate.setMonth(currentDate.getMonth() + membership_details.no_of_months);
+                const saveData = await membership_user.create({
+                    membership_id: session?.metadata?.membership_id,
+                    payment_id: session.id,
+                    membership_status: session?.payment_status === 'paid' ? 'Active' : 'Inactive',
+                    user_id: req?.user?._id,
+                    membership_end_date: currentDate,
+                    amount: session?.amount_total / 100,
+                    payment_status: session?.payment_status === 'paid' ? 'Success' : 'Failed'
+                })
+
+                if (_.isEmpty(saveData) || !saveData._id) {
+                    res.status(400).send({ status: 400, data: {}, message: 'Payment could not be verified' });
+                } else {
+                    res.status(200).send({ status: 200, data: saveData, message: 'Payment Successful' });
+                }
+            } else {
+                res.status(400).send({ status: 400, data: session, message: 'Payment Failed' });
+            }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
         }
     }
 
