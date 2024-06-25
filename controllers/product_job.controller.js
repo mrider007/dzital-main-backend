@@ -246,7 +246,7 @@ class JobController {
 
     async JobProductsBulkUpdate(req, res) {
         try {
-            let productsUpdate = await Job.updateMany({}, { $set: { 'lat': 0, 'lng': 0, 'address': 0 } });
+            let productsUpdate = await Job.updateMany({}, { $set: { 'lat': 0, 'lng': 0, 'address': '' } });
             res.status(200).send({ status: 200, data: productsUpdate, message: 'Job Products Updated Successfully' });
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
