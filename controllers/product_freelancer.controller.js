@@ -115,7 +115,7 @@ class freelancerController {
 
     async FreelancerProductsBulkUpdate(req, res) {
         try {
-            let productsUpdate = await Freelancer.updateMany({}, { $set: { 'sub_category_id': null } });
+            let productsUpdate = await Freelancer.updateMany({}, { $set: { lat: 0, lng: 0, address: '' } });
             res.status(200).send({ status: 200, data: productsUpdate, message: 'Freelancer Products Updated Successfully' });
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
