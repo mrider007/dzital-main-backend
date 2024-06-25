@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const planRepo = require('../repositories/membership_plan.repository');
 const MembershipPlan = require('../models/membership_plan.model');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 class MembershipPlanController {
     constructor() { }
@@ -12,6 +13,21 @@ class MembershipPlanController {
                 res.status(400).send({ status: 400, data: {}, message: 'Plan already exists' });
             }
             else {
+                const price = await stripe.prices.create({
+                    currency: 'usd',
+                    unit_amount: Number(req.body.amount) * 100,
+                    recurring: {
+                        interval: 'month',
+                        interval_count: 1,
+                    },
+                    product_data: {
+                        name: req.body.title,
+                    },
+                });
+                if(_.isEmpty(price) || !price.id) {
+                    return res.status(400).send({ status: 400, message: 'Plan can not be created' });
+                }
+                req.body.stripe_price_id = price.id;
                 let planSave = await MembershipPlan.create(req.body);
                 if (!_.isEmpty(planSave) && planSave._id) {
                     res.status(200).send({ status: 200, data: planSave, message: 'Membership Plan added successfully' });
