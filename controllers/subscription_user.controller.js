@@ -85,9 +85,11 @@ class SubscriptionUserController {
             if (_.isEmpty(subscription) || !subscription._id) {
                 res.status(400).send({ status: 400, message: 'Subscription could not be cancelled', data: {} });
             } else {
-                await stripe.subscriptions.cancel(
-                    subscription?.payment_id
-                );
+                if(subscription.purchase_mode === 'Subscription'){
+                    await stripe.subscriptions.cancel(
+                        subscription?.payment_id
+                    );
+                }
                 res.status(200).send({ status: 200, data: subscription, message: 'Subscription has been cancelled successfully' });
             }
         } catch (e) {
