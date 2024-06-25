@@ -193,7 +193,7 @@ const propertyRepository = {
                         userId: { $first: '$product_details.userId' },
                         user_id: { $first: '$user_id' },
                         seller_details: { $first: '$seller_details' },
-                        property_type: { $first: '$property_type' }, 
+                        property_type: { $first: '$property_type' },
                         product_id: { $first: '$product_id' },
                         category_id: { $first: '$category_id' },
                         category_name: { $first: '$category_details.title' },
@@ -282,15 +282,40 @@ const propertyRepository = {
                     }
                 },
                 { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
+                //              //     $lookup: {
+                //         from: 'users',
+                //         localField: 'user_id',
+                //         foreignField: '_id',
+                //         as: 'user_details'
+                //     }
+                // },
+                // { $unwind: { path: '$user_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
-                        from: 'users',
-                        localField: 'user_id',
-                        foreignField: '_id',
-                        as: 'user_details'
-                    }
+                        from: "users",
+                        let: { userID: "$user_id" },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$userID"] }
+                                        ]
+                                    },
+                                },
+                            },
+                            {
+                                $project: {
+                                    _id: 1,
+                                    name: 1,
+                                    address: 1
+                                }
+                            }
+                        ],
+                        as: "seller_details"
+                    },
                 },
-                { $unwind: { path: '$user_details', preserveNullAndEmptyArrays: true } },
+                { $unwind: { path: '$seller_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
                         from: 'products',
@@ -362,6 +387,7 @@ const propertyRepository = {
                         status: { $first: '$product_details.status' },
                         bid_now: { $first: '$product_details.bid_now' },
                         userId: { $first: '$product_details.userId' },
+                        seller_name: { $first: '$seller_details.name' },
                         photo: { $first: '$photo' },
                         image_1: { $first: '$image_1' },
                         image_2: { $first: '$image_2' },
@@ -472,15 +498,41 @@ const propertyRepository = {
                     }
                 },
                 { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
+                // {
+                //     $lookup: {
+                //         from: 'users',
+                //         localField: 'user_id',
+                //         foreignField: '_id',
+                //         as: 'user_details'
+                //     }
+                // },
+                // { $unwind: { path: '$user_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
-                        from: 'users',
-                        localField: 'user_id',
-                        foreignField: '_id',
-                        as: 'user_details'
-                    }
+                        from: "users",
+                        let: { userID: "$user_id" },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$userID"] }
+                                        ]
+                                    },
+                                },
+                            },
+                            {
+                                $project: {
+                                    _id: 1,
+                                    name: 1,
+                                    address: 1
+                                }
+                            }
+                        ],
+                        as: "seller_details"
+                    },
                 },
-                { $unwind: { path: '$user_details', preserveNullAndEmptyArrays: true } },
+                { $unwind: { path: '$seller_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
                         from: 'products',
@@ -583,6 +635,7 @@ const propertyRepository = {
                         status: { $first: '$product_details.status' },
                         bid_now: { $first: '$product_details.bid_now' },
                         userId: { $first: '$product_details.userId' },
+                        seller_name: { $first: '$seller_details.name' },
                         photo: { $first: '$photo' },
                         image_1: { $first: '$image_1' },
                         image_2: { $first: '$image_2' },
