@@ -75,14 +75,15 @@ class SubscriptionUserController {
 
     async cancel_subscription(req, res) {
         try {
-            const { id } = req.params
-            const subscription = await subscriptionUserRepo.updateOne({ _id: id }, { status: 'Inactive', isEnded: true });
+            const subscription = await subscriptionUserRepo.updateOne({ _id: req.params.id }, { status: 'Inactive', isEnded: true });
             if (_.isEmpty(subscription) || !subscription._id) {
                 res.status(400).send({ status: 400, message: 'Subscription could not be cancelled' });
             } else {
-                await stripe.subscriptions.cancel(
-                    subscription?.payment_id
-                );
+                if (subscription.purchase_mode === 'Subscription') {
+                    await stripe.subscriptions.cancel(
+                        subscription?.payment_id
+                    );
+                }
                 res.status(200).send({ status: 200, data: subscription, message: 'Subscription Has Been Cancelled Successfully' });
             }
         } catch (e) {
