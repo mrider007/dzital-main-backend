@@ -124,7 +124,7 @@ class productEducationController {
 
     async lessoncourseproductsBulkUpdate(req, res) {
         try {
-            let productsUpdate = await ProductEducation.updateMany({}, { $set: { 'sub_category_id': null } });
+            let productsUpdate = await ProductEducation.updateMany({}, { $set: { 'lat': 0, 'lng': 0 } });
             res.status(200).send({ status: 200, data: productsUpdate, message: 'Lesson and Courses Products Updated Successfully' });
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
