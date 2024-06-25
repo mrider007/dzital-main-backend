@@ -355,7 +355,6 @@ const productFashionRepository = {
                         sub_category_id: { $first: "$sub_category_id" },
                         quantity: { $first: '$quantity' },
                         createdAt: { $first: '$createdAt' },
-                        //wishlists: { $addToSet: '$wishlists' },
                         isWishlist: { $first: '$isWishlist' }
                     }
                 },
@@ -533,6 +532,7 @@ const productFashionRepository = {
                         category_slug: { $first: '$category_details.slug' },
                         userId: { $first: '$product_details.userId' },
                         seller_details: { $first: '$seller_details' },
+                        price: { $first: '$price' },
                         bid_now: { $first: '$product_details.bid_now' },
                         bid_start_price: { $first: '$product_details.bid_start_price' },
                         bid_increament_value: { $first: '$product_details.bid_increament_value' },
