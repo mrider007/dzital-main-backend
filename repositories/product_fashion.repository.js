@@ -68,6 +68,32 @@ const productFashionRepository = {
                 },
                 { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
                 {
+                    $lookup: {
+                        from: "users",
+                        let: { userID: "$user_id" },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$userID"] }
+                                        ],
+                                    },
+                                },
+                            },
+                            {
+                                $project: {
+                                    _id: 1,
+                                    name: 1,
+                                    address: 1
+                                }
+                            }
+                        ],
+                        as: "seller_details"
+                    }
+                },
+                { $unwind: { path: '$seller_details', preserveNullAndEmptyArrays: true } },
+                {
                     $addFields: {
                         'isWishlist': false
                     }
@@ -114,6 +140,7 @@ const productFashionRepository = {
                         description: { $first: '$description' },
                         status: { $first: '$product_details.status' },
                         userId: { $first: '$product_details.userId' },
+                        seller_name: { $first: '$seller_details.name' },
                         bid_now: { $first: '$product_details.bid_now' },
                         price: { $first: '$price' },
                         product_type: { $first: '$product_type' },
@@ -202,6 +229,32 @@ const productFashionRepository = {
                 { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
+                        from: "users",
+                        let: { userID: "$user_id" },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$userID"] }
+                                        ],
+                                    },
+                                },
+                            },
+                            {
+                                $project: {
+                                    _id: 1,
+                                    name: 1,
+                                    address: 1
+                                }
+                            }
+                        ],
+                        as: "seller_details"
+                    }
+                },
+                { $unwind: { path: '$seller_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $lookup: {
                         from: 'products',
                         localField: 'product_id',
                         foreignField: '_id',
@@ -287,6 +340,7 @@ const productFashionRepository = {
                         description: { $first: '$description' },
                         status: { $first: '$product_details.status' },
                         userId: { $first: '$product_details.userId' },
+                        seller_name: { $first: '$seller_details.name' },
                         bid_now: { $first: '$product_details.bid_now' },
                         price: { $first: '$price' },
                         product_type: { $first: '$product_type' },
