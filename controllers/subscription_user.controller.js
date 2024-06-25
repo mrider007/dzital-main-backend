@@ -13,11 +13,11 @@ class SubscriptionUserController {
             const product_data = await Product.findById(req.body.product_id)
 
             if (!product_data || !product_data._id) {
-                return res.status(404).send({ status: 404, message: 'Product not found' });
+                return res.status(404).send({ status: 404, message: 'Product Not Found' });
             }
 
             if (product_data.purchase_mode !== 'Free') {
-                return res.status(400).send({ status: 400, message: 'This product does not support free subscription' });
+                return res.status(400).send({ status: 400, message: 'This Product does not support Free Subscription' });
             }
 
             req.body.purchase_mode = product_data.purchase_mode
@@ -41,7 +41,7 @@ class SubscriptionUserController {
         try {
             let userSubscriptionInfo = await subscriptionUserRepo.list(req);
             if (!_.isEmpty(userSubscriptionInfo)) {
-                res.status(200).send({ status: 200, data: userSubscriptionInfo, message: 'User Subscription fetched Successfully' });
+                res.status(200).send({ status: 200, data: userSubscriptionInfo, message: 'User Subscription Fetched Successfully' });
             }
             else {
                 res.status(201).send({ status: 201, message: 'You Have No Subscription' });
@@ -64,7 +64,7 @@ class SubscriptionUserController {
                         cancel_at: null
                     });
                 }
-                res.status(200).send({ status: 200, data: updatedSubscription, message: 'Subscription has been cancelled successfully' });
+                res.status(200).send({ status: 200, data: updatedSubscription, message: 'Subscription Has Been Cancelled Successfully' });
             } else {
                 res.status(400).send({ status: 400, message: 'Subscription could not be cancelled' });
             }
@@ -83,7 +83,7 @@ class SubscriptionUserController {
                 await stripe.subscriptions.cancel(
                     subscription?.payment_id
                 );
-                res.status(200).send({ status: 200, data: subscription, message: 'Subscription has been cancelled successfully' });
+                res.status(200).send({ status: 200, data: subscription, message: 'Subscription Has Been Cancelled Successfully' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -103,7 +103,7 @@ class SubscriptionUserController {
                         cancel_at: newCancelAt
                     });
                 }
-                res.status(200).send({ status: 200, data: updatedSubscription, message: 'Subscription has been resumed successfully' });
+                res.status(200).send({ status: 200, data: updatedSubscription, message: 'Subscription Has Been Resumed Successfully' });
             } else {
                 res.status(400).send({ status: 400, message: 'Subscription could not be resumed' });
             }
@@ -117,7 +117,7 @@ class SubscriptionUserController {
             const { id } = req.params;
             const userSubscriptionInfo = await subscriptionUserRepo.getDetails(id, req.user._id)
             if (!_.isEmpty(userSubscriptionInfo) && userSubscriptionInfo._id) {
-                res.status(200).send({ status: 200, data: userSubscriptionInfo, message: 'User Subscription fetched Successfully' });
+                res.status(200).send({ status: 200, data: userSubscriptionInfo, message: 'User Subscription Fetched Successfully' });
             }
             else {
                 res.status(201).send({ status: 201, message: 'You Have No Subscription' });
