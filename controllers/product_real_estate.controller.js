@@ -147,7 +147,7 @@ class propertyController {
 
     async RealEstateProductsBulkUpdate(req, res) {
         try {
-            let productsUpdate = await Property.updateMany({}, { $set: { 'sub_category_id': null } });
+            let productsUpdate = await Property.updateMany({}, { $set: { 'price': 1 } });
             res.status(200).send({ status: 200, data: productsUpdate, message: 'Real Estate Products Updated Successfully' });
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
