@@ -52,8 +52,8 @@ class StripePaymentController {
                     category_id: productInfo.category_id?.toString(),
                 },
                 customer_email: req?.user?.email,
-                success_url: `${DOMAIN}/#/stripe-response/${id}?session_id={CHECKOUT_SESSION_ID}`,
-                cancel_url: `${DOMAIN}/#/stripe-response/${id}?session_id={CHECKOUT_SESSION_ID}`,
+                success_url: `${DOMAIN}/#/stripe-response/${id}?session_id={CHECKOUT_SESSION_ID}&type=payment`,
+                cancel_url: `${DOMAIN}/#/stripe-response/${id}?session_id={CHECKOUT_SESSION_ID}&type=payment`,
             });
 
             if (_.isEmpty(session) || !session.id) {
@@ -97,8 +97,8 @@ class StripePaymentController {
                     product_id: plan_details?.product_id?.toString()
                 },
                 customer_email: req?.user?.email,
-                success_url: `${DOMAIN}/#/stripe-response/${id}?session_id={CHECKOUT_SESSION_ID}`,
-                cancel_url: `${DOMAIN}/#/stripe-response/${id}?session_id={CHECKOUT_SESSION_ID}`,
+                success_url: `${DOMAIN}/#/stripe-response/${id}?session_id={CHECKOUT_SESSION_ID}&type=subscription`,
+                cancel_url: `${DOMAIN}/#/stripe-response/${id}?session_id={CHECKOUT_SESSION_ID}&type=subscription`,
             });
 
             if (_.isEmpty(session) || !session.id) {
@@ -146,8 +146,8 @@ class StripePaymentController {
                         membership_id: plan_details?._id?.toString(),
                     },
                     customer_email: req?.user?.email,
-                    success_url: `${DOMAIN}/#/membership/stripe-response?session_id={CHECKOUT_SESSION_ID}`,
-                    cancel_url: `${DOMAIN}/#/membership/stripe-response?session_id={CHECKOUT_SESSION_ID}`,
+                    success_url: `${DOMAIN}/#/stripe-response/${membership_id}?session_id={CHECKOUT_SESSION_ID}&type=membership`,
+                    cancel_url: `${DOMAIN}/#/stripe-response/${membership_id}?session_id={CHECKOUT_SESSION_ID}&type=membership`,
                 });
     
                 if (_.isEmpty(session) || !session.id) {
