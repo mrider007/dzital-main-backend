@@ -17,7 +17,7 @@ class StripePaymentController {
 
     async create_payment(req, res) {
         try {
-            const { product_id, quantity, redirect } = req.body;
+            const { product_id, quantity, redirect, id } = req.body
             const productInfo = await Product.findOne({ _id: product_id })
 
             if (!productInfo) {
@@ -51,8 +51,8 @@ class StripePaymentController {
                     category_id: productInfo.category_id?.toString(),
                 },
                 customer_email: req?.user?.email,
-                success_url: `${DOMAIN}/#/stripe-response?session_id={CHECKOUT_SESSION_ID}`,
-                cancel_url: `${DOMAIN}/#/stripe-response?session_id={CHECKOUT_SESSION_ID}`,
+                success_url: `${DOMAIN}/#/stripe-response/${id}?session_id={CHECKOUT_SESSION_ID}`,
+                cancel_url: `${DOMAIN}/#/stripe-response/${id}?session_id={CHECKOUT_SESSION_ID}`
             });
 
             if (_.isEmpty(session) || !session.id) {
@@ -68,7 +68,7 @@ class StripePaymentController {
 
     async subscribe_payment(req, res) {
         try {
-            const { plan_id, redirect } = req.body;
+            const { plan_id, redirect, id } = req.body;
 
             const plan_details = await Product_Plan.findById(plan_id);
             if (!plan_details) {
@@ -97,8 +97,8 @@ class StripePaymentController {
                     product_id: plan_details?.product_id?.toString()
                 },
                 customer_email: req?.user?.email,
-                success_url: `${DOMAIN}/#/stripe-response?session_id={CHECKOUT_SESSION_ID}`,
-                cancel_url: `${DOMAIN}/#/stripe-response?session_id={CHECKOUT_SESSION_ID}`,
+                success_url: `${DOMAIN}/#/stripe-response/${id}?session_id={CHECKOUT_SESSION_ID}`,
+                cancel_url: `${DOMAIN}/#/stripe-response/${id}?session_id={CHECKOUT_SESSION_ID}`
             });
 
             if (_.isEmpty(session) || !session.id) {
