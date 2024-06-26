@@ -223,7 +223,7 @@ class StripePaymentController {
                     if (_.isEmpty(saveData) || !saveData._id) {
                         res.status(400).send({ status: 400, data: {}, message: 'Payment could not be verified' });
                     } else {
-                        res.status(200).send({ status: 200, data: saveData, message: 'Payment Successful' });
+                        res.status(200).send({ status: 200, data: newSubscription, message: 'Payment Successful' });
                     }
                 } else {
                     const newSubscription = await SubscriptionUser.create(subs_data)
@@ -239,7 +239,7 @@ class StripePaymentController {
                     if (_.isEmpty(saveData) || !saveData._id) {
                         res.status(400).send({ status: 400, data: {}, message: 'Payment could not be verified' });
                     } else {
-                        res.status(200).send({ status: 200, data: saveData, message: 'Payment Successful' });
+                        res.status(200).send({ status: 200, data: newSubscription, message: 'Payment Successful' });
                     }
                 }
             } else {
