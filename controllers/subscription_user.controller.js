@@ -53,6 +53,20 @@ class SubscriptionUserController {
         }
     }
 
+    async getSubscribedUser(req, res) {
+        try {
+            let subscribedUser = await subscriptionUserRepo.getSubscribedUser(req);
+            if (!_.isEmpty(subscribedUser)) {
+                res.status(200).send({ status: 200, data: subscribedUser, message: 'Subscribed user fetched Successfully' });
+            }
+            else {
+                res.status(201).send({ status: 201, message: 'subscribed user not found', data: {} });
+            }
+        } catch (error) {
+            res.status(500).send({ status: 500, message: error.message });
+        }
+    }
+
     async pause_subscription(req, res) {
         try {
             const { id } = req.params

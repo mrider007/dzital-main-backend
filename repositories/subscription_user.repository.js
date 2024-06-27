@@ -116,6 +116,100 @@ const subscriptionUserRepository = {
             throw err;
         }
     },
+    getSubscribedUser: async(req) => {
+        try {
+            var conditions = {};
+            var and_clauses = [];
+
+            and_clauses.push({ 'product_id': new mongoose.Types.ObjectId(req.body.product_id) });
+
+            if (_.has(req.body, 'status') && req.body.status !== '') {
+                and_clauses.push({ status: req.body.status });
+            }
+
+            if (_.has(req.body, 'isEnded')) {
+                and_clauses.push({ isEnded: req.body.isEnded });
+            }
+
+            if (_.has(req.body, 'purchase_mode') && req.body.purchaseMode !== '') {
+                and_clauses.push({ purchase_mode: req.body.purchase_mode });
+            }
+
+            conditions['$and'] = and_clauses;
+
+            let SubscribedUser = await SubscriptionUser.aggregate([
+                { $match: conditions },
+                {
+                    $lookup: {
+                        from: 'products',
+                        let: {userId: new mongoose.Types.ObjectId(req.user._id), product_id: new mongoose.Types.ObjectId(req.body.product_id) },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$userId", "$$userId"] },
+                                            { $eq: ["$_id", "$$product_id"] },
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                $group: {
+                                    _id: '$_id',
+                                    image: { $first: '$image' },
+                                    title: { $first: '$title' },
+                                    description: { $first: '$description' },
+                                    product_price: { $first: '$product_price' },
+                                    purchase_mode: { $first: '$purchase_mode' },
+                                }
+                            }
+                        ],
+                        as: 'product_details'
+                    }
+                },
+                { $unwind: '$product_details' },
+                {
+                    $lookup: {
+                        from: 'users',
+                        localField: 'user_id',
+                        pipleline: [
+                            {
+                                $group: {
+                                    _id: '$_id',
+                                    name: { $first: '$name' },
+                                    name: { $first: '$image' },
+                                }
+                            }
+                        ],
+                        foreignField: '_id',
+                        as: 'user_details'
+                    }
+                },
+                {$unwind: '$user_details'},
+                {
+                    $group: {
+                        _id: '$_id',
+                        product_details: { $first: '$product_details' },
+                        user_name: { $first: '$user_details.name' },
+                        user_image: { $first: '$user_details.image' },
+                        purchase_mode: { $first: '$purchase_mode' },
+                        current_plan_start: { $first: '$current_plan_start' },
+                        current_plan_end: { $first: '$current_plan_end' },
+                        amount: { $first: '$amount' },
+                        status: { $first: '$status' },
+                        isEnded: { $first: '$isEnded' },
+                        createdAt: { $first: '$createdAt' }
+                    }
+                },
+                { $sort: { createdAt: -1 } }
+            ]);
+            return SubscribedUser;
+
+        }catch(e) {
+            throw e;
+        }
+    },
     getDetails: async (id, userId) => {
         try {   
             var conditions = {};
