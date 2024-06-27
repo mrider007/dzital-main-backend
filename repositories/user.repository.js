@@ -77,6 +77,8 @@ const userRepository = {
                         mobile: { $first: '$mobile' },
                         address: { $first: '$address' },
                         bio: { $first: '$bio' },
+                        lat: { $first: '$lat' },
+                        lng: { $first: '$lng' },
                         social_id: { $first: '$social_id' },
                         register_type: { $first: '$register_type' },
                         plan_id: { $first: '$plan_id' },
