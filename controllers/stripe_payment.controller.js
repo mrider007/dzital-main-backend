@@ -259,6 +259,10 @@ class StripePaymentController {
                 if(!membership_details || !membership_details._id){
                     return res.status(404).send({ status: 404, message: 'membership not found' });
                 }
+                const alreadyMember = await membership_user.findOne({payment_id: session?.id})
+                if(!_.isEmpty(alreadyMember) && alreadyMember._id){
+                    return res.status(200).send({ status: 200, data: {}, message: 'Record already added' });
+                }
                 const currentDate = new Date();
                 currentDate.setMonth(currentDate.getMonth() + membership_details.no_of_months);
                 const saveData = await membership_user.create({
