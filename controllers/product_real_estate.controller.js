@@ -42,7 +42,7 @@ class propertyController {
             req.body.user_id = req.user._id;
             let real_estate_product_save = await Property.create(req.body);
             if (!_.isEmpty(real_estate_product_save) && real_estate_product_save._id) {
-                //let productUpdate = await productRepo.updateProductById({ image: real_estate_product_save.photo }, real_estate_product_save.product_id);
+                let productImageUpdate = await productRepo.updateProductById({ image: real_estate_product_save.photo }, real_estate_product_save.product_id);
 
                 let attribute_values = [];
 
@@ -65,7 +65,7 @@ class propertyController {
                     update_obj.bid_start_date = req.body.bid_start_date
                     update_obj.bid_end_date = req.body.bid_end_date
                 }
-                let productUpdate = await productRepo.updateProductById(update_obj, real_estate_product_save.product_id);
+                let productBidUpdate = await productRepo.updateProductById(update_obj, real_estate_product_save.product_id);
 
                 res.status(200).send({ status: 200, data: real_estate_product_save, message: 'Real Estate Product Saved Successfully' });
             }
