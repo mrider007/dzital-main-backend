@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Job = require('../models/product_jobs.model');
 const AttributeValue = require('../models/attribute_value.model');
+const productRepo = require('../repositories/product.repository');
 const jobRepo = require('../repositories/product_job.repository');
 const cloudinary = require('cloudinary');
 class JobController {
@@ -36,6 +37,7 @@ class JobController {
                 req.body.user_id = req.user._id;
                 let jobData = await Job.create(req.body);
                 if (!_.isEmpty(jobData) && jobData._id) {
+                    let productUpdate = await productRepo.updateProductById({ image: jobData.image }, jobData.product_id);
 
                     let attribute_values = [];
 
