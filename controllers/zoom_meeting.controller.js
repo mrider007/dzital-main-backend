@@ -1,4 +1,5 @@
 const Meeting = require('../models/meeting.model');
+const membership_user = require('../models/membership_user.model');
 const ZoomToken = require('../models/zoom_token.model');
 const MeetingRepo = require('../repositories/zoom_meeting.repository');
 const meeting_service = require('../services/meeting_service');
@@ -13,6 +14,14 @@ class MeetingController {
             if (!req.body.product_id) {
                 return res.status(404).send({ status: 404, message: "product not found" })
             }
+
+            const check_membership = await membership_user.find({user_id: req.user._id }).populate('membership_id')
+            const membership = check_membership?.find((data) => data.membership_id?.title?.toLowerCase()?.includes('zoom'))
+            const currentDate = new Date()
+            if(!membership || membership.membership_status !== 'Active' || membership.membership_end_date < currentDate){
+                return res.status(400).send({ status: 400, message: 'you do not have membership to use this feature', data: {} });
+            }
+            
             const zoomToken = await ZoomToken.findOne({})
 
             if (_.isEmpty(zoomToken) || !zoomToken._id) {
