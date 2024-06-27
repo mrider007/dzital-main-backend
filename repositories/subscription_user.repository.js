@@ -137,7 +137,7 @@ const subscriptionUserRepository = {
 
             conditions['$and'] = and_clauses;
 
-            let SubscribedUser = await SubscriptionUser.aggregate([
+            let pipeline = SubscriptionUser.aggregate([
                 { $match: conditions },
                 {
                     $lookup: {
@@ -173,7 +173,7 @@ const subscriptionUserRepository = {
                     $lookup: {
                         from: 'users',
                         localField: 'user_id',
-                        pipleline: [
+                        pipeline: [
                             {
                                 $group: {
                                     _id: '$_id',
@@ -204,6 +204,16 @@ const subscriptionUserRepository = {
                 },
                 { $sort: { createdAt: -1 } }
             ]);
+
+            var options = {};
+            if (req.body.page !== undefined) {
+                options.page = req.body.page;
+            }
+            if (req.body.limit !== undefined) {
+                options.limit = req.body.limit;
+            }
+
+            let SubscribedUser = await SubscriptionUser.aggregatePaginate(pipeline, options);
             return SubscribedUser;
 
         }catch(e) {
