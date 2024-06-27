@@ -177,6 +177,10 @@ class StripePaymentController {
                     status: session?.payment_status === 'paid' ? 'Active' : 'Inactive'
                 }
                 if (session?.mode === 'subscription') {
+                    const checkSubscription = await SubscriptionPayment.findOne({payment_id: session.id})
+                    if(!_.isEmpty(checkSubscription) && checkSubscription._id){
+                        return res.status(200).send({ status: 200, message: "Record already added" })
+                    }
                     const subsData = await stripe.subscriptions.retrieve(
                         session.subscription
                     );
@@ -226,6 +230,10 @@ class StripePaymentController {
                         res.status(200).send({ status: 200, data: newSubscription, message: 'Payment Successful' });
                     }
                 } else {
+                    const checkSubscription = await Product_Payment.findOne({payment_id: session.id})
+                    if(!_.isEmpty(checkSubscription) && checkSubscription._id){
+                        return res.status(200).send({ status: 200, message: "Record already added" })
+                    }
                     const newSubscription = await SubscriptionUser.create(subs_data)
 
                     const saveData = await Product_Payment.create({
