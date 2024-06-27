@@ -69,6 +69,26 @@ const userRepository = {
                 },
                 { $unwind: { path: '$plan_details', preserveNullAndEmptyArrays: true } },
                 {
+                    $lookup: {
+                        from: 'membership_users',
+                        let: { userId: '$_id', currentTime: new Date(), status: 'Active' },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$user_id", "$$userId"] },
+                                            { $eq: ["$status", "$$status"] },
+                                            { $gt: ["$membership_end_date", "$$currentTime"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: 'membership_details'
+                    }
+                },
+                {
                     $group: {
                         _id: '$_id',
                         name: { $first: '$name' },
@@ -82,7 +102,8 @@ const userRepository = {
                         social_id: { $first: '$social_id' },
                         register_type: { $first: '$register_type' },
                         plan_id: { $first: '$plan_id' },
-                        plan_title: { $first: '$plan_details.title' }
+                        plan_title: { $first: '$plan_details.title' },
+                        membership_details: { $first: '$membership_details' }
                     }
                 }
             ]);
