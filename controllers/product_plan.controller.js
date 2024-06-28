@@ -1,4 +1,5 @@
 const ProductPlan = require("../models/product_plan.model");
+const ProductPlanRepo = require("../repositories/product_plan.repository");
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 class ProductPlanController {
@@ -42,6 +43,19 @@ class ProductPlanController {
             }
         } catch (error) {
             res.send({ status: 500, message: error.message })
+        }
+    }
+
+    async updatePlan(req, res) {
+        try {
+            const updatedPlan = await ProductPlanRepo.updateById(req.params.id, req.body)
+            if (_.isEmpty(updatedPlan) || !updatedPlan._id) {
+                res.status(400).send({ status: 400, message: "Plan Not Found" })
+            } else {
+                res.status(200).send({ status: 200, data: updatedPlan, message: "Plan Updated Successfully" })
+            }
+        } catch (e) {
+            res.status(400).send({ status: 400, message: e.message })
         }
     }
 }
