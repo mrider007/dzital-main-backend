@@ -174,6 +174,7 @@ class productEducationController {
                 }
 
                 let productUpdate = await productRepo.updateProductById(updated_product_data, lessoncoursesData.product_id);
+                lessoncoursesData.product_details = productUpdate;
                 res.status(200).send({ status: 200, data: lessoncoursesData, message: 'Lesson and Course Product Saved Successfully' });
             }
             else {
