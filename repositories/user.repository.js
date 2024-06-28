@@ -78,7 +78,7 @@ const userRepository = {
                                      $expr: {
                                         $and: [
                                             { $eq: ["$user_id", "$$userId"] },
-                                            { $eq: ["$status", "$$status"] },
+                                            { $eq: ["$membership_status", "$$status"] },
                                             { $gt: ["$membership_end_date", "$$currentTime"] },
                                         ]
                                     }
