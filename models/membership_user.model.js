@@ -7,7 +7,7 @@ const Membership_User_Schema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Membership_Plan',
         index: true,
-        required: [true, 'Membership is Required']
+        required: [true, 'Membership Plan is Required']
     },
     payment_id: {
         type: String,
@@ -36,8 +36,9 @@ const Membership_User_Schema = new Schema({
         type: String,
         enum: ['Success', 'Failed'],
         required: [true, 'Payment Status Required']
-    }
-}, { timestamps: true, versionKey: false })
+    },
+    type: { type: String, index: true, enum: ['Premium_Membership', 'Zoom', 'Post_Boost'] }
+}, { timestamps: true, versionKey: false });
 
 Membership_User_Schema.plugin(mongooseAggregatePaginate);
 
