@@ -269,6 +269,7 @@ class StripePaymentController {
                     membership_status: session?.payment_status === 'paid' ? 'Active' : 'Inactive',
                     user_id: req?.user?._id,
                     membership_end_date: currentDate,
+                    type: membership_details.type,
                     amount: session?.amount_total / 100,
                     payment_status: session?.payment_status === 'paid' ? 'Success' : 'Failed'
                 })
