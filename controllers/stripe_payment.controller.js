@@ -21,11 +21,11 @@ class StripePaymentController {
             const productInfo = await Product.findOne({ _id: product_id })
 
             if (!productInfo) {
-                return res.status(404).send({ status: 404, message: 'Product not found' });
+                return res.status(404).send({ status: 404, message: 'Product Not Found' });
             }
 
             if (productInfo.purchase_mode !== 'Paid' || !productInfo.product_price || productInfo.product_price === 0) {
-                return res.status(400).send({ status: 400, message: "Product does not support payment" })
+                return res.status(400).send({ status: 400, message: `Product doesn't support Payment` })
             }
 
             const DOMAIN = redirect || redirect_url
@@ -56,9 +56,9 @@ class StripePaymentController {
             });
 
             if (_.isEmpty(session) || !session.id) {
-                res.status(400).send({ status: 400, data: {}, message: 'session can not be created' })
+                res.status(400).send({ status: 400, message: 'Session can not be created' })
             } else {
-                res.status(200).json({ status: 200, data: session.id, message: "checkout session created successfully" });
+                res.status(200).json({ status: 200, data: session.id, message: "Checkout session created successfully" });
             }
 
         } catch (error) {
@@ -80,7 +80,7 @@ class StripePaymentController {
             const subscription = await SubscriptionUser.findOne({ product_id: plan_details?.product_id, user_id: req.user?._id });
 
             if (subscription && subscription.status === 'Active') {
-                return res.status(400).send({ status: 400, message: "You already have active subscription for this product" })
+                return res.status(400).send({ status: 400, message: "You Already Have An Active Subscription For This Product" })
             }
 
             const session = await stripe.checkout.sessions.create({
@@ -102,9 +102,9 @@ class StripePaymentController {
             });
 
             if (_.isEmpty(session) || !session.id) {
-                res.status(400).send({ status: 400, data: {}, message: 'session can not be created' })
+                res.status(400).send({ status: 400, data: {}, message: 'Session can not be created' })
             } else {
-                res.status(200).json({ status: 200, data: session.id, message: "checkout session created successfully" });
+                res.status(200).json({ status: 200, data: session.id, message: "Checkout session created successfully" });
             }
         } catch (error) {
             res.status(500).send({ status: 500, message: error.message });
@@ -120,7 +120,7 @@ class StripePaymentController {
                 const currentDate = new Date();
 
                 if (membership && membership.status === 'Active' && currentDate < membership.membership_end_date) {
-                    return res.status(400).send({ status: 400, message: "You already have active membership" })
+                    return res.status(400).send({ status: 400, message: "You Already Have Active Membership" });
                 }
 
                 const DOMAIN = redirect || redirect_url
@@ -149,12 +149,12 @@ class StripePaymentController {
                 });
 
                 if (_.isEmpty(session) || !session.id) {
-                    res.status(400).send({ status: 400, data: {}, message: 'session can not be created' })
+                    res.status(400).send({ status: 400, data: {}, message: 'Session can not be created' })
                 } else {
-                    res.status(200).json({ status: 200, data: session.id, message: "checkout session created successfully" });
+                    res.status(200).json({ status: 200, data: session.id, message: "Checkout Session Created Successfully" });
                 }
             } else {
-                res.status(404).send({ status: 404, message: 'membership not found' });
+                res.status(404).send({ status: 404, message: 'Membership Not Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -211,7 +211,7 @@ class StripePaymentController {
                             endDate.setFullYear(endDate.getFullYear() + planDetails.plan_interval_count);
                             break;
                         default:
-                            throw new Error('Unsupported interval type');
+                            throw new Error('Unsupported Interval Type');
                     }
 
                     await stripe.subscriptions.update(session.subscription, {
@@ -219,7 +219,7 @@ class StripePaymentController {
                     });
 
                     if (_.isEmpty(saveData) || !saveData._id) {
-                        res.status(400).send({ status: 400, data: {}, message: 'Payment could not be verified' });
+                        res.status(400).send({ status: 400, message: 'Payment could not be verified' });
                     } else {
                         res.status(200).send({ status: 200, data: newSubscription, message: 'Payment Successful' });
                     }
@@ -235,7 +235,7 @@ class StripePaymentController {
                     })
 
                     if (_.isEmpty(saveData) || !saveData._id) {
-                        res.status(400).send({ status: 400, data: {}, message: 'Payment could not be verified' });
+                        res.status(400).send({ status: 400, message: 'Payment could not be verified' });
                     } else {
                         res.status(200).send({ status: 200, data: newSubscription, message: 'Payment Successful' });
                     }
@@ -255,11 +255,11 @@ class StripePaymentController {
             if (session?.payment_status === 'paid' && session?.status === 'complete') {
                 const membership_details = await membership_plan.findById(session?.metadata?.membership_id)
                 if (!membership_details || !membership_details._id) {
-                    return res.status(404).send({ status: 404, message: 'membership not found' });
+                    return res.status(404).send({ status: 404, message: 'Membership Not Found' });
                 }
                 const alreadyMember = await membership_user.findOne({ payment_id: session?.id })
                 if (!_.isEmpty(alreadyMember) && alreadyMember._id) {
-                    return res.status(200).send({ status: 200, data: {}, message: 'Record already added' });
+                    return res.status(200).send({ status: 200, data: {}, message: 'Record Already Added' });
                 }
                 const currentDate = new Date();
                 currentDate.setMonth(currentDate.getMonth() + membership_details.no_of_months);
@@ -307,7 +307,6 @@ class StripePaymentController {
             }
             res.status(200).send();
         } catch (e) {
-            console.log(e, 'Webhook')
             res.status(500).send({ status: 500, message: e.message });
         }
     }
