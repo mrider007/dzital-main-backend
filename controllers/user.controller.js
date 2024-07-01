@@ -8,6 +8,8 @@ const Membership_Plan = require('../models/membership_plan.model');
 const axios = require('axios');
 const { ChatTokenBuilder } = require('agora-token');
 const AgoraToken = require('../services/agora-token');
+const sendEmail = require('../services/mail');
+const crypto = require('crypto');
 
 class userController {
     constructor() { }
@@ -111,33 +113,62 @@ class userController {
 
     async forgetPassword(req, res) {
         try {
-            const transporter = nodemailer.createTransport({
-                service: "gmail",
-                auth: {
-                    user: process.env.NODEMAILER_USER,
-                    pass: process.env.PASSWORD
-                }
-            });
-
-            const mailOptions = {
-                from: process.env.FROM,
-                to: req.body.email,
-                subject: "Forget Password",
-                html: `<h1>Your Password Reset Link - http://13.201.212.185:4200/</h1> <br />`,
+            const { email } = req.body;
+            let user = await User.findOne({ email })
+            if (!user) {
+                return res.status(404).send({ status: 404, message: 'User Not Found' });
             }
 
-            transporter.sendMail(mailOptions, (error, info) => {
-                if (error) {
-                    console.log(error);
-                } else {
-                    res.status(201).send({ success: true, message: "Password Update Link Sent To Your Email", info })
-                    console.log(info.response)
-                }
-            });
+            const token = crypto.randomBytes(32).toString("hex")
+            const newUserData = { forget_pass_token: token }
+            await User.findByIdAndUpdate(user._id, newUserData, {new: true});
+
+            const reqdirect_url = req.body.redirect || process.env.DOMAIN
+
+            const url = `${reqdirect_url}/new-password/${user._id}/${token}`
+
+            let Text = `<h1>Hello ${user.name}</h1>
+                        <p>Forget password link</p>
+                        <a href=${url} target="_blank">Click Here To Verify</a>`
+                        
+            const success = await sendEmail(user.email, "Forget passsword", Text)
+
+            if(success){
+                res.status(200).json({
+                    status: 200,
+                    message: "Email Sent"
+                })
+            }else{
+                res.status(500).json({
+                    status: 500,
+                    message: "Failed to send email"
+                })
+            }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
         }
     };
+
+    async newPassword(req, res) {
+        try {
+            const {token, id, password} = req.body
+            const userInfo = await User.findOne({ _id: id, forget_pass_token: token })
+            if(_.isEmpty(userInfo) || !userInfo._id) {
+                return res.status(404).send({ status: 404, message: 'User Not Found' });
+            }else{
+                let hashedPassword = bcrypt.hashSync(password, 10);
+                let updatedUser = await User.findByIdAndUpdate(userInfo._id, { password: hashedPassword, forget_pass_token: '' }, { new: true });
+                if (!_.isEmpty(updatedUser) && updatedUser._id) {
+                    res.status(200).send({ status: 200, data: updatedUser, message: 'Password updated successfully' });
+                }
+                else {
+                    res.status(400).send({ status: 400, data: {}, message: 'Password could not be updated' });
+                }
+            }
+        } catch (e) {
+            res.status(500).send({status: 500, message: e.message})
+        }
+    }
 
     async updateProfile(req, res) {
         try {

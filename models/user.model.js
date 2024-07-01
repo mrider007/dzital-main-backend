@@ -30,6 +30,7 @@ const UserSchema = new mongoose.Schema({
     purchased_on: { type: Date, index: true, trim: true },
     status: { type: String, default: 'Active', index: true },
     expired_on: { type: Date, index: true, trim: true },
+    forget_pass_token: { type: String, index: true, trim: true, default: '' },
     register_type: { type: String, default: 'normal', enum: ['normal', 'google', 'facebook'] }
 }, { timestamps: true, versionKey: false });
 
