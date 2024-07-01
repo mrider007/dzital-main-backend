@@ -124,13 +124,13 @@ class userController {
 
             const redirect_url = req.body.redirect || process.env.DOMAIN
 
-            const url = `${redirect_url}/new-password/${user._id}/${token}`
+            const url = `${reqdirect_url}/#/new-password/${user._id}/${token}`
 
             let mailData = `<h1>Hello ${user.name}</h1>
                         <p>Forget Password Link</p>
                         <a href=${url} target="_blank">Click Here To Verify</a>`
 
-            const success = await sendEmail(user.email, "Forget passsword", mailData);
+            const success = await sendEmail(user.email, "Forget Password", mailData);
 
             if (success) {
                 res.status(200).json({
