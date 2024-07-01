@@ -147,6 +147,7 @@ class userController {
 
     async newPassword(req, res) {
         try {
+            let password = req.body.password;
             const userInfo = await User.findOne({ _id: req.body.id, forget_pass_token: req.body.token });
             if (_.isEmpty(userInfo) || !userInfo._id) {
                 return res.status(404).send({ status: 404, message: 'User Not Found' });
