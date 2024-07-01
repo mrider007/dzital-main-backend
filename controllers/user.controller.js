@@ -125,7 +125,7 @@ class userController {
 
             const reqdirect_url = req.body.redirect || process.env.DOMAIN
 
-            const url = `${reqdirect_url}/new-password/${user._id}/${token}`
+            const url = `${reqdirect_url}/#/new-password/${user._id}/${token}`
 
             let Text = `<h1>Hello ${user.name}</h1>
                         <p>Forget password link</p>
