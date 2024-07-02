@@ -395,7 +395,7 @@ class productController {
         }
     };
 
-    /** Admin Product Details */
+    /** User Product Details */
     async productDetails(req, res) {
         try {
             const productInfo = await Product.findOne({ _id: req.params.id });
