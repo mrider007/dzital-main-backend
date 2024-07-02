@@ -1576,7 +1576,15 @@ class productController {
 
                     let electronicsUpdate = await electronicsRepo.updateById(req.body, electronicsInfo._id);
                     if (!_.isEmpty(electronicsUpdate) && electronicsUpdate._id) {
-                        let productUpdate = await productRepo.updateProductById({ image: electronicsUpdate.photo }, req.params.id);
+                        await productRepo.updateProductById({ image: electronicsUpdate.photo }, req.params.id);
+                        let updateObj = { image: electronicsUpdate.photo, status: 'Not Approved' }
+                        if (_.has(req.body, 'purchase_mode') && req.body.purchase_mode !== '') {
+                            updateObj.purchase_mode = req.body.purchase_mode
+                        }
+                        if (_.has(req.body, 'product_price') && req.body.product_price !== '') {
+                            updateObj.product_price = req.body.product_price
+                        }
+                        let productUpdate = await productRepo.updateProductById(updateObj, req.params.id);
                         res.status(200).send({ status: 200, data: electronicsUpdate, message: 'Product Updated Successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
@@ -1644,7 +1652,15 @@ class productController {
 
                     let propertyUpdate = await propertyRepo.updateById(req.body, propertyInfo._id);
                     if (!_.isEmpty(propertyUpdate) && propertyUpdate._id) {
-                        let productUpdate = await productRepo.updateProductById({ image: propertyUpdate.photo }, req.params.id);
+                        await productRepo.updateProductById({ image: propertyUpdate.photo }, req.params.id);
+                        let updateObj = { image: propertyUpdate.photo, status: 'Not Approved' }
+                        if (_.has(req.body, 'purchase_mode') && req.body.purchase_mode !== '') {
+                            updateObj.purchase_mode = req.body.purchase_mode
+                        }
+                        if (_.has(req.body, 'product_price') && req.body.product_price !== '') {
+                            updateObj.product_price = req.body.product_price
+                        }
+                        let productUpdate = await productRepo.updateProductById(updateObj, req.params.id);
                         res.status(200).send({ status: 200, data: propertyUpdate, message: 'Product Updated Successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
@@ -1702,7 +1718,15 @@ class productController {
 
                     let jobUpdate = await jobRepo.updateById(req.body, jobDetails._id);
                     if (!_.isEmpty(jobUpdate) && jobUpdate._id) {
-                        let productUpdate = await productRepo.updateProductById({ image: jobUpdate.image }, req.params.id);
+                        await productRepo.updateProductById({ image: jobUpdate.image }, req.params.id);
+                        let updateObj = { image: jobUpdate.image, status: 'Not Approved' }
+                        if (_.has(req.body, 'purchase_mode') && req.body.purchase_mode !== '') {
+                            updateObj.purchase_mode = req.body.purchase_mode
+                        }
+                        if (_.has(req.body, 'product_price') && req.body.product_price !== '') {
+                            updateObj.product_price = req.body.product_price
+                        }
+                        let productUpdate = await productRepo.updateProductById(updateObj, req.params.id);
                         res.status(200).send({ status: 200, data: jobUpdate, message: 'Product Updated Successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
@@ -1770,7 +1794,15 @@ class productController {
 
                     let goodsUpdate = await goodsRepo.updateById(req.body, goodsInfo._id);
                     if (!_.isEmpty(goodsUpdate) && goodsUpdate._id) {
-                        let productUpdate = await productRepo.updateProductById({ image: goodsUpdate.photo }, req.params.id);
+                        await productRepo.updateProductById({ image: goodsUpdate.photo }, req.params.id);
+                        let updateObj = { image: goodsUpdate.photo, status: 'Not Approved' }
+                        if (_.has(req.body, 'purchase_mode') && req.body.purchase_mode !== '') {
+                            updateObj.purchase_mode = req.body.purchase_mode
+                        }
+                        if (_.has(req.body, 'product_price') && req.body.product_price !== '') {
+                            updateObj.product_price = req.body.product_price
+                        }
+                        let productUpdate = await productRepo.updateProductById(updateObj, req.params.id);
                         res.status(200).send({ status: 200, data: goodsUpdate, message: 'Product Updated Successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
@@ -1823,7 +1855,15 @@ class productController {
 
                     let freelancerUpdate = await freelancerRepo.updateById(req.body, freelancerDetails._id);
                     if (!_.isEmpty(freelancerUpdate) && freelancerUpdate._id) {
-                        let productUpdate = await productRepo.updateProductById({ image: freelancerUpdate.image }, req.params.id);
+                        await productRepo.updateProductById({ image: freelancerUpdate.image }, req.params.id);
+                        let updateObj = { image: freelancerUpdate.image, status: 'Not Approved' }
+                        if (_.has(req.body, 'purchase_mode') && req.body.purchase_mode !== '') {
+                            updateObj.purchase_mode = req.body.purchase_mode
+                        }
+                        if (_.has(req.body, 'product_price') && req.body.product_price !== '') {
+                            updateObj.product_price = req.body.product_price
+                        }
+                        let productUpdate = await productRepo.updateProductById(updateObj, req.params.id);
                         res.status(200).send({ status: 200, data: freelancerUpdate, message: 'Product Updated Successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
@@ -1952,7 +1992,15 @@ class productController {
 
                     let fashionproductUpdate = await fashionRepo.updateById(req.body, fashionproductInfo._id);
                     if (!_.isEmpty(fashionproductUpdate) && fashionproductUpdate._id) {
-                        let productUpdate = await productRepo.updateProductById({ image: fashionproductUpdate.photo }, req.params.id);
+                        await productRepo.updateProductById({ image: fashionproductUpdate.photo }, req.params.id);
+                        let updateObj = { image: fashionproductUpdate.photo, status: 'Not Approved' }
+                        if (_.has(req.body, 'purchase_mode') && req.body.purchase_mode !== '') {
+                            updateObj.purchase_mode = req.body.purchase_mode
+                        }
+                        if (_.has(req.body, 'product_price') && req.body.product_price !== '') {
+                            updateObj.product_price = req.body.product_price
+                        }
+                        let productUpdate = await productRepo.updateProductById(updateObj, req.params.id);
                         res.status(200).send({ status: 200, data: fashionproductUpdate, message: 'Product Updated Successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
