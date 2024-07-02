@@ -1,16 +1,17 @@
 const mongoose = require('mongoose');
-const Job = require('../models/product_jobs.model');
+const Product = require('../models/product.model');
 const Review = require('../models/review.model');
 const reviewRepo = require('../repositories/review.repository');
 
 class ReviewController {
     constructor() { }
 
-    async reviewJob(req, res) {
+    /** User Product Review Save */
+    async productReviewAdd(req, res) {
         try {
             req.body.userId = req.user._id;
-            if (!_.has(req.body, 'jobId')) {
-                res.send({ status: 201, message: 'Job Id is Required' });
+            if (!_.has(req.body, 'productId')) {
+                res.send({ status: 201, message: 'Product Id is Required' });
             }
             else if (!_.has(req.body, 'review')) {
                 res.send({ status: 201, message: 'Review is Required' });
@@ -21,9 +22,9 @@ class ReviewController {
             else {
                 let review = await Review.create(req.body);
                 if (!_.isEmpty(review) && review._id) {
-                    res.status(200).send({ status: 200, data: review, message: 'Review Saved Successfully' });
+                    res.status(200).send({ status: 200, data: review, message: 'Product Review Saved Successfully' });
                 } else {
-                    res.status(400).send({ status: 400, message: 'Review could not be saved' });
+                    res.status(400).send({ status: 400, message: 'Product Review could not be saved' });
                 }
             }
         } catch (e) {
@@ -31,19 +32,15 @@ class ReviewController {
         }
     };
 
-    async jobReviewList(req, res) {
+    /** Product Reviews List */
+    async productReviewList(req, res) {
         try {
-            let JobId = new mongoose.Types.ObjectId(req.body.jobId);
-            let JobInfo = await Job.findOne({ _id: JobId });
-            if (!_.isEmpty(JobInfo) && JobInfo._id) {
-                let reviews = await Review.find({ jobId: JobId });
-                if (!_.isEmpty(reviews)) {
-                    res.status(200).send({ status: 200, data: reviews, message: 'Job Reviews fetched Successfully' });
-                } else {
-                    res.status(201).send({ status: 201, data: [], message: 'No Reviews Found' });
-                }
+            const productId = new mongoose.Types.ObjectId(req.body.productId);
+            let productReviews = await Review.find({ _id: productId });
+            if (!_.isEmpty(productReviews)) {
+                res.status(200).send({ status: 200, data: productReviews, message: 'Product Reviews List Fetched Successfully' });
             } else {
-                res.status(201).send({ status: 201, message: 'Job Not Found!' });
+                res.status(400).send({ status: 400, message: 'Product Not Found!' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
