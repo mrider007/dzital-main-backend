@@ -649,7 +649,11 @@ class productController {
 
                     let electronicsUpdate = await electronicsRepo.updateById(req.body, electronicsInfo._id);
                     if (!_.isEmpty(electronicsUpdate) && electronicsUpdate._id) {
-                        let productUpdate = await productRepo.updateProductById({ image: electronicsUpdate.photo, status: req.body.status }, req.params.id);
+                        let updateObj = { image: electronicsUpdate.photo, status: req.body.status }
+                        if (_.has(req.body, 'reject_reason') && req.body.reject_reason !== '' && req.body.status === 'Rejected') {
+                            updateObj.reject_reason = req.body.reject_reason
+                        }
+                        let productUpdate = await productRepo.updateProductById(updateObj, req.params.id);
                         res.status(200).send({ status: 200, data: electronicsUpdate, message: 'Product Updated Successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
