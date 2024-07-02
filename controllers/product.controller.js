@@ -1876,7 +1876,15 @@ class productController {
 
                     let lessoncourseUpdate = await educationRepo.updateById(req.body, lessoncourseDetails._id);
                     if (!_.isEmpty(lessoncourseUpdate) && lessoncourseUpdate._id) {
-                        let productUpdate = await productRepo.updateProductById({ image: lessoncourseUpdate.image }, req.params.id);
+                        await productRepo.updateProductById({ image: lessoncourseUpdate.image }, req.params.id);
+                        let updateObj = { image: lessoncourseUpdate.image, status: 'Not Approved' }
+                        if (_.has(req.body, 'purchase_mode') && req.body.purchase_mode !== '') {
+                            updateObj.purchase_mode = req.body.purchase_mode
+                        }
+                        if (_.has(req.body, 'product_price') && req.body.product_price !== '') {
+                            updateObj.product_price = req.body.product_price
+                        }
+                        let productUpdate = await productRepo.updateProductById(updateObj, req.params.id);
                         res.status(200).send({ status: 200, data: lessoncourseUpdate, message: 'Product Updated Successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
