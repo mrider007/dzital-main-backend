@@ -30,11 +30,9 @@ class ReviewController {
                     if (_.has(req, 'files')) {
                         if (req.files.length > 0) {
                             for (const file of req.files) {
-                                if (file.fieldname === 'attachments') {
-                                    const result = await cloudinary.uploader.upload(file.path, { folder: 'attachments' });
-                                    attachmentFiles.push(result.secure_url);
-                                    fs.unlinkSync(file.path);
-                                }
+                                const result = await cloudinary.uploader.upload(file.path, { folder: 'attachments' });
+                                attachmentFiles.push(result.secure_url);
+                                fs.unlinkSync(file.path);
                             }
                             req.body.attachments = attachmentFiles;
                         }
