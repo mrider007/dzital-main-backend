@@ -54,6 +54,7 @@ const ContactToProviderRepository = {
                         user_name: { $first: '$user_details.name' },
                         user_image: { $first: '$user_details.image' },
                         user_mobile: { $first: '$user_details.mobile' },
+                        user_email: { $first: '$user_details.email' },
                         user_address: { $first: '$user_details.address' },
                         createdAt: { $first: '$createdAt' }
                     }
