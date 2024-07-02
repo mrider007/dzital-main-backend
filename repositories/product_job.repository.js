@@ -169,6 +169,52 @@ const JobRepository = {
                         as: "attribute_value_details"
                     }
                 },
+                // {
+                //         let: { JobID: '$_id' },
+                //         from: "job_applies",
+                //         pipeline: [
+                //             {
+                //                 $match: {
+                //                     $expr: {
+                //                         $eq: ["$job_id", "$$JobID"]
+                //                     }
+                //                 }
+                //             }
+                //         ],
+                //         as: "job_application"
+                //     }
+                // },
+                {
+                    $lookup: {
+                        let: { job: '$_id', user_id: userId },
+                        from: "job_applies",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$job_id", "$$job"] },
+                                            { $eq: ["$user_id", "$$user_id"] }
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "job_application"
+                    }
+                },
+                { $unwind: { path: '$job_application', preserveNullAndEmptyArrays: true } },
+                {
+                    $addFields: {
+                        'JobApplied': {
+                            $cond: {
+                                if: { $eq: ['$job_application.user_id', userId] },
+                                then: true,
+                                else: false
+                            }
+                        },
+                    }
+                },
                 {
                     $group: {
                         _id: '$_id',
@@ -192,6 +238,7 @@ const JobRepository = {
                         category_slug: { $first: '$category_details.slug' },
                         sub_category_id: { $first: '$sub_category_id' },
                         sub_category_name: { $first: '$sub_category_details.title' },
+                        JobApplied: { $first: '$JobApplied' },
                         createdAt: { $first: '$createdAt' },
                         attributes: { $first: '$attribute_details' },
                         attribute_values: { $first: '$attribute_value_details' }
