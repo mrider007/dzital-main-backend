@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
+const cloudinary = require('cloudinary');
 const Product = require('../models/product.model');
 const Review = require('../models/review.model');
+const fs = require('fs');
 const reviewRepo = require('../repositories/review.repository');
 
 class ReviewController {
@@ -20,11 +22,29 @@ class ReviewController {
                 res.send({ status: 201, message: 'Rating is Required' });
             }
             else {
-                let review = await Review.create(req.body);
-                if (!_.isEmpty(review) && review._id) {
-                    res.status(200).send({ status: 200, data: review, message: 'Product Review Saved Successfully' });
+                let reviewCheck = await Review.findOne({ productId: req.body.productId, userId: req.body.userId });
+                if (!_.isEmpty(reviewCheck)) {
+                    res.send({ status: 400, message: 'You Already Reviewed This Product' });
                 } else {
-                    res.status(400).send({ status: 400, message: 'Product Review could not be saved' });
+                    const attachmentFiles = [];
+                    if (_.has(req, 'files')) {
+                        if (req.files.length > 0) {
+                            for (const file of req.files) {
+                                if (file.fieldname === 'attachments') {
+                                    const result = await cloudinary.uploader.upload(file.path, { folder: 'attachments' });
+                                    attachmentFiles.push(result.secure_url);
+                                    fs.unlinkSync(file.path);
+                                }
+                            }
+                            req.body.attachments = attachmentFiles;
+                        }
+                    }
+                    let review = await Review.create(req.body);
+                    if (!_.isEmpty(review) && review._id) {
+                        res.status(200).send({ status: 200, data: review, message: 'Product Review Saved Successfully' });
+                    } else {
+                        res.status(400).send({ status: 400, message: 'Product Review could not be saved' });
+                    }
                 }
             }
         } catch (e) {

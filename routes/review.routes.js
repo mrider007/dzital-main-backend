@@ -4,10 +4,33 @@ const Authentication = require('../middleware/authentication');
 const router = express.Router();
 const multer = require('multer');
 const request_param = multer();
+const fs = require('fs');
+const cloudinary = require('cloudinary');
+
+cloudinary.v2.config({
+    "cloud_name": 'dslcqudfq',
+    "api_key": '865887567124381',
+    "api_secret": 'aW3AA2C1pCIAhY1B1xGut7XBMFo',
+});
+
+const Storage = multer.diskStorage({
+    destination: (req, file, callback) => {
+        if (!fs.existsSync("./uploads/review")) {
+            fs.mkdirSync("./uploads/review");
+        }
+
+        callback(null, "./uploads/review");
+    },
+    filename: (req, file, callback) => {
+        callback(null, Date.now() + "_" + file.originalname.replace(/\s/g, '_'));
+    }
+});
+
+const uploadFile = multer({ storage: Storage });
 
 router.get('/review/details/:id', request_param.any(), Authentication.AuthenticateAdmin, ReviewController.reviewDetails);
 router.get('/review/delete/:id', request_param.any(), Authentication.AuthenticateAdmin, ReviewController.reviewDelete);
-router.post('/product/review', request_param.any(), Authentication.Authenticate, ReviewController.productReviewAdd);
+router.post('/product/review', uploadFile.any(), Authentication.Authenticate, ReviewController.productReviewAdd);
 router.post('/product/review/list', request_param.any(), Authentication.Authenticate, ReviewController.productReviewList);
 router.post('/review/update/:id', request_param.any(), Authentication.AuthenticateAdmin, ReviewController.reviewUpdate);
 
