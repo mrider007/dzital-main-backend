@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Review = require('../models/review.model');
 
 const reviewController = {
@@ -24,6 +25,126 @@ const reviewController = {
                 }
                 return review;
             }
+        } catch (e) {
+            throw e;
+        }
+    },
+
+    list: async (req) => {
+        try {
+            var conditions = {};
+            var and_clauses = [];
+
+            and_clauses.push({ productId: new mongoose.Types.ObjectId(req.body.productId) }); //new mongoose.Types.ObjectId(req.body.productId) });
+
+            if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
+                and_clauses.push({
+                    $or: [
+                        // { 'title': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
+                    ]
+                });
+            }
+
+            conditions['$and'] = and_clauses;
+
+            let reviews = await Review.aggregate([
+                {
+                    $lookup: {
+                        let: { productID: '$productId' },
+                        from: "products",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$productID"] },
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                $group: {
+                                    _id: '$_id',
+                                    name: { $first: '$name' },
+                                    image: { $first: '$image' }
+                                }
+                            }
+                        ],
+                        as: "product_details"
+                    }
+                },
+                {
+                    $lookup: {
+                        let: { productID: '$productId' },
+                        from: "products",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$productID"] },
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                $group: {
+                                    _id: '$_id',
+                                    name: { $first: '$name' },
+                                    image: { $first: '$image' }
+                                }
+                            }
+                        ],
+                        as: "product_details"
+                    }
+                },
+                {
+                    $lookup: {
+                        let: { userID: '$userId' },
+                        from: "users",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$userID"] },
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                $group: {
+                                    _id: '$_id',
+                                    name: { $first: '$name' },
+                                    image: { $first: '$image' }
+                                }
+                            }
+                        ],
+                        as: "user_details"
+                    }
+                },
+                { $unwind: { path: '$user_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: '$_id',
+                        userId: { $first: '$userId' },
+                        productId: { $first: '$productId' },
+                        attachments: { $first: '$attachments' },
+                        review: { $first: '$review' },
+                        rating: { $first: '$rating' },
+                        createdAt: { $first: '$createdAt' },
+                        user_name: { $first: '$user_details.name' },
+                        user_img: { $first: '$user_details.image' }
+                    }
+                },
+                { $match: conditions },
+                { $sort: { _id: -1 } }
+            ]);
+            if (!reviews) {
+                return null;
+            }
+
+            return reviews;
         } catch (e) {
             throw e;
         }
