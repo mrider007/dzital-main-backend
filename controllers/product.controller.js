@@ -721,7 +721,11 @@ class productController {
 
                     let propertyUpdate = await propertyRepo.updateById(req.body, propertyInfo._id);
                     if (!_.isEmpty(propertyUpdate) && propertyUpdate._id) {
-                        let productUpdate = await productRepo.updateProductById({ image: propertyUpdate.photo, status: req.body.status }, req.params.id);
+                        let updateObj = { image: propertyUpdate.photo, status: req.body.status }
+                        if (_.has(req.body, 'reject_reason') && req.body.reject_reason !== '' && req.body.status === 'Rejected') {
+                            updateObj.reject_reason = req.body.reject_reason
+                        }
+                        let productUpdate = await productRepo.updateProductById(updateObj, req.params.id);
                         res.status(200).send({ status: 200, data: propertyUpdate, message: 'Product Updated Successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
@@ -777,7 +781,11 @@ class productController {
 
                     let jobUpdate = await jobRepo.updateById(req.body, jobDetails._id);
                     if (!_.isEmpty(jobUpdate) && jobUpdate._id) {
-                        let productUpdate = await productRepo.updateProductById({ image: jobUpdate.image, status: req.body.status }, req.params.id);
+                        let updateObj = { image: jobUpdate.image, status: req.body.status }
+                        if (_.has(req.body, 'reject_reason') && req.body.reject_reason !== '' && req.body.status === 'Rejected') {
+                            updateObj.reject_reason = req.body.reject_reason
+                        }
+                        let productUpdate = await productRepo.updateProductById(updateObj, req.params.id);
                         res.status(200).send({ status: 200, data: jobUpdate, message: 'Product Updated Successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
@@ -845,7 +853,11 @@ class productController {
 
                     let goodsUpdate = await goodsRepo.updateById(req.body, goodsInfo._id);
                     if (!_.isEmpty(goodsUpdate) && goodsUpdate._id) {
-                        let productUpdate = await productRepo.updateProductById({ image: goodsUpdate.photo, status: req.body.status }, req.params.id);
+                        let updateObj = { image: goodsUpdate.photo, status: req.body.status }
+                        if (_.has(req.body, 'reject_reason') && req.body.reject_reason !== '' && req.body.status === 'Rejected') {
+                            updateObj.reject_reason = req.body.reject_reason
+                        }
+                        let productUpdate = await productRepo.updateProductById(updateObj, req.params.id);
                         res.status(200).send({ status: 200, data: goodsUpdate, message: 'Product Updated Successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
@@ -898,7 +910,11 @@ class productController {
 
                     let freelancerUpdate = await freelancerRepo.updateById(req.body, freelancerDetails._id);
                     if (!_.isEmpty(freelancerUpdate) && freelancerUpdate._id) {
-                        let productUpdate = await productRepo.updateProductById({ image: freelancerUpdate.image, status: req.body.status }, req.params.id);
+                        let updateObj = { image: freelancerUpdate.image, status: req.body.status }
+                        if (_.has(req.body, 'reject_reason') && req.body.reject_reason !== '' && req.body.status === 'Rejected') {
+                            updateObj.reject_reason = req.body.reject_reason
+                        }
+                        let productUpdate = await productRepo.updateProductById(updateObj, req.params.id);
                         res.status(200).send({ status: 200, data: freelancerUpdate, message: 'Product Updated Successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
@@ -991,7 +1007,11 @@ class productController {
                         }
                     }
                     if (!_.isEmpty(lessoncourseUpdate) && lessoncourseUpdate._id) {
-                        let productUpdate = await productRepo.updateProductById({ image: lessoncourseUpdate.image, status: req.body.status }, req.params.id);
+                        let updateObj = { image: lessoncourseUpdate.image, status: req.body.status }
+                        if (_.has(req.body, 'reject_reason') && req.body.reject_reason !== '' && req.body.status === 'Rejected') {
+                            updateObj.reject_reason = req.body.reject_reason
+                        }
+                        let productUpdate = await productRepo.updateProductById(updateObj, req.params.id);
                         res.status(200).send({ status: 200, data: lessoncourseUpdate, message: 'Product Updated Successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
@@ -1059,7 +1079,11 @@ class productController {
 
                     let fashionproductUpdate = await fashionRepo.updateById(req.body, fashionproductInfo._id);
                     if (!_.isEmpty(fashionproductUpdate) && fashionproductUpdate._id) {
-                        let productUpdate = await productRepo.updateProductById({ image: fashionproductUpdate.photo, status: req.body.status }, req.params.id);
+                        let updateObj = { image: fashionproductUpdate.photo, status: req.body.status }
+                        if (_.has(req.body, 'reject_reason') && req.body.reject_reason !== '' && req.body.status === 'Rejected') {
+                            updateObj.reject_reason = req.body.reject_reason
+                        }
+                        let productUpdate = await productRepo.updateProductById(updateObj, req.params.id);
                         res.status(200).send({ status: 200, data: fashionproductUpdate, message: 'Product Updated Successfully' });
                     } else {
                         res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
