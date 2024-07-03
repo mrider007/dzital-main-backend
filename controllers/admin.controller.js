@@ -469,19 +469,19 @@ class adminController {
 
     async userUpdate(req, res) {
         try {
-            const adminId = new mongoose.Types.ObjectId(req.params.id);
-            const adminInfo = await Admin.findOne({ _id: adminId });
-            if (!_.isEmpty(adminInfo) && adminInfo._id) {
+            const userId = new mongoose.Types.ObjectId(req.params.id);
+            const userInfo = await adminRepo.getUserById(userId);
+            if (!_.isEmpty(userInfo) && userInfo._id) {
                 if (req.files && req.files.length > 0) {
                     const uploadResult = await cloudinary.v2.uploader.upload(req.files[0].path);
                     req.body.image = uploadResult.secure_url;
                 }
                 else {
-                    req.body.image = adminInfo.image;
+                    req.body.image = userInfo.image;
                 }
-                let adminUpdate = await adminRepo.updateById(req.body, adminId);
-                if (!_.isEmpty(adminUpdate) && adminUpdate._id) {
-                    res.status(200).send({ status: 200, data: adminUpdate, message: 'Admin User details has been updated successfully' });
+                let userUpdate = await userRepo.updateById(req.body, userId);
+                if (!_.isEmpty(userUpdate) && userUpdate._id) {
+                    res.status(200).send({ status: 200, data: userUpdate, message: 'Admin User details has been updated successfully' });
                 }
                 else {
                     res.status(400).send({ status: 400, data: {}, message: 'Sorry, unable to update admin user at this moment!' });
