@@ -116,10 +116,10 @@ class StripePaymentController {
             const { membership_id, redirect } = req.body;
             const plan_details = await membership_plan.findById(membership_id);
             if (!_.isEmpty(plan_details) && plan_details._id) {
-                const membership = await membership_user.findOne({ _id: membership_id, user_id: req.user?._id });
+                const membership = await membership_user.findOne({ membership_id: membership_id, user_id: req.user?._id });
                 const currentDate = new Date();
 
-                if (membership && membership.status === 'Active' && currentDate < membership.membership_end_date) {
+                if (membership && membership.membership_status === 'Active' && currentDate < membership.membership_end_date) {
                     return res.status(400).send({ status: 400, message: "You Already Have Active Membership" });
                 }
 
