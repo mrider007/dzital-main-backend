@@ -883,6 +883,35 @@ const JobRepository = {
                     }
                 },
                 {
+                    $lookup: {
+                        from: "users",
+                        let: { userID: "$user_id" },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$userID"] }
+                                        ],
+                                    },
+                                },
+                            },
+                            {
+                                $project: {
+                                    _id: 1,
+                                    name: 1,
+                                    image: 1,
+                                    email: 1,
+                                    mobile: 1,
+                                    address: 1
+                                }
+                            }
+                        ],
+                        as: "seller_details"
+                    },
+                },
+                { $unwind: { path: '$seller_details', preserveNullAndEmptyArrays: true } },
+                {
                     $group: {
                         _id: '$_id',
                         title: { $first: "$title" },
@@ -893,10 +922,10 @@ const JobRepository = {
                         userId: { $first: '$product_details.userId' },
                         attribute_values: { $first: '$attribute_value_details' },
                         product_id: { $first: '$product_id' },
+                        seller_details: { $first: '$seller_details' },
                         image: { $first: '$image' },
                         company_logo: { $first: '$company_logo' },
                         createdAt: { $first: '$createdAt' },
-                        //wishlists: { $addToSet: '$wishlists' },
                         isWishlist: { $first: '$isWishlist' }
                     }
                 },
