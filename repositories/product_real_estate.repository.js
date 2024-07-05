@@ -225,7 +225,8 @@ const propertyRepository = {
             if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
                 and_clauses.push({
                     $or: [
-                        { 'title': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
+                        { 'title': { $regex: (req.body.keyword_search).trim(), $options: 'i' } },
+                        { 'address': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
                     ]
                 });
 
@@ -433,7 +434,8 @@ const propertyRepository = {
             if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
                 and_clauses.push({
                     $or: [
-                        { 'title': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
+                        { 'title': { $regex: (req.body.keyword_search).trim(), $options: 'i' } },
+                        { 'address': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
                     ]
                 });
 
