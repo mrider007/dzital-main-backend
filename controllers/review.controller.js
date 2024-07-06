@@ -24,7 +24,7 @@ class ReviewController {
             else {
                 let reviewCheck = await Review.findOne({ productId: req.body.productId, userId: req.body.userId });
                 if (!_.isEmpty(reviewCheck)) {
-                    res.send({ status: 400, message: 'You Already Reviewed This Product' });
+                    res.status(400).send({ status: 400, message: 'You Already Reviewed This Product' });
                 } else {
                     const attachmentFiles = [];
                     if (_.has(req, 'files')) {
