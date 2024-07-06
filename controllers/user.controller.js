@@ -127,7 +127,7 @@ class userController {
 
             const url = `${redirect_url}/#/new-password/${user._id}/${token}`
 
-            const emailContent = mail_template.forget_pass(user, url);
+            const emailContent = mail_template.forget_pass(user, url, "https://res.cloudinary.com/drxzyabj4/image/upload/v1720259863/dzital_mail_logo_cjvpbp.png");
 
             const success = await sendEmail(user.email, "Forget Password", emailContent)
 

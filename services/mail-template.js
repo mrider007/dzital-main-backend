@@ -1,5 +1,5 @@
 const mail_template = {
-    forget_pass: (user, url) => {
+    forget_pass: (user, url, logoUrl) => {
         return `
             <!DOCTYPE html>
             <html>
@@ -32,6 +32,10 @@ const mail_template = {
                         color: #ffffff;
                         text-align: center;
                         padding: 20px 0;
+                    }
+                    .header img {
+                        max-width: 150px;
+                        margin-bottom: 10px;
                     }
                     .content {
                         padding: 20px;
@@ -72,6 +76,7 @@ const mail_template = {
                 <table class="container">
                     <tr>
                         <td class="header">
+                            <img src="${logoUrl}" alt="Company Logo">
                             <h1>Password Reset Request</h1>
                         </td>
                     </tr>
@@ -81,20 +86,19 @@ const mail_template = {
                             <p>You recently requested to reset your password for your account. Click the button below to reset it.</p>
                             <p><a href="${url}" class="button" target="_blank">Reset Your Password</a></p>
                             <p>If you did not request a password reset, please ignore this email or reply to let us know.</p>
-                            <p>Thanks,<br>Dzital Team</p>
+                            <p>Thanks,<br>Dzital | <a href="https://www.dzital.com">dzital.com</a></p>
                         </td>
                     </tr>
                     <tr>
                         <td class="footer">
-                            <p>&copy; ${new Date().getFullYear()} Dzital. All Rights Reserved.</p>
+                            <p>&copy; ${new Date().getFullYear()} Dzital. All rights reserved.</p>
                         </td>
                     </tr>
                 </table>
             </body>
             </html>
-            `;
-
+        `;
     }
-}
+};
 
 module.exports = mail_template;
