@@ -186,7 +186,8 @@ const productRepository = {
                         sub_category_id: { $first: '$sub_category_id' },
                         sub_category_name: { $first: '$sub_category_details.title' },
                         image: { $first: '$image' },
-                        status: { $first: '$status' }
+                        status: { $first: '$status' },
+                        reject_reason: { $first: '$reject_reason' },
                     }
                 },
                 { $sort: { _id: -1 } }

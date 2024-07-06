@@ -10,6 +10,7 @@ const { ChatTokenBuilder } = require('agora-token');
 const AgoraToken = require('../services/agora-token');
 const sendEmail = require('../services/mail');
 const crypto = require('crypto');
+const mail_template = require('../services/mail-template');
 
 class userController {
     constructor() { }
@@ -126,11 +127,9 @@ class userController {
 
             const url = `${redirect_url}/#/new-password/${user._id}/${token}`
 
-            let mailData = `<h1>Hello ${user.name}</h1>
-                        <p>Forget Password Link</p>
-                        <a href=${url} target="_blank">Click Here To Verify</a>`
+            const emailContent = mail_template.forget_pass(user, url);
 
-            const success = await sendEmail(user.email, "Forget Password", mailData);
+            const success = await sendEmail(user.email, "Forget Password", emailContent)
 
             if (success) {
                 res.status(200).json({
