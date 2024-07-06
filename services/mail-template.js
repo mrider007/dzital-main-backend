@@ -86,7 +86,7 @@ const mail_template = {
                     </tr>
                     <tr>
                         <td class="footer">
-                            <p>&copy; ${new Date().getFullYear()} Dzital. All rights reserved.</p>
+                            <p>&copy; ${new Date().getFullYear()} Dzital. All Rights Reserved.</p>
                         </td>
                     </tr>
                 </table>
