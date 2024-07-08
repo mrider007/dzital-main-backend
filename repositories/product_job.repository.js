@@ -790,6 +790,10 @@ const JobRepository = {
                 and_clauses.push({ 'category_id': new mongoose.Types.ObjectId(req.body.category_id) });
             }
 
+            if (_.isObject(req.body) && _.has(req.body, 'address')) {
+                and_clauses.push({ 'address': { $regex: (req.body.address).trim(), $options: 'i' } });
+            }
+
             conditions['$and'] = and_clauses;
 
             let joblist = Job.aggregate([
@@ -922,6 +926,7 @@ const JobRepository = {
                         userId: { $first: '$product_details.userId' },
                         attribute_values: { $first: '$attribute_value_details' },
                         product_id: { $first: '$product_id' },
+                        address: { $first: '$address' },
                         seller_details: { $first: '$seller_details' },
                         image: { $first: '$image' },
                         company_logo: { $first: '$company_logo' },
