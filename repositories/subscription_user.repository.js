@@ -179,7 +179,7 @@ const subscriptionUserRepository = {
                                 $group: {
                                     _id: '$_id',
                                     name: { $first: '$name' },
-                                    name: { $first: '$image' },
+                                    image: { $first: '$image' },
                                 }
                             }
                         ],
