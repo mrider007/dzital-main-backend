@@ -220,7 +220,7 @@ const productFashionRepository = {
                 and_clauses.push({ 'sub_category_id': new mongoose.Types.ObjectId(req.body.sub_category_id) });
             }
 
-            if (_.isObject(req.body) && _.has(req.body, 'addresss') && req.body.address !== '') {
+            if (_.isObject(req.body) && _.has(req.body, 'address') && req.body.address !== '') {
                 and_clauses.push({ 'address': { $regex: (req.body.address).trim(), $options: 'i' } });
             }
 
