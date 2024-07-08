@@ -246,6 +246,10 @@ const freelancerRepository = {
                 and_clauses.push({ 'sub_category_id': new mongoose.Types.ObjectId(req.body.sub_category_id) });
             }
 
+            if (_.isObject(req.body) && _.has(req.body, 'address') && req.body.address !== '') {
+                and_clauses.push({ 'address': { $regex: (req.body.address).trim(), $options: 'i' } });
+            }
+
             conditions['$and'] = and_clauses;
 
             let products = Freelancer.aggregate([
@@ -268,9 +272,7 @@ const freelancerRepository = {
                 },
                 { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
                 {
-                    $addFields: {
-                        'isWishlist': false
-                    }
+                    $addFields: { 'isWishlist': false }
                 },
                 {
                     $lookup: {
@@ -316,7 +318,7 @@ const freelancerRepository = {
                         experience: { $first: '$experience' },
                         skills: { $first: '$skills' },
                         image: { $first: '$image' },
-                        location: { $first: '$location' },
+                        address: { $first: '$address' },
                         budget: { $first: '$budget' },
                         status: { $first: '$product_details.status' },
                         userId: { $first: '$product_details.userId' },
@@ -361,6 +363,10 @@ const freelancerRepository = {
 
             if (_.isObject(req.body) && _.has(req.body, 'category_id')) {
                 and_clauses.push({ 'category_id': new mongoose.Types.ObjectId(req.body.category_id) });
+            }
+
+            if (_.isObject(req.body) && _.has(req.body, 'address')) {
+                and_clauses.push({ 'address': { $regex: (req.body.address).trim(), $options: 'i' } });
             }
 
             let filter = req.body.filter;
@@ -491,7 +497,7 @@ const freelancerRepository = {
                         budget: { $first: '$budget' },
                         status: { $first: '$product_details.status' },
                         userId: { $first: '$product_details.userId' },
-                        //wishlists: { $addToSet: '$wishlists' },
+                        address: { $first: '$address' },
                         isWishlist: { $first: '$isWishlist' },
                         attribute_values: { $first: '$attribute_value_details' },
                         product_id: { $first: '$product_id' },
