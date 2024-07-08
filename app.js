@@ -6,6 +6,7 @@ const http = require('http');
 _ = require("underscore");
 const dotenv = require("dotenv");
 const path = require('path');
+const SocketIO = require('socket.io');
 dotenv.config()
 const stripe_payment_controller = require('./controllers/stripe_payment.controller');
 
@@ -136,5 +137,21 @@ app.use('/api', freelancer_proposal);
 app.use('/uploads', express.static('uploads'));
 
 const server = http.createServer(app);
+const io = SocketIO(server, {
+    cors: {
+        origin: '*',
+        methods: ['GET', 'POST', 'PUT', 'DELETE'],
+        credentials: true
+    }
+})
+io.on('connection', (socket) => {
+    console.log('New Client Connected', socket.id);
+    socket.on('incoming_call', (data) => {
+        io.emit('incoming-call', data);
+    });
+    socket.on('disconnect', () => {
+        console.log('Client Disconnected');
+    });
+});
 server.listen(port);
 console.log(`Server is running on ${(global.BASE_URL && global.BASE_URL !== '') ? global.BASE_URL : `http://${process.env.HOST}:${getPort}`}`);
