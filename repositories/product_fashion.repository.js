@@ -46,6 +46,10 @@ const productFashionRepository = {
                 and_clauses.push({ 'sub_category_id': new mongoose.Types.ObjectId(req.body.sub_category_id) });
             }
 
+            if (_.isObject(req.body) && _.has(req.body, 'address') && req.body.address !== '') {
+                and_clauses.push({ 'address': { $regex: (req.body.address).trim(), $options: 'i' } });
+            }
+
             conditions['$and'] = and_clauses;
 
             let products = ProductFashion.aggregate([
@@ -132,7 +136,7 @@ const productFashionRepository = {
                         ],
                         as: "attribute_value_details"
                     }
-                },
+                }, 
                 {
                     $group: {
                         _id: '$_id',
@@ -150,6 +154,7 @@ const productFashionRepository = {
                         image_2: { $first: '$image_2' },
                         image_3: { $first: '$image_3' },
                         brand: { $first: '$brand' },
+                        address: { $first: '$address' },
                         product_id: { $first: '$product_id' },
                         category_id: { $first: '$category_id' },
                         sub_category_id: { $first: "$sub_category_id" },
@@ -213,6 +218,10 @@ const productFashionRepository = {
 
             if (_.isObject(req.body) && _.has(req.body, 'sub_category_id') && req.body.sub_category_id !== '') {
                 and_clauses.push({ 'sub_category_id': new mongoose.Types.ObjectId(req.body.sub_category_id) });
+            }
+
+            if (_.isObject(req.body) && _.has(req.body, 'addresss') && req.body.address !== '') {
+                and_clauses.push({ 'address': { $regex: (req.body.address).trim(), $options: 'i' } });
             }
 
             conditions['$and'] = and_clauses;
@@ -346,6 +355,7 @@ const productFashionRepository = {
                         product_type: { $first: '$product_type' },
                         photo: { $first: '$photo' },
                         image_1: { $first: '$image_1' },
+                        address: { $first: '$address' },
                         attribute_values: { $first: '$attribute_value_details' },
                         image_2: { $first: '$image_2' },
                         image_3: { $first: '$image_3' },
