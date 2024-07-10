@@ -1,7 +1,8 @@
 const SubscriptionUser = require('../models/subscription_user.model');
 const SubscriptionPayment = require('../models/subscription_history.model');
 const subscriptionUserRepo = require('../repositories/subscription_user.repository');
-
+const payment_due = require('../models/payment_due.model');
+const Product = require('../models/product.model')
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const stripe_webhook = {
@@ -26,6 +27,7 @@ const stripe_webhook = {
                     let current_plan_end = new Date(subsData?.current_period_end * 1000)
                     let status = session?.status === 'paid' ? 'Active' : 'Inactive'
                     await SubscriptionUser.findOneAndUpdate({ payment_id: subsData.id }, { current_plan_start, current_plan_end, status })
+                    const updatedSubscription = await SubscriptionUser.findOneAndUpdate({ payment_id: subsData.id }, { current_plan_start, current_plan_end, status })
                     await SubscriptionPayment.create({
                         plan_id: subscribedUser.plan_id,
                         current_plan_start: new Date(subsData?.current_period_start * 1000),
@@ -36,6 +38,20 @@ const stripe_webhook = {
                         amount: session?.amount_paid / 100,
                         payment_status: session?.status === 'paid' ? 'Success' : 'Failed'
                     })
+                    if (session?.status === 'paid') {
+
+                    }
+                    const productInfo = await Product.findById(updatedSubscription.product_id)
+                    const paymentInfo = await payment_due.findOne({ user_id: productInfo.userId })
+                    if (!_.isEmpty(paymentInfo) && paymentInfo._id) {
+                        const total_pay = paymentInfo.total_amount + saveData.amount
+                        const payable = (saveData.total_pay - (saveData.total_pay * 0.20)).toFixed(2);
+                        await payment_due.findOneAndUpdate({ user_id: productInfo.userId, _id: paymentInfo._id }, {
+                            status: 'Pending',
+                            total_amount: Number(total_pay),
+                            payable_amount: Number(payable),
+                        })
+                    }
                 }
             }
             return
