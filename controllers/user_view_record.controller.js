@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const UserProductViewRecord = require('../models/user_view_record.model');
+const userProductViewRecordRepo = require('../repositories/user_view_record.repository');
 
 class UserProductViewRecordController {
     constructor() { }
@@ -31,9 +32,14 @@ class UserProductViewRecordController {
 
     async userProductViewRecordList(req, res) {
         try {
-
+            let userProductViews = await userProductViewRecordRepo.UserProductViewRecord(req);
+            if (!_.isEmpty(userProductViews)) {
+                res.status(200).send({ status: 200, data: userProductViews, message: 'User Product View Record Fetched Successfully' });
+            } else {
+                res.status(201).send({ status: 201, message: 'No Record Found' });
+            }
         } catch (e) {
-
+            res.status(500).send({ status: 500, message: e.message });
         }
     };
 }
