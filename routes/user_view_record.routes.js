@@ -6,6 +6,6 @@ const multer = require('multer');
 const request_param = multer();
 
 router.post('/user/product/view/record', request_param.any(), Authentication.Authenticate, UserProductViewRecordController.saveUserProductViewRecord);
-router.post('/user/product/review/list', request_param.any(), UserProductViewRecordController.userProductViewRecordList);
+router.post('/user/product/review/list', request_param.any(), Authentication.Authenticate, UserProductViewRecordController.userProductViewRecordList);
 
 module.exports = router;
