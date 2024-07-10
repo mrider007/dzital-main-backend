@@ -32,7 +32,7 @@ class UserProductViewRecordController {
 
     async userProductViewRecordList(req, res) {
         try {
-            let userProductViews = await userProductViewRecordRepo.UserProductViewRecord(req);
+            let userProductViews = await userProductViewRecordRepo.List(req);
             if (!_.isEmpty(userProductViews)) {
                 res.status(200).send({ status: 200, data: userProductViews, message: 'User Product View Record Fetched Successfully' });
             } else {

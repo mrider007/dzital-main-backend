@@ -30,6 +30,7 @@ const userProductViewRecordsRepository = {
                         as: "product_details"
                     }
                 },
+                { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
                         let: { userID: '$userId' },
@@ -48,6 +49,7 @@ const userProductViewRecordsRepository = {
                         as: "user_details"
                     }
                 },
+                { $unwind: { path: '$user_details', preserveNullAndEmptyArrays: true } },
                 {
                     $group: {
                         _id: '$_id',
