@@ -6,6 +6,7 @@ const SubscriptionUser = require('../models/subscription_user.model');
 const stripe_webhook = require('../services/stripe-webhook');
 const membership_plan = require('../models/membership_plan.model');
 const membership_user = require('../models/membership_user.model');
+const payment_due = require('../models/payment_due.model');
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
@@ -237,6 +238,25 @@ class StripePaymentController {
                     if (_.isEmpty(saveData) || !saveData._id) {
                         res.status(400).send({ status: 400, message: 'Payment could not be verified' });
                     } else {
+                        const productInfo = await Product.findById(newSubscription.product_id)
+                        const paymentInfo = await payment_due.findOne({ user_id: productInfo.userId })
+                        if (!_.isEmpty(paymentInfo) && paymentInfo._id) {
+                            const total_pay = paymentInfo.total_amount + saveData.amount
+                            const payable = (total_pay - (total_pay * 0.20)).toFixed(2);
+                            await payment_due.findByIdAndUpdate(paymentInfo._id, {
+                                status: 'Pending',
+                                total_amount: Number(total_pay),
+                                payable_amount: Number(payable),
+                            })
+                        } else {
+                            const payable = (saveData.amount - (saveData.amount * 0.20)).toFixed(2);
+                            await payment_due.create({
+                                platform_fees: 20,
+                                total_amount: saveData.amount,
+                                payable_amount: Number(payable),
+                                user_id: productInfo.userId,
+                            })
+                        }
                         res.status(200).send({ status: 200, data: newSubscription, message: 'Payment Successful' });
                     }
                 }
