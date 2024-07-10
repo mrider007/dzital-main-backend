@@ -44,6 +44,15 @@ const userProductViewRecordsRepository = {
                                         ]
                                     }
                                 }
+                            },
+                            {
+                                $project: {
+                                    name: 1,
+                                    email: 1,
+                                    image: 1,
+                                    mobile: 1,
+                                    address: 1
+                                }
                             }
                         ],
                         as: "user_details"
@@ -66,7 +75,7 @@ const userProductViewRecordsRepository = {
             if (!product_view_records) {
                 return null;
             }
-            
+
             return product_view_records;
         } catch (e) {
             throw e;
