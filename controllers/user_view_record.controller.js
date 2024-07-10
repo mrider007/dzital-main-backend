@@ -5,6 +5,7 @@ class UserProductViewRecordController {
 
     async saveUserProductViewRecord(req, res) {
         try {
+            req.body.userId = req.user._id;
             let saveData = await UserProductViewRecord.create(req.body);
             if (!_.isEmpty(saveData) && saveData._id) {
                 res.status(200).send({ status: 200, data: saveData, message: 'User Product View Record Saved Successfully' });
