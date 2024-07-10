@@ -86,6 +86,7 @@ const Subscription_User = require('./routes/subscription_user.routes');
 const contact_us = require('./routes/contact_us.routes');
 const freelancer_proposal = require('./routes/freelancer_proposal.routes');
 const payment_due = require('./routes/payment_due.routes');
+const user_product_view_record = require('./routes/user_view_record.routes');
 
 global.BASE_URL = `http://${process.env.HOST}:${getPort}`;
 
@@ -135,6 +136,7 @@ app.use('/api', Subscription_User);
 app.use('/api', contact_us);
 app.use('/api', freelancer_proposal);
 app.use('/api', payment_due);
+app.use('/api', user_product_view_record);
 
 app.use('/uploads', express.static('uploads'));
 
