@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const UserProductViewRecord = require('../models/user_view_record.model');
 
 const userProductViewRecordsRepository = {
@@ -7,7 +8,7 @@ const userProductViewRecordsRepository = {
             var conditions = {};
             var and_clauses = [];
 
-            and_clauses.push({});
+            and_clauses.push({ productId: new mongoose.Types.ObjectId(req.body.productId) });
 
             conditions['$and'] = and_clauses;
 
@@ -63,10 +64,14 @@ const userProductViewRecordsRepository = {
                     $group: {
                         _id: '$_id',
                         userId: { $first: '$userId' },
+                        user_name: { $first: '$user_details.name' },
+                        user_email: { $first: '$user_details.email' },
+                        user_image: { $first: '$user_details.image' },
+                        user_mobile: { $first: '$user_details.mobile' },
+                        user_address: { $first: '$user_details.address' },
                         productId: { $first: '$productId' },
-                        date: { $first: '$date' },
-                        user_details: { $first: '$user_details' },
-                        product_details: { $first: '$product_details' }
+                        product_name: { $first: '$product_details.title' },
+                        date: { $first: '$date' }
                     }
                 },
                 { $match: conditions },
