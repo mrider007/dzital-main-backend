@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const UserProductViewRecord = require('../models/user_search_record.model');
+const UserSearchRecord = require('../models/user_search_record.model');
 
 const userProductViewRecordsRepository = {
 
@@ -8,30 +8,30 @@ const userProductViewRecordsRepository = {
             var conditions = {};
             var and_clauses = [];
 
-            and_clauses.push({ productId: new mongoose.Types.ObjectId(req.body.productId) });
+            and_clauses.push({ categoryId: new mongoose.Types.ObjectId(req.body.categoryId) });
 
             conditions['$and'] = and_clauses;
 
-            let product_view_records = UserProductViewRecord.aggregate([
+            let search_records = await UserSearchRecord.aggregate([
                 {
                     $lookup: {
-                        let: { product: '$productId' },
-                        from: "products",
+                        let: { category: '$categoryId' },
+                        from: "service_categories",
                         pipeline: [
                             {
                                 $match: {
                                     $expr: {
                                         $and: [
-                                            { $eq: ["$_id", "$$product"] },
+                                            { $eq: ["$_id", "$$category"] },
                                         ]
                                     }
                                 }
                             }
                         ],
-                        as: "product_details"
+                        as: "category_details"
                     }
                 },
-                { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
+                { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
                         let: { userID: '$userId' },
@@ -69,19 +69,19 @@ const userProductViewRecordsRepository = {
                         user_image: { $first: '$user_details.image' },
                         user_mobile: { $first: '$user_details.mobile' },
                         user_address: { $first: '$user_details.address' },
-                        productId: { $first: '$productId' },
-                        product_name: { $first: '$product_details.title' },
+                        categoryId: { $first: '$categoryId' },
+                        category_name: { $first: '$category_details.title' },
                         date: { $first: '$date' }
                     }
                 },
                 { $match: conditions },
                 { $sort: { _id: 1 } }
             ]);
-            if (!product_view_records) {
+            if (!search_records) {
                 return null;
             }
 
-            return product_view_records;
+            return search_records;
         } catch (e) {
             throw e;
         }
