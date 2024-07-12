@@ -1,8 +1,9 @@
 const SubscriptionUser = require('../models/subscription_user.model');
 const SubscriptionPayment = require('../models/subscription_history.model');
 const subscriptionUserRepo = require('../repositories/subscription_user.repository');
-const payment_due = require('../models/payment_due.model');
-const Product = require('../models/product.model')
+const Product = require('../models/product.model');
+const User = require('../models/user.model');
+const Transaction = require("../models/transaction.model")
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const stripe_webhook = {
@@ -40,16 +41,20 @@ const stripe_webhook = {
                     })
                     if (session?.status === 'paid') {
                         const productInfo = await Product.findById(updatedSubscription.product_id)
-                        const paymentInfo = await payment_due.findOne({ user_id: productInfo.userId })
-                        if (!_.isEmpty(paymentInfo) && paymentInfo._id) {
-                            const total_pay = paymentInfo.total_amount + saveData.amount
-                            const payable = (total_pay - (total_pay * 0.20)).toFixed(2);
-                            await payment_due.findOneAndUpdate({ user_id: productInfo.userId, _id: paymentInfo._id }, {
-                                status: 'Pending',
-                                total_amount: Number(total_pay),
-                                payable_amount: Number(payable),
-                            })
+                        const userData = await User.findById(productInfo.userId)
+                        const amount = session?.amount_paid / 100
+                        const payout = (amount - (amount * 0.20)).toFixed(2)
+
+                        const transaction_obj = {
+                            user_id: productInfo.userId,
+                            opening_amount: userData.wallet_amount,
+                            credit: Number(payout),
+                            closing_amount: userData.wallet_amount ? userData.wallet_amount + Number(payout) : Number(payout),
                         }
+
+                        await Transaction.create(transaction_obj)
+                        userData.wallet_amount = transaction_obj.closing_amount
+                        await userData.save()
                     }
                 }
             }

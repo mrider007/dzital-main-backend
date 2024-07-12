@@ -6,7 +6,6 @@ const SubscriptionUser = require('../models/subscription_user.model');
 const stripe_webhook = require('../services/stripe-webhook');
 const membership_plan = require('../models/membership_plan.model');
 const membership_user = require('../models/membership_user.model');
-const payment_due = require('../models/payment_due.model');
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
@@ -239,24 +238,17 @@ class StripePaymentController {
                         res.status(400).send({ status: 400, message: 'Payment could not be verified' });
                     } else {
                         const productInfo = await Product.findById(newSubscription.product_id)
-                        const paymentInfo = await payment_due.findOne({ user_id: productInfo.userId })
-                        if (!_.isEmpty(paymentInfo) && paymentInfo._id) {
-                            const total_pay = paymentInfo.total_amount + saveData.amount
-                            const payable = (total_pay - (total_pay * 0.20)).toFixed(2);
-                            await payment_due.findByIdAndUpdate(paymentInfo._id, {
-                                status: 'Pending',
-                                total_amount: Number(total_pay),
-                                payable_amount: Number(payable),
-                            })
-                        } else {
-                            const payable = (saveData.amount - (saveData.amount * 0.20)).toFixed(2);
-                            await payment_due.create({
-                                platform_fees: 20,
-                                total_amount: saveData.amount,
-                                payable_amount: Number(payable),
-                                user_id: productInfo.userId,
-                            })
+                        const userData = await User.findById(productInfo.userId)
+                        const payout = (saveData.amount - (saveData.amount * 0.20)).toFixed(2)
+                        const transaction_obj = {
+                            user_id: productInfo.userId,
+                            opening_amount: userData.wallet_amount || 0,
+                            credit: Number(payout),
+                            closing_amount: userData.wallet_amount ? userData.wallet_amount + Number(payout) : Number(payout),
                         }
+                        await Transaction.create(transaction_obj)
+                        userData.wallet_amount = transaction_obj.closing_amount
+                        await userData.save()
                         res.status(200).send({ status: 200, data: newSubscription, message: 'Payment Successful' });
                     }
                 }
