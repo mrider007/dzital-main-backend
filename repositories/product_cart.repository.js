@@ -24,13 +24,8 @@ const ProductCartRepository = {
             conditions['$and'] = and_clauses;
 
             const aggregationPipeline = [
-                {
-                    $match: conditions
-
-                },
-                {
-                    $unwind: "$items"
-                },
+                { $match: conditions },
+                { $unwind: "$items" },
                 {
                     $lookup: {
                         from: "products",
@@ -76,9 +71,7 @@ const ProductCartRepository = {
                         as: "items.product"
                     }
                 },
-                {
-                    $unwind: "$items.product"
-                },
+                { $unwind: "$items.product" },
                 {
                     $group: {
                         _id: "$_id",
