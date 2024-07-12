@@ -87,9 +87,25 @@ const BannerRepo = {
     getAll: async () => {
         try {
             const data = await Banner.aggregate([
+                { $match: { status: 'Active' } },
                 {
-                    $match: {
-                        status: 'Active',
+                    $lookup: {
+                        let: { categoryId: '$category_id' },
+                        from: "service_categories",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$parentId", "$$categoryId"] }
+                                        ]
+                                    }
+                                }
+                            },
+                            { $sort: { createdAt: -1 } },
+                            { $limit: 5 }
+                        ],
+                        as: "sub_category_details"
                     }
                 },
                 {
@@ -101,32 +117,17 @@ const BannerRepo = {
                                 $match: {
                                     $expr: {
                                         $and: [
-                                            { $or: [{ $eq: ["$parentId", "$$categoryId"] }] },
+                                            { $eq: ["$_id", "$$categoryId"] }
                                         ]
                                     }
                                 }
                             },
-                            {
-                                $sort: { createdAt: -1 },
-                            },
-                            {
-                                $limit: 5
-                            }
+                            { $sort: { _id: -1 } },
                         ],
-                        as: "sub_category_details"
-                    }
-                },
-                {
-                    $lookup: {
-                        from: "service_categories",
-                        localField: 'category_id',
-                        foreignField: '_id',
                         as: "category_details"
                     }
                 },
-                {
-                    $unwind: '$category_details'
-                },
+                { $unwind: '$category_details' },
                 {
                     $project: {
                         _id: 1,
@@ -140,7 +141,7 @@ const BannerRepo = {
                         image: 1,
                         primary_color: 1,
                         secondary_color: 1,
-                        createdAt: 1,
+                        createdAt: 1
                     }
                 }
             ]);
