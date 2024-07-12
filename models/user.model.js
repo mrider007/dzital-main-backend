@@ -8,8 +8,8 @@ const UserSchema = new mongoose.Schema({
     email: {
         type: String,
         lowercase: true,
-        required: [true, 'Email cannot be blank'],
-        match: [/\S+@\S+\.\S+/, 'Email is invalid'],
+        required: [true, 'Email cannot be Empty'],
+        match: [/\S+@\S+\.\S+/, 'Email is Invalid'],
         index: true,
         trim: true,
         unique: true
