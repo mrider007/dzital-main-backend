@@ -649,7 +649,7 @@ class productController {
 
                     let electronicsUpdate = await electronicsRepo.updateById(req.body, electronicsInfo._id);
                     if (!_.isEmpty(electronicsUpdate) && electronicsUpdate._id) {
-                        let updateObj = { image: electronicsUpdate.photo, status: req.body.status }
+                        let updateObj = { image: electronicsUpdate.photo, title: electronicsUpdate.title, description: electronicsUpdate.description, status: req.body.status }
                         if (_.has(req.body, 'reject_reason') && req.body.reject_reason !== '' && req.body.status === 'Rejected') {
                             updateObj.reject_reason = req.body.reject_reason
                         }
@@ -721,7 +721,7 @@ class productController {
 
                     let propertyUpdate = await propertyRepo.updateById(req.body, propertyInfo._id);
                     if (!_.isEmpty(propertyUpdate) && propertyUpdate._id) {
-                        let updateObj = { image: propertyUpdate.photo, status: req.body.status }
+                        let updateObj = { image: propertyUpdate.photo, title: propertyUpdate.title, description: propertyUpdate.description, status: req.body.status }
                         if (_.has(req.body, 'reject_reason') && req.body.reject_reason !== '' && req.body.status === 'Rejected') {
                             updateObj.reject_reason = req.body.reject_reason
                         }
@@ -781,7 +781,7 @@ class productController {
 
                     let jobUpdate = await jobRepo.updateById(req.body, jobDetails._id);
                     if (!_.isEmpty(jobUpdate) && jobUpdate._id) {
-                        let updateObj = { image: jobUpdate.image, status: req.body.status }
+                        let updateObj = { image: jobUpdate.image, title: jobUpdate.title, description: jobUpdate.description, status: req.body.status }
                         if (_.has(req.body, 'reject_reason') && req.body.reject_reason !== '' && req.body.status === 'Rejected') {
                             updateObj.reject_reason = req.body.reject_reason
                         }
@@ -853,7 +853,7 @@ class productController {
 
                     let goodsUpdate = await goodsRepo.updateById(req.body, goodsInfo._id);
                     if (!_.isEmpty(goodsUpdate) && goodsUpdate._id) {
-                        let updateObj = { image: goodsUpdate.photo, status: req.body.status }
+                        let updateObj = { image: goodsUpdate.photo, title: goodsUpdate.title, description: goodsUpdate.description, status: req.body.status }
                         if (_.has(req.body, 'reject_reason') && req.body.reject_reason !== '' && req.body.status === 'Rejected') {
                             updateObj.reject_reason = req.body.reject_reason
                         }
@@ -910,7 +910,7 @@ class productController {
 
                     let freelancerUpdate = await freelancerRepo.updateById(req.body, freelancerDetails._id);
                     if (!_.isEmpty(freelancerUpdate) && freelancerUpdate._id) {
-                        let updateObj = { image: freelancerUpdate.image, status: req.body.status }
+                        let updateObj = { image: freelancerUpdate.image, title: freelancerUpdate.title, description: freelancerUpdate.description, status: req.body.status }
                         if (_.has(req.body, 'reject_reason') && req.body.reject_reason !== '' && req.body.status === 'Rejected') {
                             updateObj.reject_reason = req.body.reject_reason
                         }
@@ -1007,7 +1007,7 @@ class productController {
                         }
                     }
                     if (!_.isEmpty(lessoncourseUpdate) && lessoncourseUpdate._id) {
-                        let updateObj = { image: lessoncourseUpdate.image, status: req.body.status }
+                        let updateObj = { image: lessoncourseUpdate.image, title: lessoncourseUpdate.title, description: lessoncourseUpdate.description, status: req.body.status }
                         if (_.has(req.body, 'reject_reason') && req.body.reject_reason !== '' && req.body.status === 'Rejected') {
                             updateObj.reject_reason = req.body.reject_reason
                         }
@@ -1079,7 +1079,7 @@ class productController {
 
                     let fashionproductUpdate = await fashionRepo.updateById(req.body, fashionproductInfo._id);
                     if (!_.isEmpty(fashionproductUpdate) && fashionproductUpdate._id) {
-                        let updateObj = { image: fashionproductUpdate.photo, status: req.body.status }
+                        let updateObj = { image: fashionproductUpdate.photo, title: fashionproductUpdate.title, description: fashionproductUpdate.description, status: req.body.status }
                         if (_.has(req.body, 'reject_reason') && req.body.reject_reason !== '' && req.body.status === 'Rejected') {
                             updateObj.reject_reason = req.body.reject_reason
                         }
@@ -1535,6 +1535,7 @@ class productController {
             res.status(500).send({ status: 500, message: e.message });
         }
     };
+
     /** User Product Update */
     async userProductUpdate(req, res) {
         try {
