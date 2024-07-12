@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const UserProductViewRecord = require('../models/user_view_record.model');
+const UserProductViewRecord = require('../models/user_search_record.model');
 
 const userProductViewRecordsRepository = {
 
