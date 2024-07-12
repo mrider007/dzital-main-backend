@@ -17,6 +17,8 @@ const TransactionRepository = {
             var conditions = {};
             var and_clauses = [];
 
+            and_clauses.push({});
+
             if (_.has(req.body, 'user_id') && req.body.user_id !== '') {
                 and_clauses.push({ user_id: new mongoose.Types.ObjectId(req.body.user_id) });
             }
