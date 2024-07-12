@@ -51,19 +51,40 @@ const productEducationRepository = {
             let products = ProductEducation.aggregate([
                 {
                     $lookup: {
-                        from: 'service_categories',
-                        localField: 'category_id',
-                        foreignField: '_id',
-                        as: 'category_details'
+                        let: { categoryId: '$category_id' },
+                        from: "service_categories",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$categoryId"] }
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "category_details"
                     }
                 },
                 { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
-                        from: 'products',
-                        localField: 'product_id',
-                        foreignField: '_id',
-                        as: 'product_details'
+                        let: { product: '$product_id' },
+                        from: "products",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$product"] },
+
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "product_details"
                     }
                 },
                 { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
@@ -189,19 +210,39 @@ const productEducationRepository = {
             let products = ProductEducation.aggregate([
                 {
                     $lookup: {
-                        from: 'service_categories',
-                        localField: 'category_id',
-                        foreignField: '_id',
-                        as: 'category_details'
+                        let: { categoryID: '$category_id' },
+                        from: "service_categories",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$categoryID"] }
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "category_details"
                     }
                 },
                 { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
-                        from: 'products',
-                        localField: 'product_id',
-                        foreignField: '_id',
-                        as: 'product_details'
+                        let: { product: '$product_id' },
+                        from: "products",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$product"] }
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "product_details"
                     }
                 },
                 { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
@@ -316,19 +357,39 @@ const productEducationRepository = {
                 { $match: params },
                 {
                     $lookup: {
-                        from: 'service_categories',
-                        localField: 'category_id',
-                        foreignField: '_id',
-                        as: 'category_details'
+                        from: "service_categories",
+                        let: { CategoryID: "$category_id" },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$CategoryID"] }
+                                        ],
+                                    },
+                                },
+                            }
+                        ],
+                        as: "category_details"
                     }
                 },
                 { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
-                        from: 'service_categories',
-                        localField: 'sub_category_id',
-                        foreignField: '_id',
-                        as: 'sub_category_details'
+                        from: "service_categories",
+                        let: { SubCategoryID: "$sub_category_id" },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$SubCategoryID"] }
+                                        ],
+                                    },
+                                },
+                            }
+                        ],
+                        as: "sub_category_details"
                     }
                 },
                 { $unwind: { path: '$sub_category_details', preserveNullAndEmptyArrays: true } },
@@ -363,10 +424,20 @@ const productEducationRepository = {
                 { $unwind: { path: '$seller_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
-                        from: 'products',
-                        localField: 'product_id',
-                        foreignField: '_id',
-                        as: 'product_details'
+                        from: "products",
+                        let: { productID: "$product_id" },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$productID"] }
+                                        ],
+                                    },
+                                },
+                            }
+                        ],
+                        as: "product_details"
                     }
                 },
                 { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
