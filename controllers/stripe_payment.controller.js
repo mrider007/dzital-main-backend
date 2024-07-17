@@ -239,7 +239,8 @@ class StripePaymentController {
                     } else {
                         const productInfo = await Product.findById(newSubscription.product_id)
                         const userData = await User.findById(productInfo.userId)
-                        const payout = (saveData.amount - (saveData.amount * 0.20)).toFixed(2)
+                        const cut_amount = (userData?.commission_percentage || 20) / 100
+                        const payout = (saveData.amount - (saveData.amount * cut_amount)).toFixed(2)
                         const transaction_obj = {
                             user_id: productInfo.userId,
                             opening_amount: userData.wallet_amount || 0,
