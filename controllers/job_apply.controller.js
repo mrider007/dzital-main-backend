@@ -39,9 +39,11 @@ class JobApplyController {
 
     async jobApplicantsList(req, res) {
         try {
-            let job_applicants = await JobApplyRepo.jobSeekerList(req);
+            let job_applicants_list = await JobApplyRepo.jobSeekerList(req);
+            let job_applicants = await JobApplyRepo.totalApplicantCount();
+            let total_count = job_applicants.length;
             if (!_.isEmpty(job_applicants)) {
-                res.status(200).send({ status: 200, data: job_applicants.docs, total: job_applicants.total, limit: job_applicants.limit, page: job_applicants.page, pages: job_applicants.pages, message: 'Job Applicants List Fetched Successfully' });
+                res.status(200).send({ status: 200, data: job_applicants_list.docs, total: job_applicants_list.total, limit: job_applicants_list.limit, page: job_applicants_list.page, pages: job_applicants_list.pages, total_count, message: 'Job Applicants List Fetched Successfully' });
             } else {
                 res.status(400).send({ status: 400, message: 'No Job Applicants Found' });
             }

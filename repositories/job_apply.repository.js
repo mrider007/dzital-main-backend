@@ -103,8 +103,56 @@ const JobApplyRepository = {
             let allJobSeeker = await User.aggregatePaginate(pipeline, options);
             return allJobSeeker;
 
-        } catch (error) {
-            throw error
+        } catch (e) {
+            throw e;
+        }
+    },
+
+    totalApplicantCount: async () => {
+        try {
+
+            var conditions = {}
+            var and_clauses = []
+
+            and_clauses.push({});
+
+            conditions['$and'] = and_clauses;
+            
+            let job_applicants = await JobApply.aggregate([
+                {
+                    $lookup: {
+                        let: { userId: '$user_id' },
+                        from: "users",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $eq: ["$_id", "$$userId"]
+                                    }
+                                }
+                            },
+                        ],
+                        as: "user_details"
+                    }
+                },
+                { $unwind: { path: '$user_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: "$user_id",
+                        job_applicant: { $first: '$user_details.name' },
+                        job_applicant_email: { $first: '$user_details.email' }
+                    }
+                },
+                { $match: conditions },
+                { $sort: { job_applicant: 1 } }
+            ]);
+
+            if (!job_applicants) {
+                return null;
+            }
+            return job_applicants;
+        } catch (e) {
+            throw e;
         }
     }
 }
