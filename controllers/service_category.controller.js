@@ -162,6 +162,21 @@ class serviceController {
             res.status(500).send({ status: 500, message: e.message });
         }
     };
+
+    async jobSubCategoryList(req, res) {
+        try {
+            const jobCategoryInfo = await Service.findOne({ title: 'Jobs' });
+            const job_category_id = jobCategoryInfo._id;
+            const job_sub_categories = await Service.find({ parentId: job_category_id });
+            if (!_.isEmpty(job_sub_categories)) {
+                res.status(200).send({ status: 200, data: job_sub_categories, message: 'Job Sub Categories List Fetched Successfully' });
+            } else {
+                res.status(400).send({ status: 400, message: 'No Job Sub Category Found' });
+            }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
 }
 
 module.exports = new serviceController();

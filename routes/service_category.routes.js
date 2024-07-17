@@ -13,5 +13,6 @@ router.post('/admin/service/sub-category/list', request_param.any(), Authenticat
 router.post('/service/sub-category/add', request_param.any(), Authentication.AuthenticateAdmin, serviceController.serviceAdd);
 router.post('/service/sub-category/update/:id', request_param.any(), Authentication.AuthenticateAdmin, serviceController.serviceUpdate);
 router.post('/admin/service-category/list', request_param.any(), Authentication.AuthenticateAdmin, serviceController.serviceCatergories);
+router.post('/job/sub-category/list', Authentication.Authenticate, serviceController.jobSubCategoryList);
 
 module.exports = router;
