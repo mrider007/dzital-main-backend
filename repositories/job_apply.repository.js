@@ -93,7 +93,9 @@ const JobApplyRepository = {
                         _id: "$_id",
                         job_details: { $first: '$job_info' },
                         job_applicant: { $first: '$name' },
-                        job_applicant_email: { $first: '$email' }
+                        job_applicant_email: { $first: '$email' },
+                        job_applicant_address: { $first: '$address' },
+                        job_applicant_image: { $first: '$image' }
                     }
                 },
                 { $match: conditions },
@@ -140,9 +142,7 @@ const JobApplyRepository = {
                     $group: {
                         _id: "$user_id",
                         job_applicant: { $first: '$user_details.name' },
-                        job_applicant_email: { $first: '$user_details.email' },
-                        job_applicant_address: { $first: '$user_details.address' },
-                        job_applicant_image: { $first: '$user_details.image' }
+                        job_applicant_email: { $first: '$user_details.email' }
                     }
                 },
                 { $match: conditions },
