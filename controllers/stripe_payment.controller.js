@@ -238,9 +238,10 @@ class StripePaymentController {
                         res.status(400).send({ status: 400, message: 'Payment could not be verified' });
                     } else {
                         const productInfo = await Product.findById(newSubscription.product_id)
-                        const userData = await User.findById(productInfo.userId)
-                        const cut_amount = (userData?.commission_percentage || 20) / 100
+                        const userData = await User.findById(productInfo.userId).populate('commission_package')
+                        const cut_amount = (userData?.commission_package?.commission_percentage || 20) / 100
                         const payout = (saveData.amount - (saveData.amount * cut_amount)).toFixed(2)
+
                         const transaction_obj = {
                             user_id: productInfo.userId,
                             opening_amount: userData.wallet_amount || 0,
