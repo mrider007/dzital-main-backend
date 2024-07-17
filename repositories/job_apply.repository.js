@@ -140,7 +140,9 @@ const JobApplyRepository = {
                     $group: {
                         _id: "$user_id",
                         job_applicant: { $first: '$user_details.name' },
-                        job_applicant_email: { $first: '$user_details.email' }
+                        job_applicant_email: { $first: '$user_details.email' },
+                        job_applicant_address: { $first: '$user_details.address' },
+                        job_applicant_image: { $first: '$user_details.image' }
                     }
                 },
                 { $match: conditions },
