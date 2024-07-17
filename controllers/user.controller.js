@@ -13,6 +13,7 @@ const crypto = require('crypto');
 const mail_template = require('../services/mail-template');
 const UserJobProfile = require('../models/user_job_profile.model');
 const userJobProfileRepo = require('../repositories/user_job_profile.repository');
+const commission_package = require('../models/commission_package.model');
 
 class userController {
     constructor() { }
@@ -38,6 +39,10 @@ class userController {
                     req.body.password = bcrypt.hashSync(password, 10);
                     let freeplan = await Membership_Plan.findOne({ title: 'Free Plan' });
                     req.body.plan_id = freeplan._id;
+                    let commission = await commission_package.findOne({ type: 'Default' })
+                    if (!_.isEmpty(commission) && commission._id) {
+                        req.body.commission_package = commission._id
+                    }
                     let saveUser = await User.create(req.body);
                     if (!_.isEmpty(saveUser)) {
                         const agora_token = await AgoraToken.create()
@@ -251,6 +256,10 @@ class userController {
                 req.body.status = 'Active';
                 let freeplan = await Membership_Plan.findOne({ title: 'Free Plan' });
                 req.body.plan_id = freeplan._id;
+                let commission = await commission_package.findOne({ type: 'Default' })
+                if (!_.isEmpty(commission) && commission._id) {
+                    req.body.commission_package = commission._id
+                }
                 let userData = await User.create(req.body);
 
                 const agora_token = await AgoraToken.create()
