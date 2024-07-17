@@ -1,5 +1,6 @@
 const JobApply = require('../models/job_apply.model');
 const product_jobsModel = require('../models/product_jobs.model');
+const JobApplyRepo = require('../repositories/job_apply.repository');
 
 class JobApplyController {
     constructor() { }
