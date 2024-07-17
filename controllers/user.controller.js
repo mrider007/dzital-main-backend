@@ -11,6 +11,7 @@ const AgoraToken = require('../services/agora-token');
 const sendEmail = require('../services/mail');
 const crypto = require('crypto');
 const mail_template = require('../services/mail-template');
+const UserJobProfile = require('../models/user_job_profile.model');
 const userJobProfileRepo = require('../repositories/user_job_profile.repository');
 
 class userController {
@@ -180,8 +181,15 @@ class userController {
 
             let updateUser = await userRepo.updateById(req.body, req.user._id);
 
-            req.body.userId = req.user._id;
-            const updateJobProfile = await userJobProfileRepo.save(req.body);
+            let userId = req.user._id;
+            let userJobProfileInfo = await UserJobProfile.findOne({ userId: userId });
+            if (!_.isEmpty(userJobProfileInfo)) {
+                const updateJobProfile = await userJobProfileRepo.updateById(req.body, req.user._id);
+            } else {
+                req.body.userId = req.user._id;
+                const saveJobProfile = await userJobProfileRepo.save(req.body);
+            }
+
             if (!_.isEmpty(updateUser) && updateUser._id) {
                 res.status(200).send({ status: 200, data: updateUser, message: 'Profile details updated successfully' });
             }

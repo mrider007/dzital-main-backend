@@ -13,7 +13,19 @@ const UserJobProfileRepository = {
         } catch (e) {
             return e;
         }
-    }
+    },
+
+    updateById: async (data, id) => {
+        try {
+            let jobProfileUpdate = await UserJobProfile.findByIdAndUpdate(id, data, { new: true, upsert: true }).exec();
+            if (!jobProfileUpdate) {
+                return null;
+            }
+            return jobProfileUpdate;
+        } catch (e) {
+            return e;
+        }
+    },
 
 }
 
