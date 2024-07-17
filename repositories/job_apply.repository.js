@@ -15,21 +15,29 @@ const JobApplyRepository = {
                 { $match: conditions },
                 {
                     $lookup: {
-                        from: "users",
-                        localField: "user_id",
-                        foreignField: "_id",
-                        as: "user_details"
+                        from: 'users',
+                        localField: 'user_id',
+                        foreignField: '_id',
+                        as: 'user_details'
                     }
                 },
+                { $unwind: { path: '$user_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $lookup: {
+                        from: 'product_jobs',
+                        localField: 'job_id',
+                        foreignField: '_id',
+                        as: 'job_details'
+                    }
+                },
+                { $unwind: { path: '$job_details', preserveNullAndEmptyArrays: true } },
                 {
                     $group: {
                         _id: "$user_id",
-                        job_title: { $first: "$job_title" },
-                        status: { $first: '$status' },
-                        user_details: { $first: '$user_details' },
-                        cv: { $first: "$cv" }
+                        job_applicant: { $first: '$user_details.name' }
                     }
-                }
+                },
+                { $sort: { job_applicant: 1 } }
             ])
             var options = { page: req.body.page || 1, limit: req.body.limit || 20 };
             let allJobSeeker = await JobApply.aggregatePaginate(pipeline, options);

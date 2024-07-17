@@ -35,7 +35,20 @@ class JobApplyController {
         } catch (error) {
             res.send({ status: 500, message: error.message });
         }
-    }
+    };
+
+    async jobApplicantsList(req, res) {
+        try {
+            let job_applicants = await JobApplyRepo.jobSeekerList(req);
+            if (!_.isEmpty(job_applicants)) {
+                res.status(200).send({ status: 200, data: job_applicants.docs, total: job_applicants.total, limit: job_applicants.limit, page: job_applicants.page, pages: job_applicants.pages, message: 'Job Applicants List Fetched Successfully' });
+            } else {
+                res.status(400).send({ status: 400, message: 'No Job Applicants Found' });
+            }
+        } catch (error) {
+            res.send({ status: 500, message: error.message });
+        }
+    };
 
 }
 

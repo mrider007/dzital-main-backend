@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router()
 const Authentication = require('../middleware/authentication');
 const multer = require('multer');
+const request_params = multer();
 const JobApplyController = require('../controllers/job_apply.controller');
 const fs = require('fs');
 
@@ -20,5 +21,6 @@ const Storage = multer.diskStorage({
 const uploadFile = multer({ storage: Storage });
 
 router.post('/job/application', uploadFile.single('file'), Authentication.Authenticate, JobApplyController.addApplication);
+router.post('/job/applicants/list', request_params.any(), Authentication.Authenticate, JobApplyController.jobApplicantsList);
 
 module.exports = router
