@@ -78,48 +78,6 @@ const JobApplyRepository = {
                         as: "job_info"
                     }
                 },
-                // {
-                //     $lookup: {
-                //         let: { userId: '$_id' },
-                //         from: "product_jobs",
-                //         pipeline: [
-                //             {
-                //                 $match: {
-                //                     $expr: {
-                //                         $eq: ["$user_id", "$$userId"]
-                //                     }
-                //                 }
-                //             },
-                //             {
-                //                 $lookup: {
-                //                     let: { subCategory: '$sub_category_id' },
-                //                     from: "service_categories",
-                //                     pipeline: [
-                //                         {
-                //                             $match: {
-                //                                 $expr: {
-                //                                     $eq: ["$_id", "$$subCategory"]
-                //                                 }
-                //                             }
-                //                         }
-                //                     ],
-                //                     as: "sub_category_details"
-                //                 }
-                //             },
-                //             { $unwind: { path: '$sub_category_details', preserveNullAndEmptyArrays: true } },
-                //             {
-                //                 $group: {
-                //                     _id: '$_id',
-                //                     job_title: { $first: '$title' },
-                //                     image: { $first: '$image' },
-                //                     sub_category_name: { $first: '$sub_category_details.title' },
-                //                     sub_category_id: { $first: '$sub_category_id' }
-                //                 }
-                //             },
-                //         ],
-                //         as: "job_details"
-                //     }
-                // },
                 {
                     $match: {
                         'job_info': { $ne: [] }
