@@ -28,7 +28,7 @@ const UserSchema = new mongoose.Schema({
     status: { type: String, default: 'Active', index: true },
     wallet_amount: { type: Number, default: 0 },
     user_type: { type: String, index: true, enum: ['seller', 'user'], default: 'user' },
-    commission_percentage: { type: Number, default: 20 },
+    commission_package: { type: Schema.Types.ObjectId, ref: 'Commission_Package', index: true },
     expired_on: { type: Date, index: true, trim: true },
     forget_pass_token: { type: String, index: true, trim: true, default: '' },
     register_type: { type: String, default: 'normal', enum: ['normal', 'google', 'facebook'] }
