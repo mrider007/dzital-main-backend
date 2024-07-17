@@ -39,7 +39,7 @@ const JobApplyRepository = {
                 },
                 { $sort: { job_applicant: 1 } }
             ])
-            var options = { page: req.body.page || 1, limit: req.body.limit || 20 };
+            var options = { page: req.body.page || 1, limit: req.body.limit || 10 };
             let allJobSeeker = await JobApply.aggregatePaginate(pipeline, options);
             return allJobSeeker;
 
