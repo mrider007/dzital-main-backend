@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const JobApply = require("../models/job_apply.model");
 const User = require('../models/user.model');
 
@@ -8,7 +9,11 @@ const JobApplyRepository = {
             var conditions = {}
             var and_clauses = []
 
-            and_clauses.push({})
+            and_clauses.push({});
+
+            if (_.isObject(req.body) && _.has(req.body, 'sub_category_id') && req.body.sub_category_id !== '') {
+                and_clauses.push({ 'job_details.sub_category_id': new mongoose.Types.ObjectId(req.body.sub_category_id) });
+            }
 
             conditions['$and'] = and_clauses;
 
