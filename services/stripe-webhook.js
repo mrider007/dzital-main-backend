@@ -41,8 +41,8 @@ const stripe_webhook = {
                     })
                     if (session?.status === 'paid') {
                         const productInfo = await Product.findById(updatedSubscription.product_id)
-                        const userData = await User.findById(productInfo.userId)
-                        const cut_amount = (userData?.commission_percentage || 20) / 100
+                        const userData = await User.findById(productInfo.userId).populate('commission_package')
+                        const cut_amount = (userData?.commission_package?.commission_percentage || 20) / 100
                         const amount = session?.amount_paid / 100
                         const payout = (amount - (amount * cut_amount)).toFixed(2)
 
