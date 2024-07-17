@@ -304,6 +304,10 @@ const adminRepository = {
                 }
             }
 
+            if (_.isObject(req.body) && _.has(req.body, 'user_type') && req.body.type !== '') {
+                and_clauses.push({ 'user_type': req.body.user_type });
+            }
+
             conditions['$and'] = and_clauses;
 
             let activeusers = User.aggregate([
@@ -328,6 +332,9 @@ const adminRepository = {
                         plan_id: { $first: '$plan_id' },
                         plan_title: { $first: '$plan_details.title' },
                         status: { $first: '$status' },
+                        user_type: { $first: '$user_type' },
+                        wallet_amount: { $first: '$wallet_amount' },
+                        commission_percentage: { $first: '$commission_percentage' },
                         createdAt: { $first: '$createdAt' },
                         updatedAt: { $first: '$updatedAt' }
                     }
