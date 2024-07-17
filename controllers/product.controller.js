@@ -22,6 +22,7 @@ const cloudinary = require('cloudinary');
 const attributevalueRepository = require('../repositories/attribute_value.repository');
 const Product_Plan = require('../models/product_plan.model');
 const Product_Plan_Repo = require('../repositories/product_plan.repository');
+const User = require('../models/user.model');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 class productController {
@@ -586,6 +587,10 @@ class productController {
             const productInfo = await Product.findOne({ _id: req.params.id });
             if (!_.isEmpty(productInfo) && productInfo._id) {
                 let categoryInfo = await Category.findOne({ _id: productInfo.category_id });
+
+                if (req.body.status === 'Approved') {
+                    await User.findByIdAndUpdate(productInfo.userId, { user_type: 'seller' });
+                }
 
                 if (categoryInfo.title === 'Electronics') {
                     let electronicsInfo = await ProductElectronics.findOne({ product_id: productInfo._id });
