@@ -84,6 +84,23 @@ const JobApplyRepository = {
                     }
                 },
                 {
+                    $lookup: {
+                        let: { userID: '$_id' },
+                        from: "user_job_profiles",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $eq: ["$userId", "$$userID"]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "job_profile"
+                    }
+                },
+                { $unwind: { path: '$job_profile', preserveNullAndEmptyArrays: true } },
+                {
                     $match: {
                         'job_info': { $ne: [] }
                     }
@@ -95,7 +112,8 @@ const JobApplyRepository = {
                         job_applicant: { $first: '$name' },
                         job_applicant_email: { $first: '$email' },
                         job_applicant_address: { $first: '$address' },
-                        job_applicant_image: { $first: '$image' }
+                        job_applicant_image: { $first: '$image' },
+                        job_applicant_year_of_experience: { $first: '$job_profile.year_of_experience' }
                     }
                 },
                 { $match: conditions },
