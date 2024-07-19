@@ -89,6 +89,7 @@ const user_search_record = require('./routes/user_search_record.routes');
 const transaction = require('./routes/transaction.routes');
 const user_job_profile = require('./routes/user_job_profile.routes');
 const commission_package = require('./routes/commission_package.routes');
+const payout_request = require('./routes/payout_request.routes');
 
 global.BASE_URL = `http://${process.env.HOST}:${getPort}`;
 
@@ -141,6 +142,7 @@ app.use('/api', user_search_record);
 app.use('/api', transaction);
 app.use('/api', user_job_profile);
 app.use('/api', commission_package);
+app.use('/api', payout_request);
 
 app.use('/uploads', express.static('uploads'));
 
