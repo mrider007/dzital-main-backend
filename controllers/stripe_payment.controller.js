@@ -6,6 +6,7 @@ const SubscriptionUser = require('../models/subscription_user.model');
 const stripe_webhook = require('../services/stripe-webhook');
 const membership_plan = require('../models/membership_plan.model');
 const membership_user = require('../models/membership_user.model');
+const Transaction = require('../models/transaction.model');
 const User = require('../models/user.model');
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
@@ -119,7 +120,6 @@ class StripePaymentController {
             if (!_.isEmpty(plan_details) && plan_details._id) {
                 const membership = await membership_user.findOne({ membership_id: membership_id, user_id: req.user?._id });
                 const currentDate = new Date();
-
                 if (membership && membership.membership_status === 'Active' && currentDate < membership.membership_end_date) {
                     return res.status(400).send({ status: 400, message: "You Already Have Active Membership" });
                 }
@@ -176,6 +176,10 @@ class StripePaymentController {
                     status: session?.payment_status === 'paid' ? 'Active' : 'Inactive'
                 }
                 if (session?.mode === 'subscription') {
+                    const checkSubscription = await SubscriptionPayment.findOne({ payment_id: session.id })
+                    if (!_.isEmpty(checkSubscription) && checkSubscription._id) {
+                        return res.status(200).send({ status: 200, message: "Record already added" })
+                    }
                     const subsData = await stripe.subscriptions.retrieve(
                         session.subscription
                     );
@@ -238,6 +242,10 @@ class StripePaymentController {
                         res.status(200).send({ status: 200, data: newSubscription, message: 'Payment Successful' });
                     }
                 } else {
+                    const checkSubscription = await Product_Payment.findOne({ payment_id: session.id })
+                    if (!_.isEmpty(checkSubscription) && checkSubscription._id) {
+                        return res.status(200).send({ status: 200, message: "Record already added" })
+                    }
                     const newSubscription = await SubscriptionUser.create(subs_data);
 
                     const saveData = await Product_Payment.create({
@@ -255,7 +263,6 @@ class StripePaymentController {
                         const userData = await User.findById(productInfo.userId).populate('commission_package')
                         const cut_amount = (userData?.commission_package?.commission_percentage || 20) / 100
                         const payout = (saveData.amount - (saveData.amount * cut_amount)).toFixed(2)
-
                         const transaction_obj = {
                             user_id: productInfo.userId,
                             opening_amount: userData.wallet_amount || 0,
