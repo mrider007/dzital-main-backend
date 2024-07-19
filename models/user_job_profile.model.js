@@ -6,9 +6,17 @@ const UserJobProfileSchema = new Schema({
     cover_photo: { type: String, default: '' },
     about: { type: String, default: '' },
     skills: { type: Array, default: [] },
-    experience: { type: Array, default: [] },
+    experience: [{
+        company: { type: String, default: '', trim: true, index: true },
+        start_date: { type: Date, default: Date.now() },
+        end_date: { type: Date, default: Date.now() }
+    }],
     year_of_experience: { type: Number, defualt: 0 },
-    education: { type: Array, default: [] },
+    education: [{
+        institute: { type: String, default: '', trim: true, index: true },
+        start_date: { type: Date, default: Date.now() },
+        end_date: { type: Date, default: Date.now() }
+    }],
     skills: { type: Array, default: [] },
     languages: { type: Array, default: [] }
 }, { versionKey: false });
