@@ -11,6 +11,6 @@ const UserJobProfileSchema = new Schema({
     education: { type: Array, default: [] },
     skills: { type: Array, default: [] },
     languages: { type: Array, default: [] }
-});
+}, { versionKey: false });
 
 module.exports = mongoose.model('User_Job_Profile', UserJobProfileSchema);
