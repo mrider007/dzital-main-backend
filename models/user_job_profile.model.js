@@ -7,6 +7,7 @@ const UserJobProfileSchema = new Schema({
     about: { type: String, default: '' },
     skills: { type: Array, default: [] },
     experience: { type: Array, default: [] },
+    year_of_experience: { type: Number, defualt: 0 },
     education: { type: Array, default: [] },
     skills: { type: Array, default: [] },
     languages: { type: Array, default: [] }
