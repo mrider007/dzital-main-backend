@@ -358,13 +358,13 @@ const productEducationRepository = {
                 {
                     $lookup: {
                         from: "service_categories",
-                        let: { CategoryID: "$category_id" },
+                        let: { categoryId: "$category_id" },
                         pipeline: [
                             {
                                 $match: {
                                     $expr: {
                                         $and: [
-                                            { $eq: ["$_id", "$$CategoryID"] }
+                                            { $eq: ["$_id", "$$categoryId"] }
                                         ],
                                     },
                                 },
@@ -377,13 +377,13 @@ const productEducationRepository = {
                 {
                     $lookup: {
                         from: "service_categories",
-                        let: { SubCategoryID: "$sub_category_id" },
+                        let: { subcategoryId: "$sub_category_id" },
                         pipeline: [
                             {
                                 $match: {
                                     $expr: {
                                         $and: [
-                                            { $eq: ["$_id", "$$SubCategoryID"] }
+                                            { $eq: ["$_id", "$$subcategoryId"] }
                                         ],
                                     },
                                 },
