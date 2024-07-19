@@ -14,10 +14,10 @@ const checkAuth = {
                 req.user = checkUser;
                 next();
             } else {
-                res.status(401).json({ 'status': 401, "message": "You are Unauthorized. Please Login again." })
+                res.status(401).json({ status: 401, message: "You are Unauthorized. Please Login Again" })
             }
         } else {
-            res.status(401).json({ 'status': 401, "message": "You are Unauthorized. Please Login again." })
+            res.status(401).json({ status: 401, message: "You are Unauthorized. Please Login Again" })
         }
     },
 
@@ -30,10 +30,10 @@ const checkAuth = {
                 req.user = checkAdmin;
                 next();
             } else {
-                res.status(401).json({ 'status': 401, "message": "You are Unauthorized. Please Login with correct credentials." })
+                res.status(401).json({ status: 401, message: "You are Unauthorized. Please Login with correct credentials" })
             }
         } else {
-            res.status(401).json({ 'status': 401, "message": "You are Unauthorized. Please Login with correct credentials." })
+            res.status(401).json({ status: 401, message: "You are Unauthorized. Please Login with correct credentials" })
         }
     }
 }
