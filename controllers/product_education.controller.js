@@ -161,7 +161,6 @@ class productEducationController {
                     }
                 }
 
-                //let productUpdate = await productRepo.updateProductById({ image: lessoncoursesData.image }, lessoncoursesData.product_id);
                 let updated_product_data = {
                     image: lessoncoursesData.image,
                 }
