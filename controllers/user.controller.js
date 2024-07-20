@@ -176,12 +176,29 @@ class userController {
         try {
             let userInfo = await User.findById(req.user._id);
 
+            // if (req.files && req.files.length > 0) {
+            //     const uploadResult = await cloudinary.v2.uploader.upload(req.files[0].path);
+            //     req.body.image = uploadResult.secure_url;
+            // }
             if (req.files && req.files.length > 0) {
-                const uploadResult = await cloudinary.v2.uploader.upload(req.files[0].path);
-                req.body.image = uploadResult.secure_url;
+                var photo, cover_photo;
+                for (let i = 0; i < req.files.length; i++) {
+                    const element = req.files[i];
+                    if (element.fieldname === 'image') {
+                        photo = element.path;
+                        const uploadImage = await cloudinary.v2.uploader.upload(photo);
+                        req.body.image = uploadImage.secure_url;
+                    }
+                    else if (element.fieldname === 'cover_photo') {
+                        cover_photo = element.path;
+                        const uploadCoverPhoto = await cloudinary.v2.uploader.upload(cover_photo);
+                        req.body.cover_photo = uploadCoverPhoto.secure_url;
+                    }
+                }
             }
             else {
                 req.body.image = userInfo.image;
+                req.body.cover_photo = userInfo.cover_photo;
             }
 
             let updateUser = await userRepo.updateById(req.body, req.user._id);
