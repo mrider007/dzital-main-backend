@@ -14,6 +14,7 @@ const mail_template = require('../services/mail-template');
 const UserJobProfile = require('../models/user_job_profile.model');
 const userJobProfileRepo = require('../repositories/user_job_profile.repository');
 const commission_package = require('../models/commission_package.model');
+const fs = require('fs');
 
 class userController {
     constructor() { }
@@ -184,11 +185,15 @@ class userController {
                         photo = element.path;
                         const uploadImage = await cloudinary.v2.uploader.upload(photo);
                         req.body.image = uploadImage.secure_url;
+
+                        fs.unlinkSync(photo);
                     }
                     else if (element.fieldname === 'cover_photo') {
                         cover_photo = element.path;
                         const uploadCoverPhoto = await cloudinary.v2.uploader.upload(cover_photo);
                         req.body.cover_photo = uploadCoverPhoto.secure_url;
+
+                        fs.unlinkSync(cover_photo);
                     }
                 }
             }
