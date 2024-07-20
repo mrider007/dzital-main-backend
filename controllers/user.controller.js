@@ -348,10 +348,8 @@ class userController {
             });
 
             // Assuming the response contains the token
-
             const agoraToken = response.data.token;
 
-            console.log('Agora Token:', agoraToken);
         } catch (e) {
             res.send({ message: e.message });
         }
