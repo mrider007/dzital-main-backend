@@ -14,13 +14,13 @@ class cmsController {
             }
             else {
                 if (!_.has(req.body, 'title')) {
-                    res.status(400).send({ status: 400, message: 'Title is required' });
+                    res.status(400).send({ status: 400, message: 'Title is Required' });
                 }
                 else {
                     req.body.slug = slug(req.body.title, { lower: true, replacement: '-', trim: true });
                     let cmsSave = await CMS.create(req.body);
                     if (!_.isEmpty(cmsSave) && cmsSave._id) {
-                        res.status(200).send({ status: 200, data: cmsSave, message: 'CMS saved successfully' });
+                        res.status(200).send({ status: 200, data: cmsSave, message: 'CMS Saved Successfully' });
                     }
                     else {
                         res.status(400).send({ status: 400, data: {}, message: 'CMS could not be added' });
@@ -40,7 +40,7 @@ class cmsController {
             if (!_.isEmpty(cmsInfo) && cmsInfo._id) {
                 res.status(200).send({ status: 200, data: cmsInfo, message: 'CMS Details has been fetched' });
             } else {
-                res.status(400).send({ status: 400, data: {}, message: 'CMS not found' });
+                res.status(400).send({ status: 400, message: 'CMS Not Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -54,7 +54,7 @@ class cmsController {
             if (!_.isEmpty(cmsDetails) && cmsDetails._id) {
                 res.status(200).send({ status: 200, data: cmsDetails, message: 'CMS Details fetched successfully' });
             } else {
-                res.status(400).send({ status: 400, data: {}, message: 'CMS not found' });
+                res.status(400).send({ status: 400, message: 'CMS Not Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
