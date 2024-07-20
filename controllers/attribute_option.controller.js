@@ -44,14 +44,6 @@ class attributeOptionController {
             else {
                 res.status(201).send({ status: 201, data: [], message: 'No Attribute Option found' });
             }
-            // const attributeId = new mongoose.Types.ObjectId(req.body.attribute_id);
-            // let attribute_options = await AttributeOption.find({ attribute_id: attributeId });
-            // if (!_.isEmpty(attribute_options)) {
-            //     res.status(200).send({ status: 200, data: attribute_options, message: 'Attribute Options List fetched successfully' });
-            // }
-            // else {
-            //     res.status(201).send({ status: 201, message: 'No Attribute Option Found' });
-            // }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
         }
