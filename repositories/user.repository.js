@@ -96,6 +96,8 @@ const userRepository = {
                         image: { $first: '$image' },
                         mobile: { $first: '$mobile' },
                         address: { $first: '$address' },
+                        user_type: { $first: '$user_type' },
+                        wallet_amount: { $first: '$wallet_amount' },
                         bio: { $first: '$bio' },
                         lat: { $first: '$lat' },
                         lng: { $first: '$lng' },
