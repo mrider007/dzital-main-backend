@@ -15,6 +15,7 @@ const UserSchema = new mongoose.Schema({
         unique: true
     },
     image: { type: String, default: '' },
+    cover_photo: { type: String, default: '' },
     gender: { type: String, index: true, trim: true },
     mobile: { type: String, default: '', index: true, trim: true },
     password: { type: String, index: true, trim: true },
