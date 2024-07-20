@@ -1,5 +1,4 @@
 const Admin = require('../models/admin.model');
-const User = require('../models/user.model');
 const Plan = require('../models/membership_plan.model');
 const adminRepo = require('../repositories/admin.repository');
 const userRepo = require('../repositories/user.repository');
