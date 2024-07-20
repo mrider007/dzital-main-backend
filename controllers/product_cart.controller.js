@@ -32,7 +32,7 @@ class productCartController {
                 if (product.userId === req.user._id) {
                     return res.status(400).send({ status: 400, message: 'can not add own product into cart' })
                 }
-                    
+
                 let productCartAdd = await Cart.findOne({ user_id: req.user._id, 'items.product_id': { $in: product_id } });
                 if (!_.isEmpty(productCartAdd) && productCartAdd._id) {
                     const index = productCartAdd.items.findIndex(item => item.product_id.toString() === product_id)
