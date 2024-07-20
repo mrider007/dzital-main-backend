@@ -176,10 +176,6 @@ class userController {
         try {
             let userInfo = await User.findById(req.user._id);
 
-            // if (req.files && req.files.length > 0) {
-            //     const uploadResult = await cloudinary.v2.uploader.upload(req.files[0].path);
-            //     req.body.image = uploadResult.secure_url;
-            // }
             if (req.files && req.files.length > 0) {
                 var photo, cover_photo;
                 for (let i = 0; i < req.files.length; i++) {
@@ -216,7 +212,7 @@ class userController {
                 res.status(200).send({ status: 200, data: updateUser, message: 'Profile details updated successfully' });
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'Profile details could not be updated' });
+                res.status(400).send({ status: 400, message: 'Profile details could not be updated' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
