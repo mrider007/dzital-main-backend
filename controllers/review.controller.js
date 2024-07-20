@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const cloudinary = require('cloudinary');
-const Product = require('../models/product.model');
 const Review = require('../models/review.model');
 const fs = require('fs');
 const reviewRepo = require('../repositories/review.repository');
@@ -54,7 +53,7 @@ class ReviewController {
     async productReviewList(req, res) {
         try {
             const productId = new mongoose.Types.ObjectId(req.body.productId);
-            let productReviews = await reviewRepo.list(req); // Review.find({ productId: productId });
+            let productReviews = await reviewRepo.list(req);
             if (!_.isEmpty(productReviews)) {
                 res.status(200).send({ status: 200, data: productReviews, message: 'Product Reviews List Fetched Successfully' });
             } else {
