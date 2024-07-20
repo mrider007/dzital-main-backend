@@ -82,13 +82,11 @@ class bidHistoryController {
             else {
                 res.status(201).send({ status: 201, data: [], message: 'No bids found' });
             }
-
         }
         catch (e) {
             res.status(500).send({ status: 500, message: e.message });
         }
     }
-
 
 }
 
