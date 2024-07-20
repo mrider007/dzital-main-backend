@@ -69,7 +69,7 @@ class productGoodsController {
                 res.status(200).send({ status: 200, data: goodsProductSave, message: 'Goods Product Added Successfully' });
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'Goods Product could not be added' });
+                res.status(400).send({ status: 400, message: 'Goods Product could not be added' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
