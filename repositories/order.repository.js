@@ -87,6 +87,7 @@ const orderRepository = {
                         user_id: { $first: "$user_id" },
                         order_date: { $first: '$order_date' },
                         total_amount: { $first: '$total_amount' },
+                        payment_mode: { $first: '$payment_mode' },
                         items: {
                             $push: {
                                 title: '$items.product.title',
