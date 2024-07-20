@@ -3,7 +3,6 @@ const userRepo = require('../repositories/user.repository');
 const bcrypt = require('bcrypt');
 const jsonwebtoken = require('jsonwebtoken');
 const cloudinary = require('cloudinary');
-const nodemailer = require('nodemailer');
 const Membership_Plan = require('../models/membership_plan.model');
 const axios = require('axios');
 const { ChatTokenBuilder } = require('agora-token');
