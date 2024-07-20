@@ -205,9 +205,10 @@ class userController {
             let updateUser = await userRepo.updateById(req.body, req.user._id);
 
             let userId = req.user._id;
+
             let userJobProfileInfo = await UserJobProfile.findOne({ userId: userId });
-            if (!_.isEmpty(userJobProfileInfo)) {
-                const updateJobProfile = await userJobProfileRepo.updateById(req.body, req.user._id);
+            if (!_.isEmpty(userJobProfileInfo) && userJobProfileInfo._id) {
+                const updateJobProfile = await UserJobProfile.findOneAndUpdate({ userId: userId }, req.body, { new: true, upsert: true });
             } else {
                 req.body.userId = req.user._id;
                 const saveJobProfile = await userJobProfileRepo.save(req.body);
