@@ -89,18 +89,44 @@ const userRepository = {
                     }
                 },
                 {
+                    $lookup: {
+                        from: "user_job_profiles",
+                        let: { userID: '$_id' },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$userId", "$$userID"] }
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "job_profile_details"
+                    }
+                },
+                { $unwind: { path: '$job_profile_details', preserveNullAndEmptyArrays: true } },
+                {
                     $group: {
                         _id: '$_id',
                         name: { $first: '$name' },
                         email: { $first: '$email' },
                         image: { $first: '$image' },
+                        cover_photo: { $first: '$cover_photo' },
                         mobile: { $first: '$mobile' },
                         address: { $first: '$address' },
                         user_type: { $first: '$user_type' },
                         wallet_amount: { $first: '$wallet_amount' },
                         bio: { $first: '$bio' },
+                        about: { $first: '$job_profile_details.about' },
+                        experience: { $first: '$job_profile_details.experience' },
+                        year_of_experience: { $first: '$job_profile_details.year_of_experience' },
+                        education: { $first: '$job_profile_details.education' },
+                        skills: { $first: '$job_profile_details.skills' },
+                        languages: { $first: '$job_profile_details.languages' },
                         lat: { $first: '$lat' },
-                        lng: { $first: '$lng' },
+                        lng: { $first: '$lng' },                        
                         social_id: { $first: '$social_id' },
                         register_type: { $first: '$register_type' },
                         plan_id: { $first: '$plan_id' },
