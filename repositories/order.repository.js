@@ -48,11 +48,31 @@ const orderRepository = {
                             },
                             { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
                             {
+                                $lookup: {
+                                    let: { seller: '$userId' },
+                                    from: "users",
+                                    pipeline: [
+                                        {
+                                            $match: {
+                                                $expr: {
+                                                    $and: [
+                                                        { $eq: ["$_id", "$$seller"] }
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    as: "seller_details"
+                                }
+                            },
+                            { $unwind: { path: '$seller_details', preserveNullAndEmptyArrays: true } },
+                            {
                                 $group: {
                                     _id: '$_id',
                                     title: { $first: '$title' },
                                     category_slug: { $first: '$category_details.slug' },
                                     category_name: { $first: '$category_details.title' },
+                                    seller_name: { $first: '$seller_details.name' },
                                     image: { $first: '$image' }
                                 }
                             }
