@@ -94,7 +94,8 @@ const orderRepository = {
                                 category_name: '$items.product.category_name',
                                 image: '$items.product.image',
                                 quantity: "$items.quantity",
-                                total_price: "$items.total_price"
+                                total_price: "$items.total_price",
+                                seller_name: '$items.product.seller_name'
                             }
                         }
                     }
