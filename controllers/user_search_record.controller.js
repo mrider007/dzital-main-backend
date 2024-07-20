@@ -12,11 +12,11 @@ class UserProductViewRecordController {
             }
             else {
                 req.body.userId = req.user._id;
-                
+
                 let location = req.body.address;
 
                 const spot = location.split(', ');
-                
+
                 const country = spot[spot.length - 1];
 
                 req.body.country = country;
