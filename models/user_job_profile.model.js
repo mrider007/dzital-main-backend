@@ -4,7 +4,6 @@ const Schema = mongoose.Schema;
 const UserJobProfileSchema = new Schema({
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: [true, 'User Id is Required'], index: true },
     about: { type: String, default: '' },
-    skills: { type: Array, default: [] },
     experience: [{
         company: { type: String, default: '', trim: true, index: true },
         start_date: { type: Date, default: Date.now() },
