@@ -35,6 +35,7 @@ const PayoutRequestRepository = {
                         user_email: { $first: '$user_details.email' },
                         user_mobile: { $first: '$user_details.mobile' },
                         wallet_amount: { $first: '$user_details.wallet_amount' },
+                        remarks: {$first: '$remarks'},
                         user_id: { $first: '$user_details._id' },
                         createdAt: { $first: '$createdAt' },
                     }
