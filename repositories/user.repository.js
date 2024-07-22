@@ -128,6 +128,7 @@ const userRepository = {
                         company_address: { $first: '$company_address' },
                         company_contact_number: { $first: '$company_contact_number' },
                         company_email: { $first: '$company_email' },
+                        company_url: { $first: '$company_url' },
                         company_name: { $first: '$company_name' },
                         bank_name: { $first: '$bank_name' },
                         account_number: { $first: '$account_number' },

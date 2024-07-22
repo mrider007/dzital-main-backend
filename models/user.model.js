@@ -39,6 +39,7 @@ const UserSchema = new mongoose.Schema({
     company_name: { type: String, default: '' },
     company_address: { type: String, default: '' },
     company_email: { type: String, default: '' },
+    company_url: { type: String, default: '' },
     company_contact_number: { type: String, default: '' },
     user_type: { type: String, index: true, enum: ['seller', 'user'], default: 'user' },
     commission_package: { type: Schema.Types.ObjectId, ref: 'Commission_Package', index: true },
