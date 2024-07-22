@@ -1,5 +1,6 @@
 const PayoutRequest = require("../models/payout_request.model");
 const PayoutRequestRepo = require("../repositories/payout_request.repository");
+const Transaction = require('../models/transaction.model');
 
 class Payout_Request_Controller {
     constructor() { }
@@ -40,6 +41,20 @@ class Payout_Request_Controller {
             if (_.isEmpty(update_request) || !update_request._id) {
                 res.status(404).send({ status: 400, message: "Payment request not found" })
             } else {
+                if (req.body.status === 'Approved') {
+                    const userData = await User.findById(update_request.user_id)
+                    let transaction_data = { user_id: update_request.user_id }
+                    transaction_data.closing_amount = userData.wallet_amount - update_request.amount
+                    transaction_data.opening_amount = userData.wallet_amount
+                    transaction_data.debit = update_request.amount
+                    const saveTransaction = await Transaction.create(transaction_data)
+                    if (_.isEmpty(saveTransaction) || !saveTransaction._id) {
+                        res.status(400).send({ status: 400, message: 'Transaction could not be created' })
+                    } else {
+                        userData.wallet_amount = saveTransaction.closing_amount
+                        await userData.save()
+                    }
+                }
                 res.status(200).send({ status: 200, data: update_request, message: "Payment request has been updated successfully" })
             }
         } catch (error) {
