@@ -11,10 +11,10 @@ const PayoutRequestRepository = {
             and_clauses.push({});
 
             if (_.has(req.body, 'status') && req.body.status !== '') {
-                and_clause.push({ 'status': req.body.status })
+                and_clauses.push({ 'status': req.body.status })
             }
             if (_.has(req.body, 'user_id') && req.body.user_id !== '') {
-                and_clause.push({ 'user_id': new mongoose.Types.ObjectId(req.body.user_id) })
+                and_clauses.push({ 'user_id': new mongoose.Types.ObjectId(req.body.user_id) })
             }
 
             conditions['$and'] = and_clauses;
