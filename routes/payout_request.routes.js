@@ -8,5 +8,6 @@ const request_params = multer();
 router.post('/payout-request/create', request_params.any(), Authentication.Authenticate, PayoutRequestController.new_request);
 router.put('/payout-request/update/:id', request_params.any(), Authentication.AuthenticateAdmin, PayoutRequestController.update_request);
 router.post('/payout-request/list', request_params.any(), Authentication.AuthenticateAdmin, PayoutRequestController.get_all_requests);
+router.post('/seller/payout-request/list', Authentication.Authenticate, PayoutRequestController.get_all_requests);
 
 module.exports = router;

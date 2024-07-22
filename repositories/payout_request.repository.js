@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const PayoutRequest = require("../models/payout_request.model")
 
 const PayoutRequestRepository = {
@@ -10,7 +11,10 @@ const PayoutRequestRepository = {
             and_clauses.push({});
 
             if (_.has(req.body, 'status') && req.body.status !== '') {
-                and_clauses.push({ status: req.body.status })
+                and_clause.push({ 'status': req.body.status })
+            }
+            if (_.has(req.body, 'user_id') && req.body.user_id !== '') {
+                and_clause.push({ 'user_id': new mongoose.Types.ObjectId(req.body.user_id) })
             }
 
             conditions['$and'] = and_clauses;
@@ -35,7 +39,7 @@ const PayoutRequestRepository = {
                         user_email: { $first: '$user_details.email' },
                         user_mobile: { $first: '$user_details.mobile' },
                         wallet_amount: { $first: '$user_details.wallet_amount' },
-                        remarks: {$first: '$remarks'},
+                        remarks: { $first: '$remarks' },
                         user_id: { $first: '$user_details._id' },
                         createdAt: { $first: '$createdAt' },
                     }
