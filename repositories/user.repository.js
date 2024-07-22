@@ -133,6 +133,7 @@ const userRepository = {
                         account_number: { $first: '$account_number' },
                         ifsc_code: { $first: '$ifsc_code' },
                         beneficiary_name: { $first: '$beneficiary_name' },
+                        country: { $first: '$country' },
                         lat: { $first: '$lat' },
                         lng: { $first: '$lng' },
                         social_id: { $first: '$social_id' },
