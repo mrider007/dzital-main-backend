@@ -135,6 +135,8 @@ const userRepository = {
                         ifsc_code: { $first: '$ifsc_code' },
                         beneficiary_name: { $first: '$beneficiary_name' },
                         country: { $first: '$country' },
+                        city: { $first: '$city' },
+                        state: { $first: '$state' },
                         lat: { $first: '$lat' },
                         lng: { $first: '$lng' },
                         social_id: { $first: '$social_id' },
