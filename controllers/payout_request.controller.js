@@ -1,6 +1,7 @@
 const PayoutRequest = require("../models/payout_request.model");
 const PayoutRequestRepo = require("../repositories/payout_request.repository");
 const Transaction = require('../models/transaction.model');
+const User = require('../models/user.model');
 
 class Payout_Request_Controller {
     constructor() { }
