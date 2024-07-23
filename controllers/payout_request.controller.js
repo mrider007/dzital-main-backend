@@ -9,13 +9,13 @@ class Payout_Request_Controller {
         try {
             req.body.user_id = req.user._id
             if (!req.user.wallet_amount || req.body.amount > req.user.wallet_amount) {
-                return res.status(400).send({ status: 400, message: "Insufficient wallet amount" })
+                return res.status(400).send({ status: 400, message: "Insufficient Wallet Amount" })
             }
             const saveRequest = await PayoutRequest.create(req.body)
             if (_.isEmpty(saveRequest) || !saveRequest._id) {
-                res.status(404).send({ status: 400, message: "Payment request can not be created" })
+                res.status(404).send({ status: 400, message: "Payment Request can not be created" })
             } else {
-                res.status(200).send({ status: 200, message: "Payment request has been created", data: saveRequest })
+                res.status(200).send({ status: 200, message: "Payment Request has been created", data: saveRequest })
             }
         } catch (error) {
             res.status(500).send({ status: 500, message: error.message });
@@ -26,9 +26,9 @@ class Payout_Request_Controller {
         try {
             const request_list = await PayoutRequestRepo.list(req)
             if (_.isEmpty(request_list)) {
-                res.status(400).send({ status: 400, message: "No payment request found" })
+                res.status(400).send({ status: 400, message: "No Payment Request Found" })
             } else {
-                res.status(200).send({ status: 200, data: request_list, message: "Payment request list has been fetched successfully" })
+                res.status(200).send({ status: 200, data: request_list, message: "Payment Request list has been fetched successfully" })
             }
         } catch (error) {
             res.status(500).send({ status: 500, message: error.message });
@@ -39,7 +39,7 @@ class Payout_Request_Controller {
         try {
             const update_request = await PayoutRequestRepo.updateOne({ _id: req.params.id }, req.body)
             if (_.isEmpty(update_request) || !update_request._id) {
-                res.status(404).send({ status: 400, message: "Payment request not found" })
+                res.status(404).send({ status: 400, message: "Payment Request Not Found" })
             } else {
                 if (req.body.status === 'Approved') {
                     const userData = await User.findById(update_request.user_id)
@@ -55,10 +55,10 @@ class Payout_Request_Controller {
                         await userData.save()
                     }
                 }
-                res.status(200).send({ status: 200, data: update_request, message: "Payment request has been updated successfully" })
+                res.status(200).send({ status: 200, data: update_request, message: "Payment Request has been updated successfully" })
             }
-        } catch (error) {
-            res.status(500).send({ status: 500, message: error.message })
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message })
         }
     }
 
