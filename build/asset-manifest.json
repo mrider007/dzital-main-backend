@@ -1,21 +1,24 @@
 {
   "files": {
-    "main.css": "/static/css/main.ac20971a.css",
-    "main.js": "/static/js/main.48919f54.js",
+    "main.css": "/static/css/main.e16c194d.css",
+    "main.js": "/static/js/main.3882cadd.js",
     "static/media/Inter-italic.var.woff2?v=3.19": "/static/media/Inter-italic.var.30807be7abc48ba8c73c.woff2",
+    "static/media/profile-bg.jpg": "/static/media/profile-bg.c5fe09ea69422142cccb.jpg",
     "static/media/no-poster.png": "/static/media/no-poster.de8cb0a7786e6bf2b2de.png",
     "static/media/Inter-roman.var.woff2?v=3.19": "/static/media/Inter-roman.var.ba4caefcdf5b36b438db.woff2",
+    "static/media/user2.jpg": "/static/media/user2.531d1e6b6811e5483a6f.jpg",
+    "static/media/education-logo.jpg": "/static/media/education-logo.bc5c60b312df8d69f3ce.jpg",
     "static/media/user.jpg": "/static/media/user.eca20e66104f9ff91cf6.jpg",
     "static/media/Ad.jpg": "/static/media/Ad.6240261e0d77ac4574e0.jpg",
     "index.html": "/index.html",
     "static/media/user-Profil-icon.svg": "/static/media/user-Profil-icon.1799ea636bdd9de53cdd6b5b76e2d766.svg",
     "static/media/white-search-icon.svg": "/static/media/white-search-icon.da1f0489fa7377e5ca7b2d1ee0b4f2aa.svg",
     "static/media/map-marker-icon.svg": "/static/media/map-marker-icon.fa9e8102c6f1b6ed0772a0cd64f7f1b5.svg",
-    "main.ac20971a.css.map": "/static/css/main.ac20971a.css.map",
-    "main.48919f54.js.map": "/static/js/main.48919f54.js.map"
+    "main.e16c194d.css.map": "/static/css/main.e16c194d.css.map",
+    "main.3882cadd.js.map": "/static/js/main.3882cadd.js.map"
   },
   "entrypoints": [
-    "static/css/main.ac20971a.css",
-    "static/js/main.48919f54.js"
+    "static/css/main.e16c194d.css",
+    "static/js/main.3882cadd.js"
   ]
 }
