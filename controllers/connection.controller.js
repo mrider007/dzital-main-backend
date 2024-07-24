@@ -16,10 +16,8 @@ class ConnectionController {
 
             const receiver = new mongoose.Types.ObjectId(req.body.receiverId);
             let checkConnection = await Connection.findOne({ senderId: sender, receiverId: receiver });
-            let checkRequest = await Connection.findOne({ senderId: receiver, receiverId: sender, status: 'Pending' });
-            //let checkApproved = await Connection.findOne({ senderId: sender, receiverId: receiver, status: 'Accepted' });
-            //let checkRejected = await Connection.findOne({ senderId: sender, receiverId: receiver, status: 'Rejected' });
-            if (!_.isEmpty(checkConnection) || !_.isEmpty(checkRequest) || !_.isEmpty(checkApproved) || !_.isEmpty(checkRejected)) {
+            let checkRequest = await Connection.findOne({ senderId: receiver, receiverId: sender });
+            if (!_.isEmpty(checkConnection) || !_.isEmpty(checkRequest)) {
                 res.status(400).send({ status: 400, message: 'You Have Already Sent Connection Request' });
             }
             else {
@@ -36,6 +34,7 @@ class ConnectionController {
         }
     };
 
+    /** User Accept / Reject Connection Request of Another User */
     async connectionRequestApproveReject(req, res) {
         try {
             const requestId = new mongoose.Types.ObjectId(req.params.id);
@@ -59,6 +58,7 @@ class ConnectionController {
         }
     };
 
+    /** User Own Connections List */
     async userConnectionsList(req, res) {
         try {
             const connectionList = await connectionRequestRepo.getUserConnections(req);
