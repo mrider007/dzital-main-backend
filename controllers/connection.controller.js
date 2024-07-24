@@ -63,7 +63,10 @@ class ConnectionController {
         try {
             const connectionList = await connectionRequestRepo.getUserConnections(req);
             if (!_.isEmpty(connectionList)) {
-                const totalConnections = await connectionRequestRepo.getConnectionsCount({ receiverId: req.user._id, status: 'Accepted' });
+                let totalConnections = await connectionRequestRepo.getConnectionsCount({ receiverId: req.user._id, status: 'Accepted' });
+                if (totalConnections === null) {
+                    totalConnections = 0
+                }
                 res.status(200).send({ status: 200, data: connectionList.docs, total: connectionList.total, limit: connectionList.limit, page: connectionList.page, pages: connectionList.pages, total_connections: totalConnections, message: 'Your Connections Fetched Successfully' });
             } else {
                 res.status(201).send({ status: 201, message: 'No Connection Found' });
@@ -78,7 +81,10 @@ class ConnectionController {
         try {
             const requestsList = await connectionRequestRepo.getPendingRequests(req);
             if (!_.isEmpty(requestsList)) {
-                const totalPendingRequests = await connectionRequestRepo.getConnectionsCount({ receiverId: req.user._id, status: 'Pending' });
+                let totalPendingRequests = await connectionRequestRepo.getConnectionsCount({ receiverId: req.user._id, status: 'Pending' });
+                if (totalPendingRequests === null) {
+                    totalPendingRequests = 0
+                }
                 res.status(200).send({ status: 200, data: requestsList.docs, total: requestsList.total, limit: requestsList.limit, page: requestsList.page, pages: requestsList.pages, total_pending_requests: totalPendingRequests, message: 'Your Pending Requests Fetched Successfully' });
             } else {
                 res.status(201).send({ status: 201, message: 'No Pending Request Found' });
