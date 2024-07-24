@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Connection = require('../models/connection.model');
+const connectionRequestRepo = require('../repositories/connection.repository');
 
 class ConnectionController {
     constructor() { }
@@ -27,6 +28,30 @@ class ConnectionController {
                 } else {
                     res.status(400).send({ status: 400, message: 'Connection Request Could Not Be Sent' });
                 }
+            }
+        } catch (e) {
+            res.status(500).send({ message: e.message });
+        }
+    };
+
+    async connectionRequestApproveReject(req, res) {
+        try {
+            //const receiver = req.user._id;
+            const requestId = new mongoose.Types.ObjectId(req.params.id);
+
+            let connectionRequest = await Connection.findOne({ _id: requestId, status: 'Pending' });
+            if (!_.isEmpty(connectionRequest)) {
+                let requestApproveReject = await connectionRequestRepo.updateById(req.body, requestId);
+                if (!_.isEmpty(requestApproveReject) && requestApproveReject.status === 'Accepted') {
+                    res.status(200).send({ status: 200, data: requestApproveReject, message: 'Connection Request Has Been Accepted' });
+                } else if (!_.isEmpty(requestApproveReject) && requestApproveReject.status === 'Rejected') {
+                    res.status(200).send({ status: 200, data: requestApproveReject, message: 'Connection Request Has Been Rejected' });
+                } else {
+                    res.status(400).send({ status: 400, message: 'Connection Request could not be updated' });
+                }
+            }
+            else {
+                res.status(400).send({ status: 400, message: 'Connection Request Not Found' });
             }
         } catch (e) {
             res.status(500).send({ message: e.message });
