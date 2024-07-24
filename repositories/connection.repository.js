@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Connection = require('../models/connection.model');
+const User = require('../models/user.model');
 
 const connectionRepository = {
 
@@ -33,7 +34,7 @@ const connectionRepository = {
             var conditions = {};
             var and_clauses = [];
 
-            and_clauses.push({  });
+            and_clauses.push({ _id: { $ne: req.user._id } });
 
             if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
                 and_clauses.push({
@@ -42,35 +43,11 @@ const connectionRepository = {
                         { 'email': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
                     ]
                 });
-
-                if (req.body.keyword_search.length > 0) {
-                    req.body.page = undefined;
-                    req.body.limit = undefined;
-                }
             }
 
             conditions['$and'] = and_clauses;
 
-            let users = User.aggregate([
-                {
-                    $lookup: {
-                        let: { user: '$senderId' },
-                        from: "users",
-                        pipeline: [
-                            {
-                                $match: {
-                                    $expr: {
-                                        $and: [
-                                            { $eq: ["$_id", "$$user"] },
-                                        ]
-                                    }
-                                }
-                            }
-                        ],
-                        as: "user_details"
-                    }
-                },
-                { $unwind: { path: '$user_details', preserveNullAndEmptyArrays: true } },
+            let users = await User.aggregate([
                 {
                     $group: {
                         _id: '$_id',
@@ -78,8 +55,6 @@ const connectionRepository = {
                         name: { $first: '$name' },
                         email: { $first: '$email' },
                         image: { $first: '$image' },
-                        mobile: { $first: '$mobile' },
-                        address: { $first: '$address' },
                         createdAt: { $first: '$createdAt' }
                     }
                 },
@@ -90,17 +65,8 @@ const connectionRepository = {
             if (!users) {
                 return null;
             }
-
-            var options = {};
-            if (req.body.page !== undefined) {
-                options.page = req.body.page;
-            }
-            if (req.body.limit !== undefined) {
-                options.limit = req.body.limit;
-            }
-
-            let usersList = await User.aggregatePaginate(users, options);
-            return usersList;
+            
+            return users;
         } catch (e) {
             throw e;
         }
