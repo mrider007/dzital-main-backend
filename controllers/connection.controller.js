@@ -36,7 +36,6 @@ class ConnectionController {
 
     async connectionRequestApproveReject(req, res) {
         try {
-            //const receiver = req.user._id;
             const requestId = new mongoose.Types.ObjectId(req.params.id);
 
             let connectionRequest = await Connection.findOne({ _id: requestId, status: 'Pending' });
