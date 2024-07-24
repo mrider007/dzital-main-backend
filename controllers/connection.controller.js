@@ -15,7 +15,8 @@ class ConnectionController {
 
             const receiver = new mongoose.Types.ObjectId(req.body.receiverId);
             let checkConnection = await Connection.findOne({ senderId: sender, receiverId: receiver, status: 'Pending' });
-            if (!_.isEmpty(checkConnection)) {
+            let checkRequest = await Connection.findOne({ senderId: receiver, receiverId: sender, status: 'Pending' });
+            if (!_.isEmpty(checkConnection) || !_.isEmpty(checkRequest)) {
                 res.status(400).send({ status: 400, message: 'You Have Already Sent Connection Request' });
             }
             else {
