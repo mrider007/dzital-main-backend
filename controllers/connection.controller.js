@@ -57,6 +57,20 @@ class ConnectionController {
         }
     };
 
+    async userConnectionsList(req, res) {
+        try {
+            const connectionList = await connectionRequestRepo.getUserConnections(req);
+            if (!_.isEmpty(connectionList)) {
+                const totalConnections = await connectionRequestRepo.getConnectionsCount({ receiverId: req.user._id, status: 'Accepted' });
+                res.status(200).send({ status: 200, data: connectionList.docs, total: connectionList.total, limit: connectionList.limit, page: connectionList.page, pages: connectionList.pages, total_connections: totalConnections, message: 'Your Connections Fetched Successfully' });
+            } else {
+                res.status(200).send({ status: 200, message: 'No Connection Found' });
+            }
+        } catch (e) {
+            res.status(500).send({ message: e.message });
+        }
+    };
+
 }
 
 module.exports = new ConnectionController();

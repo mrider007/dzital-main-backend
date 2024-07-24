@@ -13,6 +13,7 @@ const ContactToProviderRepository = {
             let key = req.body.keyword_search;
     
             if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
+                
                 // Check if keyword_search has length greater than 0
                 if (key.length > 0) {
                     // Disable req.body.page and req.body.limit
