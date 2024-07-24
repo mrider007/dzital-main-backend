@@ -17,7 +17,9 @@ class ConnectionController {
             const receiver = new mongoose.Types.ObjectId(req.body.receiverId);
             let checkConnection = await Connection.findOne({ senderId: sender, receiverId: receiver, status: 'Pending' });
             let checkRequest = await Connection.findOne({ senderId: receiver, receiverId: sender, status: 'Pending' });
-            if (!_.isEmpty(checkConnection) || !_.isEmpty(checkRequest)) {
+            let checkApproved = await Connection.findOne({ senderId: sender, receiverId: receiver, status: 'Accepted' });
+            let checkRejected = await Connection.findOne({ senderId: sender, receiverId: receiver, status: 'Rejected' });
+            if (!_.isEmpty(checkConnection) || !_.isEmpty(checkRequest) || !_.isEmpty(checkApproved) || !_.isEmpty(checkRejected)) {
                 res.status(400).send({ status: 400, message: 'You Have Already Sent Connection Request' });
             }
             else {
