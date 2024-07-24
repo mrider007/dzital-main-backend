@@ -94,6 +94,19 @@ class ConnectionController {
         }
     };
 
+    async searchConnections(req, res) {
+        try {
+            const searchUsers = await connectionRequestRepo.searchConnections(req);
+            if (!_.isEmpty(searchUsers)) {
+                res.status(200).send({ status: 200, data: searchUsers, message: 'User List Fetched Successfully' });                
+            } else {
+                res.status(201).send({ status: 201, message: 'No User Found' });
+            }
+        } catch (e) {
+            res.status(500).send({ message: e.message });
+        }
+    };
+
 }
 
 module.exports = new ConnectionController();
