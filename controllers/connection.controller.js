@@ -66,7 +66,22 @@ class ConnectionController {
                 const totalConnections = await connectionRequestRepo.getConnectionsCount({ receiverId: req.user._id, status: 'Accepted' });
                 res.status(200).send({ status: 200, data: connectionList.docs, total: connectionList.total, limit: connectionList.limit, page: connectionList.page, pages: connectionList.pages, total_connections: totalConnections, message: 'Your Connections Fetched Successfully' });
             } else {
-                res.status(200).send({ status: 200, message: 'No Connection Found' });
+                res.status(201).send({ status: 201, message: 'No Connection Found' });
+            }
+        } catch (e) {
+            res.status(500).send({ message: e.message });
+        }
+    };
+
+    /** User Pending Requests List */
+    async userPendingRequestsList(req, res) {
+        try {
+            const requestsList = await connectionRequestRepo.getPendingRequests(req);
+            if (!_.isEmpty(requestsList)) {
+                const totalPendingRequests = await connectionRequestRepo.getConnectionsCount({ receiverId: req.user._id, status: 'Pending' });
+                res.status(200).send({ status: 200, data: requestsList.docs, total: requestsList.total, limit: requestsList.limit, page: requestsList.page, pages: requestsList.pages, total_pending_requests: totalPendingRequests, message: 'Your Pending Requests Fetched Successfully' });
+            } else {
+                res.status(201).send({ status: 201, message: 'No Pending Request Found' });
             }
         } catch (e) {
             res.status(500).send({ message: e.message });
