@@ -51,6 +51,7 @@ class StripePaymentController {
                 metadata: {
                     product_id: productInfo._id?.toString(),
                     category_id: productInfo.category_id?.toString(),
+                    user_id: req.user._id
                 },
                 customer_email: req?.user?.email,
                 success_url: `${DOMAIN}/#/stripe-response/${id}?session_id={CHECKOUT_SESSION_ID}&type=payment`,
@@ -96,7 +97,8 @@ class StripePaymentController {
                 ],
                 metadata: {
                     plan_id: plan_details?._id?.toString(),
-                    product_id: plan_details?.product_id?.toString()
+                    product_id: plan_details?.product_id?.toString(),
+                    user_id: req.user._id
                 },
                 customer_email: req?.user?.email,
                 success_url: `${DOMAIN}/#/stripe-response/${id}?session_id={CHECKOUT_SESSION_ID}&type=subscription`,
@@ -143,6 +145,7 @@ class StripePaymentController {
                     ],
                     metadata: {
                         membership_id: plan_details?._id?.toString(),
+                        user_id: req.user._id
                     },
                     customer_email: req?.user?.email,
                     success_url: `${DOMAIN}/#/stripe-response/${membership_id}?session_id={CHECKOUT_SESSION_ID}&type=membership`,
@@ -169,7 +172,7 @@ class StripePaymentController {
             if (session?.payment_status === 'paid' && session?.status === 'complete') {
                 let subs_data = {
                     product_id: session?.metadata?.product_id,
-                    user_id: req.user?._id,
+                    user_id: session?.metadata?.user_id,
                     payment_id: session.id,
                     purchase_mode: session?.mode === 'subscription' ? 'Subscription' : 'Paid',
                     amount: session?.amount_total / 100,
@@ -194,7 +197,7 @@ class StripePaymentController {
                         current_plan_end: new Date(subsData?.current_period_end * 1000),
                         payment_id: session.id,
                         stripe_subs_id: subsData.id,
-                        user_id: req?.user?._id,
+                        user_id: session?.metadata?.user_id,
                         amount: session?.amount_total / 100,
                         payment_status: session?.payment_status === 'paid' ? 'Success' : 'Failed'
                     })
@@ -251,7 +254,7 @@ class StripePaymentController {
                     const saveData = await Product_Payment.create({
                         product_id: session?.metadata?.product_id,
                         payment_id: session.id,
-                        user_id: req?.user?._id,
+                        user_id: session?.metadata?.user_id,
                         amount: session?.amount_total / 100,
                         payment_status: session?.payment_status === 'paid' ? 'Success' : 'Failed'
                     })
@@ -302,7 +305,7 @@ class StripePaymentController {
                     membership_id: session?.metadata?.membership_id,
                     payment_id: session.id,
                     membership_status: session?.payment_status === 'paid' ? 'Active' : 'Inactive',
-                    user_id: req?.user?._id,
+                    user_id: session?.metadata?.user_id,
                     membership_end_date: currentDate,
                     type: membership_details.type,
                     amount: session?.amount_total / 100,
