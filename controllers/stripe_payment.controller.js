@@ -51,7 +51,7 @@ class StripePaymentController {
                 metadata: {
                     product_id: productInfo._id?.toString(),
                     category_id: productInfo.category_id?.toString(),
-                    user_id: req.user._id
+                    user_id: req.user?._id?.toString(),
                 },
                 customer_email: req?.user?.email,
                 success_url: `${DOMAIN}/#/stripe-response/${id}?session_id={CHECKOUT_SESSION_ID}&type=payment`,
@@ -98,7 +98,7 @@ class StripePaymentController {
                 metadata: {
                     plan_id: plan_details?._id?.toString(),
                     product_id: plan_details?.product_id?.toString(),
-                    user_id: req.user._id
+                    user_id: req.user?._id?.toString(),
                 },
                 customer_email: req?.user?.email,
                 success_url: `${DOMAIN}/#/stripe-response/${id}?session_id={CHECKOUT_SESSION_ID}&type=subscription`,
@@ -145,7 +145,7 @@ class StripePaymentController {
                     ],
                     metadata: {
                         membership_id: plan_details?._id?.toString(),
-                        user_id: req.user._id
+                        user_id: req.user?._id?.toString(),
                     },
                     customer_email: req?.user?.email,
                     success_url: `${DOMAIN}/#/stripe-response/${membership_id}?session_id={CHECKOUT_SESSION_ID}&type=membership`,
