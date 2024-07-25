@@ -9,6 +9,7 @@ const productEducationSchema = new Schema({
     lat: { type: Number, default: 0 },
     lng: { type: Number, default: 0 },
     address: { type: String, default: '', index: true, trim: true },
+    price: { type: Number, default: 0 },
     user_id: { type: Schema.Types.ObjectId, default: null, ref: 'User', index: true },
     category_id: { type: Schema.Types.ObjectId, ref: 'service_category', index: true },
     sub_category_id: { type: Schema.Types.ObjectId, ref: 'service_category', default: null, index: true },

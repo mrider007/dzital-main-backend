@@ -11,6 +11,7 @@ const productGoodsSchema = new Schema({
     image_3: { type: String, default: '', index: true, trim: true },
     lat: { type: Number, default: 0 },
     lng: { type: Number, default: 0 },
+    price: { type: Number, default: 0 },
     address: { type: String, default: '', index: true, trim: true },
     user_id: { type: Schema.Types.ObjectId, default: null, ref: 'User', index: true },
     category_id: { type: Schema.Types.ObjectId, ref: 'service_category', index: true },
