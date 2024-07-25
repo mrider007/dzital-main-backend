@@ -93,7 +93,7 @@ const connectionRepository = {
             var conditions = {};
             var and_clauses = [];
 
-            and_clauses.push({ receiverId: req.user._id, status: 'Accepted' });
+            and_clauses.push({ $or: [{ receiverId: req.user._id, status: 'Accepted' }, { senderId: req.user._id, status: 'Accepted' }] });
 
             if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
                 and_clauses.push({
