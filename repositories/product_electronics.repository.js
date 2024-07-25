@@ -556,6 +556,7 @@ const productElectronicsRepository = {
                         seller_details: { $first: '$seller_details' },
                         bid_now: { $first: '$product_details.bid_now' },
                         bid_start_price: { $first: '$product_details.bid_start_price' },
+                        price: { $first: '$price' },
                         bid_increament_value: { $first: '$product_details.bid_increament_value' },
                         bid_entry: { $first: '$product_details.bid_entry' },
                         bid_start_date: { $first: '$product_details.bid_start_date' },
