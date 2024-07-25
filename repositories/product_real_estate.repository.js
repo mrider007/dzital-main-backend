@@ -194,6 +194,7 @@ const propertyRepository = {
                         user_id: { $first: '$user_id' },
                         seller_details: { $first: '$seller_details' },
                         property_type: { $first: '$property_type' },
+                        price: { $first: '$price' },
                         product_id: { $first: '$product_id' },
                         category_id: { $first: '$category_id' },
                         category_name: { $first: '$category_details.title' },
