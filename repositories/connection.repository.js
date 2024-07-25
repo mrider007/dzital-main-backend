@@ -16,6 +16,21 @@ const connectionRepository = {
         }
     },
 
+    delete: async (id) => {
+        try {
+            let lesson_course = await Connection.findById(id);
+            if (lesson_course) {
+                let lessoncourseDelete = await Connection.deleteOne({ _id: id }).exec();
+                if (!lessoncourseDelete) {
+                    return null;
+                }
+                return lesson_course;
+            }
+        } catch (e) {
+            throw e;
+        }
+    },
+
     getConnectionsCount: async (params) => {
         try {
             let total_connections = await Connection.countDocuments(params);

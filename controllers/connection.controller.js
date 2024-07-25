@@ -58,6 +58,28 @@ class ConnectionController {
         }
     };
 
+    /** User Withdraw Previous Sent Requests */
+    async withdrawRequests(req, res) {
+        try {
+            const requestId = new mongoose.Types.ObjectId(req.params.id);
+
+            let connectionRequest = await Connection.findOne({ _id: requestId, status: 'Pending' });
+            if (!_.isEmpty(connectionRequest)) {
+                let withdrawRequest = await connectionRequestRepo.delete(requestId);
+                if (!_.isEmpty(withdrawRequest)) {
+                    res.status(200).send({ status: 200, data: withdrawRequest, message: 'Connection Request Has Been Withdrawn' });
+                } else {
+                    res.status(400).send({ status: 400, message: "Connection Request could not be withdrawn" });
+                }
+            }
+            else {
+                res.status(400).send({ status: 400, message: 'Connection Request Not Found' });
+            }
+        } catch (e) {
+            res.status(500).send({ message: e.message });
+        }
+    };
+
     /** User Own Connections List */
     async userConnectionsList(req, res) {
         try {
