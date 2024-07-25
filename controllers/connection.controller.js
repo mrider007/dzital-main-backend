@@ -94,11 +94,29 @@ class ConnectionController {
         }
     };
 
+    /** User Send Requests List */
+    async userSendRequestsList(req, res) {
+        try {
+            const sendRequests = await connectionRequestRepo.getSendRequests(req);
+            if (!_.isEmpty(sendRequests)) {
+                let totalSendPendingRequests = await connectionRequestRepo.getConnectionsCount({ receiverId: req.user._id, status: 'Pending' });
+                if (totalSendPendingRequests === null) {
+                    totalSendPendingRequests = 0
+                }
+                res.status(200).send({ status: 200, data: sendRequests.docs, total: sendRequests.total, limit: sendRequests.limit, page: sendRequests.page, pages: sendRequests.pages, total_send_pending_requests: totalSendPendingRequests, message: 'Your Send Requests List Fetched Successfully' });
+            } else {
+                res.status(400).send({ status: 400, message: 'User Send Requests List' });
+            }
+        } catch (e) {
+            res.status(500).send({ message: e.message });
+        }
+    };
+
     async searchConnections(req, res) {
         try {
             const searchUsers = await connectionRequestRepo.searchConnections(req);
             if (!_.isEmpty(searchUsers)) {
-                res.status(200).send({ status: 200, data: searchUsers, message: 'User List Fetched Successfully' });                
+                res.status(200).send({ status: 200, data: searchUsers, message: 'User List Fetched Successfully' });
             } else {
                 res.status(201).send({ status: 201, message: 'No User Found' });
             }
