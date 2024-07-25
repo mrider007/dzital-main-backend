@@ -91,6 +91,7 @@ const user_job_profile = require('./routes/user_job_profile.routes');
 const commission_package = require('./routes/commission_package.routes');
 const payout_request = require('./routes/payout_request.routes');
 const connection_request = require('./routes/connection.routes');
+const chat_user = require('./routes/chat_user.routes');
 
 global.BASE_URL = `http://${process.env.HOST}:${getPort}`;
 
@@ -145,6 +146,7 @@ app.use('/api', user_job_profile);
 app.use('/api', commission_package);
 app.use('/api', payout_request);
 app.use('/api', connection_request);
+app.use('/api', chat_user);
 
 app.use('/uploads', express.static('uploads'));
 
