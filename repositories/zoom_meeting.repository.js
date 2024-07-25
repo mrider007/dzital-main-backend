@@ -31,12 +31,21 @@ const MeetingRepository = {
             }
 
             const meeting_pipeline = Meetings.aggregate([
-                { $match: conditions },
+                { $match: conditions },       
                 {
                     $lookup: {
+                        let: { product: '$product_id' },
                         from: "products",
-                        localField: "product_id",
                         pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$product"] },
+                                        ]
+                                    }
+                                }
+                            },
                             {
                                 $group: {
                                     _id: "$_id",
@@ -50,7 +59,6 @@ const MeetingRepository = {
                                 }
                             }
                         ],
-                        foreignField: "_id",
                         as: "product"
                     }
                 },
