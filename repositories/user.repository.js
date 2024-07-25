@@ -217,6 +217,8 @@ const userRepository = {
 
             and_clauses.push({ _id: new mongoose.Types.ObjectId(req.body.sellerId) });
 
+            const userId = req.body.userId;
+
             conditions['$and'] = and_clauses;
 
             let data = await User.aggregate([
@@ -274,6 +276,50 @@ const userRepository = {
                     }
                 },
                 {
+                    $lookup: {
+                        let: { seller: '$_id', user: userId },
+                        from: "connections",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $or: [
+                                            {
+                                                $and: [
+                                                    { $eq: ["$senderId", "$$seller"] },
+                                                    { $eq: ["$receiverId", "$$user"] }
+                                                ]
+                                            },
+                                            // { $eq: ["$_id", "$$user"] },
+                                            // { $ne: ["$_id", userId] },
+                                            {
+                                                $and: [
+                                                    { $eq: ["$senderId", "$$user"] },
+                                                    { $eq: ["$receiverId", "$$seller"] }
+                                                ]
+                                            }
+                                        ]
+                                        //{{}
+                                        // {
+                                        //     $or: [
+                                        //         // $and: [
+                                        //         //     { $eq: ["$senderId", "$$seller"] },
+                                        //         //     { $eq: ["$receiverId", "$$seller"] }
+                                        //         // ]
+                                        //     ]
+                                        // },
+
+                                        //},
+                                        //$eq: ["$_id", "$$sender"]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "connection_details"
+                    }
+                },
+                { $unwind: { path: '$connection_details', preserveNullAndEmptyArrays: true } },
+                {
                     $group: {
                         _id: '$_id',
                         name: { $first: '$name' },
@@ -282,7 +328,8 @@ const userRepository = {
                         mobile: { $first: '$mobile' },
                         address: { $first: '$address' },
                         bio: { $first: '$bio' },
-                        seller_own_products: { $first: '$seller_own_products' }
+                        seller_own_products: { $first: '$seller_own_products' },
+                        connection_details: { $first: '$connection_details' }
                     }
                 }
             ]);
