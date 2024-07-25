@@ -29,19 +29,29 @@ const TransactionRepository = {
                 { $match: conditions },
                 {
                     $lookup: {
-                        from: 'users',
-                        localField: 'user_id',
-                        pipeline: [{
-                            $group: {
-                                _id: '$_id',
-                                name: { $first: '$name' },
-                                email: { $first: '$email' },
-                                image: { $first: '$image' },
-                                mobile: { $first: '$mobile' },
+                        let: { user: '$user_id' },
+                        from: "users",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$user"] },
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                $group: {
+                                    _id: '$_id',
+                                    name: { $first: '$name' },
+                                    email: { $first: '$email' },
+                                    image: { $first: '$image' },
+                                    mobile: { $first: '$mobile' },
+                                }
                             }
-                        }],
-                        foreignField: '_id',
-                        as: 'seller_details'
+                        ],
+                        as: "seller_details"
                     }
                 },
                 { $unwind: '$seller_details' },
