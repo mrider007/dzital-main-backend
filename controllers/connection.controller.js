@@ -107,7 +107,7 @@ class ConnectionController {
         try {
             const connectionList = await connectionRequestRepo.getUserConnections(req);
             if (!_.isEmpty(connectionList)) {
-                let totalConnections = await connectionRequestRepo.getConnectionsCount({ receiverId: req.user._id, status: 'Accepted' });
+                let totalConnections = await connectionRequestRepo.getConnectionsCount({ $or: [{ senderId: req.user._id }, { receiverId: req.user._id }], status: 'Accepted' });
                 if (totalConnections === null) {
                     totalConnections = 0
                 }
