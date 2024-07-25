@@ -488,6 +488,7 @@ const goodsRepository = {
                         userId: { $first: '$product_details.userId' },
                         seller_details: { $first: '$seller_details' },
                         bid_now: { $first: '$product_details.bid_now' },
+                        price: { $first: '$price' },
                         bid_start_price: { $first: '$product_details.bid_start_price' },
                         bid_increament_value: { $first: '$product_details.bid_increament_value' },
                         bid_entry: { $first: '$product_details.bid_entry' },
