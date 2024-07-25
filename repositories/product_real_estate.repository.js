@@ -687,13 +687,13 @@ const propertyRepository = {
                 {
                     $lookup: {
                         from: "users",
-                        let: { userID: "$user_id" },
+                        let: { user: "$user_id" },
                         pipeline: [
                             {
                                 $match: {
                                     $expr: {
                                         $and: [
-                                            { $eq: ["$_id", "$$userID"] }
+                                            { $eq: ["$_id", "$$user"] }
                                         ],
                                     },
                                 },
