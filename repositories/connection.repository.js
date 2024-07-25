@@ -105,7 +105,6 @@ const connectionRepository = {
 
                 // Check if keyword_search has length greater than 0
                 if (req.body.keyword_search.length > 0) {
-                    // Disable req.body.page and req.body.limit
                     req.body.page = undefined;
                     req.body.limit = undefined;
                 }
@@ -113,17 +112,25 @@ const connectionRepository = {
 
             conditions['$and'] = and_clauses;
 
+            const userId = req.user._id;
+
             let connectionsList = Connection.aggregate([
                 {
                     $lookup: {
-                        let: { user: '$senderId' },
                         from: "users",
+                        let: { sender: '$senderId', receiver: '$receiverId' },
                         pipeline: [
                             {
                                 $match: {
                                     $expr: {
                                         $and: [
-                                            { $eq: ["$_id", "$$user"] },
+                                            { $ne: ["$_id", userId] },
+                                            {
+                                                $or: [
+                                                    { $eq: ["$_id", "$$sender"] },
+                                                    { $eq: ["$_id", "$$receiver"] }
+                                                ]
+                                            }
                                         ]
                                     }
                                 }
