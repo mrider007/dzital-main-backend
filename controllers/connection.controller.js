@@ -80,6 +80,28 @@ class ConnectionController {
         }
     };
 
+    /** Remove Existing Connection */
+    async removeConnection(req, res) {
+        try {
+            const connectionId = new mongoose.Types.ObjectId(req.params.id);
+
+            let connectionInfo = await Connection.findOne({ _id: connectionId, status: 'Accepted' });
+            if (!_.isEmpty(connectionInfo) && connectionInfo._id) {
+                let remove_connection = await connectionRequestRepo.delete(connectionId);
+                if (!_.isEmpty(remove_connection)) {
+                    res.status(200).send({ status: 200, data: remove_connection, message: 'Connection Has Been Removed' });
+                } else {
+                    res.status(400).send({ status: 400, message: "Connection could not be removed" });
+                }
+            }
+            else {
+                res.status(400).send({ status: 400, message: 'Connection Not Found' });
+            }
+        } catch (e) {
+            res.status(500).send({ message: e.message });
+        }
+    };
+
     /** User Own Connections List */
     async userConnectionsList(req, res) {
         try {
