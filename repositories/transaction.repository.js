@@ -73,8 +73,8 @@ const TransactionRepository = {
             let allPayments = await Transaction.aggregatePaginate(payment_list, options);
 
             return allPayments;
-        } catch (error) {
-            throw error
+        } catch (e) {
+            throw e;
         }
     }
 

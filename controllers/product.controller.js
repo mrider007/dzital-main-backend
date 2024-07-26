@@ -1530,8 +1530,9 @@ class productController {
         try {
             req.body.userId = req.user._id;
             let productSave = await Product.create(req.body);
-            if (!_.isEmpty(productSave)) {
-                res.status(200).send({ status: 200, data: productSave, message: 'Product Created Successfully' });
+            let productDetails = await productRepo.details({ _id: productSave._id });
+            if (!_.isEmpty(productSave) && productSave._id) {
+                res.status(200).send({ status: 200, data: productDetails, message: 'Product Created Successfully' });
             }
             else {
                 res.status(400).send({ status: 400, message: 'Product Not Created' });

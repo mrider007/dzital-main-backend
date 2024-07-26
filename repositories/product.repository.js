@@ -702,6 +702,60 @@ const productRepository = {
         } catch (e) {
             throw e;
         }
+    },
+
+    details: async (params) => {
+        try {
+            let product = await Product.aggregate([
+                { $match: params },
+                {
+                    $lookup: {
+                        from: "service_categories",
+                        let: { category: "$category_id" },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$category"] }
+                                        ]
+                                    },
+                                },
+                            },
+                        ],
+                        as: "category_details",
+                    },
+                },
+                { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: '$_id',
+                        title: { $first: '$title' },
+                        description: { $first: '$description' },
+                        userId: { $first: '$userId' },
+                        status: { $first: '$status' },
+                        reject_reason: { $first: '$reject_reason' },
+                        image: { $first: '$image' },
+                        category_id: { $first: '$category_id' },
+                        category_slug: { $first: '$category_details.slug' },
+                        sub_category_id: { $first: '$sub_category_id' },
+                        bid_now: { $first: '$bid_now' },
+                        bid_start_price: { $first: '$bid_start_price' },
+                        bid_increament_value: { $first: '$bid_increament_value' },
+                        bid_entry: { $first: '$bid_entry' },
+                        product_price: { $first: '$product_price' },
+                        purchase_mode: { $first: '$purchase_mode' },
+                        createdAt: { $first: '$createdAt' }
+                    }
+                }
+            ]);
+            if (!product) {
+                return null;
+            }
+            return product[0];
+        } catch (e) {
+            throw e;
+        }
     }
 
 }
