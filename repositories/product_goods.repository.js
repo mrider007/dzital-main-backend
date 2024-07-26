@@ -309,7 +309,6 @@ const goodsRepository = {
                         sub_category_id: { $first: "$sub_category_id" },
                         quantity: { $first: '$quantity' },
                         createdAt: { $first: '$createdAt' },
-                        //wishlists: { $addToSet: '$wishlists' },
                         isWishlist: { $first: '$isWishlist' }
                     }
                 },
