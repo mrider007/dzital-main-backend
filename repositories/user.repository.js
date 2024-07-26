@@ -217,7 +217,7 @@ const userRepository = {
 
             and_clauses.push({ _id: new mongoose.Types.ObjectId(req.body.sellerId) });
 
-            const userId = req.body.userId;
+            const userId = new mongoose.Types.ObjectId(req.body.userId);
 
             conditions['$and'] = and_clauses;
 
@@ -277,7 +277,7 @@ const userRepository = {
                 },
                 {
                     $lookup: {
-                        let: { seller: '$_id', user: userId },
+                        let: { seller: '$_id' },
                         from: "connections",
                         pipeline: [
                             {
@@ -287,15 +287,17 @@ const userRepository = {
                                             {
                                                 $and: [
                                                     { $eq: ["$senderId", "$$seller"] },
-                                                    { $eq: ["$receiverId", "$$user"] }
+                                                    { $eq: ["$receiverId", userId] },
+                                                    { $eq: ["$status", 'Accepted'] }
                                                 ]
                                             },
                                             // { $eq: ["$_id", "$$user"] },
                                             // { $ne: ["$_id", userId] },
                                             {
                                                 $and: [
-                                                    { $eq: ["$senderId", "$$user"] },
-                                                    { $eq: ["$receiverId", "$$seller"] }
+                                                    { $eq: ["$senderId", userId] },
+                                                    { $eq: ["$receiverId", "$$seller"] },
+                                                    { $eq: ['$status', 'Accepted'] }
                                                 ]
                                             }
                                         ]
