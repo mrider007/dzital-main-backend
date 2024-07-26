@@ -47,7 +47,7 @@ const attributeoptionRepository = {
                                 $match: {
                                     $expr: {
                                         $and: [
-                                            { $or: [{ $eq: ["$_id", "$$attributeId"] }] },
+                                            { $eq: ["$_id", "$$attributeId"] },
                                         ]
                                     }
                                 }
