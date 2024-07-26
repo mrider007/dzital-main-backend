@@ -291,8 +291,6 @@ const userRepository = {
                                                     { $eq: ["$status", 'Accepted'] }
                                                 ]
                                             },
-                                            // { $eq: ["$_id", "$$user"] },
-                                            // { $ne: ["$_id", userId] },
                                             {
                                                 $and: [
                                                     { $eq: ["$senderId", userId] },
@@ -301,18 +299,6 @@ const userRepository = {
                                                 ]
                                             }
                                         ]
-                                        //{{}
-                                        // {
-                                        //     $or: [
-                                        //         // $and: [
-                                        //         //     { $eq: ["$senderId", "$$seller"] },
-                                        //         //     { $eq: ["$receiverId", "$$seller"] }
-                                        //         // ]
-                                        //     ]
-                                        // },
-
-                                        //},
-                                        //$eq: ["$_id", "$$sender"]
                                     }
                                 }
                             }
