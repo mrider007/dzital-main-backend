@@ -59,10 +59,20 @@ const userRepository = {
                 { $match: conditions },
                 {
                     $lookup: {
-                        from: 'membership_plans',
-                        localField: 'plan_id',
-                        foreignField: '_id',
-                        as: 'plan_details'
+                        let: { plan: '$plan_id' },
+                        from: "membership_plans",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$plan"] }
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "plan_details"
                     }
                 },
                 { $unwind: { path: '$plan_details', preserveNullAndEmptyArrays: true } },
@@ -179,10 +189,20 @@ const userRepository = {
                 { $match: params },
                 {
                     $lookup: {
-                        from: 'membership_plans',
-                        localField: 'plan_id',
-                        foreignField: '_id',
-                        as: 'plan_details'
+                        let: { plan: '$plan_id' },
+                        from: "membership_plans",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$plan"] }
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "plan_details"
                     }
                 },
                 { $unwind: { path: '$plan_details', preserveNullAndEmptyArrays: true } },
