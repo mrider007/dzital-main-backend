@@ -319,6 +319,16 @@ const userRepository = {
                         seller_own_products: { $first: '$seller_own_products' },
                         connection_details: { $first: '$connection_details' }
                     }
+                },
+                {
+                    $addFields: {
+                        isConnected: { $cond: { if: { $ne: ['$connection_details', null] }, then: true, else: false } }
+                    }
+                },
+                {
+                    $project: {
+                        connection_details: 0
+                    }
                 }
             ]);
             if (!data) {
