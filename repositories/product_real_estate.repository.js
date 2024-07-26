@@ -133,34 +133,45 @@ const propertyRepository = {
                 },
                 {
                     $lookup: {
-                        let: { productId: '$product_id' },
-                        from: "attribute_values",
+                        let: { subcategoryId: '$sub_category_id' },
+                        from: "attributes",
                         pipeline: [
                             {
                                 $match: {
                                     $expr: {
                                         $and: [
-                                            { $eq: ["$product_id", "$$productId"] },
+                                            { $eq: ["$sub_category_id", "$$subcategoryId"] },
                                         ]
                                     }
                                 }
                             },
                             {
                                 $lookup: {
-                                    from: "attributes",
-                                    localField: 'attribute_id',
-                                    foreignField: '_id',
-                                    as: "attribute"
+                                    let: { attributeId: '$_id' },
+                                    from: "attribute_values",
+                                    pipeline: [
+                                        {
+                                            $match: {
+                                                $expr: {
+                                                    $and: [
+                                                        { $eq: ["$attribute_id", "$$attributeId"] },
+                                                    ]
+                                                }
+                                            }
+                                        }
+
+                                    ],
+                                    as: "attribute_values"
                                 }
                             },
-                            { $unwind: { path: '$attribute', preserveNullAndEmptyArrays: true } },
+                            { $unwind: { path: '$attribute_values', preserveNullAndEmptyArrays: true } },
                             {
                                 $group: {
                                     _id: '$_id',
-                                    product_id: { $first: '$product_id' },
-                                    attribute_id: { $first: '$attribute_id' },
-                                    attribute: { $first: '$attribute.attribute' },
-                                    value: { $first: '$value' },
+                                    product_id: { $first: '$attribute_values.product_id' },
+                                    attribute_id: { $first: '$_id' },
+                                    attribute: { $first: '$attribute' },
+                                    value: { $first: '$attribute_values.value' },
                                     createdAt: { $first: '$createdAt' },
                                     updatedAt: { $first: '$updatedAt' }
                                 }
