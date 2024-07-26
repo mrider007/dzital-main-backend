@@ -18,10 +18,20 @@ const adminRepository = {
                 { $match: conditions },
                 {
                     $lookup: {
+                        let: { role: '$role_id' },
                         from: 'roles',
-                        localField: 'role_id',
-                        foreignField: '_id',
-                        as: 'role_details'
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$role"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "role_details"
                     }
                 },
                 { $unwind: { path: '$role_details', preserveNullAndEmptyArrays: true } },
@@ -81,10 +91,20 @@ const adminRepository = {
                 { $match: conditions },
                 {
                     $lookup: {
+                        let: { plan: '$plan_id' },
                         from: 'membership_plans',
-                        localField: 'plan_id',
-                        foreignField: '_id',
-                        as: 'plan_details'
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$plan"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "plan_details"
                     }
                 },
                 { $unwind: { path: '$plan_details', preserveNullAndEmptyArrays: true } },
@@ -156,10 +176,20 @@ const adminRepository = {
             let premiumusers = User.aggregate([
                 {
                     $lookup: {
+                        let: { plan: '$plan_id' },
                         from: 'membership_plans',
-                        localField: 'plan_id',
-                        foreignField: '_id',
-                        as: 'plan_details'
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$plan"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "plan_details"
                     }
                 },
                 { $unwind: { path: '$plan_details', preserveNullAndEmptyArrays: true } },
@@ -232,10 +262,20 @@ const adminRepository = {
             let nonpremiumusers = User.aggregate([
                 {
                     $lookup: {
+                        let: { plan: '$plan_id' },
                         from: 'membership_plans',
-                        localField: 'plan_id',
-                        foreignField: '_id',
-                        as: 'plan_details'
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$plan"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "plan_details"
                     }
                 },
                 { $unwind: { path: '$plan_details', preserveNullAndEmptyArrays: true } },
@@ -313,10 +353,20 @@ const adminRepository = {
             let activeusers = User.aggregate([
                 {
                     $lookup: {
+                        let: { plan: '$plan_id' },
                         from: 'membership_plans',
-                        localField: 'plan_id',
-                        foreignField: '_id',
-                        as: 'plan_details'
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$plan"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "plan_details"
                     }
                 },
                 { $unwind: { path: '$plan_details', preserveNullAndEmptyArrays: true } },
@@ -393,10 +443,20 @@ const adminRepository = {
             let inactiveusers = User.aggregate([
                 {
                     $lookup: {
+                        let: { plan: '$plan_id' },
                         from: 'membership_plans',
-                        localField: 'plan_id',
-                        foreignField: '_id',
-                        as: 'plan_details'
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$plan"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "plan_details"
                     }
                 },
                 { $unwind: { path: '$plan_details', preserveNullAndEmptyArrays: true } },
@@ -475,10 +535,20 @@ const adminRepository = {
                 { $match: conditions },
                 {
                     $lookup: {
+                        let: { role: '$role_id' },
                         from: 'roles',
-                        localField: 'role_id',
-                        foreignField: '_id',
-                        as: 'role_details'
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$role"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "role_details"
                     }
                 },
                 { $unwind: { path: '$role_details', preserveNullAndEmptyArrays: true } },
@@ -548,10 +618,20 @@ const adminRepository = {
                 { $match: params },
                 {
                     $lookup: {
+                        let: { role: '$role_id' },
                         from: 'roles',
-                        localField: 'role_id',
-                        foreignField: '_id',
-                        as: 'role_details'
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$role"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "role_details"
                     }
                 },
                 { $unwind: { path: '$role_details', preserveNullAndEmptyArrays: true } },
