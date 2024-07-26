@@ -55,19 +55,41 @@ const productFashionRepository = {
             let products = ProductFashion.aggregate([
                 {
                     $lookup: {
-                        from: 'service_categories',
-                        localField: 'category_id',
-                        foreignField: '_id',
-                        as: 'category_details'
+                        let: { category: '$category_id' },
+                        from: "service_categories",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$category"] },
+
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "category_details"
                     }
                 },
                 { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
-                        from: 'products',
-                        localField: 'product_id',
-                        foreignField: '_id',
-                        as: 'product_details'
+                        let: { product: '$product_id' },
+                        from: "products",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$product"] },
+
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "product_details"
                     }
                 },
                 { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
@@ -229,10 +251,21 @@ const productFashionRepository = {
             let products = ProductFashion.aggregate([
                 {
                     $lookup: {
-                        from: 'service_categories',
-                        localField: 'category_id',
-                        foreignField: '_id',
-                        as: 'category_details'
+                        let: { category: '$category_id' },
+                        from: "service_categories",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$category"] },
+
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "category_details"
                     }
                 },
                 { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
@@ -264,10 +297,21 @@ const productFashionRepository = {
                 { $unwind: { path: '$seller_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
-                        from: 'products',
-                        localField: 'product_id',
-                        foreignField: '_id',
-                        as: 'product_details'
+                        let: { product: '$product_id' },
+                        from: "products",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$product"] },
+
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "product_details"
                     }
                 },
                 { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
@@ -388,10 +432,21 @@ const productFashionRepository = {
                 { $match: params },
                 {
                     $lookup: {
-                        from: 'service_categories',
-                        localField: 'category_id',
-                        foreignField: '_id',
-                        as: 'category_details'
+                        let: { category: '$category_id' },
+                        from: "service_categories",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$category"] },
+
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "category_details"
                     }
                 },
                 { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
@@ -426,10 +481,21 @@ const productFashionRepository = {
                 { $unwind: { path: '$seller_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
-                        from: 'products',
-                        localField: 'product_id',
-                        foreignField: '_id',
-                        as: 'product_details'
+                        let: { product: '$product_id' },
+                        from: "products",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$product"] },
+
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "product_details"
                     }
                 },
                 { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
