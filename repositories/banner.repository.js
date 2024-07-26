@@ -146,8 +146,8 @@ const BannerRepo = {
                 }
             ]);
             return data;
-        } catch (error) {
-            throw error;
+        } catch (e) {
+            throw e;
         }
     },
 

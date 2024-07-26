@@ -363,23 +363,32 @@ const attributeRepository = {
             }
 
             conditions['$and'] = and_clauses;
-            // console.log(and_clauses);
+
             let attributes = await Attribute.aggregate([
                 { $match: conditions },
                 {
                     $lookup: {
-                        from: 'attribute_values',
+                        let: { attribute: '$_id' },
+                        from: "attribute_values",
                         pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$attribute_id", "$$attribute"] },
+                                        ]
+                                    }
+                                }
+                            },
                             {
                                 $group: {
                                     _id: '$_id',
                                     value: { $first: '$value' },
                                 }
-                            }
+                            },
+                            { $sort: { _id: 1 } }
                         ],
-                        localField: '_id',
-                        foreignField: 'attribute_id',
-                        as: 'attribute_values'
+                        as: "attribute_values"
                     }
                 },
                 {
