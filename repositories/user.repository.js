@@ -328,6 +328,38 @@ const userRepository = {
                 },
                 { $unwind: { path: '$connection_details', preserveNullAndEmptyArrays: true } },
                 {
+                    $lookup: {
+                        let: { seller: '$_id' },
+                        from: "connections",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $or: [
+                                            {
+                                                $and: [
+                                                    { $eq: ["$senderId", "$$seller"] },
+                                                    { $eq: ["$receiverId", userId] },
+                                                    { $eq: ["$status", 'Pending'] }
+                                                ]
+                                            },
+                                            {
+                                                $and: [
+                                                    { $eq: ["$senderId", userId] },
+                                                    { $eq: ["$receiverId", "$$seller"] },
+                                                    { $eq: ['$status', 'Pending'] }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "pending_connection_details"
+                    }
+                },
+                { $unwind: { path: '$pending_connection_details', preserveNullAndEmptyArrays: true } },
+                {
                     $group: {
                         _id: '$_id',
                         name: { $first: '$name' },
@@ -337,17 +369,20 @@ const userRepository = {
                         address: { $first: '$address' },
                         bio: { $first: '$bio' },
                         seller_own_products: { $first: '$seller_own_products' },
-                        connection_details: { $first: '$connection_details' }
+                        connection_details: { $first: '$connection_details' },
+                        pending_connection_details: { $first: '$pending_connection_details' }
                     }
                 },
                 {
                     $addFields: {
-                        isConnected: { $cond: { if: { $ne: ['$connection_details', null] }, then: true, else: false } }
+                        isConnected: { $cond: { if: { $ne: ['$connection_details', null] }, then: true, else: false } },
+                        isPending: { $cond: { if: { $ne: ['$pending_connection_details', null] }, then: true, else: false } }
                     }
                 },
                 {
                     $project: {
-                        connection_details: 0
+                        connection_details: 0,
+                        pending_connection_details: 0
                     }
                 }
             ]);
