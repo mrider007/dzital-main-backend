@@ -9,18 +9,38 @@ const freelancerRepository = {
                 { $match: params },
                 {
                     $lookup: {
+                        let: { category: '$category_id' },
                         from: 'service_categories',
-                        localField: 'category_id',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$category"] }
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'category_details'
                     }
                 },
                 { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
+                        let: { subcategory: '$sub_category_id' },
                         from: 'service_categories',
-                        localField: 'sub_category_id',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$subcategory"] }
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'sub_category_details'
                     }
                 },
@@ -56,9 +76,19 @@ const freelancerRepository = {
                 { $unwind: { path: '$seller_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
+                        let: { product: '$product_id' },
                         from: 'products',
-                        localField: 'product_id',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$product"] }
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'product_details'
                     }
                 },
@@ -246,25 +276,43 @@ const freelancerRepository = {
             let products = Freelancer.aggregate([
                 {
                     $lookup: {
+                        let: { category: '$category_id' },
                         from: 'service_categories',
-                        localField: 'category_id',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$category"] }
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'category_details'
                     }
                 },
                 { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
+                        let: { product: '$product_id' },
                         from: 'products',
-                        localField: 'product_id',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$product"] }
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'product_details'
                     }
                 },
                 { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
-                {
-                    $addFields: { 'isWishlist': false }
-                },
+                { $addFields: { 'isWishlist': false } },
                 {
                     $lookup: {
                         let: { productId: '$product_id' },
@@ -388,18 +436,38 @@ const freelancerRepository = {
             let products = Freelancer.aggregate([
                 {
                     $lookup: {
+                        let: { category: '$category_id' },
                         from: 'service_categories',
-                        localField: 'category_id',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$category"] }
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'category_details'
                     }
                 },
                 { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
+                        let: { product: '$product_id' },
                         from: 'products',
-                        localField: 'product_id',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$product"] }
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'product_details'
                     }
                 },
@@ -537,7 +605,7 @@ const freelancerRepository = {
         } catch (e) {
             return e;
         }
-    },
+    }
 
 }
 
