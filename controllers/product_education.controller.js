@@ -1,6 +1,5 @@
 const ProductEducation = require('../models/product_education.model');
 const AttributeValue = require('../models/attribute_value.model');
-const Category = require('../models/service_category.model');
 const educationRepo = require('../repositories/product_education.repository');
 const productRepo = require('../repositories/product.repository');
 const attributevalueRepo = require('../repositories/attribute_value.repository');
@@ -175,8 +174,7 @@ class productEducationController {
 
                 let productUpdate = await productRepo.updateProductById(updated_product_data, lessoncoursesData.product_id);
                 lessoncoursesData.product_details = productUpdate;
-                // let category_details = await Category.findOne({ title: 'Lessons & Courses' });
-                // lessoncoursesData.category_slug = category_details.slug;
+
                 const userId = req.user._id;
                 let lessonDetails = await educationRepo.getDetails({ _id: lessoncoursesData._id }, userId);
                 res.status(200).send({ status: 200, data: lessonDetails, message: 'Lesson and Course Product Saved Successfully' });
