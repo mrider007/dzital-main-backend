@@ -31,7 +31,7 @@ const MeetingRepository = {
             }
 
             const meeting_pipeline = Meetings.aggregate([
-                { $match: conditions },       
+                { $match: conditions },
                 {
                     $lookup: {
                         let: { product: '$product_id' },
