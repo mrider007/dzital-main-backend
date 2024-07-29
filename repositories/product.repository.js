@@ -159,18 +159,38 @@ const productRepository = {
                 { $match: conditions },
                 {
                     $lookup: {
+                        let: { category: '$category_id' },
                         from: 'service_categories',
-                        localField: 'category_id',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$category"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'category_details'
                     }
                 },
                 { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
+                        let: { subcategory: '$sub_category_id' },
                         from: 'service_categories',
-                        localField: 'sub_category_id',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$subcategory"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'sub_category_details'
                     }
                 },
@@ -228,18 +248,38 @@ const productRepository = {
                 { $match: conditions },
                 {
                     $lookup: {
+                        let: { category: '$category_id' },
                         from: 'service_categories',
-                        localField: 'category_id',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$category"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'category_details'
                     }
                 },
                 { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
+                        let: { subcategory: '$sub_category_id' },
                         from: 'service_categories',
-                        localField: 'sub_category_id',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$subcategory"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'sub_category_details'
                     }
                 },
