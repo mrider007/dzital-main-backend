@@ -31,7 +31,7 @@ class productWishlistController {
 
                 let productwishlistAdd = await Wishlist.findOne({ user_id: req.user._id, 'products.product_id': { $in: req.body.product_id } });
                 if (!_.isEmpty(productwishlistAdd) && productwishlistAdd._id) {
-                    res.status(200).send({ status: 200, data: {}, message: 'Product already present in your wishlist' });
+                    res.status(200).send({ status: 200, message: 'Product already present in your wishlist' });
                 }
                 else {
                     let wishlist_exist = await Wishlist.findOne({ user_id: req.user._id });
@@ -45,7 +45,7 @@ class productWishlistController {
                             res.status(200).send({ status: 200, data: wishlistAdd, message: 'Product added to your wishlist' });
                         }
                         else {
-                            res.status(201).send({ status: 201, data: {}, message: 'Product could not be added to wishlist' });
+                            res.status(201).send({ status: 201, message: 'Product could not be added to wishlist' });
                         }
                     }
                     else {
@@ -61,7 +61,7 @@ class productWishlistController {
                 res.status(400).send({ status: 400, message: 'User Not Found' });
             }
         } catch (e) {
-            res.status(500).send({ status: 500, message: e.message });
+            res.status(500).send({ message: e.message });
         }
     };
 
@@ -76,7 +76,7 @@ class productWishlistController {
                 res.status(201).send({ status: 201, message: 'You have no product in your wishlist' });
             }
         } catch (e) {
-            res.status(500).send({ status: 500, message: e.message });
+            res.status(500).send({ message: e.message });
         }
     };
 
@@ -91,7 +91,7 @@ class productWishlistController {
                         res.status(200).send({ status: 200, data: propertyDetails, message: 'Real Estate Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
+                        res.status(400).send({ status: 400, message: 'Product Not Found' });
                     }
                 }
                 else if (categoryInfo.title === 'Electronics') {
@@ -100,7 +100,7 @@ class productWishlistController {
                         res.status(200).send({ status: 200, data: electronicsDetails, message: 'Electronics Product Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
+                        res.status(400).send({ status: 400, message: 'Product Not Found' });
                     }
                 }
                 else if (categoryInfo.title === 'Jobs') {
@@ -109,7 +109,7 @@ class productWishlistController {
                         res.status(200).send({ status: 200, data: jobDetails, message: 'Job Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
+                        res.status(400).send({ status: 400, message: 'Product Not Found' });
                     }
                 }
                 else if (categoryInfo.title === 'Fashion & Beauty') {
@@ -118,7 +118,7 @@ class productWishlistController {
                         res.status(200).send({ status: 200, data: fashionDetails, message: 'Fashion Product details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
+                        res.status(400).send({ status: 400, message: 'Product Not Found' });
                     }
                 }
                 else if (categoryInfo.title === 'Goods of all kinds') {
@@ -127,7 +127,7 @@ class productWishlistController {
                         res.status(200).send({ status: 200, data: goodsDetails, message: 'Goods of All Kinds Product Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
+                        res.status(400).send({ status: 400, message: 'Product Not Found' });
                     }
                 }
                 else if (categoryInfo.title === 'Freelancer') {
@@ -136,7 +136,7 @@ class productWishlistController {
                         res.status(200).send({ status: 200, data: freelancerDetails, message: 'Freelancer Product Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
+                        res.status(400).send({ status: 400, message: 'Product Not Found' });
                     }
                 }
                 else if (categoryInfo.title === 'Lessons & Courses') {
@@ -145,12 +145,12 @@ class productWishlistController {
                         res.status(200).send({ status: 200, data: lessonDetails, message: 'Lesson & Course Product details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
+                        res.status(400).send({ status: 400, message: 'Product Not Found' });
                     }
                 }
             }
         } catch (e) {
-            res.status(500).send({ status: 500, message: e.message });
+            res.status(500).send({ message: e.message });
         }
     };
 
@@ -168,11 +168,11 @@ class productWishlistController {
                     res.status(200).send({ status: 200, data: user_wishlist, message: 'Product Removed From Your Wishlist' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Product could not be removed from wishlist' });
+                    res.status(400).send({ status: 400, message: 'Product could not be removed from wishlist' });
                 }
             }
         } catch (e) {
-            res.status(500).send({ status: 500, message: e.message });
+            res.status(500).send({ message: e.message });
         }
     };
 }
