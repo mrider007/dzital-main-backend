@@ -51,10 +51,14 @@ class JobController {
                         }
                     }
 
-                    res.status(200).send({ status: 200, data: jobData, message: 'Job Saved Successfully' });
+                    const userId = jobData.user_id;
+
+                    let job_details = await jobRepo.getJobDetails({ _id: jobData._id }, userId);
+
+                    res.status(200).send({ status: 200, data: job_details, message: 'Job Saved Successfully' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Job could not be saved' });
+                    res.status(400).send({ status: 400, message: 'Job could not be saved' });
                 }
             }
         } catch (e) {
