@@ -54,18 +54,38 @@ const goodsRepository = {
             let products = ProductGoods.aggregate([
                 {
                     $lookup: {
-                        from: 'service_categories',
-                        localField: 'category_id',
-                        foreignField: '_id',
+                        let: { categoryId: '$category_id' },
+                        from: "service_categories",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$categoryId"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'category_details'
                     }
                 },
                 { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
+                        let: { product: '$product_id' },
                         from: 'products',
-                        localField: 'product_id',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$product"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'product_details'
                     }
                 },
@@ -200,18 +220,38 @@ const goodsRepository = {
             let products = ProductGoods.aggregate([
                 {
                     $lookup: {
-                        from: 'service_categories',
-                        localField: 'category_id',
-                        foreignField: '_id',
+                        let: { categoryId: '$category_id' },
+                        from: "service_categories",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$categoryId"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'category_details'
                     }
                 },
                 { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
-                        from: 'products',
-                        localField: 'product_id',
-                        foreignField: '_id',
+                        let: { product: '$product_id' },
+                        from: "products",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$categoryId"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'product_details'
                     }
                 },
@@ -332,9 +372,19 @@ const goodsRepository = {
                 { $match: params },
                 {
                     $lookup: {
+                        let: { categoryId: '$category_id' },
                         from: 'service_categories',
-                        localField: 'category_id',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$categoryId"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'category_details'
                     }
                 },
@@ -370,9 +420,19 @@ const goodsRepository = {
                 { $unwind: { path: '$seller_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
+                        let: { product: '$product_id' },
                         from: 'products',
-                        localField: 'product_id',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$product"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'product_details'
                     }
                 },
