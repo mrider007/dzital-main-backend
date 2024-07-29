@@ -70,7 +70,7 @@ class propertyController {
                 res.status(200).send({ status: 200, data: real_estate_product_save, message: 'Real Estate Product Saved Successfully' });
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'Real Estate Product could not be added' });
+                res.status(400).send({ status: 400, message: 'Real Estate Product could not be added' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -87,7 +87,7 @@ class propertyController {
                     res.status(200).send({ status: 200, data: propertyInfo, message: 'Real Estate Details has been fetched Successfully' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Real Estate Not Found' });
+                    res.status(400).send({ status: 400, message: 'Real Estate Not Found' });
                 }
             }
             else {
@@ -97,7 +97,7 @@ class propertyController {
                     res.status(200).send({ status: 200, data: propertyInfo, message: 'Real Estate Details has been fetched Successfully' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Real Estate Not Found' });
+                    res.status(400).send({ status: 400, message: 'Real Estate Not Found' });
                 }
             }
         } catch (e) {
