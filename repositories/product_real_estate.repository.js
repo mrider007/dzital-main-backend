@@ -22,18 +22,38 @@ const propertyRepository = {
                 { $match: params },
                 {
                     $lookup: {
+                        let: { category: '$category_id' },
                         from: 'service_categories',
-                        localField: 'category_id',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$category"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'category_details'
                     }
                 },
                 { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
+                        let: { subcategory: '$sub_category_id' },
                         from: 'service_categories',
-                        localField: 'sub_category_id',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$subcategory"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'sub_category_details'
                     }
                 },
@@ -69,9 +89,19 @@ const propertyRepository = {
                 { $unwind: { path: '$seller_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
+                        let: { product: '$product_id' },
                         from: 'products',
-                        localField: 'product_id',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$product"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'product_details'
                     }
                 },
@@ -288,9 +318,19 @@ const propertyRepository = {
             let property = Property.aggregate([
                 {
                     $lookup: {
+                        let: { category: '$category_id' },
                         from: 'service_categories',
-                        localField: 'category_id',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$category"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'category_details'
                     }
                 },
@@ -321,11 +361,25 @@ const propertyRepository = {
                     },
                 },
                 { $unwind: { path: '$seller_details', preserveNullAndEmptyArrays: true } },
+                //         foreignField: '_id',
+                //         as: 'product_details'
+                //     }
+                // },
                 {
                     $lookup: {
+                        let: { product: '$product_id' },
                         from: 'products',
-                        localField: 'product_id',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$product"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'product_details'
                     }
                 },
