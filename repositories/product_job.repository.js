@@ -21,18 +21,38 @@ const JobRepository = {
                 { $match: params },
                 {
                     $lookup: {
+                        let: { category: '$category_id' },
                         from: 'service_categories',
-                        localField: 'category_id',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$category"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'category_details'
                     }
                 },
                 { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
+                        let: { subcategory: '$sub_category_id' },
                         from: 'service_categories',
-                        localField: 'sub_category_id',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$subcategory"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'sub_category_details'
                     }
                 },
@@ -68,9 +88,19 @@ const JobRepository = {
                 { $unwind: { path: '$seller_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
-                        from: 'products',
-                        localField: 'product_id',
-                        foreignField: '_id',
+                        let: { product: '$product_id' },
+                        from: "products",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$product"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'product_details'
                     }
                 },
@@ -169,21 +199,6 @@ const JobRepository = {
                         as: "attribute_value_details"
                     }
                 },
-                // {
-                //         let: { JobID: '$_id' },
-                //         from: "job_applies",
-                //         pipeline: [
-                //             {
-                //                 $match: {
-                //                     $expr: {
-                //                         $eq: ["$job_id", "$$JobID"]
-                //                     }
-                //                 }
-                //             }
-                //         ],
-                //         as: "job_application"
-                //     }
-                // },
                 {
                     $lookup: {
                         let: { job: '$_id', user_id: userId },
@@ -302,36 +317,62 @@ const JobRepository = {
             let jobs = Job.aggregate([
                 {
                     $lookup: {
+                        let: { category: '$category_id' },
                         from: 'service_categories',
-                        localField: 'category_id',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$category"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'category_details'
                     }
                 },
                 { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
+                        let: { user: '$user_id' },
                         from: 'users',
-                        localField: 'user_id',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$user"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'user_details'
                     }
                 },
                 { $unwind: { path: '$user_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
+                        let: { product: '$product_id' },
                         from: 'products',
-                        localField: 'product_id',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$product"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'product_details'
                     }
                 },
                 { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
-                {
-                    $addFields: {
-                        'isWishlist': false
-                    }
-                },
+                { $addFields: { 'isWishlist': false } },
                 {
                     $group: {
                         _id: '$_id',
@@ -403,27 +444,57 @@ const JobRepository = {
             let jobs = Job.aggregate([
                 {
                     $lookup: {
+                        let: { category: '$category_id' },
                         from: 'service_categories',
-                        localField: 'category_id',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$category"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'category_details'
                     }
                 },
                 { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
+                        let: { user: '$user_id' },
                         from: 'users',
-                        localField: 'user_id',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$categoryId"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'user_details'
                     }
                 },
                 { $unwind: { path: '$user_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
+                        let: { product: '$product_id' },
                         from: 'products',
-                        localField: 'product_id',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$product"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'product_details'
                     }
                 },
@@ -534,18 +605,38 @@ const JobRepository = {
                 { $match: conditions },
                 {
                     $lookup: {
+                        let: { jobtype: '$job_type' },
                         from: 'product_job_types',
-                        localField: 'job_type',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$jobtype"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'job_type_details'
                     }
                 },
                 { $unwind: { path: '$job_type_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
+                        let: { user: '$user_id' },
                         from: 'users',
-                        localField: 'user_id',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$user"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'user_details'
                     }
                 },
@@ -644,27 +735,43 @@ const JobRepository = {
             let joblist = Job.aggregate([
                 {
                     $lookup: {
+                        let: { jobtype: '$job_type' },
                         from: 'product_job_types',
-                        localField: 'job_type',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$jobtype"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'job_type_details'
                     }
                 },
                 { $unwind: { path: '$job_type_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
+                        let: { product: '$product_id' },
                         from: 'products',
-                        localField: 'product_id',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$product"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'product_details'
                     }
                 },
                 { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
-                {
-                    $addFields: {
-                        'isWishlist': false
-                    }
-                },
+                { $addFields: { 'isWishlist': false } },
                 {
                     $lookup: {
                         let: { productId: '$product_id' },
@@ -804,18 +911,38 @@ const JobRepository = {
             let joblist = Job.aggregate([
                 {
                     $lookup: {
+                        let: { jobtype: '$job_type' },
                         from: 'product_job_types',
-                        localField: 'job_type',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$jobtype"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'job_type_details'
                     }
                 },
                 { $unwind: { path: '$job_type_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
+                        let: { product: '$product_id' },
                         from: 'products',
-                        localField: 'product_id',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$product"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'product_details'
                     }
                 },
