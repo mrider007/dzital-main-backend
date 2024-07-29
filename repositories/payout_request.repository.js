@@ -23,9 +23,19 @@ const PayoutRequestRepository = {
                 { $match: conditions },
                 {
                     $lookup: {
+                        let: { user: '$user_id' },
                         from: 'users',
-                        localField: 'user_id',
-                        foreignField: '_id',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$user"] }
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
                         as: 'user_details'
                     }
                 },
