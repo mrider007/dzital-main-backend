@@ -28,9 +28,18 @@ const subscriptionUserRepository = {
                 { $match: conditions },
                 {
                     $lookup: {
+                        let: { product: '$product_id' },
                         from: 'products',
-                        localField: 'product_id',
                         pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$product"] },
+                                        ]
+                                    }
+                                }
+                            },
                             {
                                 $group: {
                                     _id: '$_id',
@@ -40,7 +49,6 @@ const subscriptionUserRepository = {
                                 }
                             }
                         ],
-                        foreignField: '_id',
                         as: 'product_details'
                     }
                 },
@@ -70,12 +78,8 @@ const subscriptionUserRepository = {
                                     meeting_join_url: { $first: '$meeting_join_url' }
                                 }
                             },
-                            {
-                                $sort: { meetingAt: 1 }
-                            },
-                            {
-                                $limit: 1
-                            }
+                            { $sort: { meetingAt: 1 } },
+                            { $limit: 1 }
                         ],
                         as: "upcoming_meetings"
                     }
@@ -236,8 +240,17 @@ const subscriptionUserRepository = {
                 {
                     $lookup: {
                         from: 'products',
-                        localField: 'product_id',
+                        let: { product: '$product_id' },
                         pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$product"] },
+                                        ]
+                                    }
+                                }
+                            },
                             {
                                 $group: {
                                     _id: '$_id',
@@ -248,7 +261,6 @@ const subscriptionUserRepository = {
                                 }
                             }
                         ],
-                        foreignField: '_id',
                         as: 'product_details'
                     }
                 },
