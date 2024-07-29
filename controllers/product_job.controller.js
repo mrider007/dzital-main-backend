@@ -221,10 +221,10 @@ class JobController {
                 if (!_.isEmpty(statusUpdate) && statusUpdate._id) {
                     res.status(200).send({ status: 200, data: statusUpdate, message: 'Job Status has been updated successfully' });
                 } else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Job Status could not be updated' });
+                    res.status(400).send({ status: 400, message: 'Job Status could not be updated' });
                 }
             } else {
-                res.status(400).send({ status: 400, data: {}, message: 'Job not found' });
+                res.status(400).send({ status: 400, message: 'Job not found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
