@@ -125,7 +125,7 @@ class productGoodsController {
                     res.status(200).send({ status: 200, data: goodsInfo, message: 'Product details has been fetched successfully' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                    res.status(400).send({ status: 400, message: 'Product not found' });
                 }
             }
             else {
@@ -135,7 +135,7 @@ class productGoodsController {
                     res.status(200).send({ status: 200, data: goodsInfo, message: 'Product details has been fetched successfully' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                    res.status(400).send({ status: 400, message: 'Product not found' });
                 }
             }
         } catch (e) {
