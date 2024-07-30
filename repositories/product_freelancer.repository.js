@@ -603,7 +603,7 @@ const freelancerRepository = {
             }
             return freelancerUpdate;
         } catch (e) {
-            return e;
+            throw e;
         }
     }
 
