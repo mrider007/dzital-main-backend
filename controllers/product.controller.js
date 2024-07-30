@@ -1091,11 +1091,11 @@ class productController {
                         let productUpdate = await productRepo.updateProductById(updateObj, req.params.id);
                         res.status(200).send({ status: 200, data: fashionproductUpdate, message: 'Product Updated Successfully' });
                     } else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
+                        res.status(400).send({ status: 400, message: 'Product could not be updated' });
                     }
                 }
             } else {
-                res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
+                res.status(400).send({ status: 400, message: 'Product Not Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -1205,7 +1205,7 @@ class productController {
                 return res.status(200).send({ status: 200, data: productRemove, message: 'Product Removed Successfully' });
             }
             else {
-                return res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
+                return res.status(400).send({ status: 400, message: 'Product Not Found' });
             }
         } catch (e) {
             return res.status(500).send({ status: 500, message: e.message });
@@ -1321,7 +1321,7 @@ class productController {
                 return res.status(200).send({ status: 200, data: productRemove, message: 'Product Removed Successfully' });
             }
             else {
-                return res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
+                return res.status(400).send({ status: 400, message: 'Product Not Found' });
             }
 
         } catch (e) {
@@ -1339,10 +1339,10 @@ class productController {
                     res.status(200).send({ status: 200, data: statusUpdate, message: 'Product Status Updated Successfully' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Product Status could not be updated' });
+                    res.status(400).send({ status: 400, message: 'Product Status could not be updated' });
                 }
             } else {
-                res.status(400).send({ status: 400, data: {}, message: 'Product Not Found!' });
+                res.status(400).send({ status: 400, message: 'Product Not Found!' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -1367,7 +1367,7 @@ class productController {
                                 res.status(200).send({ status: 200, data: real_estate_products.docs, total: real_estate_products.total, limit: real_estate_products.limit, page: real_estate_products.page, pages: real_estate_products.pages, message: 'Real Estate Products fetched successfully' });
                             }
                             else {
-                                res.status(400).send({ status: 400, data: {}, message: 'No Real Estate Products found' });
+                                res.status(400).send({ status: 400, message: 'No Real Estate Products found' });
                             }
                         }
                         else {
@@ -1376,7 +1376,7 @@ class productController {
                                 res.status(200).send({ status: 200, data: real_estate_products.docs, total: real_estate_products.total, limit: real_estate_products.limit, page: real_estate_products.page, pages: real_estate_products.pages, message: 'Real Estate Products fetched successfully' });
                             }
                             else {
-                                res.status(400).send({ status: 400, data: {}, message: 'No Real Estate Products found' });
+                                res.status(400).send({ status: 400, message: 'No Real Estate Products found' });
                             }
                         }
                     }
@@ -1388,7 +1388,7 @@ class productController {
                                 res.status(200).send({ status: 200, data: job_products.docs, total: job_products.total, limit: job_products.limit, page: job_products.page, pages: job_products.pages, message: 'Job Products fetched successfully' });
                             }
                             else {
-                                res.status(400).send({ status: 400, data: {}, message: 'No Job Products found' });
+                                res.status(400).send({ status: 400, message: 'No Job Products found' });
                             }
                         }
                         else {
@@ -1397,7 +1397,7 @@ class productController {
                                 res.status(200).send({ status: 200, data: job_products.docs, total: job_products.total, limit: job_products.limit, page: job_products.page, pages: job_products.pages, message: 'Job Products fetched successfully' });
                             }
                             else {
-                                res.status(400).send({ status: 400, data: {}, message: 'No Job Products found' });
+                                res.status(400).send({ status: 400, message: 'No Job Products found' });
                             }
                         }
                     }
@@ -1409,7 +1409,7 @@ class productController {
                                 res.status(200).send({ status: 200, data: freelancer_products.docs, total: freelancer_products.total, limit: freelancer_products.limit, page: freelancer_products.page, pages: freelancer_products.pages, message: 'Freelancer Products fetched successfully' });
                             }
                             else {
-                                res.status(400).send({ status: 400, data: {}, message: 'No Freelancer Products found' });
+                                res.status(400).send({ status: 400, message: 'No Freelancer Products found' });
                             }
                         }
                         else {
@@ -1418,7 +1418,7 @@ class productController {
                                 res.status(200).send({ status: 200, data: freelancer_products.docs, total: freelancer_products.total, limit: freelancer_products.limit, page: freelancer_products.page, pages: freelancer_products.pages, message: 'Freelancer Products fetched successfully' });
                             }
                             else {
-                                res.status(400).send({ status: 400, data: {}, message: 'No Freelancer Products found' });
+                                res.status(400).send({ status: 400, message: 'No Freelancer Products found' });
                             }
                         }
                     }
@@ -1430,7 +1430,7 @@ class productController {
                                 res.status(200).send({ status: 200, data: course_products.docs, total: course_products.total, limit: course_products.limit, page: course_products.page, pages: course_products.pages, message: 'Lesson & Courses Products fetched successfully' });
                             }
                             else {
-                                res.status(400).send({ status: 400, data: {}, message: 'No Lesson & Courses Products found' });
+                                res.status(400).send({ status: 400, message: 'No Lesson & Courses Products found' });
                             }
                         }
                         else {
@@ -1439,7 +1439,7 @@ class productController {
                                 res.status(200).send({ status: 200, data: course_products.docs, total: course_products.total, limit: course_products.limit, page: course_products.page, pages: course_products.pages, message: 'Lesson & Courses Products fetched successfully' });
                             }
                             else {
-                                res.status(400).send({ status: 400, data: {}, message: 'No Lesson & Courses Products found' });
+                                res.status(400).send({ status: 400, message: 'No Lesson & Courses Products found' });
                             }
                         }
                     }
@@ -1451,7 +1451,7 @@ class productController {
                                 res.status(200).send({ status: 200, data: electronics_products.docs, total: electronics_products.total, limit: electronics_products.limit, page: electronics_products.page, pages: electronics_products.pages, message: 'Electronics Products fetched successfully' });
                             }
                             else {
-                                res.status(400).send({ status: 400, data: {}, message: 'No Electronics Products found' });
+                                res.status(400).send({ status: 400, message: 'No Electronics Products found' });
                             }
                         }
                         else {
@@ -1460,7 +1460,7 @@ class productController {
                                 res.status(200).send({ status: 200, data: electronics_products.docs, total: electronics_products.total, limit: electronics_products.limit, page: electronics_products.page, pages: electronics_products.pages, message: 'Electronics Products fetched successfully' });
                             }
                             else {
-                                res.status(400).send({ status: 400, data: {}, message: 'No Electronics Products found' });
+                                res.status(400).send({ status: 400, message: 'No Electronics Products found' });
                             }
                         }
                     }
@@ -1472,7 +1472,7 @@ class productController {
                                 res.status(200).send({ status: 200, data: fashion_products.docs, total: fashion_products.total, limit: fashion_products.limit, page: fashion_products.page, pages: fashion_products.pages, message: 'Fashion & Beauty Products fetched successfully' });
                             }
                             else {
-                                res.status(400).send({ status: 400, data: {}, message: 'No Fashion & Beauty Products found' });
+                                res.status(400).send({ status: 400, message: 'No Fashion & Beauty Products found' });
                             }
                         }
                         else {
@@ -1481,7 +1481,7 @@ class productController {
                                 res.status(200).send({ status: 200, data: fashion_products.docs, total: fashion_products.total, limit: fashion_products.limit, page: fashion_products.page, pages: fashion_products.pages, message: 'Fashion & Beauty Products fetched successfully' });
                             }
                             else {
-                                res.status(400).send({ status: 400, data: {}, message: 'No Fashion & Beauty Products found' });
+                                res.status(400).send({ status: 400, message: 'No Fashion & Beauty Products found' });
                             }
                         }
                     }
@@ -1493,7 +1493,7 @@ class productController {
                                 res.status(200).send({ status: 200, data: goods_products.docs, total: goods_products.total, limit: goods_products.limit, page: goods_products.page, pages: goods_products.pages, message: 'Goods of all kinds Products fetched successfully' });
                             }
                             else {
-                                res.status(400).send({ status: 400, data: {}, message: 'No Goods of all kinds Products found' });
+                                res.status(400).send({ status: 400, message: 'No Goods of all kinds Products found' });
                             }
                         }
                         else {
@@ -1502,13 +1502,13 @@ class productController {
                                 res.status(200).send({ status: 200, data: goods_products.docs, total: goods_products.total, limit: goods_products.limit, page: goods_products.page, pages: goods_products.pages, message: 'Goods of all kinds Products fetched successfully' });
                             }
                             else {
-                                res.status(400).send({ status: 400, data: {}, message: 'No Goods of all kinds Products found' });
+                                res.status(400).send({ status: 400, message: 'No Goods of all kinds Products found' });
                             }
                         }
                     }
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Category not found' });
+                    res.status(400).send({ status: 400, message: 'Category not found' });
                 }
             }
         } catch (e) {
@@ -1622,7 +1622,7 @@ class productController {
                         let productUpdate = await productRepo.updateProductById(updateObj, req.params.id);
                         res.status(200).send({ status: 200, data: electronicsUpdate, message: 'Product Updated Successfully' });
                     } else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
+                        res.status(400).send({ status: 400, message: 'Product could not be updated' });
                     }
                 }
                 else if (categoryInfo.title === 'Real Estate') {
@@ -1698,7 +1698,7 @@ class productController {
                         let productUpdate = await productRepo.updateProductById(updateObj, req.params.id);
                         res.status(200).send({ status: 200, data: propertyUpdate, message: 'Product Updated Successfully' });
                     } else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
+                        res.status(400).send({ status: 400, message: 'Product could not be updated' });
                     }
                 }
                 else if (categoryInfo.title === 'Jobs') {
@@ -1764,7 +1764,7 @@ class productController {
                         let productUpdate = await productRepo.updateProductById(updateObj, req.params.id);
                         res.status(200).send({ status: 200, data: jobUpdate, message: 'Product Updated Successfully' });
                     } else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
+                        res.status(400).send({ status: 400, message: 'Product could not be updated' });
                     }
                 }
                 else if (categoryInfo.title === 'Goods of all kinds') {
@@ -1840,7 +1840,7 @@ class productController {
                         let productUpdate = await productRepo.updateProductById(updateObj, req.params.id);
                         res.status(200).send({ status: 200, data: goodsUpdate, message: 'Product Updated Successfully' });
                     } else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
+                        res.status(400).send({ status: 400, message: 'Product could not be updated' });
                     }
                 }
                 else if (categoryInfo.title === 'Freelancer') {
@@ -1901,7 +1901,7 @@ class productController {
                         let productUpdate = await productRepo.updateProductById(updateObj, req.params.id);
                         res.status(200).send({ status: 200, data: freelancerUpdate, message: 'Product Updated Successfully' });
                     } else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
+                        res.status(400).send({ status: 400, message: 'Product could not be updated' });
                     }
                 }
                 else if (categoryInfo.title === 'Lessons & Courses') {
@@ -1962,7 +1962,7 @@ class productController {
                         let productUpdate = await productRepo.updateProductById(updateObj, req.params.id);
                         res.status(200).send({ status: 200, data: lessoncourseUpdate, message: 'Product Updated Successfully' });
                     } else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
+                        res.status(400).send({ status: 400, message: 'Product could not be updated' });
                     }
                 }
                 else if (categoryInfo.title === 'Fashion & Beauty') {
@@ -2038,11 +2038,11 @@ class productController {
                         let productUpdate = await productRepo.updateProductById(updateObj, req.params.id);
                         res.status(200).send({ status: 200, data: fashionproductUpdate, message: 'Product Updated Successfully' });
                     } else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
+                        res.status(400).send({ status: 400, message: 'Product could not be updated' });
                     }
                 }
             } else {
-                res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
+                res.status(400).send({ status: 400, message: 'Product Not Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
