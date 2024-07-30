@@ -276,6 +276,23 @@ const userRepository = {
                             },
                             { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
                             {
+                                $lookup: {
+                                    let: { productID: '$_id' },
+                                    from: "reviews",
+                                    pipeline: [
+                                        {
+                                            $match: {
+                                                $expr: {
+                                                    $eq: ["$productId", "$$productID"]
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    as: "reviews_list"
+                                }
+                            },
+                            // { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
+                            {
                                 $group: {
                                     _id: '$_id',
                                     title: { $first: '$title' },
@@ -290,6 +307,7 @@ const userRepository = {
                                     bid_now: { $first: '$bid_now' },
                                     bid_start_price: { $first: '$bid_start_price' },
                                     bid_increament_value: { $first: '$bid_increament_value' },
+                                    reviews_list: { $first: '$reviews_list' },
                                     bid_entry: { $first: '$bid_entry' },
                                     createdAt: { $first: '$createdAt' }
                                 }
