@@ -10,7 +10,7 @@ const JobProposalRepository = {
             }
             return jobProposalUpdate;
         } catch (e) {
-            return e;
+            throw e;
         }
     },
 
@@ -70,7 +70,7 @@ const JobProposalRepository = {
                 return job_proposal;
             }
         } catch (e) {
-            return e;
+            throw e;
         }
     }
 
