@@ -28,7 +28,7 @@ class UserProductViewRecordController {
                 }
             }
         } catch (e) {
-            res.status(500).send({ status: 500, message: e.message });
+            res.status(500).send({ message: e.message });
         }
     };
 
@@ -41,7 +41,7 @@ class UserProductViewRecordController {
                 res.status(201).send({ status: 201, message: 'No Record Found' });
             }
         } catch (e) {
-            res.status(500).send({ status: 500, message: e.message });
+            res.status(500).send({ message: e.message });
         }
     };
 }
