@@ -390,6 +390,10 @@ const userRepository = {
                         pending_connection_details: { $first: '$pending_connection_details' },
 
                         about: { $first: '$job_profile_details.about' },
+                        education: { $first: '$job_profile_details.education' },
+                        experience: { $first: '$job_profile_details.experience' },
+                        languages: { $first: '$job_profile_details.languages' },
+                        skills: { $first: '$job_profile_details.skills' },
                         cover_photo: { $first: '$cover_photo' },
                         gender: { $first: '$gender' },
                         country: { $first: '$country' },
