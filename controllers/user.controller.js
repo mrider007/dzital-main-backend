@@ -377,8 +377,8 @@ class userController {
                     data: null
                 });
             }
-        } catch (error) {
-            res.status(500).send({ message: error.message });
+        } catch (e) {
+            res.status(500).send({ message: e.message });
         }
     };
 
