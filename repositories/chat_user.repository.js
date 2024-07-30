@@ -9,12 +9,9 @@ const ChatUserRepository = {
             var conditions = {};
             var and_clauses = [];
 
-            and_clauses.push({
-                $or: [
-                    { user1_id: new mongoose.Types.ObjectId(req.user._id) },
-                    { user2_id: new mongoose.Types.ObjectId(req.user._id) },
-                ]
-            })
+            const userId = req.user._id;
+
+            and_clauses.push({ $or: [{ user1_id: new mongoose.Types.ObjectId(req.user._id) }, { user2_id: new mongoose.Types.ObjectId(req.user._id) }] });
 
             if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
                 and_clauses.push({
@@ -25,9 +22,7 @@ const ChatUserRepository = {
                 });
             }
 
-            conditions['$and'] = and_clauses
-
-            const userId = req.user._id;
+            conditions['$and'] = and_clauses;
 
             const chatusers = ChatUser.aggregate([
                 {
