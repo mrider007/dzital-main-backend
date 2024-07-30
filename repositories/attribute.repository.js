@@ -349,9 +349,7 @@ const attributeRepository = {
             var conditions = {};
             var and_clauses = [];
 
-            if (_.isEmpty(req.body)) {
-                return null;
-            }
+            and_clauses.push({});
 
             if (_.isObject(req.body) && _.has(req.body, 'category_id') && req.body.category_id) {
                 and_clauses.push({ 'category_id': new mongoose.Types.ObjectId(req.body.category_id) });
