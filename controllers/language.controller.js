@@ -11,10 +11,10 @@ class languageController {
             if (!_.isEmpty(saveData) && saveData._id) {
                 res.status(200).send({ status: 200, data: saveData, message: 'Language has been added successfully' });
             } else {
-                res.status(400).send({ status: 400, data: {}, message: 'Language could not be added' });
+                res.status(400).send({ status: 400, message: 'Language could not be added' });
             }
         } catch (e) {
-            res.status(500).send({ status: 500, message: e.message });
+            res.status(500).send({ message: e.message });
         }
     };
 
@@ -25,10 +25,10 @@ class languageController {
             if (!_.isEmpty(languageInfo) && languageInfo._id) {
                 res.status(200).send({ status: 200, data: languageInfo, message: 'Language details has been fetched successfully' });
             } else {
-                res.status(400).send({ status: 400, data: {}, message: 'Language not found' });
+                res.status(400).send({ status: 400, message: 'Language not found' });
             }
         } catch (e) {
-            res.status(500).send({ status: 500, message: e.message });
+            res.status(500).send({ message: e.message });
         }
     };
 
@@ -53,10 +53,10 @@ class languageController {
                 res.status(200).send({ status: 200, data: languages.docs, total: languages.total, limit: languages.limit, page: languages.page, pages: languages.pages, message: 'Language list has been fetched successfully' });
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'No language found' });
+                res.status(400).send({ status: 400, message: 'No Language Found' });
             }
         } catch (e) {
-            res.status(500).send({ status: 500, message: e.message });
+            res.status(500).send({ message: e.message });
         }
     };
 
@@ -70,14 +70,14 @@ class languageController {
                     res.send({ status: 200, data: languageUpdate, message: 'Language has been updated successfully' });
                 }
                 else {
-                    res.send({ status: 400, data: {}, message: 'Language could not be updated' });
+                    res.send({ status: 400, message: 'Language could not be updated' });
                 }
             }
             else {
-                res.send({ status: 400, data: {}, message: 'Language not found' });
+                res.send({ status: 400, message: 'Language not found' });
             }
         } catch (e) {
-            res.status(500).send({ status: 500, message: e.message });
+            res.status(500).send({ message: e.message });
         }
     };
 
@@ -98,7 +98,7 @@ class languageController {
                 res.status(400).send({ status: 400, message: 'Language not found' });
             }
         } catch (e) {
-            res.status(500).send({ status: 500, message: e.message });
+            res.status(500).send({ message: e.message });
         }
     };
 
