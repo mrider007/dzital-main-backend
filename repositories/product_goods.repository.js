@@ -578,7 +578,7 @@ const goodsRepository = {
             }
             return productGoodsUpdate;
         } catch (e) {
-            return e;
+            throw e;
         }
     },
 
