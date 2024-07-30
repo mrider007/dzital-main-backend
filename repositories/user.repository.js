@@ -312,7 +312,6 @@ const userRepository = {
                                     bid_now: { $first: '$bid_now' },
                                     bid_start_price: { $first: '$bid_start_price' },
                                     bid_increament_value: { $first: '$bid_increament_value' },
-                                    reviews_list: { $first: '$reviews_list' },
                                     totalReviews: { $first: '$totalReviews' },
                                     totalRating: { $first: '$totalRating' },
                                     bid_entry: { $first: '$bid_entry' },
@@ -328,6 +327,12 @@ const userRepository = {
                                             else: 0
                                         }
                                     }
+                                }
+                            },
+                            {
+                                $project: {
+                                    totalReviews: 0,
+                                    totalRating: 0
                                 }
                             },
                             { $sort: { _id: 1 } }
