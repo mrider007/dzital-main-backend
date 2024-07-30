@@ -27,7 +27,7 @@ class MeetingController {
             if (_.isEmpty(zoomToken) || !zoomToken._id) {
                 return res.status(400).send({ status: 400, message: 'Meeting can not be created', data: {} });
             }
-            // console.log(zoomToken)
+            
             const expirationTime = new Date(zoomToken.updatedAt + zoomToken.exp * 1000);
             const currentTime = new Date();
 
