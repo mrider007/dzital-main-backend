@@ -47,10 +47,13 @@ const userRepository = {
             var conditions = {};
             var and_clauses = [];
 
-            and_clauses.push({ '_id': req.user._id });
+            and_clauses.push({});
 
             if (!_.isEmpty(req.query) && _.has(req.query, 'user_id')) {
                 and_clauses.push({ '_id': new mongoose.Types.ObjectId(req.query.user_id) });
+            }
+            else {
+                and_clauses.push({ '_id': req.user._id });
             }
 
             conditions['$and'] = and_clauses;
