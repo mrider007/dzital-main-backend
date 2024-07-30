@@ -55,7 +55,7 @@ class ProductElectronicsController {
                     res.status(200).send({ status: 200, data: electronicsInfo, message: 'Electronic product details has been fetched successfully' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                    res.status(400).send({ status: 400, message: 'Product not found' });
                 }
             }
             else {
@@ -65,7 +65,7 @@ class ProductElectronicsController {
                     res.status(200).send({ status: 200, data: electronicsInfo, message: 'Electronic product details has been fetched successfully' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                    res.status(400).send({ status: 400, message: 'Product not found' });
                 }
             }
         } catch (e) {
@@ -141,7 +141,7 @@ class ProductElectronicsController {
                 res.status(200).send({ status: 200, data: electronicsProductSave, message: 'Electronics Product Saved Successfully' });
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'Electronics Product could not be added' });
+                res.status(400).send({ status: 400, message: 'Electronics Product could not be added' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
