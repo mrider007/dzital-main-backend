@@ -67,7 +67,9 @@ class propertyController {
                 }
                 let productBidUpdate = await productRepo.updateProductById(update_obj, real_estate_product_save.product_id);
 
-                res.status(200).send({ status: 200, data: real_estate_product_save, message: 'Real Estate Product Saved Successfully' });
+                const userId = req.user._id;
+                const real_estate_details = await propertyRepo.getRealEstateDetails({ _id: real_estate_product_save._id }, userId);
+                res.status(200).send({ status: 200, data: real_estate_details, message: 'Real Estate Product Saved Successfully' });
             }
             else {
                 res.status(400).send({ status: 400, message: 'Real Estate Product could not be added' });
