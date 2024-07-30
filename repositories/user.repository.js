@@ -320,10 +320,10 @@ const userRepository = {
                             },
                             {
                                 $addFields: {
-                                    average_rating: {
+                                    ratings: {
                                         $cond: {
                                             if: { $gt: ['$totalReviews', 0] },
-                                            then: { $divide: ['$totalRating', '$totalReviews'] },
+                                            then: { $round: [{ $divide: ['$totalRating', '$totalReviews'] }, 2] },
                                             else: 0
                                         }
                                     }
