@@ -11,7 +11,7 @@ const UserJobProfileRepository = {
             }
             return job_profile;
         } catch (e) {
-            return e;
+            throw e;
         }
     },
 
@@ -23,7 +23,7 @@ const UserJobProfileRepository = {
             }
             return jobProfileUpdate;
         } catch (e) {
-            return e;
+            throw e;
         }
     },
 
