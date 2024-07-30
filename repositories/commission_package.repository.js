@@ -25,8 +25,8 @@ const CommissionPackageRepository = {
             ])
 
             return list;
-        } catch (error) {
-            throw error;
+        } catch (e) {
+            throw e;
         }
     },
 
@@ -34,8 +34,8 @@ const CommissionPackageRepository = {
         try {
             const updatePackage = await CommissionPackage.findOneAndUpdate(field, data, { $new: true })
             return updatePackage
-        } catch (error) {
-            throw error;
+        } catch (e) {
+            throw e;
         }
     }
 }
