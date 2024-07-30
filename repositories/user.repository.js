@@ -291,7 +291,12 @@ const userRepository = {
                                     as: "reviews_list"
                                 }
                             },
-                            // { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
+                            {
+                                $addFields: {
+                                    totalReviews: { $size: '$reviews_list' },
+                                    totalRating: { $sum: '$reviews_list.rating' }
+                                }
+                            },
                             {
                                 $group: {
                                     _id: '$_id',
@@ -308,10 +313,24 @@ const userRepository = {
                                     bid_start_price: { $first: '$bid_start_price' },
                                     bid_increament_value: { $first: '$bid_increament_value' },
                                     reviews_list: { $first: '$reviews_list' },
+                                    totalReviews: { $first: '$totalReviews' },
+                                    totalRating: { $first: '$totalRating' },
                                     bid_entry: { $first: '$bid_entry' },
                                     createdAt: { $first: '$createdAt' }
                                 }
-                            }
+                            },
+                            {
+                                $addFields: {
+                                    average_rating: {
+                                        $cond: {
+                                            if: { $gt: ['$totalReviews', 0] },
+                                            then: { $divide: ['$totalRating', '$totalReviews'] },
+                                            else: 0
+                                        }
+                                    }
+                                }
+                            },
+                            { $sort: { _id: 1 } }
                         ],
                         as: "seller_own_products"
                     }
@@ -416,7 +435,6 @@ const userRepository = {
                         languages: { $first: '$job_profile_details.languages' },
                         skills: { $first: '$job_profile_details.skills' },
                         cover_photo: { $first: '$cover_photo' },
-                        gender: { $first: '$gender' },
                         country: { $first: '$country' },
                         city: { $first: '$city' },
                         state: { $first: '$state' },
