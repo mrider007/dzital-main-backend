@@ -370,7 +370,31 @@ const userRepository = {
                         bio: { $first: '$bio' },
                         seller_own_products: { $first: '$seller_own_products' },
                         connection_details: { $first: '$connection_details' },
-                        pending_connection_details: { $first: '$pending_connection_details' }
+                        pending_connection_details: { $first: '$pending_connection_details' },
+
+                        cover_photo: { $first: '$cover_photo' },
+                        gender: { $first: '$gender' },
+                        country: { $first: '$country' },
+                        city: { $first: '$city' },
+                        state: { $first: '$state' },
+                        address: { $first: '$state' },
+                        lat: { $first: '$lat' },
+                        lng: { $first: '$lng' },
+                        default_language: { $first: '$default_language' },
+                        plan_id: { $first: '$plan_id' },
+                        purchased_on: { $first: '$purchased_on' },
+                        status: { $first: '$status' },
+                        wallet_amount: { $first: '$wallet_amount' },
+                        bank_name: { $first: '$bank_name' },
+                        account_number: { $first: '$account_number' },
+                        ifsc_code: { $first: '$ifsc_code' },
+                        beneficiary_name: { $first: '$beneficiary_name' },
+                        company_name: { $first: '$company_name' },
+                        company_address: { $first: '$company_address' },
+                        company_email: { $first: '$company_email' },
+                        company_url: { $first: '$company_url' },
+                        company_contact_number: { $first: '$company_contact_number' },
+                        user_type: { $first: '$user_type' }
                     }
                 },
                 {
