@@ -53,7 +53,7 @@ class productCartController {
                             res.status(200).send({ status: 200, data: cartAdd, message: 'Product is added to your cart' });
                         }
                         else {
-                            res.status(201).send({ status: 201, data: {}, message: 'Product could not be added to cart' });
+                            res.status(201).send({ status: 201, message: 'Product could not be added to cart' });
                         }
                     }
                     else {
@@ -62,16 +62,16 @@ class productCartController {
                             let userCart = await Cart.findOne({ user_id: req.user._id });
                             res.status(200).send({ status: 200, data: userCart, message: 'Product is added to your cart' });
                         } else {
-                            res.status(201).send({ status: 201, data: {}, message: 'Product could not be added to cart' });
+                            res.status(201).send({ status: 201, message: 'Product could not be added to cart' });
                         }
                     }
                 }
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'User not found' });
+                res.status(400).send({ status: 400, message: 'User not found' });
             }
         } catch (e) {
-            return res.status(500).send({ status: 500, message: e.message });
+            res.status(500).send({ message: e.message });
         }
     };
 
@@ -86,7 +86,7 @@ class productCartController {
                         res.status(200).send({ status: 200, data: propertyDetails, message: 'Property details has been fetched successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                        res.status(400).send({ status: 400, message: 'Product not found' });
                     }
                 }
                 else if (categoryInfo.title === 'Electronics') {
@@ -95,7 +95,7 @@ class productCartController {
                         res.status(200).send({ status: 200, data: electronicsDetails, message: 'Product details has been fetched successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                        res.status(400).send({ status: 400, message: 'Product not found' });
                     }
                 }
                 else if (categoryInfo.title === 'Jobs') {
@@ -104,7 +104,7 @@ class productCartController {
                         res.status(200).send({ status: 200, data: jobDetails, message: 'Product details has been fetched successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                        res.status(400).send({ status: 400, message: 'Product not found' });
                     }
                 }
                 else if (categoryInfo.title === 'Fashion & Beauty') {
@@ -113,7 +113,7 @@ class productCartController {
                         res.status(200).send({ status: 200, data: fashionDetails, message: 'Product details has been fetched successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                        res.status(400).send({ status: 400, message: 'Product not found' });
                     }
                 }
                 else if (categoryInfo.title === 'Goods of all kinds') {
@@ -122,7 +122,7 @@ class productCartController {
                         res.status(200).send({ status: 200, data: goodsDetails, message: 'Product details has been fetched successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                        res.status(400).send({ status: 400, message: 'Product not found' });
                     }
                 }
                 else if (categoryInfo.title === 'Freelancer') {
@@ -131,7 +131,7 @@ class productCartController {
                         res.status(200).send({ status: 200, data: freelancerDetails, message: 'Product details has been fetched successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                        res.status(400).send({ status: 400, message: 'Product not found' });
                     }
                 }
                 else if (categoryInfo.title === 'Lessons & Courses') {
@@ -140,14 +140,14 @@ class productCartController {
                         res.status(200).send({ status: 200, data: lessonDetails, message: 'Product details has been fetched successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                        res.status(400).send({ status: 400, message: 'Product not found' });
                     }
                 }
             } else {
-                res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                res.status(400).send({ status: 400, message: 'Product not found' });
             }
         } catch (e) {
-            res.status(500).send({ status: 500, message: e.message });
+            res.status(500).send({ message: e.message });
         }
     };
 
@@ -159,10 +159,10 @@ class productCartController {
                 res.status(200).send({ status: 200, data: userCartInfo, message: 'User cart fetched successfully' });
             }
             else {
-                res.status(201).send({ status: 201, data: {}, message: 'You have no items in your cart' });
+                res.status(201).send({ status: 201, message: 'You have no items in your cart' });
             }
         } catch (e) {
-            res.status(500).send({ status: 500, message: e.message });
+            res.status(500).send({ message: e.message });
         }
     };
 
@@ -171,7 +171,7 @@ class productCartController {
             let userId = req.user._id;
             let cart_exist = await Cart.findOne({ user_id: userId, 'items.product_id': { $in: new mongoose.Types.ObjectId(req.body.product_id) } });
             if (_.isEmpty(cart_exist)) {
-                res.status(400).send({ status: 400, data: {}, message: 'Product is not in your cart' });
+                res.status(400).send({ status: 400, message: 'Product is not in your cart' });
             } else {
                 let updateCart = await ProductCartRepository.updateCart({ user_id: userId }, { $pull: { 'items': { product_id: req.body.product_id } } });
                 if (!_.isEmpty(updateCart)) {
@@ -179,11 +179,11 @@ class productCartController {
                     res.status(200).send({ status: 200, data: user_cart, message: 'Product is removed from your cart' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Product could not be removed from cart' });
+                    res.status(400).send({ status: 400, message: 'Product could not be removed from cart' });
                 }
             }
         } catch (e) {
-            res.status(500).send({ status: 500, message: e.message });
+            res.status(500).send({ message: e.message });
         }
     }
 
@@ -195,7 +195,7 @@ class productCartController {
             }
             let cart_exist = await Cart.findOne({ user_id: userId, 'items.product_id': { $in: new mongoose.Types.ObjectId(req.body.product_id) } });
             if (_.isEmpty(cart_exist)) {
-                res.status(400).send({ status: 400, data: {}, message: 'Product is not in your cart' });
+                res.status(400).send({ status: 400, message: 'Product is not in your cart' });
             } else {
                 if (req.body.quantity === 0) {
                     let updateCart = await ProductCartRepository.updateCart({ user_id: userId }, { $pull: { 'items': { product_id: req.body.product_id } } });
@@ -204,7 +204,7 @@ class productCartController {
                         res.status(200).send({ status: 200, data: user_cart, message: 'Product is removed from your cart' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be removed from cart' });
+                        res.status(400).send({ status: 400, message: 'Product could not be removed from cart' });
                     }
                 } else {
                     const index = cart_exist.items.findIndex(item => item.product_id.toString() === req.body.product_id)
@@ -219,12 +219,12 @@ class productCartController {
                         res.status(200).send({ status: 200, data: user_cart, message: 'Quantity updated for that product in cart' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'quantity could not be updated' });
+                        res.status(400).send({ status: 400, message: 'quantity could not be updated' });
                     }
                 }
             }
-        } catch (error) {
-            res.status(500).send({ status: 500, message: error.message });
+        } catch (e) {
+            res.status(500).send({ message: e.message });
         }
     }
 
@@ -237,11 +237,10 @@ class productCartController {
                 res.status(200).send({ status: 200, data: user_cart, message: 'all items removed from the card' });
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'Items can not be removed from the cart' });
+                res.status(400).send({ status: 400, message: 'Items can not be removed from the cart' });
             }
-        } catch (error) {
-            console.log(error)
-            res.status(500).send({ status: 500, message: error.message });
+        } catch (e) {
+            res.status(500).send({ message: e.message });
         }
     }
 
