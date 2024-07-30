@@ -69,18 +69,18 @@ class userController {
                     }
                 }
             }
-        } catch (err) {
-            return { status: 500, message: err.message };
+        } catch (e) {
+            res.status(500).send({ message: e.message });
         }
     };
 
     async login(req, res) {
         try {
             if (!_.has(req.body, 'email')) {
-                res.status(400).send({ status: 400, data: {}, message: 'Email is required' });
+                res.status(400).send({ status: 400, data: {}, message: 'Email is Required' });
             }
             else if (!_.has(req.body, 'password')) {
-                res.status(400).send({ status: 400, data: {}, message: 'Password is required' });
+                res.status(400).send({ status: 400, data: {}, message: 'Password is Required' });
             }
             else {
                 let password = req.body.password;
@@ -97,11 +97,11 @@ class userController {
                     }
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, isLoggedIn: false, message: 'User not Registered!' });
+                    res.status(400).send({ status: 400, isLoggedIn: false, message: 'User Not Registered!' });
                 }
             }
-        } catch (err) {
-            return { status: 500, message: err.message };
+        } catch (e) {
+            res.status(500).send({ message: e.message });
         }
     };
 
@@ -115,7 +115,7 @@ class userController {
                 res.status(400).send({ status: 400, message: 'User Not Found' });
             }
         } catch (e) {
-            res.status(500).send({ status: 500, message: e.message });
+            res.status(500).send({ message: e.message });
         }
     };
 
@@ -147,7 +147,7 @@ class userController {
                 res.status(400).json({ status: 400, message: "Failed to Send Email" });
             }
         } catch (e) {
-            res.status(500).send({ status: 500, message: e.message });
+            res.status(500).send({ message: e.message });
         }
     };
 
@@ -168,7 +168,7 @@ class userController {
                 }
             }
         } catch (e) {
-            res.status(500).send({ status: 500, message: e.message });
+            res.status(500).send({ message: e.message });
         }
     }
 
@@ -220,7 +220,7 @@ class userController {
                 res.status(400).send({ status: 400, message: 'Profile details could not be updated' });
             }
         } catch (e) {
-            res.status(500).send({ status: 500, message: e.message });
+            res.status(500).send({ message: e.message });
         }
     };
 
@@ -239,7 +239,7 @@ class userController {
                 res.status(400).send({ status: 400, message: 'Password could not be updated' });
             }
         } catch (e) {
-            res.status(500).send({ status: 500, message: e.message });
+            res.status(500).send({ message: e.message });
         }
     };
 
@@ -255,7 +255,7 @@ class userController {
                 res.status(400).send({ status: 400, message: 'User not found' });
             }
         } catch (e) {
-            res.status(500).send({ status: 500, message: e.message });
+            res.status(500).send({ message: e.message });
         }
     };
 
@@ -302,7 +302,7 @@ class userController {
                 res.status(200).send({ status: 200, data: userData, token: token, message: "User have successfully registered" });
             }
         } catch (e) {
-            res.status(500).send({ status: 500, message: e.message });
+            res.status(500).send({ message: e.message });
         }
     };
 
@@ -313,10 +313,10 @@ class userController {
                 res.send({ status: 200, data: allUsers, message: 'Users list has been fetched successfully' });
             }
             else {
-                res.send({ status: 400, data: {}, message: 'No Users found' });
+                res.send({ status: 400, message: 'No Users found' });
             }
         } catch (e) {
-            res.status(500).send({ status: 500, message: e.message });
+            res.status(500).send({ message: e.message });
         }
     };
 
@@ -325,7 +325,7 @@ class userController {
             const userUpdate = await User.updateMany({}, { $set: { bio: '', address: '' } });
             res.status(200).send({ status: 200, data: userUpdate, message: 'User bio added updated successfully' });
         } catch (e) {
-            res.status(500).send({ status: 500, message: e.message });
+            res.status(500).send({ message: e.message });
         }
     };
 
@@ -378,7 +378,7 @@ class userController {
                 });
             }
         } catch (error) {
-            res.status(500).send({ status: 500, message: error.message });
+            res.status(500).send({ message: error.message });
         }
     };
 
@@ -392,7 +392,7 @@ class userController {
                 res.status(400).send({ status: 400, message: 'Seller Not Found' });
             }
         } catch (e) {
-            res.status(500).send({ status: 500, message: e.message });
+            res.status(500).send({ message: e.message });
         }
     };
 
