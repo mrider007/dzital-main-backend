@@ -41,7 +41,7 @@ class freelancerController {
                 res.status(200).send({ status: 200, data: freelancerData, message: 'Freelancer Product Added Successfully' });
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'Freelancer Product could not be saved' });
+                res.status(400).send({ status: 400, message: 'Freelancer Product could not be saved' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -58,7 +58,7 @@ class freelancerController {
                     res.status(200).send({ status: 200, data: freelancerInfo, message: 'Product Freelancer details has been fetched successfully' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                    res.status(400).send({ status: 400, message: 'Product not found' });
                 }
             }
             else {
@@ -68,7 +68,7 @@ class freelancerController {
                     res.status(200).send({ status: 200, data: freelancerInfo, message: 'Product Freelancer details has been fetched successfully' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                    res.status(400).send({ status: 400, message: 'Product not found' });
                 }
             }
         } catch (e) {
