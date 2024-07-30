@@ -144,7 +144,7 @@ class productFashionController {
                 res.status(200).send({ status: 200, data: fashionProductSave, message: 'Fashion Product Saved Successfully' });
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'Fashion Product could not be added' });
+                res.status(400).send({ status: 400, message: 'Fashion Product could not be added' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
