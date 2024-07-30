@@ -5,10 +5,13 @@ const TransactionRepository = {
 
     updateById: async (id, data) => {
         try {
-            const updatePayment = await Transaction.findByIdAndUpdate(id, data, { $new: true });
-            return updatePayment
-        } catch (error) {
-            throw error;
+            let paymentUpdate = await Transaction.findByIdAndUpdate(id, data, { new: true, upsert: true }).exec();
+            if (!paymentUpdate) {
+                return null;
+            }
+            return paymentUpdate;
+        } catch (e) {
+            throw e;
         }
     },
 
