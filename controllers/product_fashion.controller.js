@@ -141,7 +141,10 @@ class productFashionController {
                     update_obj.bid_end_date = req.body.bid_end_date
                 }
                 let productUpdate = await productRepo.updateProductById(update_obj, fashionProductSave.product_id);
-                res.status(200).send({ status: 200, data: fashionProductSave, message: 'Fashion Product Saved Successfully' });
+
+                const userId = req.user._id;
+                const fashionDetails = await fashionRepo.getDetails({ _id: fashionProductSave._id }, userId);
+                res.status(200).send({ status: 200, data: fashionDetails, message: 'Fashion Product Saved Successfully' });
             }
             else {
                 res.status(400).send({ status: 400, message: 'Fashion Product could not be added' });
