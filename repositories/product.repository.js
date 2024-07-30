@@ -310,8 +310,8 @@ const productRepository = {
             let allProducts = await Product.aggregatePaginate(products, options);
             return allProducts;
 
-        } catch (error) {
-            throw error;
+        } catch (e) {
+            throw e;
         }
     },
 
