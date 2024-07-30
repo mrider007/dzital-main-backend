@@ -59,7 +59,7 @@ class productEducationController {
                     res.status(200).send({ status: 200, data: lessonDetails, message: 'Lesson and Course details fetched successfully' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                    res.status(400).send({ status: 400, message: 'Product not found' });
                 }
             }
             else {
@@ -69,7 +69,7 @@ class productEducationController {
                     res.status(200).send({ status: 200, data: lessonDetails, message: 'Lesson and Course details fetched successfully' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Product not found' });
+                    res.status(400).send({ status: 400, message: 'Product not found' });
                 }
             }
         } catch (e) {
