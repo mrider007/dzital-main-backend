@@ -66,7 +66,10 @@ class productGoodsController {
                 }
 
                 let productUpdate = await productRepo.updateProductById(update_obj, goodsProductSave.product_id);
-                res.status(200).send({ status: 200, data: goodsProductSave, message: 'Goods Product Added Successfully' });
+
+                const userId = req.user._id;
+                let goodsDetails = await goodsRepo.getDetails({ _id: goodsProductSave._id }, userId);
+                res.status(200).send({ status: 200, data: goodsDetails, message: 'Goods Product Added Successfully' });
             }
             else {
                 res.status(400).send({ status: 400, message: 'Goods Product could not be added' });
