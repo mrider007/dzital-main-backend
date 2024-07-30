@@ -246,7 +246,7 @@ const goodsRepository = {
                                 $match: {
                                     $expr: {
                                         $and: [
-                                            { $eq: ["$_id", "$$categoryId"] },
+                                            { $eq: ["$_id", "$$product"] },
                                         ]
                                     }
                                 }
@@ -372,14 +372,14 @@ const goodsRepository = {
                 { $match: params },
                 {
                     $lookup: {
-                        let: { categoryId: '$category_id' },
+                        let: { category: '$category_id' },
                         from: 'service_categories',
                         pipeline: [
                             {
                                 $match: {
                                     $expr: {
                                         $and: [
-                                            { $eq: ["$_id", "$$categoryId"] },
+                                            { $eq: ["$_id", "$$category"] },
                                         ]
                                     }
                                 }
@@ -475,14 +475,14 @@ const goodsRepository = {
                 },
                 {
                     $lookup: {
-                        let: { subcategoryId: '$sub_category_id' },
+                        let: { subcategory: '$sub_category_id' },
                         from: "attributes",
                         pipeline: [
                             {
                                 $match: {
                                     $expr: {
                                         $and: [
-                                            { $eq: ["$sub_category_id", "$$subcategoryId"] },
+                                            { $eq: ["$sub_category_id", "$$subcategory"] },
                                         ]
                                     }
                                 }
