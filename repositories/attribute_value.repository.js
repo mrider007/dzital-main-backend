@@ -29,12 +29,11 @@ const attributevalueRepository = {
 
     deleteMany: async (product_id) => {
         try {
-            const data = await AttributeValue.deleteMany({ product_id })
-            return data
+            const data = await AttributeValue.deleteMany({ product_id });
+            return data;
         } catch (e) {
             throw e;
         }
-
     }
 
 }
