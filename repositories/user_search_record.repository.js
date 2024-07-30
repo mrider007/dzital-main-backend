@@ -8,7 +8,7 @@ const userProductViewRecordsRepository = {
             var conditions = {};
             var and_clauses = [];
 
-            and_clauses.push({  });
+            and_clauses.push({});
 
             if (_.isObject(req.body) && _.has(req.body, 'categoryId') && req.body.categoryId !== '' && req.body.categoryId !== null) {
                 and_clauses.push({ categoryId: new mongoose.Types.ObjectId(req.body.categoryId) });
