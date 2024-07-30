@@ -360,6 +360,23 @@ const userRepository = {
                 },
                 { $unwind: { path: '$pending_connection_details', preserveNullAndEmptyArrays: true } },
                 {
+                    $lookup: {
+                        let: { user: '$_id' },
+                        from: "user_job_profiles",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $eq: ["$userId", "$$user"]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "job_profile_details"
+                    }
+                },
+                { $unwind: { path: '$job_profile_details', preserveNullAndEmptyArrays: true } },
+                {
                     $group: {
                         _id: '$_id',
                         name: { $first: '$name' },
@@ -372,6 +389,7 @@ const userRepository = {
                         connection_details: { $first: '$connection_details' },
                         pending_connection_details: { $first: '$pending_connection_details' },
 
+                        about: { $first: '$job_profile_details.about' },
                         cover_photo: { $first: '$cover_photo' },
                         gender: { $first: '$gender' },
                         country: { $first: '$country' },
