@@ -117,11 +117,7 @@ const productElectronicsRepository = {
                     }
                 },
                 { $unwind: { path: '$seller_details', preserveNullAndEmptyArrays: true } },
-                {
-                    $addFields: {
-                        'isWishlist': false
-                    }
-                },
+                { $addFields: { 'isWishlist': false } },
                 {
                     $lookup: {
                         let: { productId: '$product_id' },
