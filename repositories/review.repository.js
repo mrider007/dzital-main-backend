@@ -32,15 +32,15 @@ const reviewController = {
 
     list: async (req) => {
         try {
+
             var conditions = {};
             var and_clauses = [];
 
-            and_clauses.push({ productId: new mongoose.Types.ObjectId(req.body.productId) }); //new mongoose.Types.ObjectId(req.body.productId) });
+            and_clauses.push({ productId: new mongoose.Types.ObjectId(req.body.productId) });
 
             if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
                 and_clauses.push({
                     $or: [
-                        // { 'title': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
                     ]
                 });
             }
