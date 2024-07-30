@@ -138,7 +138,10 @@ class ProductElectronicsController {
                     update_obj.bid_end_date = req.body.bid_end_date
                 }
                 let productUpdate = await productRepo.updateProductById(update_obj, electronicsProductSave.product_id);
-                res.status(200).send({ status: 200, data: electronicsProductSave, message: 'Electronics Product Saved Successfully' });
+                
+                const userId = req.user._id;
+                let electronicsDetails = await electronicsRepo.getDetails({ _id: electronicsProductSave._id }, userId);
+                res.status(200).send({ status: 200, data: electronicsDetails, message: 'Electronics Product Saved Successfully' });
             }
             else {
                 res.status(400).send({ status: 400, message: 'Electronics Product could not be added' });
