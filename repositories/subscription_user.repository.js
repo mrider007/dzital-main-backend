@@ -403,7 +403,7 @@ const subscriptionUserRepository = {
                 return updatedSubscription;
             }
         } catch (e) {
-            throw e
+            throw e;
         }
     }
 }
