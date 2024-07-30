@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const AttributeOption = require('../models/attribute_option.model');
-const attributeoptionRepo = require('../repositories/attribute_option.controller');
+const attributeoptionRepo = require('../repositories/attribute_option.repository');
 
 class attributeOptionController {
     constructor() { }
