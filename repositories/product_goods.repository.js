@@ -54,14 +54,14 @@ const goodsRepository = {
             let products = ProductGoods.aggregate([
                 {
                     $lookup: {
-                        let: { categoryId: '$category_id' },
+                        let: { category: '$category_id' },
                         from: "service_categories",
                         pipeline: [
                             {
                                 $match: {
                                     $expr: {
                                         $and: [
-                                            { $eq: ["$_id", "$$categoryId"] },
+                                            { $eq: ["$_id", "$$category"] },
                                         ]
                                     }
                                 }
@@ -97,14 +97,14 @@ const goodsRepository = {
                 },
                 {
                     $lookup: {
-                        let: { productId: '$product_id' },
+                        let: { product: '$product_id' },
                         from: "attribute_values",
                         pipeline: [
                             {
                                 $match: {
                                     $expr: {
                                         $and: [
-                                            { $eq: ["$product_id", "$$productId"] },
+                                            { $eq: ["$product_id", "$$product"] },
                                         ]
                                     }
                                 }
@@ -220,14 +220,14 @@ const goodsRepository = {
             let products = ProductGoods.aggregate([
                 {
                     $lookup: {
-                        let: { categoryId: '$category_id' },
+                        let: { category: '$category_id' },
                         from: "service_categories",
                         pipeline: [
                             {
                                 $match: {
                                     $expr: {
                                         $and: [
-                                            { $eq: ["$_id", "$$categoryId"] },
+                                            { $eq: ["$_id", "$$category"] },
                                         ]
                                     }
                                 }
@@ -294,14 +294,14 @@ const goodsRepository = {
                 },
                 {
                     $lookup: {
-                        let: { productId: '$product_id' },
+                        let: { product: '$product_id' },
                         from: "attribute_values",
                         pipeline: [
                             {
                                 $match: {
                                     $expr: {
                                         $and: [
-                                            { $eq: ["$product_id", "$$productId"] },
+                                            { $eq: ["$product_id", "$$product"] },
                                         ]
                                     }
                                 }
