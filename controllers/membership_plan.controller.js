@@ -9,14 +9,14 @@ class MembershipPlanController {
         try {
             let planInfo = await MembershipPlan.findOne({ title: req.body.title });
             if (!_.isEmpty(planInfo) && planInfo._id) {
-                res.status(400).send({ status: 400, data: {}, message: 'Plan already exists' });
+                res.status(400).send({ status: 400, message: 'Plan already exists' });
             }
             else {
                 let planSave = await MembershipPlan.create(req.body);
                 if (!_.isEmpty(planSave) && planSave._id) {
                     res.status(200).send({ status: 200, data: planSave, message: 'Membership Plan added successfully' });
                 } else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Sorry, unable to add membership plan at this moment!' });
+                    res.status(400).send({ status: 400, message: 'Sorry, unable to add membership plan at this moment!' });
                 }
             }
         } catch (e) {
@@ -86,7 +86,7 @@ class MembershipPlanController {
                 res.status(200).send({ status: 200, data: planInfo, message: 'Membership Plan details fetched successfully' });
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'Membership Plan not found!' });
+                res.status(400).send({ status: 400, message: 'Membership Plan not found!' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -102,10 +102,10 @@ class MembershipPlanController {
                 if (!_.isEmpty(planUpdate) && planUpdate._id) {
                     res.status(200).send({ status: 200, data: planUpdate, message: 'Membership Plan has been updated' });
                 } else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Membership Plan could not be updated' });
+                    res.status(400).send({ status: 400, message: 'Membership Plan could not be updated' });
                 }
             } else {
-                res.status(400).send({ status: 400, data: {}, message: 'Membership Plan not found!' });
+                res.status(400).send({ status: 400, message: 'Membership Plan not found!' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -122,7 +122,7 @@ class MembershipPlanController {
                     res.status(200).send({ status: 200, data: planDelete, message: 'Membership Plan removed successfully' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Membership Plan could not be removed' });
+                    res.status(400).send({ status: 400, message: 'Membership Plan could not be removed' });
                 }
             }
         } catch (e) {
