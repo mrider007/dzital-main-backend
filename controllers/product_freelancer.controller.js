@@ -38,7 +38,10 @@ class freelancerController {
                     }
                 }
                 let productUpdate = await productRepo.updateProductById({ image: freelancerData.image }, freelancerData.product_id);
-                res.status(200).send({ status: 200, data: freelancerData, message: 'Freelancer Product Added Successfully' });
+
+                const userId = req.user._id;
+                let freelancerDetails = await freelancerRepo.getDetails({ _id: freelancerData._id }, userId);
+                res.status(200).send({ status: 200, data: freelancerDetails, message: 'Freelancer Product Added Successfully' });
             }
             else {
                 res.status(400).send({ status: 400, message: 'Freelancer Product could not be saved' });
