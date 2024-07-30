@@ -11,7 +11,7 @@ const JobRepository = {
             }
             return jobUpdate;
         } catch (e) {
-            return e;
+            throw e;
         }
     },
 
@@ -265,7 +265,7 @@ const JobRepository = {
             }
             return jobInfo[0];
         } catch (e) {
-            return e;
+            throw e;
         }
     },
 
@@ -280,7 +280,7 @@ const JobRepository = {
                 return job;
             }
         } catch (e) {
-            throw e
+            throw e;
         }
     },
 
