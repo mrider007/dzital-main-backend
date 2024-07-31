@@ -38,12 +38,12 @@ const reviewController = {
 
             and_clauses.push({ productId: new mongoose.Types.ObjectId(req.body.productId) });
 
-            if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
-                and_clauses.push({
-                    $or: [
-                    ]
-                });
-            }
+            // if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
+            //     and_clauses.push({
+            //         $or: [
+            //         ]
+            //     });
+            // }
 
             conditions['$and'] = and_clauses;
 
