@@ -109,7 +109,18 @@ const attributeRepository = {
             if (!attributes) {
                 return null;
             }
-            var options = { page: req.body.page, limit: req.body.limit };
+
+            let options = { page: 1, limit: 10 };
+
+            if (!_.isEmpty(req.body.keyword_search)) {
+                options.page = 1;
+                options.limit = 10;
+            } else {
+                options.page = req.body.page || 1;
+                options.limit = req.body.limit || 10;
+            }
+
+            //var options = { page: req.body.page, limit: req.body.limit };
             let allAttributes = await Attribute.aggregatePaginate(attributes, options);
             return allAttributes;
         } catch (e) {
