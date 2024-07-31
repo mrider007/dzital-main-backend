@@ -583,6 +583,8 @@ const JobRepository = {
 
             let key = req.body.keyword_search;
 
+            const userId = req.user._id;
+
             if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
                 and_clauses.push({
                     $or: [
@@ -642,12 +644,44 @@ const JobRepository = {
                 },
                 { $unwind: { path: '$user_details', preserveNullAndEmptyArrays: true } },
                 {
+                    $lookup: {
+                        let: { job: '$_id', user_id: userId },
+                        from: "job_applies",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$job_id", "$$job"] },
+                                            { $eq: ["$user_id", "$$user_id"] }
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "job_application"
+                    }
+                },
+                { $unwind: { path: '$job_application', preserveNullAndEmptyArrays: true } },
+                {
+                    $addFields: {
+                        'JobApplied': {
+                            $cond: {
+                                if: { $eq: ['$job_application.user_id', userId] },
+                                then: true,
+                                else: false
+                            }
+                        },
+                    }
+                },
+                {
                     $group: {
                         _id: '$_id',
                         title: { $first: "$title" },
                         image: { $first: '$image' },
                         company_logo: { $first: '$company_logo' },
                         description: { $first: "$description" },
+                        JobApplied: { $first: '$JobApplied' },
                         createdAt: { $first: '$createdAt' }
                     }
                 },
