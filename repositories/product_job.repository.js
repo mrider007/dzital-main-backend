@@ -805,7 +805,7 @@ const JobRepository = {
                     }
                 },
                 { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
-                { $addFields: { 'isWishlist': false } },
+                { $addFields: { 'isWishlist': false, 'JobApplied': false } },
                 {
                     $lookup: {
                         let: { productId: '$product_id' },
