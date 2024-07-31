@@ -32,6 +32,7 @@ router.get('/review/details/:id', request_param.any(), Authentication.Authentica
 router.get('/product/review/delete/:id', request_param.any(), Authentication.Authenticate, ReviewController.reviewDelete);
 router.post('/product/review', uploadFile.any(), Authentication.Authenticate, ReviewController.productReviewAdd);
 router.post('/product/review/list', request_param.any(), ReviewController.productReviewList);
+router.post('/review/list', request_param.any(), Authentication.AuthenticateAdmin, ReviewController.productReviewList);
 router.post('/review/update/:id', request_param.any(), Authentication.Authenticate, ReviewController.reviewUpdate);
 
 module.exports = router;

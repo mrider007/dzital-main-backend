@@ -52,12 +52,11 @@ class ReviewController {
     /** Product Reviews List */
     async productReviewList(req, res) {
         try {
-            const productId = new mongoose.Types.ObjectId(req.body.productId);
             let productReviews = await reviewRepo.list(req);
             if (!_.isEmpty(productReviews)) {
                 res.status(200).send({ status: 200, data: productReviews, message: 'Product Reviews List Fetched Successfully' });
             } else {
-                res.status(400).send({ status: 400, message: 'Product Not Found!' });
+                res.status(400).send({ status: 400, message: 'No Reviews Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
