@@ -1083,6 +1083,37 @@ const JobRepository = {
                 },
                 { $unwind: { path: '$seller_details', preserveNullAndEmptyArrays: true } },
                 {
+                    $lookup: {
+                        let: { job: '$_id', user_id: userId },
+                        from: "job_applies",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$job_id", "$$job"] },
+                                            { $eq: ["$user_id", "$$user_id"] }
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "job_application"
+                    }
+                },
+                { $unwind: { path: '$job_application', preserveNullAndEmptyArrays: true } },
+                {
+                    $addFields: {
+                        'JobApplied': {
+                            $cond: {
+                                if: { $eq: ['$job_application.user_id', userId] },
+                                then: true,
+                                else: false
+                            }
+                        },
+                    }
+                },
+                {
                     $group: {
                         _id: '$_id',
                         title: { $first: "$title" },
@@ -1098,7 +1129,8 @@ const JobRepository = {
                         image: { $first: '$image' },
                         company_logo: { $first: '$company_logo' },
                         createdAt: { $first: '$createdAt' },
-                        isWishlist: { $first: '$isWishlist' }
+                        isWishlist: { $first: '$isWishlist' },
+                        JobApplied: { $first: '$JobApplied' }
                     }
                 },
                 { $match: conditions },
