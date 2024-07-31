@@ -63,6 +63,20 @@ class ReviewController {
         }
     };
 
+    /** Admin Product Reviews List */
+    async adminProductReviewList(req, res) {
+        try {
+            let productReviews = await reviewRepo.getReviews(req);
+            if (!_.isEmpty(productReviews)) {
+                res.status(200).send({ status: 200, data: productReviews, message: 'Product Reviews List Fetched Successfully' });
+            } else {
+                res.status(400).send({ status: 400, message: 'No Reviews Found' });
+            }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+
     async reviewDetails(req, res) {
         try {
             let review_id = new mongoose.Types.ObjectId(req.params.id);
