@@ -318,6 +318,28 @@ const productFashionRepository = {
                 { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
+                        let: { productID: '$product_id' },
+                        from: "reviews",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $eq: ["$productId", "$$productID"]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "reviews_list"
+                    }
+                },
+                {
+                    $addFields: {
+                        totalReviews: { $size: '$reviews_list' },
+                        totalRating: { $sum: '$reviews_list.rating' }
+                    }
+                },
+                {
+                    $lookup: {
                         from: "product_wishlists",
                         let: { productId: "$product_id", user_id: userId },
                         pipeline: [
@@ -409,9 +431,28 @@ const productFashionRepository = {
                         product_id: { $first: '$product_id' },
                         category_id: { $first: '$category_id' },
                         sub_category_id: { $first: "$sub_category_id" },
+                        totalReviews: { $first: '$totalReviews' },
+                        totalRating: { $first: '$totalRating' },
                         quantity: { $first: '$quantity' },
                         createdAt: { $first: '$createdAt' },
                         isWishlist: { $first: '$isWishlist' }
+                    }
+                },
+                {
+                    $addFields: {
+                        ratings: {
+                            $cond: {
+                                if: { $gt: ['$totalReviews', 0] },
+                                then: { $round: [{ $divide: ['$totalRating', '$totalReviews'] }, 2] },
+                                else: 0
+                            }
+                        }
+                    }
+                },
+                {
+                    $project: {
+                        totalReviews: 0,
+                        totalRating: 0
                     }
                 },
                 { $match: conditions },
