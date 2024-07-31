@@ -31,6 +31,8 @@ router.get('/admin/details', request_param.any(), Authentication.AuthenticateAdm
 router.get('/admin/logout', request_param.any(), Authentication.AuthenticateAdmin, adminController.logout);
 router.get('/admin/user/delete/:id', Authentication.AuthenticateAdmin, adminController.userDelete);
 router.get('/admin/user/profile/:id', Authentication.AuthenticateAdmin, adminController.userDetails);
+router.get('/admin/delete/:id', Authentication.AuthenticateAdmin, adminController.adminDelete);
+router.get('/admin/detail/:id', Authentication.AuthenticateAdmin, adminController.adminDetails);
 router.post('/admin/list', request_param.any(), Authentication.AuthenticateAdmin, adminController.adminList);
 router.post('/admin/register', request_param.any(), adminController.adminRegister);
 router.post('/admin/login', request_param.any(), adminController.adminLogin);
@@ -44,8 +46,6 @@ router.post('/admin/active/users/list', request_param.any(), Authentication.Auth
 router.post('/admin/inactive/users/list', request_param.any(), Authentication.AuthenticateAdmin, adminController.deactivatedUsersList);
 router.post('/admin/non-premium/users/list', request_param.any(), Authentication.AuthenticateAdmin, adminController.nonPremiumUsersList);
 router.post('/admin/add', request_param.any(), Authentication.AuthenticateAdmin, adminController.adminAdd);
-router.get('/admin/detail/:id', Authentication.AuthenticateAdmin, adminController.adminDetails);
 router.post('/admin/update/:id', request_param.any(), Authentication.AuthenticateAdmin, adminController.adminUpdate);
-router.get('/admin/delete/:id', Authentication.AuthenticateAdmin, adminController.adminDelete);
 
 module.exports = router;
