@@ -73,6 +73,7 @@ const reviewController = {
                         as: "product_details"
                     }
                 },
+                { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
                 // {
                 //     $lookup: {
                 //         let: { productID: '$productId' },
