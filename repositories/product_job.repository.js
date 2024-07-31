@@ -856,7 +856,8 @@ const JobRepository = {
                         image: { $first: '$image' },
                         company_logo: { $first: '$company_logo' },
                         createdAt: { $first: '$createdAt' },
-                        isWishlist: { $first: '$isWishlist' }
+                        isWishlist: { $first: '$isWishlist' },
+                        JobApplied: { $first: '$JobApplied' }
                     }
                 },
                 { $match: conditions },
