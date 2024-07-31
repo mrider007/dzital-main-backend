@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Attribute = require('../models/attribute.model');
+const AttributeValue = require('../models/attribute_value.model');
 const attributeRepo = require('../repositories/attribute.repository');
 
 class attributeController {
@@ -98,15 +99,21 @@ class attributeController {
             let attribute_id = new mongoose.Types.ObjectId(req.params.id);
             let attributeInfo = await Attribute.findOne({ _id: attribute_id });
             if (!_.isEmpty(attributeInfo) && attributeInfo._id) {
-                let attributeDelete = await attributeRepo.delete(attribute_id);
-                if (!_.isEmpty(attributeDelete) && attributeDelete._id) {
-                    res.status(200).send({ status: 200, data: attributeDelete, message: 'Attribute removed successfully' });
+                let attributeValueCheck = await AttributeValue.find({ attribute_id: attributeInfo._id });
+                if (_.isEmpty(attributeValueCheck)) {
+                    let attributeDelete = await attributeRepo.delete(attribute_id);
+                    if (!_.isEmpty(attributeDelete) && attributeDelete._id) {
+                        res.status(200).send({ status: 200, data: attributeDelete, message: 'Attribute Removed Successfully' });
+                    }
+                    else {
+                        res.status(400).send({ status: 400, message: 'Attribute Not Removed' });
+                    }
                 }
                 else {
-                    res.status(400).send({ status: 400, message: 'Attribute not removed' });
+                    res.status(400).send({ status: 400, messaage: `Attribute can't be Deleted` });
                 }
             } else {
-                res.status(400).send({ status: 400, messaage: 'Attribute not found' });
+                res.status(400).send({ status: 400, messaage: 'Attribute Not Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
