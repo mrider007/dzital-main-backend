@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
 
 const ReviewSchema = new Schema({
     userId: { type: Schema.Types.ObjectId, ref: 'User', index: true },
@@ -8,5 +9,7 @@ const ReviewSchema = new Schema({
     review: { type: String, index: true, trim: true },
     rating: { type: Number, index: true, trim: true }
 }, { timestamps: true, versionKey: false });
+
+ReviewSchema.plugin(mongooseAggregatePaginate);
 
 module.exports = mongoose.model('Review', ReviewSchema);

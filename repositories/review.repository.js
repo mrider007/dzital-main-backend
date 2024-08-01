@@ -47,7 +47,7 @@ const reviewController = {
 
             conditions['$and'] = and_clauses;
 
-            let reviews = await Review.aggregate([
+            let reviews = Review.aggregate([
                 {
                     $lookup: {
                         let: { productID: '$productId' },
@@ -74,8 +74,6 @@ const reviewController = {
                     }
                 },
                 { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
-                // {
-                //     $lookup: {
                 //         let: { productID: '$productId' },
                 //         from: "products",
                 //         pipeline: [
@@ -147,7 +145,21 @@ const reviewController = {
                 return null;
             }
 
-            return reviews;
+            let options = { page: 1, limit: 10 };
+
+            if (!_.isEmpty(req.body.keyword_search)) {
+                options.page = 1;
+                options.limit = 10;
+            } else {
+                options.page = req.body.page || 1;
+                options.limit = req.body.limit || 10;
+            }
+
+            //var options = { page: req.body.page, limit: req.body.limit };
+            let allReviews = await Review.aggregatePaginate(reviews, options);
+            return allReviews;
+
+            //return reviews;
         } catch (e) {
             throw e;
         }
