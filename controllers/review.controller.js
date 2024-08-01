@@ -68,7 +68,7 @@ class ReviewController {
         try {
             let productReviews = await reviewRepo.getReviews(req);
             if (!_.isEmpty(productReviews)) {
-                res.status(200).send({ status: 200, data: productReviews, message: 'Product Reviews List Fetched Successfully' });
+                res.status(200).send({ status: 200, data: productReviews.docs, total: productReviews.total, limit: productReviews.limit, page: productReviews.page, pages: productReviews.pages, message: 'Product Reviews List Fetched Successfully' });
             } else {
                 res.status(400).send({ status: 400, message: 'No Reviews Found' });
             }
