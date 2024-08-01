@@ -88,11 +88,7 @@ const productEducationRepository = {
                     }
                 },
                 { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
-                {
-                    $addFields: {
-                        'isWishlist': false
-                    }
-                },
+                { $addFields: { 'isWishlist': false } },
                 {
                     $lookup: {
                         let: { productId: '$product_id' },
@@ -657,12 +653,7 @@ const productEducationRepository = {
                         as: "product_plans"
                     }
                 },
-                {
-                    $unwind: {
-                        path: '$product_plans',
-                        preserveNullAndEmptyArrays: true
-                    }
-                },
+                { $unwind: { path: '$product_plans', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
                         from: "subscription_users",
@@ -712,9 +703,7 @@ const productEducationRepository = {
                             {
                                 $sort: { meetingAt: 1 }
                             },
-                            {
-                                $limit: 5
-                            }
+                            { $limit: 5 }
                         ],
                         as: "upcoming_meetings"
                     }
