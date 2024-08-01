@@ -129,6 +129,32 @@ const productEducationRepository = {
                     }
                 },
                 {
+                    $lookup: {
+                        let: { productId: '$product_id' },
+                        from: "subscription_users",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$product_id", "$$productId"] },
+                                            { $eq: ["$status", "Active"] }
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                $group: {
+                                    _id: null,
+                                    totalLearners: { $sum: 1 }
+                                }
+                            }
+                        ],
+                        as: "learners"
+                    }
+                },
+                { $unwind: { path: '$learners', preserveNullAndEmptyArrays: true } },
+                {
                     $group: {
                         _id: '$_id',
                         title: { $first: '$title' },
@@ -145,6 +171,7 @@ const productEducationRepository = {
                         attribute_values: { $first: '$attribute_value_details' },
                         category_id: { $first: '$category_id' },
                         sub_category_id: { $first: "$sub_category_id" },
+                        total_learners: { $first: '$learners.totalLearners' },
                         createdAt: { $first: '$createdAt' }
                     }
                 },
@@ -269,6 +296,26 @@ const productEducationRepository = {
                 { $unwind: { path: '$wishlists', preserveNullAndEmptyArrays: true } },
                 {
                     $lookup: {
+                        from: "subscription_users",
+                        let: { productId: "$product_id", user_id: userId },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$product_id", "$$productId"] },
+                                            { $eq: ["$user_id", "$$user_id"] }
+                                        ],
+                                    },
+                                },
+                            },
+                        ],
+                        as: "subscription",
+                    }
+                },
+                { $unwind: { path: '$subscription', preserveNullAndEmptyArrays: true } },
+                {
+                    $lookup: {
                         let: { productId: '$product_id' },
                         from: "attribute_values",
                         pipeline: [
@@ -319,6 +366,48 @@ const productEducationRepository = {
                     }
                 },
                 {
+                    $addFields: {
+                        'isSubscribed': {
+                            $cond: {
+                                if: { $eq: [userId, null] }, then: false,
+                                else: {
+                                    $cond: {
+                                        if: { $eq: ['$subscription.user_id', userId] },
+                                        then: true,
+                                        else: false
+                                    }
+                                },
+                            }
+                        },
+                    }
+                },
+                {
+                    $lookup: {
+                        let: { productId: '$product_id' },
+                        from: "subscription_users",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$product_id", "$$productId"] },
+                                            { $eq: ["$status", "Active"] }
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                $group: {
+                                    _id: null,
+                                    totalLearners: { $sum: 1 }
+                                }
+                            }
+                        ],
+                        as: "learners"
+                    }
+                },
+                { $unwind: { path: '$learners', preserveNullAndEmptyArrays: true } },
+                {
                     $group: {
                         _id: '$_id',
                         title: { $first: '$title' },
@@ -335,7 +424,9 @@ const productEducationRepository = {
                         sub_category_id: { $first: "$sub_category_id" },
                         createdAt: { $first: '$createdAt' },
                         attribute_values: { $first: '$attribute_value_details' },
-                        isWishlist: { $first: '$isWishlist' }
+                        total_learners: { $first: '$learners.totalLearners' },
+                        isWishlist: { $first: '$isWishlist' },
+                        isSubscribed: { $first: '$isSubscribed' }
                     }
                 },
                 { $match: conditions },
