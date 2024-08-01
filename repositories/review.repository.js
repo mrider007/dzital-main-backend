@@ -74,29 +74,6 @@ const reviewController = {
                     }
                 },
                 { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
-                //         let: { productID: '$productId' },
-                //         from: "products",
-                //         pipeline: [
-                //             {
-                //                 $match: {
-                //                     $expr: {
-                //                         $and: [
-                //                             { $eq: ["$_id", "$$productID"] },
-                //                         ]
-                //                     }
-                //                 }
-                //             },
-                //             {
-                //                 $group: {
-                //                     _id: '$_id',
-                //                     name: { $first: '$name' },
-                //                     image: { $first: '$image' }
-                //                 }
-                //             }
-                //         ],
-                //         as: "product_details"
-                //     }
-                // },
                 {
                     $lookup: {
                         let: { userID: '$userId' },
@@ -155,11 +132,8 @@ const reviewController = {
                 options.limit = req.body.limit || 10;
             }
 
-            //var options = { page: req.body.page, limit: req.body.limit };
             let allReviews = await Review.aggregatePaginate(reviews, options);
             return allReviews;
-
-            //return reviews;
         } catch (e) {
             throw e;
         }
@@ -173,41 +147,9 @@ const reviewController = {
 
             and_clauses.push({ productId: new mongoose.Types.ObjectId(req.body.productId) });
 
-            // if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
-            //     and_clauses.push({
-            //         $or: [
-            //         ]
-            //     });
-            // }
-
             conditions['$and'] = and_clauses;
 
             let reviews = await Review.aggregate([
-                {
-                    $lookup: {
-                        let: { productID: '$productId' },
-                        from: "products",
-                        pipeline: [
-                            {
-                                $match: {
-                                    $expr: {
-                                        $and: [
-                                            { $eq: ["$_id", "$$productID"] },
-                                        ]
-                                    }
-                                }
-                            },
-                            {
-                                $group: {
-                                    _id: '$_id',
-                                    name: { $first: '$name' },
-                                    image: { $first: '$image' }
-                                }
-                            }
-                        ],
-                        as: "product_details"
-                    }
-                },
                 {
                     $lookup: {
                         let: { productID: '$productId' },
