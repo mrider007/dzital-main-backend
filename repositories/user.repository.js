@@ -483,6 +483,77 @@ const userRepository = {
         } catch (e) {
             throw e;
         }
+    },
+
+    getMonthlyPremiumCustomersCount: async () => {
+        try {
+            var conditions = {};
+            var and_clauses = [];
+
+            and_clauses.push({ 'plan_type': 'Premium_Membership' });
+
+            conditions['$and'] = and_clauses;
+
+            let premiumusers = await User.aggregate([
+                {
+                    $lookup: {
+                        let: { plan: '$plan_id' },
+                        from: 'membership_plans',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$plan"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "plan_details"
+                    }
+                },
+                { $unwind: { path: '$plan_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: '$_id',
+                        name: { $first: '$name' },
+                        email: { $first: '$email' },
+                        image: { $first: '$image' },
+                        mobile: { $first: '$mobile' },
+                        address: { $first: '$address' },
+                        plan_id: { $first: '$plan_id' },
+                        plan_title: { $first: '$plan_details.title' },
+                        plan_type: { $first: '$plan_details.type' },
+                        createdAt: { $first: '$createdAt' }
+                    }
+                },
+                { $match: conditions },
+                {
+                    $group: {
+                        _id: { $month: "$createdAt" },
+                        count: { $sum: 1 }
+                    }
+                },
+                { $sort: { "_id": 1 } },
+                {
+                    $project: {
+                        month: "$_id",
+                        count: 1,
+                        _id: 0
+                    }
+                },
+                { $sort: { _id: -1 } }
+            ]);
+
+            if (!premiumusers) {
+                return null;
+            }
+
+            return premiumusers;
+        } catch (e) {
+            throw e;
+        }
     }
 
 }

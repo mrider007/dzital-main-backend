@@ -396,6 +396,20 @@ class userController {
         }
     };
 
+    async customerCount(req, res) {
+        try {
+            let premiumusers = await userRepo.getMonthlyPremiumCustomersCount();
+            // if (!_.isEmpty(premiumusers)) {
+            res.status(200).send({ status: 200, data: premiumusers, message: 'Premium Users List fetched successfully' });
+            // }
+            // else {
+            //     res.status(201).send({ status: 201, data: [], message: 'No Premium User found' });
+            // }
+        } catch (e) {
+            res.status(500).send({ message: e.message });
+        }
+    };
+
 }
 
 module.exports = new userController();

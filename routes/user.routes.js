@@ -42,5 +42,6 @@ router.post('/user/forget-password', request_param.any(), UserController.forgetP
 router.post('/user/new-password', request_param.any(), UserController.newPassword);
 router.post('/chat/user/token/create', Authentication.Authenticate, UserController.createAgoraChatToken);
 router.post('/seller/profile/details', UserController.sellerProfileDetails);
+router.get('/customers/count', Authentication.AuthenticateAdmin, UserController.customerCount);
 
 module.exports = router;
