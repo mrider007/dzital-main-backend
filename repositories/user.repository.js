@@ -127,6 +127,7 @@ const userRepository = {
                         cover_photo: { $first: '$cover_photo' },
                         mobile: { $first: '$mobile' },
                         address: { $first: '$address' },
+                        pincode : { $first: '$pincode' },
                         user_type: { $first: '$user_type' },
                         wallet_amount: { $first: '$wallet_amount' },
                         bio: { $first: '$bio' },
