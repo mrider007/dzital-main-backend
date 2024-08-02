@@ -315,6 +315,9 @@ class StripePaymentController {
                 if (_.isEmpty(saveData) || !saveData._id) {
                     res.status(400).send({ status: 400, data: {}, message: 'Payment could not be verified' });
                 } else {
+                    if (membership_details.type === 'Premium_Membership') {
+                        await User.findByIdAndUpdate(session?.metadata?.user_id, { plan_id: membership_details._id })
+                    }
                     res.status(200).send({ status: 200, data: saveData, message: 'Payment Successful' });
                 }
             } else {
