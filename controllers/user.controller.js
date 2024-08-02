@@ -399,8 +399,9 @@ class userController {
     async customerCount(req, res) {
         try {
             let premiumusers = await userRepo.getMonthlyPremiumCustomersCount();
+            let normalusers = await userRepo
             // if (!_.isEmpty(premiumusers)) {
-            res.status(200).send({ status: 200, data: premiumusers, message: 'Premium Users List fetched successfully' });
+            res.status(200).send({ status: 200, premium_users_count: premiumusers, message: 'Premium Users List fetched successfully' });
             // }
             // else {
             //     res.status(201).send({ status: 201, data: [], message: 'No Premium User found' });

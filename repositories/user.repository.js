@@ -550,7 +550,25 @@ const userRepository = {
                 return null;
             }
 
-            return premiumusers;
+            // Create an array with all 12 months
+            const allMonths = Array.from({ length: 12 }, (_, i) => ({
+                month: i + 1,
+                count: 0
+            }));
+
+            // Merge the actual counts with the allMonths array
+            premiumusers.forEach(item => {
+                allMonths[item.month - 1].count = item.count;
+            });
+
+            //return allMonths;
+
+            // Extract counts into a new array
+            const counts = allMonths.map(item => item.count);
+
+            return counts;
+
+            //return premiumusers;
         } catch (e) {
             throw e;
         }
