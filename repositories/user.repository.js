@@ -562,14 +562,10 @@ const userRepository = {
                 allMonths[item.month - 1].count = item.count;
             });
 
-            //return allMonths;
-
             // Extract counts into a new array
             const counts = allMonths.map(item => item.count);
 
             return counts;
-
-            //return premiumusers;
         } catch (e) {
             throw e;
         }
