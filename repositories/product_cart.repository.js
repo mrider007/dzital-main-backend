@@ -78,7 +78,7 @@ const ProductCartRepository = {
                         user_id: { $first: "$user_id" },
                         createdAt: { $first: '$createdAt' },
                         updatedAt: { $first: '$updatedAt' },
-                        total_price: { $sum: '$items.total_price' },
+                        total_cart_price: { $sum: '$items.total_price' },
                         items: {
                             $push: {
                                 item_details: "$items.product",
