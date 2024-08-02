@@ -893,7 +893,7 @@ const propertyRepository = {
                                                 $expr: {
                                                     $and: [
                                                         { $eq: ["$attribute_id", "$$attributeId"] },
-                                                        { $eq: ["$product_id", "$$productId"] }
+                                                        // { $eq: ["$product_id", "$$productId"] }
                                                     ]
                                                 }
                                             }
@@ -908,6 +908,7 @@ const propertyRepository = {
                                 $group: {
                                     _id: '$_id',
                                     attribute_id: { $first: '$_id' },
+                                    product_id: { $first: '$attribute_values.product_id' },
                                     attribute: { $first: '$attribute' },
                                     value: { $first: '$attribute_values.value' },
                                     createdAt: { $first: '$createdAt' },
