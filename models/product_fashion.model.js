@@ -13,6 +13,7 @@ const productFashionSchema = new Schema({
     lng: { type: Number, default: 0 },
     address: { type: String, default: '', index: true, trim: true },
     price: { type: Number, default: 0 },
+    waist_size: { type: Array, default: [] },
     color: { type: String, default: '' },
     size: { type: Array, default: [] },
     category_id: { type: Schema.Types.ObjectId, ref: 'service_category', index: true },
