@@ -61,6 +61,7 @@ const ProductCartRepository = {
                                     category_slug: { $first: '$category_details.slug' },
                                     sub_category_id: { $first: '$sub_category_id' },
                                     category_name: { $first: '$category_details.title' },
+                                    product_price: { $first: '$product_price' },
                                     image: { $first: '$image' },
                                     createdAt: { $first: '$createdAt' },
                                     updatedAt: { $first: '$updatedAt' },
@@ -83,6 +84,7 @@ const ProductCartRepository = {
                             $push: {
                                 item_details: "$items.product",
                                 quantity: "$items.quantity",
+                                base_price: '$items.product_price',
                                 total_price: "$items.total_price"
                             }
                         }
