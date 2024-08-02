@@ -55,7 +55,7 @@ class productGoodsController {
                     }
                 }
 
-                let update_obj = { image: goodsProductSave.photo }
+                let update_obj = { image: goodsProductSave.photo, product_price: goodsProductSave.price }
                 if (req.body.bid_now === true || req.body.bid_now === "true") {
                     update_obj.bid_now = req.body.bid_now
                     update_obj.bid_start_price = req.body.bid_start_price

@@ -128,7 +128,7 @@ class ProductElectronicsController {
                         attribute_values.push(attributeData);
                     }
                 }
-                let update_obj = { image: electronicsProductSave.photo }
+                let update_obj = { image: electronicsProductSave.photo, product_price: electronicsProductSave.price }
                 if (req.body.bid_now === true || req.body.bid_now === "true") {
                     update_obj.bid_now = req.body.bid_now
                     update_obj.bid_start_price = req.body.bid_start_price
