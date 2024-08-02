@@ -399,13 +399,11 @@ class userController {
     async customerCount(req, res) {
         try {
             let premiumusers = await userRepo.getMonthlyPremiumCustomersCount();
-            let normalusers = await userRepo
-            // if (!_.isEmpty(premiumusers)) {
-            res.status(200).send({ status: 200, premium_users_count: premiumusers, message: 'Premium Users List fetched successfully' });
-            // }
-            // else {
-            //     res.status(201).send({ status: 201, data: [], message: 'No Premium User found' });
-            // }
+            let normalusers = await userRepo.getMonthlyNonPremiumCustomersCount();
+            const totalusers = await userRepo.getMonthlyTotalCustomersCount();
+
+            res.status(200).send({ status: 200, premium_users_count: premiumusers, non_premium_users_count: normalusers, total_users_count: totalusers, message: 'Premium Users List fetched successfully' });
+            
         } catch (e) {
             res.status(500).send({ message: e.message });
         }

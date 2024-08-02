@@ -127,7 +127,7 @@ const userRepository = {
                         cover_photo: { $first: '$cover_photo' },
                         mobile: { $first: '$mobile' },
                         address: { $first: '$address' },
-                        pincode : { $first: '$pincode' },
+                        pincode: { $first: '$pincode' },
                         user_type: { $first: '$user_type' },
                         wallet_amount: { $first: '$wallet_amount' },
                         bio: { $first: '$bio' },
@@ -491,7 +491,16 @@ const userRepository = {
             var conditions = {};
             var and_clauses = [];
 
-            and_clauses.push({ 'plan_type': 'Premium_Membership' });
+            // Get the current year
+            const currentYear = new Date().getFullYear();
+
+            and_clauses.push({
+                'plan_type': 'Premium_Membership',
+                'createdAt': {
+                    $gte: new Date(`${currentYear}-01-01T00:00:00Z`),
+                    $lt: new Date(`${currentYear + 1}-01-01T00:00:00Z`)
+                }
+            });
 
             conditions['$and'] = and_clauses;
 
@@ -569,7 +578,196 @@ const userRepository = {
         } catch (e) {
             throw e;
         }
-    }
+    },
+
+    getMonthlyNonPremiumCustomersCount: async () => {
+        try {
+
+            var conditions = {};
+            var and_clauses = [];
+
+            // Get the current year
+            const currentYear = new Date().getFullYear();
+
+            and_clauses.push({
+                'plan_type': { $ne: 'Premium_Membership' },
+                'createdAt': {
+                    $gte: new Date(`${currentYear}-01-01T00:00:00Z`),
+                    $lt: new Date(`${currentYear + 1}-01-01T00:00:00Z`)
+                }
+            });
+
+            conditions['$and'] = and_clauses;
+
+            let nonpremiumusers = await User.aggregate([
+                {
+                    $lookup: {
+                        let: { plan: '$plan_id' },
+                        from: 'membership_plans',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$plan"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "plan_details"
+                    }
+                },
+                { $unwind: { path: '$plan_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: '$_id',
+                        name: { $first: '$name' },
+                        email: { $first: '$email' },
+                        image: { $first: '$image' },
+                        mobile: { $first: '$mobile' },
+                        address: { $first: '$address' },
+                        plan_id: { $first: '$plan_id' },
+                        plan_title: { $first: '$plan_details.title' },
+                        plan_type: { $first: '$plan_details.type' },
+                        createdAt: { $first: '$createdAt' }
+                    }
+                },
+                { $match: conditions },
+                {
+                    $group: {
+                        _id: { $month: "$createdAt" },
+                        count: { $sum: 1 }
+                    }
+                },
+                { $sort: { "_id": 1 } },
+                {
+                    $project: {
+                        month: "$_id",
+                        count: 1,
+                        _id: 0
+                    }
+                },
+                { $sort: { _id: -1 } }
+            ]);
+
+            if (!nonpremiumusers) {
+                return null;
+            }
+
+            // Create an array with all 12 months
+            const allMonths = Array.from({ length: 12 }, (_, i) => ({
+                month: i + 1,
+                count: 0
+            }));
+
+            // Merge the actual counts with the allMonths array
+            nonpremiumusers.forEach(item => {
+                allMonths[item.month - 1].count = item.count;
+            });
+
+            // Extract counts into a new array
+            const counts = allMonths.map(item => item.count);
+
+            return counts;
+
+        } catch (e) {
+            throw e;
+        }
+    },
+
+    getMonthlyTotalCustomersCount: async () => {
+        try {
+            var conditions = {};
+            var and_clauses = [];
+
+            // Get the current year
+            const currentYear = new Date().getFullYear();
+
+            and_clauses.push({
+                'createdAt': {
+                    $gte: new Date(`${currentYear}-01-01T00:00:00Z`),
+                    $lt: new Date(`${currentYear + 1}-01-01T00:00:00Z`)
+                }
+            });
+
+            conditions['$and'] = and_clauses;
+
+            let totalusers = await User.aggregate([
+                {
+                    $lookup: {
+                        let: { plan: '$plan_id' },
+                        from: 'membership_plans',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$plan"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "plan_details"
+                    }
+                },
+                { $unwind: { path: '$plan_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: '$_id',
+                        name: { $first: '$name' },
+                        email: { $first: '$email' },
+                        image: { $first: '$image' },
+                        mobile: { $first: '$mobile' },
+                        address: { $first: '$address' },
+                        plan_id: { $first: '$plan_id' },
+                        plan_title: { $first: '$plan_details.title' },
+                        plan_type: { $first: '$plan_details.type' },
+                        createdAt: { $first: '$createdAt' }
+                    }
+                },
+                { $match: conditions },
+                {
+                    $group: {
+                        _id: { $month: "$createdAt" },
+                        count: { $sum: 1 }
+                    }
+                },
+                { $sort: { "_id": 1 } },
+                {
+                    $project: {
+                        month: "$_id",
+                        count: 1,
+                        _id: 0
+                    }
+                },
+                { $sort: { _id: -1 } }
+            ]);
+
+            if (!totalusers) {
+                return null;
+            }
+
+            // Create an array with all 12 months
+            const allMonths = Array.from({ length: 12 }, (_, i) => ({
+                month: i + 1,
+                count: 0
+            }));
+
+            // Merge the actual counts with the allMonths array
+            totalusers.forEach(item => {
+                allMonths[item.month - 1].count = item.count;
+            });
+
+            // Extract counts into a new array
+            const counts = allMonths.map(item => item.count);
+
+            return counts;
+        } catch (e) {
+            throw e;
+        }
+    },
 
 }
 
