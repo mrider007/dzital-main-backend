@@ -147,6 +147,64 @@ const serviceRepository = {
         } catch (e) {
             throw e;
         }
+    },
+
+    subCategories: async (req) => {
+        try {
+
+            var conditions = {};
+            var and_clauses = [];
+
+            and_clauses.push({ parentId: new mongoose.Types.ObjectId(req.body.parentId) });
+
+            if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
+                and_clauses.push({
+                    $or: [
+                        { 'title': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
+                    ]
+                });
+            }
+
+            conditions['$and'] = and_clauses;
+
+            let services = Service.aggregate([
+                { $match: conditions },
+                {
+                    $lookup: {
+                        let: { parent_category: '$parentId' },
+                        from: "service_categories",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $eq: ["$_id", "$$parent_category"]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "parent_category"
+                    }
+                },
+                { $unwind: { path: '$parent_category', preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: '$_id',
+                        parentId: { $first: '$parentId' },
+                        title: { $first: '$title' },
+                        category_slug: { $first: '$parent_category.slug' },
+                        createdAt: { $first: '$createdAt' }
+                    }
+                },
+                { $sort: { _id: -1 } }
+            ]);
+            if (!services) {
+                return null;
+            }
+
+            return services;
+        } catch (e) {
+            throw e;
+        }
     }
 
 }
