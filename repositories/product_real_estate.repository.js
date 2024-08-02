@@ -885,7 +885,7 @@ const propertyRepository = {
                             },
                             {
                                 $lookup: {
-                                    let: { attributeId: '$_id' },
+                                    let: { attributeId: '$_id', productId: "$product_id", },
                                     from: "attribute_values",
                                     pipeline: [
                                         {
@@ -893,6 +893,7 @@ const propertyRepository = {
                                                 $expr: {
                                                     $and: [
                                                         { $eq: ["$attribute_id", "$$attributeId"] },
+                                                        { $eq: ["$product_id", "$$productId"] }
                                                     ]
                                                 }
                                             }
