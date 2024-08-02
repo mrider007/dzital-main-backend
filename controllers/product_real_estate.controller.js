@@ -84,7 +84,9 @@ class propertyController {
             if (_.has(req.query, 'userId')) {
                 const userId = new mongoose.Types.ObjectId(req.query.userId);
                 const property_id = new mongoose.Types.ObjectId(req.params.id);
-                const propertyInfo = await propertyRepo.getRealEstateDetails({ _id: property_id }, userId);
+                let realEstateInfo = await Property.findOne({ _id: property_id });
+                const productId = realEstateInfo.product_id;
+                const propertyInfo = await propertyRepo.getRealEstateDetails({ _id: property_id }, userId, productId);
                 if (!_.isEmpty(propertyInfo) && propertyInfo._id) {
                     res.status(200).send({ status: 200, data: propertyInfo, message: 'Real Estate Details has been fetched Successfully' });
                 }

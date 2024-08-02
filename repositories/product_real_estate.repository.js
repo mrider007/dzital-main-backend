@@ -743,7 +743,7 @@ const propertyRepository = {
         }
     },
 
-    getRealEstateDetails: async (params, userId) => {
+    getRealEstateDetails: async (params, userId, productId) => {
         try {
             let property = await Property.aggregate([
                 { $match: params },
@@ -885,7 +885,7 @@ const propertyRepository = {
                             },
                             {
                                 $lookup: {
-                                    let: { attributeId: '$_id', productId: "$product_id", },
+                                    let: { attributeId: '$_id', productId: productId },
                                     from: "attribute_values",
                                     pipeline: [
                                         {
@@ -893,7 +893,7 @@ const propertyRepository = {
                                                 $expr: {
                                                     $and: [
                                                         { $eq: ["$attribute_id", "$$attributeId"] },
-                                                        // { $eq: ["$product_id", "$$productId"] }
+                                                        { $eq: ["$product_id", "$$productId"] }
                                                     ]
                                                 }
                                             }
