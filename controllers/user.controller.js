@@ -402,7 +402,7 @@ class userController {
             let normalusers = await userRepo.getMonthlyNonPremiumCustomersCount();
             const totalusers = await userRepo.getMonthlyTotalCustomersCount();
 
-            res.status(200).send({ status: 200, premium_users_count: premiumusers, non_premium_users_count: normalusers, total_users_count: totalusers, message: 'Premium Users List fetched successfully' });
+            res.status(200).send({ status: 200, premium_users_count: premiumusers, non_premium_users_count: normalusers, total_users_count: totalusers, message: 'Premium Users, Non Premium Users and Total Users Analytics etched successfully' });
             
         } catch (e) {
             res.status(500).send({ message: e.message });
