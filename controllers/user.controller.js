@@ -403,7 +403,17 @@ class userController {
             const totalusers = await userRepo.getMonthlyTotalCustomersCount();
 
             res.status(200).send({ status: 200, premium_users_count: premiumusers, non_premium_users_count: normalusers, total_users_count: totalusers, message: 'Premium Users, Non Premium Users and Total Users Analytics etched successfully' });
-            
+
+        } catch (e) {
+            res.status(500).send({ message: e.message });
+        }
+    };
+
+    async dashboard(req, res) {
+        try {
+            let totalCustomers = await User.find();
+            const customers_count = totalCustomers.length;
+            res.status(200).send({ status: 200, customers_count, message: 'Customers count and earnings' });
         } catch (e) {
             res.status(500).send({ message: e.message });
         }
