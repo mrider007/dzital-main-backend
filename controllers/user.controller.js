@@ -416,9 +416,12 @@ class userController {
             const customers_count = totalCustomers.length;
             let premium_customers = await userRepo.getTotalPremiumCustomersCount();
             const premium_customers_count = premium_customers.length;
-            const subscription_history = await SubscriptionPaymentHistory.find();
-            console.log('xxx', subscription_history);
-            res.status(200).send({ status: 200, customers_count, premium_customers_count, message: 'Customers count and earnings' });
+            const subscription_earnings = await SubscriptionPaymentHistory.find();
+            let totalAmount = subscription_earnings.reduce((sum, item) => sum + item.amount, 0);
+
+            //console.log(totalAmount); // Output will be 350
+            //console.log('xxx', subscription_history);
+            res.status(200).send({ status: 200, customers_count, premium_customers_count, total_earnings: totalAmount, message: 'Customers count and earnings' });
         } catch (e) {
             res.status(500).send({ message: e.message });
         }
