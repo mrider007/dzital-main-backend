@@ -413,7 +413,9 @@ class userController {
         try {
             let totalCustomers = await User.find();
             const customers_count = totalCustomers.length;
-            res.status(200).send({ status: 200, customers_count, message: 'Customers count and earnings' });
+            let premium_customers = await userRepo.getTotalPremiumCustomersCount();
+            const premium_customers_count = premium_customers.length;
+            res.status(200).send({ status: 200, customers_count, premium_customers_count, message: 'Customers count and earnings' });
         } catch (e) {
             res.status(500).send({ message: e.message });
         }

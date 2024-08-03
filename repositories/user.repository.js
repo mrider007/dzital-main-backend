@@ -769,6 +769,64 @@ const userRepository = {
         }
     },
 
+    getTotalPremiumCustomersCount: async () => {
+        try {
+            
+            var conditions = {};
+            var and_clauses = [];
+
+            and_clauses.push({ plan_type: 'Premium_Membership' });
+
+            conditions['$and'] = and_clauses;
+
+            let totalusers = await User.aggregate([
+                {
+                    $lookup: {
+                        let: { plan: '$plan_id' },
+                        from: 'membership_plans',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$plan"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "plan_details"
+                    }
+                },
+                { $unwind: { path: '$plan_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: '$_id',
+                        name: { $first: '$name' },
+                        email: { $first: '$email' },
+                        image: { $first: '$image' },
+                        mobile: { $first: '$mobile' },
+                        address: { $first: '$address' },
+                        plan_id: { $first: '$plan_id' },
+                        plan_title: { $first: '$plan_details.title' },
+                        plan_type: { $first: '$plan_details.type' },
+                        createdAt: { $first: '$createdAt' }
+                    }
+                },
+                { $match: conditions },
+                { $sort: { _id: -1 } }
+            ]);
+
+            if (!totalusers) {
+                return null;
+            }
+
+            return totalusers;
+        } catch (e) {
+            throw e;
+        }
+    }
+
 }
 
 module.exports = userRepository;
