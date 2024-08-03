@@ -14,6 +14,7 @@ const UserJobProfile = require('../models/user_job_profile.model');
 const userJobProfileRepo = require('../repositories/user_job_profile.repository');
 const commission_package = require('../models/commission_package.model');
 const fs = require('fs');
+const SubscriptionPaymentHistory = require('../models/subscription_history.model');
 
 class userController {
     constructor() { }
@@ -415,6 +416,8 @@ class userController {
             const customers_count = totalCustomers.length;
             let premium_customers = await userRepo.getTotalPremiumCustomersCount();
             const premium_customers_count = premium_customers.length;
+            const subscription_history = await SubscriptionPaymentHistory.find();
+            console.log('xxx', subscription_history);
             res.status(200).send({ status: 200, customers_count, premium_customers_count, message: 'Customers count and earnings' });
         } catch (e) {
             res.status(500).send({ message: e.message });
