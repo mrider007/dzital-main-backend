@@ -418,9 +418,7 @@ class userController {
             const premium_customers_count = premium_customers.length;
             const subscription_earnings = await SubscriptionPaymentHistory.find();
             let totalAmount = subscription_earnings.reduce((sum, item) => sum + item.amount, 0);
-
-            //console.log(totalAmount); // Output will be 350
-            //console.log('xxx', subscription_history);
+            
             res.status(200).send({ status: 200, customers_count, premium_customers_count, total_earnings: totalAmount, message: 'Customers count and earnings' });
         } catch (e) {
             res.status(500).send({ message: e.message });
