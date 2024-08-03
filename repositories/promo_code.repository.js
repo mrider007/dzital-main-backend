@@ -29,6 +29,44 @@ const promocodeRepository = {
             conditions['$and'] = and_clauses;
 
             let promo_code = Promocode.aggregate([
+                {
+                    $lookup: {
+                        let: { category: '$category_id' },
+                        from: "service_categories",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$category"] },
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                $group: {
+                                    _id: '$_id',
+                                    title: { $first: '$title' }
+                                }
+                            }
+                        ],
+                        as: "category_details"
+                    }
+                },
+                { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: '$_id',
+                        category_id : { $first: '$category_id' },
+                        category_name: { $first: '$category_details.title' },
+                        title : { $first: '$title' },
+                        type : { $first: '$type' },
+                        value : { $first: '$value' },
+                        status : { $first: '$status' },
+                        expiry_date : { $first: '$expiry_date' },
+                        createdAt : { $first: '$createdAt' }
+                    }
+                },
                 { $match: conditions },
                 { $sort: { _id: -1 } }
             ]);
