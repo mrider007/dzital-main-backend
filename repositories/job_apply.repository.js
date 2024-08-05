@@ -137,7 +137,7 @@ const JobApplyRepository = {
             and_clauses.push({});
 
             conditions['$and'] = and_clauses;
-            
+
             let job_applicants = await JobApply.aggregate([
                 {
                     $lookup: {

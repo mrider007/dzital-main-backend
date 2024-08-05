@@ -131,22 +131,6 @@ const orderRepository = {
 
             const aggregationPipeline = [
                 { $unwind: "$items" },
-                // discount_amount: { $first: '$discount_amount' },
-                //         total_amount: { $first: '$total_amount' },
-                //         payment_mode: { $first: '$payment_mode' },
-                //         items: {
-                //             $push: {
-                //                 title: '$items.product.title',
-                //                 category_slug: '$items.product.category_slug',
-                //                 category_name: '$items.product.category_name',
-                //                 image: '$items.product.image',
-                //                 quantity: "$items.quantity",
-                //                 total_price: "$items.total_price",
-                //                 seller_name: '$items.product.seller_name'
-                //             }
-                //         }
-                //     }
-                // },
                 { $match: conditions },
                 { $sort: { _id: -1 } }
             ];
