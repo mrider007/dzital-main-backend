@@ -85,7 +85,11 @@ const orderRepository = {
                     $group: {
                         _id: "$_id",
                         user_id: { $first: "$user_id" },
+                        order_id: { $first: '$order_id' },
                         order_date: { $first: '$order_date' },
+                        status: { $first: '$status' },
+                        promocode_id: { $first: '$promocode_id' }, 
+                        discount_amount: { $first: '$discount_amount' },
                         total_amount: { $first: '$total_amount' },
                         payment_mode: { $first: '$payment_mode' },
                         items: {
