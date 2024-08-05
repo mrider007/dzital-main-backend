@@ -46,6 +46,21 @@ class orderController {
         }
     };
 
+    /** Seller Order Received List */
+    async sellerOrderReceivedList(req, res) {
+        try {
+            let sellerOrders = await orderRepo.getSellerOrders(req);
+            if (!_.isEmpty(sellerOrders)) {
+                res.status(200).send({ status: 200, data: sellerOrders, message: 'Seller Orders Received List' });
+            }
+            else {
+                res.status(201).send({ status: 201, message: 'No Orders Found' });
+            }
+        } catch (e) {
+            res.status(500).send({ message: e.message });
+        }
+    };
+
 }
 
 module.exports = new orderController();
