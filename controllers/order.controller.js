@@ -6,6 +6,7 @@ const orderRepo = require('../repositories/order.repository');
 class orderController {
     constructor() { }
 
+    /** User Place Order */
     async addOrder(req, res) {
         try {
             req.body.user_id = req.user._id;
@@ -30,6 +31,7 @@ class orderController {
         }
     };
 
+    /** User My Orders List */
     async List(req, res) {
         try {
             let userOrders = await orderRepo.getUserOrders(req);
