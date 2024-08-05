@@ -14,9 +14,7 @@ const ContactUsRepository = {
 
             if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
 
-                // Check if keyword_search has length greater than 0
                 if (key.length > 0) {
-                    // Disable req.body.page and req.body.limit
                     req.body.page = undefined;
                     req.body.limit = undefined;
                 }
@@ -32,7 +30,6 @@ const ContactUsRepository = {
                 return null;
             }
 
-            // Only set options if they are not disabled
             var options = {};
             if (req.body.page !== undefined) {
                 options.page = req.body.page;
