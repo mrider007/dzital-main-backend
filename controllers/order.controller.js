@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Order = require('../models/order.model');
+const Product = require('../models/product.model');
 const orderRepo = require('../repositories/order.repository');
 
 class orderController {
@@ -10,9 +11,15 @@ class orderController {
             req.body.user_id = req.user._id;
             const orderId = 'ORD' + Math.floor(Math.random() * 100000).toString();
             req.body.order_id = orderId;
+
+            const Items = req.body.items;
+            for (let i = 0; i < Items.length; i++) {
+                let product_info = await Product.findOne({ _id: Items[i].product_id });
+                Items[i].category_id = product_info.category_id;
+            }
             let orderData = await Order.create(req.body);
             if (!_.isEmpty(orderData) && orderData._id) {
-                res.status(200).send({ status: 200, message: 'Order Placed Successfully' });
+                res.status(200).send({ status: 200, orderData, message: 'Order Placed Successfully' });
             }
             else {
                 res.status(400).send({ status: 400, message: 'Order could not be added' });
