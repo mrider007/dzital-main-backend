@@ -17,6 +17,7 @@ class orderController {
                 let product_info = await Product.findOne({ _id: Items[i].product_id });
                 Items[i].category_id = product_info.category_id;
             }
+            req.body.final_amount = req.body.total_amount - req.body.discount_amount;
             let orderData = await Order.create(req.body);
             if (!_.isEmpty(orderData) && orderData._id) {
                 res.status(200).send({ status: 200, orderData, message: 'Order Placed Successfully' });
