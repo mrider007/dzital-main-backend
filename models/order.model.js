@@ -16,6 +16,7 @@ const orderSchema = new Schema({
     payment_mode: { type: String, default: '', trim: true },
     status: { type: String, default: '' },
     order_date: { type: Date, default: Date.now() },
+    promocode_id: { type: Schema.Types.ObjectId, ref: 'Promo_code', default: null },
     user_id: { type: Schema.Types.ObjectId, ref: 'User', index: true }
 }, { versionKey: false });
 

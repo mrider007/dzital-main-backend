@@ -8,6 +8,8 @@ class orderController {
     async addOrder(req, res) {
         try {
             req.body.user_id = req.user._id;
+            const orderId = 'ORD' + Math.floor(Math.random() * 100000).toString();
+            req.body.order_id = orderId;
             let orderData = await Order.create(req.body);
             if (!_.isEmpty(orderData) && orderData._id) {
                 res.status(200).send({ status: 200, message: 'Order Placed Successfully' });
