@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Promocode = require('../models/promo_code.model');
 
 const promocodeRepository = {
@@ -24,6 +25,16 @@ const promocodeRepository = {
                     req.body.page = undefined;
                     req.body.limit = undefined;
                 }
+            }
+            if (_.isObject(req.body) && _.has(req.body, 'category_id')) {
+                and_clauses.push({ 'category_id': new mongoose.Types.ObjectId(req.body.category_id) });
+            }
+            if (_.isObject(req.body) && _.has(req.body, 'status')) {
+                and_clauses.push({ 'status': req.body.status });
+            }
+            if (_.isObject(req.body) && _.has(req.body, 'expiry_date')) {
+                const currentDate = new Date()
+                and_clauses.push({ 'expiry_date': { $gt: currentDate } });
             }
 
             conditions['$and'] = and_clauses;
@@ -57,14 +68,14 @@ const promocodeRepository = {
                 {
                     $group: {
                         _id: '$_id',
-                        category_id : { $first: '$category_id' },
+                        category_id: { $first: '$category_id' },
                         category_name: { $first: '$category_details.title' },
-                        title : { $first: '$title' },
-                        type : { $first: '$type' },
-                        value : { $first: '$value' },
-                        status : { $first: '$status' },
-                        expiry_date : { $first: '$expiry_date' },
-                        createdAt : { $first: '$createdAt' }
+                        title: { $first: '$title' },
+                        type: { $first: '$type' },
+                        value: { $first: '$value' },
+                        status: { $first: '$status' },
+                        expiry_date: { $first: '$expiry_date' },
+                        createdAt: { $first: '$createdAt' }
                     }
                 },
                 { $match: conditions },
