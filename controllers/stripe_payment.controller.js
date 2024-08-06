@@ -373,7 +373,7 @@ class StripePaymentController {
                     const orderData = {
                         user_id: session?.metadata?.user_id,
                         discount_amount: Number(session?.metadata?.discount_amount) || 0,
-                        status: session?.payment_status,
+                        status: 'Pending',
                         payment_mode: 'card',
                         final_amount: actual_price,
                         total_amount: actual_price + (Number(session?.metadata?.discount_amount) || 0),
