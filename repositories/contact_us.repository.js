@@ -10,21 +10,13 @@ const ContactUsRepository = {
 
             and_clauses.push({});
 
-            let key = req.body.keyword_search;
-
             if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
-
                 and_clauses.push({
                     $or: [
                         { 'name': { $regex: (req.body.keyword_search).trim(), $options: 'i' } },
                         { 'email': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
                     ]
                 });
-                
-                if (key.length > 0) {
-                    req.body.page = undefined;
-                    req.body.limit = undefined;
-                }
             }
 
             conditions['$and'] = and_clauses;
