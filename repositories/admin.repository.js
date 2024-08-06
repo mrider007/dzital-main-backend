@@ -151,7 +151,7 @@ const adminRepository = {
             var conditions = {};
             var and_clauses = [];
 
-            and_clauses.push({ plan_title: "Premium Plan" });
+            and_clauses.push({ plan_type: "Premium_Membership" });
 
             let key = req.body.keyword_search;
 
@@ -204,6 +204,7 @@ const adminRepository = {
                         register_type: { $first: '$register_type' },
                         plan_id: { $first: '$plan_id' },
                         plan_title: { $first: '$plan_details.title' },
+                        plan_type: { $first: '$plan_details.type' },
                         createdAt: { $first: '$createdAt' },
                         updatedAt: { $first: '$updatedAt' }
                     }
