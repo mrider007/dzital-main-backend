@@ -372,6 +372,7 @@ class StripePaymentController {
                     const actual_price = session?.amount_total / 100
                     const orderData = {
                         user_id: session?.metadata?.user_id,
+                        order_id: 'ORD' + Math.floor(Math.random() * 100000).toString(),
                         discount_amount: Number(session?.metadata?.discount_amount) || 0,
                         status: 'Pending',
                         payment_mode: 'card',
