@@ -704,6 +704,7 @@ const productFashionRepository = {
                         bid_entry: { $first: '$product_details.bid_entry' },
                         bid_start_date: { $first: '$product_details.bid_start_date' },
                         bid_end_date: { $first: '$product_details.bid_end_date' },
+                        product_price: {$first: '$product_details.product_price'},
                         isWishlist: { $first: '$isWishlist' },
                         status: { $first: '$product_details.status' },
                         attributes: { $first: '$attribute_details' },
