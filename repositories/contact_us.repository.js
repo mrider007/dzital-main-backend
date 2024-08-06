@@ -29,12 +29,14 @@ const ContactUsRepository = {
                 return null;
             }
 
-            var options = {};
-            if (req.body.page !== undefined) {
-                options.page = req.body.page;
-            }
-            if (req.body.limit !== undefined) {
-                options.limit = req.body.limit;
+            let options = { page: 1, limit: 10 };
+
+            if (!_.isEmpty(req.body.keyword_search)) {
+                options.page = 1;
+                options.limit = 10;
+            } else {
+                options.page = req.body.page || 1;
+                options.limit = req.body.limit || 10;
             }
             let contactusData = await ContactUs.aggregatePaginate(contactusList, options);
             return contactusData;
