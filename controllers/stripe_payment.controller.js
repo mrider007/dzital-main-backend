@@ -8,6 +8,9 @@ const membership_plan = require('../models/membership_plan.model');
 const membership_user = require('../models/membership_user.model');
 const Transaction = require('../models/transaction.model');
 const User = require('../models/user.model');
+const product_cart = require('../models/product_cart.model');
+const promo_code = require('../models/promo_code.model');
+const Order = require('../models/order.model');
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
@@ -16,6 +19,63 @@ const redirect_url = 'https://www.dzital.com';
 class StripePaymentController {
 
     constructor() { }
+
+    async checkout_payment(req, res) {
+        try {
+            const cartInfo = await product_cart.findOne({ user_id: req.user._id })
+            if (!cartInfo || cartInfo.items.length === 0) {
+                return res.status(404).send({ status: 404, message: "cart is empty" })
+            }
+            let amount = 0
+            let discount = 0
+            cartInfo.items?.forEach((item) => {
+                amount += item.total_price
+            })
+            if (_.has(req.body, 'coupon') && req.body.coupon !== '') {
+                const couponInfo = await promo_code.findById(req.body.coupon)
+                if (couponInfo?.type === 'Flat') {
+                    discount = couponInfo.value
+                }
+                if (couponInfo?.type === 'Percentage') {
+                    discount = (amount * couponInfo.value) / 100;
+                }
+                amount -= discount;
+            }
+            const DOMAIN = req.body?.redirect || redirect_url
+            const session = await stripe.checkout.sessions.create({
+                payment_method_types: ['card'],
+                mode: 'payment',
+                line_items: [
+                    {
+                        price_data: {
+                            currency: 'usd',
+                            product_data: {
+                                name: `${req.user.name} cart checkout`,
+                            },
+                            unit_amount: amount, // Amount in cents (e.g., $20.00)
+                        },
+                        quantity: 1,
+                    },
+                ],
+                metadata: {
+                    user_id: req.user?._id?.toString(),
+                    discount_amount: discount,
+                    promo_code: req.body?.coupon || ''
+                },
+                customer_email: req?.user?.email,
+                success_url: `${DOMAIN}/#/stripe-response/${req.user._id}?session_id={CHECKOUT_SESSION_ID}&type=checkout`,
+                cancel_url: `${DOMAIN}/#/stripe-response/${req.user._id}?session_id={CHECKOUT_SESSION_ID}&type=checkout`,
+            });
+            if (_.isEmpty(session) || !session.id) {
+                res.status(400).send({ status: 400, message: 'Session can not be created' })
+            } else {
+                res.status(200).json({ status: 200, data: session, message: "Checkout session created successfully" });
+            }
+
+        } catch (error) {
+            res.status(500).send({ status: 500, message: error.message });
+        }
+    }
 
     async create_payment(req, res) {
         try {
@@ -283,6 +343,55 @@ class StripePaymentController {
             }
         } catch (error) {
             res.status(500).send({ status: 500, message: error.message });
+        }
+    }
+
+    async verify_checkout_payment(req, res) {
+        try {
+            const { id } = req.body;
+            const session = await stripe.checkout.sessions.retrieve(id);
+            if (session?.payment_status === 'paid' && session?.status === 'complete') {
+                const cartInfo = await product_cart.findOne({ user_id: session?.metadata?.user_id });
+                if (!cartInfo || !cartInfo._id) {
+                    res.status(404).send({ status: 404, message: 'cart item Not Found' });
+                } else {
+                    let list = []
+                    for (let i = 0; i < cartInfo.items.length; i++) {
+                        const product_id = cartInfo.items[i].product_id
+                        const productInfo = await Product.findById(product_id)
+                        let obj = {
+                            product_id: cartInfo.items[i].product_id,
+                            total_price: cartInfo.items[i].total_price,
+                            quantity: cartInfo.items[i].quantity,
+                            category_id: productInfo.category_id,
+                        }
+                        list.push(obj)
+                    }
+
+                    const orderData = {
+                        user_id: session?.metadata?.user_id,
+                        discount_amount: Number(session?.metadata?.discount_amount) || 0,
+                        status: session?.payment_status,
+                        payment_mode: 'card',
+                        final_amount: session?.amount_total,
+                        total_amount: session?.amount_total + (Number(session?.metadata?.discount_amount) || 0),
+                        items: list
+                    }
+                    if (session?.metadata?.promo_code && session?.metadata?.promo_code !== '') {
+                        orderData.promo_code = session?.metadata?.promo_code
+                    }
+                    const newOrder = await Order.create(orderData)
+                    if (_.isEmpty(newOrder) || !newOrder._id) {
+                        res.status(400).send({ status: 400, message: "Order can not be created" })
+                    } else {
+                        res.send({ status: 200, data: newOrder, message: 'payment verified ordered created successfully' })
+                    }
+                }
+            } else {
+                res.status(400).send({ status: 400, data: session, message: 'Payment Failed' });
+            }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
         }
     }
 
