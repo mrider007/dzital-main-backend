@@ -369,17 +369,18 @@ class StripePaymentController {
                         list.push(obj)
                     }
 
+                    const actual_price = session?.amount_total / 100
                     const orderData = {
                         user_id: session?.metadata?.user_id,
                         discount_amount: Number(session?.metadata?.discount_amount) || 0,
                         status: session?.payment_status,
                         payment_mode: 'card',
-                        final_amount: session?.amount_total,
-                        total_amount: session?.amount_total + (Number(session?.metadata?.discount_amount) || 0),
+                        final_amount: actual_price,
+                        total_amount: actual_price + (Number(session?.metadata?.discount_amount) || 0),
                         items: list
                     }
                     if (session?.metadata?.promo_code && session?.metadata?.promo_code !== '') {
-                        orderData.promo_code = session?.metadata?.promo_code
+                        orderData.promocode_id = session?.metadata?.promo_code
                     }
                     const newOrder = await Order.create(orderData)
                     if (_.isEmpty(newOrder) || !newOrder._id) {
