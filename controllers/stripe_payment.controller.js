@@ -11,6 +11,7 @@ const User = require('../models/user.model');
 const product_cart = require('../models/product_cart.model');
 const promo_code = require('../models/promo_code.model');
 const Order = require('../models/order.model');
+const ProductCartRepository = require('../repositories/product_cart.repository');
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
@@ -52,7 +53,7 @@ class StripePaymentController {
                             product_data: {
                                 name: `${req.user.name} cart checkout`,
                             },
-                            unit_amount: amount, // Amount in cents (e.g., $20.00)
+                            unit_amount: amount * 100, // Amount in cents (e.g., $20.00)
                         },
                         quantity: 1,
                     },
@@ -384,6 +385,7 @@ class StripePaymentController {
                     if(_.isEmpty(newOrder) || !newOrder._id){
                         res.status(400).send({status: 400, message: "Order can not be created" })
                     }else{
+                        let updateCart = await ProductCartRepository.updateCart({ user_id: session?.metadata?.user_id }, { 'items': [] });
                         res.send({status: 200, data: newOrder, message: 'payment verified ordered created successfully'})
                     }
                 }
