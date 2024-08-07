@@ -212,13 +212,42 @@ const JobApplyRepository = {
 
             and_clauses.push({ 'user_id': req.user._id });
 
-            // Object(req.body) && _.has(req.body, 'job_id') && req.body.job_id !== '') {
-            //     and_clauses.push({ 'user_idjob_id': new mongoose.Types.ObjectId(req.body.job_id) });
-            // }
-
             conditions['$and'] = and_clauses;
 
             let applied_jobs = JobApply.aggregate([
+                {
+                    $lookup: {
+                        let: { job: '$job_id' },
+                        from: "product_jobs",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$job"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "job_details"
+                    }
+                },
+                { $unwind: { path: '$job_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $group: {
+                        _id: '$_id',
+                        user_id: { $first: '$user_id' },
+                        job_id: { $first: '$job_id' },
+                        job_title: { $first: '$job_details.title' },
+                        status: { $first: '$status' },
+                        name: { $first: '$name' },
+                        email: { $first: '$email' },
+                        mobile: { $first: '$mobile' },
+                        cv: { $first: '$cv' },
+                        createdAt: { $first: '$createdAt' }
+                    }
+                },
                 { $match: conditions },
                 { $sort: { _id: -1 } }
             ]);
