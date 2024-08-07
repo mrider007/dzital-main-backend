@@ -313,6 +313,7 @@ const JobApplyRepository = {
                         job_title: { $first: '$job_details.title' },
                         company_logo: { $first: '$job_details.company_logo' },
                         job_posted_by: { $first: '$job_details.user_name' },
+                        job_posted_by_id: { $first: '$job_details.user_id' },
                         status: { $first: '$status' },
                         name: { $first: '$name' },
                         email: { $first: '$email' },
