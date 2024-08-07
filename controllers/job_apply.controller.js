@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const JobApply = require('../models/job_apply.model');
 const product_jobsModel = require('../models/product_jobs.model');
 const JobApplyRepo = require('../repositories/job_apply.repository');
@@ -31,9 +32,8 @@ class JobApplyController {
             } else {
                 res.status(400).send({ status: 400, message: 'Application could not be saved' });
             }
-
-        } catch (error) {
-            res.send({ status: 500, message: error.message });
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
         }
     };
 
@@ -47,8 +47,23 @@ class JobApplyController {
             } else {
                 res.status(400).send({ status: 400, message: 'No Job Applicants Found' });
             }
-        } catch (error) {
-            res.send({ status: 500, message: error.message });
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
+    /** Job Applications List of a Particular Job */
+    async jobApplicationsList(req, res) {
+        try {
+            const JobId = new mongoose.Types.ObjectId(req.body.job_id);
+            let job_applicants_list = await JobApplyRepo.jobApplicationsList({ job_id: JobId });
+            if (!_.isEmpty(job_applicants_list)) {
+                res.status(200).send({ status: 200, data: job_applicants_list, message: 'Job Applications List' });
+            } else {
+                res.status(400).send({ status: 400, message: 'No Job Application Found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
         }
     };
 

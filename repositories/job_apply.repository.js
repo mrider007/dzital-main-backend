@@ -174,6 +174,22 @@ const JobApplyRepository = {
         } catch (e) {
             throw e;
         }
+    },
+
+    jobApplicationsList: async (params) => {
+        try {
+            let job_applications = await JobApply.aggregate([
+                { $match: params },
+                { $sort: { _id: -1 } }
+            ]);
+
+            if (!job_applications) {
+                return null;
+            }
+            return job_applications;
+        } catch (e) {
+            throw e;
+        }
     }
 }
 
