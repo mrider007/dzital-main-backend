@@ -68,7 +68,7 @@ const PayoutRequestRepository = {
 
     updateOne: async (field, value) => {
         try {
-            const updatedRequest = await PayoutRequest.findOneAndUpdate(field, value, { $new: true });
+            const updatedRequest = await PayoutRequest.findOneAndUpdate(field, value, { $new: true, $upsert: true });
             if (!updatedRequest) {
                 return null;
             }
