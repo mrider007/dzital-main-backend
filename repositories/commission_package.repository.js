@@ -32,7 +32,7 @@ const CommissionPackageRepository = {
 
     updateOne: async (field, data) => {
         try {
-            const updatePackage = await CommissionPackage.findOneAndUpdate(field, data, { $new: true })
+            const updatePackage = await CommissionPackage.findOneAndUpdate(field, data, { $new: true, $upsert: true })
             return updatePackage
         } catch (e) {
             throw e;
