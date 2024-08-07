@@ -176,17 +176,30 @@ const JobApplyRepository = {
         }
     },
 
-    jobApplicationsList: async (params) => {
+    jobApplicationsList: async (req) => {
         try {
-            let job_applications = await JobApply.aggregate([
-                { $match: params },
+            var conditions = {}
+            var and_clauses = []
+
+            and_clauses.push({});
+
+            if (_.isObject(req.body) && _.has(req.body, 'job_id') && req.body.job_id !== '') {
+                and_clauses.push({ 'job_id': new mongoose.Types.ObjectId(req.body.job_id) });
+            }
+
+            conditions['$and'] = and_clauses;
+
+            let job_applications = JobApply.aggregate([
+                { $match: conditions },
                 { $sort: { _id: -1 } }
             ]);
 
             if (!job_applications) {
                 return null;
             }
-            return job_applications;
+            var options = { page: req.body.page || 1, limit: req.body.limit || 10 };
+            let applications = await JobApply.aggregatePaginate(job_applications, options);
+            return applications;
         } catch (e) {
             throw e;
         }

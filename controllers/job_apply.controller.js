@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const JobApply = require('../models/job_apply.model');
 const product_jobsModel = require('../models/product_jobs.model');
 const JobApplyRepo = require('../repositories/job_apply.repository');
@@ -55,10 +54,9 @@ class JobApplyController {
     /** Job Applications List of a Particular Job */
     async jobApplicationsList(req, res) {
         try {
-            const JobId = new mongoose.Types.ObjectId(req.body.job_id);
-            let job_applicants_list = await JobApplyRepo.jobApplicationsList({ job_id: JobId });
+            let job_applicants_list = await JobApplyRepo.jobApplicationsList(req);
             if (!_.isEmpty(job_applicants_list)) {
-                res.status(200).send({ status: 200, data: job_applicants_list, message: 'Job Applications List' });
+                res.status(200).send({ status: 200, data: job_applicants_list.docs, total: job_applicants_list.total, limit: job_applicants_list.limit, page: job_applicants_list.page, pages: job_applicants_list.pages, message: 'Job Applications List' });
             } else {
                 res.status(400).send({ status: 400, message: 'No Job Application Found' });
             }
