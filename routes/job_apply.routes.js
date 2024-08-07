@@ -23,5 +23,6 @@ const uploadFile = multer({ storage: Storage });
 router.post('/job/application', uploadFile.single('file'), Authentication.Authenticate, JobApplyController.addApplication);
 router.post('/job/applicants/list', request_params.any(), Authentication.Authenticate, JobApplyController.jobApplicantsList);
 router.post('/job/applications/list', request_params.any(), Authentication.Authenticate, JobApplyController.jobApplicationsList);
+router.post('/job/applied/list', request_params.any(), Authentication.Authenticate, JobApplyController.userJobAppliedList);
 
 module.exports = router

@@ -203,6 +203,35 @@ const JobApplyRepository = {
         } catch (e) {
             throw e;
         }
+    },
+
+    appliedJobsList: async (req) => {
+        try {
+            var conditions = {}
+            var and_clauses = []
+
+            and_clauses.push({ 'user_id': req.user._id });
+
+            // Object(req.body) && _.has(req.body, 'job_id') && req.body.job_id !== '') {
+            //     and_clauses.push({ 'user_idjob_id': new mongoose.Types.ObjectId(req.body.job_id) });
+            // }
+
+            conditions['$and'] = and_clauses;
+
+            let applied_jobs = JobApply.aggregate([
+                { $match: conditions },
+                { $sort: { _id: -1 } }
+            ]);
+
+            if (!applied_jobs) {
+                return null;
+            }
+            var options = { page: req.body.page || 1, limit: req.body.limit || 10 };
+            let applications = await JobApply.aggregatePaginate(applied_jobs, options);
+            return applications;
+        } catch (e) {
+            throw e;
+        }
     }
 }
 

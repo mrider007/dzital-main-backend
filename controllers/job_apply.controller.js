@@ -1,5 +1,5 @@
 const JobApply = require('../models/job_apply.model');
-const product_jobsModel = require('../models/product_jobs.model');
+const Job = require('../models/product_jobs.model');
 const JobApplyRepo = require('../repositories/job_apply.repository');
 
 class JobApplyController {
@@ -18,7 +18,7 @@ class JobApplyController {
                 return res.status(400).send({ status: 400, message: "You Already Applied For This Job" })
             }
 
-            const jobData = await product_jobsModel.findById(req.body.job_id)
+            const jobData = await Job.findById(req.body.job_id)
             if (_.isEmpty(jobData) || !jobData._id) return res.status(404).send({ status: 404, message: 'Product Not Found' });
             if (jobData.user_id === userId) return res.status(400).send({ status: 400, message: 'You can not apply on your own job' });
 
@@ -59,6 +59,20 @@ class JobApplyController {
                 res.status(200).send({ status: 200, data: job_applicants_list.docs, total: job_applicants_list.total, limit: job_applicants_list.limit, page: job_applicants_list.page, pages: job_applicants_list.pages, message: 'Job Applications List' });
             } else {
                 res.status(400).send({ status: 400, message: 'No Job Application Found' });
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message });
+        }
+    };
+
+    /** User Own Applied Jobs List */
+    async userJobAppliedList(req, res) {
+        try {
+            let job_applied_list = await JobApplyRepo.appliedJobsList(req);
+            if (!_.isEmpty(job_applied_list)) {
+                res.status(200).send({ status: 200, data: job_applied_list, message: 'Applied Jobs List' });
+            } else {
+                res.status(400).send({ status: 400, message: 'No Applied Job Found' });
             }
         } catch (e) {
             res.send({ status: 500, message: e.message });
