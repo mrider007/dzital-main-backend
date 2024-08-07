@@ -35,5 +35,6 @@ router.post('/job/list', request_param.any(), JobController.jobList);
 router.post('/job/update/:id', uploadFile.any(), JobController.jobUpdate);
 router.post('/job/change-status/:id', request_param.any(), JobController.changeStatus);
 router.post('/product/job/list', request_param.any(), JobController.productJobList);
+router.post('/seller/job/list', request_param.any(), Authentication.Authenticate, JobController.sellerJobList);
 
 module.exports = router;

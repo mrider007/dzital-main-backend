@@ -1154,6 +1154,178 @@ const JobRepository = {
         } catch (e) {
             throw e;
         }
+    },
+
+    sellerJobs: async (req) => {
+        try {
+
+            var conditions = [];
+            var and_clauses = [];
+
+            and_clauses.push({ user_id: req.user._id, status: 'Approved' });
+
+            if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
+                and_clauses.push({
+                    $or: [
+                        { 'title': { $regex: (req.body.keyword_search).trim(), $options: 'i' } },
+                        { 'description': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
+                    ]
+                });
+            }
+
+            conditions['$and'] = and_clauses;
+
+            let joblist = Job.aggregate([
+                {
+                    $lookup: {
+                        let: { product: '$product_id' },
+                        from: 'products',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$product"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: 'product_details'
+                    }
+                },
+                { $unwind: { path: '$product_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $lookup: {
+                        let: { category: '$category_id' },
+                        from: 'service_categories',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$category"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: 'category_details'
+                    }
+                },
+                { $unwind: { path: '$category_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $lookup: {
+                        let: { subcategory: '$sub_category_id' },
+                        from: 'service_categories',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$subcategory"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: 'sub_category_details'
+                    }
+                },
+                { $unwind: { path: '$sub_category_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $lookup: {
+                        let: { productId: '$product_id' },
+                        from: "attribute_values",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$product_id", "$$productId"] },
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                $lookup: {
+                                    from: "attributes",
+                                    localField: 'attribute_id',
+                                    foreignField: '_id',
+                                    as: "attribute"
+                                }
+                            },
+                            { $unwind: { path: '$attribute', preserveNullAndEmptyArrays: true } },
+                            {
+                                $group: {
+                                    _id: '$_id',
+                                    attribute: { $first: '$attribute.attribute' },
+                                    value: { $first: '$value' },
+                                }
+                            },
+                            { $sort: { _id: 1 } }
+                        ],
+                        as: "attribute_value_details"
+                    }
+                },
+                {
+                    $lookup: {
+                        let: { job: '$_id' },
+                        from: "job_applies",
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$job_id", "$$job"] }
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "job_application"
+                    }
+                },
+                { $addFields: { total_job_applicants: { $size: '$job_application' } } },
+                {
+                    $group: {
+                        _id: '$_id',
+                        title: { $first: "$title" },
+                        description: { $first: "$description" },
+                        category_id: { $first: "$category_id" },
+                        sub_category_id: { $first: "$sub_category_id" },
+                        category_name: { $first: '$category_details.title' },
+                        sub_category_name: { $first: '$sub_category_details.title' },
+                        status: { $first: '$product_details.status' },
+                        total_job_applicants: { $first: '$total_job_applicants' },
+                        user_id: { $first: '$user_id' },
+                        product_id: { $first: '$product_id' },
+                        address: { $first: '$address' },
+                        company_logo: { $first: '$company_logo' },
+                        createdAt: { $first: '$createdAt' }
+                    }
+                },
+                { $match: conditions },
+                { $sort: { _id: -1 } }
+            ]);
+            if (!joblist) {
+                return null;
+            }
+
+            // Only set options if they are not disabled
+            var options = {};
+            if (req.body.page !== undefined) {
+                options.page = req.body.page;
+            }
+            if (req.body.limit !== undefined) {
+                options.limit = req.body.limit;
+            }
+
+            let jobList = await Job.aggregatePaginate(joblist, options);
+            return jobList;
+        } catch (e) {
+            throw e;
+        }
     }
 
 }

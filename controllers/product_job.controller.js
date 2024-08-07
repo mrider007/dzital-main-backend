@@ -258,6 +258,19 @@ class JobController {
             res.status(500).send({ status: 500, message: e.message });
         }
     };
+
+    async sellerJobList(req, res) {
+        try {
+            let sellerjobs = await jobRepo.sellerJobs(req);
+            if (!_.isEmpty(sellerjobs)) {
+                res.status(200).send({ status: 200, data: sellerjobs, message: 'Seller Jobs List' });
+            } else {
+                res.status(500).send({ status: 500, message: e.message });
+            }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
 }
 
 module.exports = new JobController();
