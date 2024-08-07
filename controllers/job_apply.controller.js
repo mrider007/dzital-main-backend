@@ -70,7 +70,7 @@ class JobApplyController {
         try {
             let job_applied_list = await JobApplyRepo.appliedJobsList(req);
             if (!_.isEmpty(job_applied_list)) {
-                res.status(200).send({ status: 200, data: job_applied_list, message: 'Applied Jobs List' });
+                res.status(200).send({ status: 200, data: job_applied_list.docs, total: job_applied_list.total, limit: job_applied_list.limit, page: job_applied_list.page, pages: job_applied_list.pages, message: 'Applied Jobs List' });
             } else {
                 res.status(400).send({ status: 400, message: 'No Applied Job Found' });
             }
