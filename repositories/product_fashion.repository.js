@@ -656,9 +656,20 @@ const productFashionRepository = {
                             },
                             {
                                 $lookup: {
+                                    let: { attribute: '$attribute_id' },
                                     from: "attributes",
-                                    localField: 'attribute_id',
-                                    foreignField: '_id',
+                                    pipeline: [
+                                        {
+                                            $match: {
+                                                $expr: {
+                                                    $and: [
+                                                        { $eq: ["$_id", "$$attribute"] },
+                                                    ]
+                                                }
+                                            }
+                                        },
+                                        { $sort: { _id: 1 } }
+                                    ],
                                     as: "attribute"
                                 }
                             },
