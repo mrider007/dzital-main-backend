@@ -315,7 +315,7 @@ const JobApplyRepository = {
                         job_posted_by: { $first: '$job_details.user_name' },
                         job_posted_by_user_id: { $first: '$job_details.user_id' },
                         address: { $first: '$job_details.address' },
-                        attribute_values: { $first: '$attribute_values' },
+                        attribute_values: { $first: '$job_details.attribute_values' },
                         status: { $first: '$status' },
                         name: { $first: '$name' },
                         email: { $first: '$email' },
