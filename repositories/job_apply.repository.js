@@ -249,6 +249,41 @@ const JobApplyRepository = {
                             },
                             { $unwind: { path: '$user_details', preserveNullAndEmptyArrays: true } },
                             {
+                                $lookup: {
+                                    let: { productId: '$product_id' },
+                                    from: "attribute_values",
+                                    pipeline: [
+                                        {
+                                            $match: {
+                                                $expr: {
+                                                    $and: [
+                                                        { $eq: ["$product_id", "$$productId"] },
+                                                    ]
+                                                }
+                                            }
+                                        },
+                                        {
+                                            $lookup: {
+                                                from: "attributes",
+                                                localField: 'attribute_id',
+                                                foreignField: '_id',
+                                                as: "attribute"
+                                            }
+                                        },
+                                        { $unwind: { path: '$attribute', preserveNullAndEmptyArrays: true } },
+                                        {
+                                            $group: {
+                                                _id: '$_id',
+                                                attribute: { $first: '$attribute.attribute' },
+                                                value: { $first: '$value' },
+                                            }
+                                        },
+                                        { $sort: { _id: 1 } }
+                                    ],
+                                    as: "attribute_values"
+                                }
+                            },
+                            {
                                 $group: {
                                     _id: '$_id',
                                     title: { $first: '$title' },
@@ -259,6 +294,7 @@ const JobApplyRepository = {
                                     product_id: { $first: '$product_id' },
                                     category_id: { $first: '$category_id' },
                                     sub_category_id: { $first: '$sub_category_id' },
+                                    attribute_values: { $first: '$attribute_values' },
                                     createdAt: { $first: '$createdAt' },
                                     company_logo: { $first: '$company_logo' },
                                     address: { $first: '$address' }
