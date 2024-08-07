@@ -228,6 +228,41 @@ const JobApplyRepository = {
                                         ]
                                     }
                                 }
+                            },
+                            {
+                                $lookup: {
+                                    let: { user: '$user_id' },
+                                    from: "users",
+                                    pipeline: [
+                                        {
+                                            $match: {
+                                                $expr: {
+                                                    $and: [
+                                                        { $eq: ["$_id", "$$user"] },
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    as: "user_details"
+                                }
+                            },
+                            { $unwind: { path: '$user_details', preserveNullAndEmptyArrays: true } },
+                            {
+                                $group: {
+                                    _id: '$_id',
+                                    title: { $first: '$title' },
+                                    description: { $first: '$description' },
+                                    user_name: { $first: '$user_details.name' },
+                                    image: { $first: '$image' },
+                                    user_id: { $first: '$user_id' },
+                                    product_id: { $first: '$product_id' },
+                                    category_id: { $first: '$category_id' },
+                                    sub_category_id: { $first: '$sub_category_id' },
+                                    createdAt: { $first: '$createdAt' },
+                                    company_logo: { $first: '$company_logo' },
+                                    address: { $first: '$address' }
+                                }
                             }
                         ],
                         as: "job_details"
@@ -240,6 +275,8 @@ const JobApplyRepository = {
                         user_id: { $first: '$user_id' },
                         job_id: { $first: '$job_id' },
                         job_title: { $first: '$job_details.title' },
+                        company_logo: { $first: '$job_details.company_logo' },
+                        job_posted_by: { $first: '$job_details.user_name' },
                         status: { $first: '$status' },
                         name: { $first: '$name' },
                         email: { $first: '$email' },
