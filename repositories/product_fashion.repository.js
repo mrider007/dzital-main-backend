@@ -50,6 +50,15 @@ const productFashionRepository = {
                 and_clauses.push({ 'address': { $regex: (req.body.address).trim(), $options: 'i' } });
             }
 
+            if (_.isObject(req.body) && _.has(req.body, 'address') && req.body.address !== '') {
+                and_clauses.push({ 'address': { $regex: (req.body.address).trim(), $options: 'i' } });
+            }
+
+            /** Price Range Filter */
+            if (_.isObject(req.body) && _.has(req.body, 'min_price') && _.has(req.body, 'max_price') && req.body.min_price !== '' && req.body.max_price !== '') {
+                and_clauses.push({ price: { $gte: req.body.min_price, $lte: req.body.max_price } });
+            }
+
             conditions['$and'] = and_clauses;
 
             let products = ProductFashion.aggregate([
@@ -287,6 +296,11 @@ const productFashionRepository = {
 
             if (_.isObject(req.body) && _.has(req.body, 'address') && req.body.address !== '') {
                 and_clauses.push({ 'address': { $regex: (req.body.address).trim(), $options: 'i' } });
+            }
+
+            /** Price Range Filter */
+            if (_.isObject(req.body) && _.has(req.body, 'min_price') && _.has(req.body, 'max_price') && req.body.min_price !== '' && req.body.max_price !== '') {
+                and_clauses.push({ price: { $gte: req.body.min_price, $lte: req.body.max_price } });
             }
 
             conditions['$and'] = and_clauses;
