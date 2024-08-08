@@ -263,7 +263,7 @@ class JobController {
         try {
             let sellerjobs = await jobRepo.sellerJobs(req);
             if (!_.isEmpty(sellerjobs)) {
-                res.status(200).send({ status: 200, data: sellerjobs, message: 'Seller Jobs List' });
+                res.status(200).send({ status: 200, data: sellerjobs.docs, total: sellerjobs.total, limit: sellerjobs.limit, page: sellerjobs.page, pages: sellerjobs.pages, message: 'Seller Jobs List' });
             } else {
                 res.status(500).send({ status: 500, message: e.message });
             }
