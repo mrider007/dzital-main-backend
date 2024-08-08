@@ -1339,8 +1339,8 @@ const JobRepository = {
             if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
                 and_clauses.push({
                     $or: [
-                        { 'name': { $regex: (req.body.keyword_search).trim(), $options: 'i' } },
-                        { 'email': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
+                        { 'applicant_name': { $regex: (req.body.keyword_search).trim(), $options: 'i' } },
+                        { 'applicant_email': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
                     ]
                 });
             }
@@ -1386,62 +1386,7 @@ const JobRepository = {
                     }
                 },
                 { $unwind: { path: '$applicant_details', preserveNullAndEmptyArrays: true } },
-                // { $unwind: { path: '$sub_category_details', preserveNullAndEmptyArrays: true } },
-                // {
-                //     $lookup: {
-                //         let: { productId: '$product_id' },
-                //         from: "attribute_values",
-                //         pipeline: [
-                //             {
-                //                 $match: {
-                //                     $expr: {
-                //                         $and: [
-                //                             { $eq: ["$product_id", "$$productId"] },
-                //                         ]
-                //                     }
-                //                 }
-                //             },
-                //             {
-                //                 $lookup: {
-                //                     from: "attributes",
-                //                     localField: 'attribute_id',
-                //                     foreignField: '_id',
-                //                     as: "attribute"
-                //                 }
-                //             },
-                //             { $unwind: { path: '$attribute', preserveNullAndEmptyArrays: true } },
-                //             {
-                //                 $group: {
-                //                     _id: '$_id',
-                //                     attribute: { $first: '$attribute.attribute' },
-                //                     value: { $first: '$value' },
-                //                 }
-                //             },
-                //             { $sort: { _id: 1 } }
-                //         ],
-                //         as: "attribute_value_details"
-                //     }
-                // },
-                // {
-                //     $lookup: {
-                //         let: { job: '$_id' },
-                //         from: "job_applies",
-                //         pipeline: [
-                //             {
-                //                 $match: {
-                //                     $expr: {
-                //                         $and: [
-                //                             { $eq: ["$job_id", "$$job"] }
-                //                         ]
-                //                     }
-                //                 }
-                //             }
-                //         ],
-                //         as: "job_application"
-                //     }
-                // },
-                // { $addFields: { total_job_applicants: { $size: '$job_application' } } },
-                {
+                                {
                     $group: {
                         _id: '$_id',
                         user_id: { $first: '$user_id' },
