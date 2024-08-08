@@ -1159,7 +1159,7 @@ const JobRepository = {
     sellerJobs: async (req) => {
         try {
 
-            var conditions = [];
+            var conditions = {};
             var and_clauses = [];
 
             and_clauses.push({ user_id: req.user._id, status: 'Approved' });
