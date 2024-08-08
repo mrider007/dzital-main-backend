@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Job = require('../models/product_jobs.model');
+const JobApply = require('../models/job_apply.model');
 
 const JobRepository = {
 
@@ -1323,6 +1324,154 @@ const JobRepository = {
 
             let jobList = await Job.aggregatePaginate(joblist, options);
             return jobList;
+        } catch (e) {
+            throw e;
+        }
+    },
+
+    sellerJobApplications: async (req) => {
+        try {
+            var conditions = {};
+            var and_clauses = [];
+
+            and_clauses.push({ job_id: new mongoose.Types.ObjectId(req.body.job_id) });
+
+            if (_.isObject(req.body) && _.has(req.body, 'keyword_search')) {
+                and_clauses.push({
+                    $or: [
+                        { 'name': { $regex: (req.body.keyword_search).trim(), $options: 'i' } },
+                        { 'email': { $regex: (req.body.keyword_search).trim(), $options: 'i' } }
+                    ]
+                });
+            }
+
+            conditions['$and'] = and_clauses;
+
+            let applications_list = JobApply.aggregate([
+                {
+                    $lookup: {
+                        let: { job: '$job_id' },
+                        from: 'product_jobs',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$job"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: 'job_details'
+                    }
+                },
+                { $unwind: { path: '$job_details', preserveNullAndEmptyArrays: true } },
+                {
+                    $lookup: {
+                        let: { applicant: '$user_id' },
+                        from: 'users',
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$_id", "$$applicant"] },
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: 'applicant_details'
+                    }
+                },
+                { $unwind: { path: '$applicant_details', preserveNullAndEmptyArrays: true } },
+                // { $unwind: { path: '$sub_category_details', preserveNullAndEmptyArrays: true } },
+                // {
+                //     $lookup: {
+                //         let: { productId: '$product_id' },
+                //         from: "attribute_values",
+                //         pipeline: [
+                //             {
+                //                 $match: {
+                //                     $expr: {
+                //                         $and: [
+                //                             { $eq: ["$product_id", "$$productId"] },
+                //                         ]
+                //                     }
+                //                 }
+                //             },
+                //             {
+                //                 $lookup: {
+                //                     from: "attributes",
+                //                     localField: 'attribute_id',
+                //                     foreignField: '_id',
+                //                     as: "attribute"
+                //                 }
+                //             },
+                //             { $unwind: { path: '$attribute', preserveNullAndEmptyArrays: true } },
+                //             {
+                //                 $group: {
+                //                     _id: '$_id',
+                //                     attribute: { $first: '$attribute.attribute' },
+                //                     value: { $first: '$value' },
+                //                 }
+                //             },
+                //             { $sort: { _id: 1 } }
+                //         ],
+                //         as: "attribute_value_details"
+                //     }
+                // },
+                // {
+                //     $lookup: {
+                //         let: { job: '$_id' },
+                //         from: "job_applies",
+                //         pipeline: [
+                //             {
+                //                 $match: {
+                //                     $expr: {
+                //                         $and: [
+                //                             { $eq: ["$job_id", "$$job"] }
+                //                         ]
+                //                     }
+                //                 }
+                //             }
+                //         ],
+                //         as: "job_application"
+                //     }
+                // },
+                // { $addFields: { total_job_applicants: { $size: '$job_application' } } },
+                {
+                    $group: {
+                        _id: '$_id',
+                        user_id: { $first: '$user_id' },
+                        job_id: { $first: '$job_id' },
+                        status: { $first: '$status' },
+                        applicant_name: { $first: '$name' },
+                        applicant_email: { $first: '$email' },
+                        applicant_mobile: { $first: '$mobile' },
+                        cv: { $first: '$cv' },
+                        createdAt: { $first: '$createdAt' }
+                    }
+                },
+                { $match: conditions },
+                { $sort: { _id: -1 } }
+            ]);
+            if (!applications_list) {
+                return null;
+            }
+
+            // Only set options if they are not disabled
+            var options = {};
+            if (req.body.page !== undefined) {
+                options.page = req.body.page;
+            }
+            if (req.body.limit !== undefined) {
+                options.limit = req.body.limit;
+            }
+
+            let applicants_list = await JobApply.aggregatePaginate(applications_list, options);
+            return applicants_list;
         } catch (e) {
             throw e;
         }

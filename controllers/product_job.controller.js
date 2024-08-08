@@ -265,7 +265,20 @@ class JobController {
             if (!_.isEmpty(sellerjobs)) {
                 res.status(200).send({ status: 200, data: sellerjobs.docs, total: sellerjobs.total, limit: sellerjobs.limit, page: sellerjobs.page, pages: sellerjobs.pages, message: 'Seller Jobs List' });
             } else {
-                res.status(500).send({ status: 500, message: e.message });
+                res.status(201).send({ status: 201, message: 'No Job Found' });
+            }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+
+    async sellerJobApplicationsList(req, res) {
+        try {
+            let seller_job_applications = await jobRepo.sellerJobApplications(req);
+            if (!_.isEmpty(seller_job_applications)) {
+                res.status(200).send({ status: 200, data: seller_job_applications.docs, total: seller_job_applications.total, limit: seller_job_applications.limit, page: seller_job_applications.page, pages: seller_job_applications.pages, message: 'Seller Job Applications List' });            
+            } else {
+                res.status(201).send({ status: 201, message: 'No Job Application Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
