@@ -337,6 +337,18 @@ const JobApplyRepository = {
         } catch (e) {
             throw e;
         }
+    },
+
+    updateJobApplication: async (data, id) => {
+        try {
+            const applicationUpdate = await JobApply.findByIdAndUpdate(id, data, { $new: true, upsert: true }).exec();
+            if (!applicationUpdate) {
+                return null;
+            }
+            return applicationUpdate;
+        } catch (e) {
+            throw e
+        }
     }
 }
 

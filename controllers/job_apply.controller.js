@@ -79,6 +79,30 @@ class JobApplyController {
         }
     };
 
+    /** Seller Update Job Application Status */
+    async updateApplication(req, res) {
+        try {
+            const applicantInfo = await JobApply.findById(req.params.id)
+            if (_.isEmpty(applicantInfo) || !applicantInfo._id) {
+                res.status(400).send({ status: 400, message: "Application Not Found" });
+            } else {
+                const jobInfo = await Job.findOne({ '_id': applicantInfo.job_id });
+                if (!_.isEmpty(jobInfo) && jobInfo._id) {
+                    const updateApplication = await JobApplyRepo.updateJobApplication(req.body, jobInfo._id);
+                    if (!_.isEmpty(updateApplication) && updateApplication._id) {
+                        res.status(200).send({ status: 200, data: updateApplication, message: 'Application Updated Successfully' });
+                    } else {
+                        res.status(400).send({ status: 400, message: 'Application could not be updated' });
+                    }
+                } else {
+                    res.status(400).send({ status: 400, message: 'Job Not Found' });
+                }
+            }
+        } catch (e) {
+            res.send({ status: 500, message: e.message })
+        }
+    }
+
 }
 
 module.exports = new JobApplyController();

@@ -24,5 +24,6 @@ router.post('/job/application', uploadFile.single('file'), Authentication.Authen
 router.post('/job/applicants/list', request_params.any(), Authentication.Authenticate, JobApplyController.jobApplicantsList);
 router.post('/job/applications/list', request_params.any(), Authentication.Authenticate, JobApplyController.jobApplicationsList);
 router.post('/job/applied/list', request_params.any(), Authentication.Authenticate, JobApplyController.userJobAppliedList);
+router.post('/job/application/update/:id', Authentication.Authenticate, JobApplyController.updateApplication);
 
 module.exports = router
