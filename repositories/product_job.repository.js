@@ -1345,6 +1345,10 @@ const JobRepository = {
                 });
             }
 
+            if (_.isObject(req.body) && _.has(req.body, 'status') && req.body.status !== '') {
+                and_clauses.push({ 'status': req.body.status });
+            }
+
             conditions['$and'] = and_clauses;
 
             let applications_list = JobApply.aggregate([
@@ -1386,7 +1390,7 @@ const JobRepository = {
                     }
                 },
                 { $unwind: { path: '$applicant_details', preserveNullAndEmptyArrays: true } },
-                                {
+                {
                     $group: {
                         _id: '$_id',
                         user_id: { $first: '$user_id' },
