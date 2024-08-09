@@ -88,7 +88,7 @@ class JobApplyController {
             } else {
                 const jobInfo = await Job.findOne({ '_id': applicantInfo.job_id });
                 if (!_.isEmpty(jobInfo) && jobInfo._id) {
-                    const updateApplication = await JobApplyRepo.updateJobApplication(req.body, jobInfo._id);
+                    const updateApplication = await JobApplyRepo.updateJobApplication(req.body, applicantInfo._id);
                     if (!_.isEmpty(updateApplication) && updateApplication._id) {
                         res.status(200).send({ status: 200, data: updateApplication, message: 'Application Updated Successfully' });
                     } else {
