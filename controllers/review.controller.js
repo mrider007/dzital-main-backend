@@ -159,6 +159,27 @@ class ReviewController {
         }
     };
 
+    /** Admin Review Delete */
+    async adminReviewDelete(req, res) {
+        try {
+            let review_id = new mongoose.Types.ObjectId(req.params.id);
+            let reviewInfo = await Review.findOne({ _id: review_id });
+            if (!_.isEmpty(reviewInfo) && reviewInfo._id) {
+                let reviewDelete = await reviewRepo.delete(review_id);
+                if (!_.isEmpty(reviewDelete) && reviewDelete._id) {
+                    res.status(200).send({ status: 200, data: reviewDelete, message: 'Review Removed Successfully' });
+                }
+                else {
+                    res.status(400).send({ status: 400, message: 'Review could not be removed' });
+                }
+            } else {
+                res.status(400).send({ status: 400, message: 'Review Not Found' });
+            }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+
 }
 
 module.exports = new ReviewController();
