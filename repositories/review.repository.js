@@ -110,6 +110,7 @@ const reviewController = {
                         attachments: { $first: '$attachments' },
                         review: { $first: '$review' },
                         rating: { $first: '$rating' },
+                        status: { $first: '$status' },
                         createdAt: { $first: '$createdAt' },
                         user_name: { $first: '$user_details.name' },
                         user_img: { $first: '$user_details.image' }
@@ -209,6 +210,7 @@ const reviewController = {
                         attachments: { $first: '$attachments' },
                         review: { $first: '$review' },
                         rating: { $first: '$rating' },
+                        status: { $first: '$status' },
                         createdAt: { $first: '$createdAt' },
                         user_name: { $first: '$user_details.name' },
                         user_img: { $first: '$user_details.image' }
