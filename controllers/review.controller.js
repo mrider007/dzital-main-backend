@@ -139,6 +139,26 @@ class ReviewController {
         }
     };
 
+    /** Admin Review Status Update */
+    async reviewStatusUpdate(req, res) {
+        try {
+            let review_id = new mongoose.Types.ObjectId(req.params.id);
+            let reviewInfo = await Review.findOne({ _id: review_id });
+            if (!_.isEmpty(reviewInfo) && reviewInfo._id) {
+                let review_status_update = await reviewRepo.updateById(req.body, review_id);
+                if (!_.isEmpty(review_status_update) && review_status_update._id) {
+                    res.status(200).send({ status: 200, data: review_status_update, message: 'Review Status Updated Successfully' });
+                } else {
+                    res.status(400).send({ status: 400, message: 'Review Status could not be updated' });
+                }
+            } else {
+                res.status(201).send({ status: 400, message: 'Review Not Found!' });
+            }
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+
 }
 
 module.exports = new ReviewController();
