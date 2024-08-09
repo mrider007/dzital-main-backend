@@ -146,7 +146,7 @@ const reviewController = {
             var conditions = {};
             var and_clauses = [];
 
-            and_clauses.push({ productId: new mongoose.Types.ObjectId(req.body.productId) });
+            and_clauses.push({ productId: new mongoose.Types.ObjectId(req.body.productId), status: 'Approved' });
 
             conditions['$and'] = and_clauses;
 
