@@ -1,3 +1,4 @@
+const job_apply = require('../models/job_apply.model');
 const JobApply = require('../models/job_apply.model');
 const product_jobsModel = require('../models/product_jobs.model');
 const JobApplyRepo = require('../repositories/job_apply.repository');
@@ -51,6 +52,29 @@ class JobApplyController {
             res.send({ status: 500, message: error.message });
         }
     };
+
+    async updateApplication (req, res) {
+        try {
+            const applicantInfo = await job_apply.findById(req.params.id)
+            if(_.isEmpty(applicantInfo) || !applicantInfo._id){
+                res.status(404).send({status: 404, message: "Applicant not found"})
+            }else{
+                const jobInfo = await product_jobsModel.findById(applicantInfo.job_id)
+                if(!jobInfo || !jobInfo._id || jobInfo.user_id.toString() !== req.user._id.toString()){
+                    res.status(400).send({status: 400, message: "unable to update applicant 1"})
+                }else{
+                    const updatedApplication = await JobApplyRepo.updateApplicantion({_id: req.params.id}, req.body)
+                    if(_.isEmpty(updatedApplication) || !updatedApplication._id){
+                        res.status(400).send({status: 400, message: "unable to update applicant "})
+                    }else{
+                        res.status(200).send({status: 200, message: "application updated successfully", data: updatedApplication})
+                    }
+                }
+            }
+        } catch (error) {
+            res.status(500).send({status: 500, message: error?.message})
+        }
+    }
 
 }
 

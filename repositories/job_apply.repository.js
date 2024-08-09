@@ -174,6 +174,14 @@ const JobApplyRepository = {
         } catch (e) {
             throw e;
         }
+    },
+    updateApplicantion: async (field, value) => {
+        try {
+            const updateApplicant = await JobApply.findByIdAndUpdate(field, value, {$new: true});
+            return updateApplicant
+        } catch (error) {
+            throw error
+        }
     }
 }
 
