@@ -6,6 +6,7 @@ const ReviewSchema = new Schema({
     userId: { type: Schema.Types.ObjectId, ref: 'User', index: true },
     productId: { type: Schema.Types.ObjectId, ref: 'Product', index: true },
     attachments: { type: Array, default: [] },
+    status: { type: String, default: 'Not Approved', enum: ['Approved', 'Not Approved'] },
     review: { type: String, index: true, trim: true },
     rating: { type: Number, index: true, trim: true }
 }, { timestamps: true, versionKey: false });
