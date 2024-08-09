@@ -34,5 +34,6 @@ router.post('/product/review', uploadFile.any(), Authentication.Authenticate, Re
 router.post('/product/review/list', request_param.any(), ReviewController.productReviewList);
 router.post('/review/list', request_param.any(), Authentication.AuthenticateAdmin, ReviewController.adminProductReviewList);
 router.post('/review/update/:id', request_param.any(), Authentication.Authenticate, ReviewController.reviewUpdate);
+router.post('/reviews/bulk-update', ReviewController.ReviewsBulkUpdate);
 
 module.exports = router;

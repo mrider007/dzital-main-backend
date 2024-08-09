@@ -130,6 +130,15 @@ class ReviewController {
         }
     };
 
+    async ReviewsBulkUpdate(req, res) {
+        try {
+            let reviewsUpdate = await Review.updateMany({}, { $set: { 'status': 'Approved' } });
+            res.status(200).send({ status: 200, data: reviewsUpdate, message: 'Reviews Bulk Updated Successfully' });
+        } catch (e) {
+            res.status(500).send({ status: 500, message: e.message });
+        }
+    };
+
 }
 
 module.exports = new ReviewController();
