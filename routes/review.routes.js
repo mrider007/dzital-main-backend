@@ -30,10 +30,10 @@ const uploadFile = multer({ storage: Storage });
 
 router.get('/review/details/:id', request_param.any(), Authentication.Authenticate, ReviewController.reviewDetails);
 router.get('/product/review/delete/:id', request_param.any(), Authentication.Authenticate, ReviewController.reviewDelete);
+router.get('/reviews/bulk-update', ReviewController.ReviewsBulkUpdate);
 router.post('/product/review', uploadFile.any(), Authentication.Authenticate, ReviewController.productReviewAdd);
 router.post('/product/review/list', request_param.any(), ReviewController.productReviewList);
 router.post('/review/list', request_param.any(), Authentication.AuthenticateAdmin, ReviewController.adminProductReviewList);
 router.post('/review/update/:id', request_param.any(), Authentication.Authenticate, ReviewController.reviewUpdate);
-router.post('/reviews/bulk-update', ReviewController.ReviewsBulkUpdate);
 
 module.exports = router;
