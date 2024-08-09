@@ -31,11 +31,11 @@ const uploadFile = multer({ storage: Storage });
 router.get('/review/details/:id', request_param.any(), Authentication.Authenticate, ReviewController.reviewDetails);
 router.get('/product/review/delete/:id', request_param.any(), Authentication.Authenticate, ReviewController.reviewDelete);
 router.get('/reviews/bulk-update', ReviewController.ReviewsBulkUpdate);
+router.get('/admin/review/delete/:id', request_param.any(), Authentication.AuthenticateAdmin, ReviewController.adminReviewDelete);
 router.post('/product/review', uploadFile.any(), Authentication.Authenticate, ReviewController.productReviewAdd);
 router.post('/product/review/list', request_param.any(), ReviewController.productReviewList);
 router.post('/review/list', request_param.any(), Authentication.AuthenticateAdmin, ReviewController.adminProductReviewList);
 router.post('/review/update/:id', request_param.any(), Authentication.Authenticate, ReviewController.reviewUpdate);
 router.post('/review/status/update/:id', request_param.any(), Authentication.AuthenticateAdmin, ReviewController.reviewStatusUpdate);
-router.post('/admin/review/delete/:id', request_param.any(), Authentication.AuthenticateAdmin, ReviewController.adminReviewDelete);
 
 module.exports = router;
