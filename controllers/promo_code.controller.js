@@ -55,7 +55,7 @@ class promocodeController {
                 res.status(200).send({ status: 200, data: PromocodeInfo, message: 'Promocode Details has been fetched Successfully' });
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'Promocode Not Found' });
+                res.status(400).send({ status: 400, message: 'Promocode Not Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
