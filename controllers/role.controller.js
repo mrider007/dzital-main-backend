@@ -56,7 +56,7 @@ class roleController {
             if (!_.isEmpty(roleInfo) && roleInfo._id) {
                 res.status(200).send({ status: 200, data: roleInfo, message: 'Role Details fetched Successfully' });
             } else {
-                res.status(400).send({ status: 400, data: {}, message: 'Role Not Found' });
+                res.status(400).send({ status: 400, message: 'Role Not Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -72,7 +72,7 @@ class roleController {
                 if (!_.isEmpty(roleUpdate) && roleUpdate._id) {
                     res.status(200).send({ status: 200, data: roleUpdate, message: 'Role Updated Successfully' });
                 } else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Role could not be updated' });
+                    res.status(400).send({ status: 400, message: 'Role could not be updated' });
                 }
             } else {
                 res.status(400).send({ status: 400, message: 'Role Not Found' });
