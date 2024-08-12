@@ -17,7 +17,7 @@ class countryController {
                     res.status(200).send({ status: 200, data: saveData, message: 'Country added successfully' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Country could not be added' });
+                    res.status(400).send({ status: 400, message: 'Country could not be added' });
                 }
             }
         } catch (e) {
@@ -32,7 +32,7 @@ class countryController {
             if (!_.isEmpty(countryInfo) && countryInfo._id) {
                 res.status(200).send({ status: 200, data: countryInfo, message: 'Country details has been fetched successfully' });
             } else {
-                res.status(400).send({ status: 400, data: {}, message: 'Country not found' });
+                res.status(400).send({ status: 400, message: 'Country not found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -60,7 +60,7 @@ class countryController {
                 res.status(200).send({ status: 200, data: countries.docs, total: countries.total, limit: countries.limit, page: countries.page, pages: countries.pages, message: 'Country list has been fetched successfully' });
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'No country found' });
+                res.status(400).send({ status: 400, message: 'No country found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -77,11 +77,11 @@ class countryController {
                     res.status(200).send({ status: 200, data: countryUpdate, message: 'Country has been updated successfully' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Country could not be updated' });
+                    res.status(400).send({ status: 400, message: 'Country could not be updated' });
                 }
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'Country not found' });
+                res.status(400).send({ status: 400, message: 'Country not found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -102,7 +102,7 @@ class countryController {
                 }
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'Country not found' });
+                res.status(400).send({ status: 400, message: 'Country not found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
