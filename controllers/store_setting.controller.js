@@ -13,7 +13,7 @@ class StoreSettingController {
                 res.status(200).send({ status: 200, data: storeSettingSave, message: 'Store Setting data saved successfully' });
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'Store Setting data could not be saved' });
+                res.status(400).send({ status: 400, message: 'Store Setting data could not be saved' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -26,7 +26,7 @@ class StoreSettingController {
             if (!_.isEmpty(storeSetting) && storeSetting._id) {
                 res.status(200).send({ status: 200, data: storeSetting, message: 'Store Setting has been fetched successfully' });
             } else {
-                res.status(400).send({ status: 400, data: {}, message: 'Store Setting not found' });
+                res.status(400).send({ status: 400, message: 'Store Setting not found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -66,7 +66,7 @@ class StoreSettingController {
                     res.status(200).send({ status: 200, data: store_setting_update, message: 'Store Setting has been updated successfully' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Store Setting could not be updated' });
+                    res.status(400).send({ status: 400, message: 'Store Setting could not be updated' });
                 }
             } else {
                 res.status(400).send({ status: 400, message: 'Store Setting not found' });
@@ -82,7 +82,7 @@ class StoreSettingController {
             if (!_.isEmpty(store_setting_info) && store_setting_info._id) {
                 res.status(200).send({ status: 200, data: store_setting_info, message: 'Store Setting details has been fetched successfully' });
             } else {
-                res.status(400).send({ status: 400, data: {}, message: 'Store Setting not found' });
+                res.status(400).send({ status: 400, message: 'Store Setting not found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
