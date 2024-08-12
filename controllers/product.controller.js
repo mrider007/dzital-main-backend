@@ -53,7 +53,7 @@ class productController {
                         res.status(200).send({ status: 200, data: jobData, message: 'Product Added Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
+                        res.status(400).send({ status: 400, message: 'Product could not be added' });
                     }
                 }
                 else if (categoryInfo.title === 'Real Estate') {
@@ -93,7 +93,7 @@ class productController {
                         res.status(200).send({ status: 200, data: propertyData, message: 'Product Added Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
+                        res.status(400).send({ status: 400, message: 'Product could not be added' });
                     }
                 }
                 else if (categoryInfo.title === 'Electronics') {
@@ -133,7 +133,7 @@ class productController {
                         res.status(200).send({ status: 200, data: ElectronicsData, message: 'Product Added Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
+                        res.status(400).send({ status: 400, message: 'Product could not be added' });
                     }
                 }
                 else if (categoryInfo.title === 'Goods of all kinds') {
@@ -173,7 +173,7 @@ class productController {
                         res.status(200).send({ status: 200, data: GoodsSave, message: 'Product Added Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
+                        res.status(400).send({ status: 400, message: 'Product could not be added' });
                     }
                 }
                 else if (categoryInfo.title === 'Fashion & Beauty') {
@@ -213,7 +213,7 @@ class productController {
                         res.status(200).send({ status: 200, data: FashionSave, message: 'Product Added Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
+                        res.status(400).send({ status: 400, message: 'Product could not be added' });
                     }
                 }
                 else if (categoryInfo.title === 'Lessons & Courses') {
@@ -235,7 +235,7 @@ class productController {
                         res.status(200).send({ status: 200, data: lessoncoursesData, message: 'Product Added Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
+                        res.status(400).send({ status: 400, message: 'Product could not be added' });
                     }
                 }
                 else if (categoryInfo.title === 'Freelancer') {
@@ -257,12 +257,12 @@ class productController {
                         res.status(200).send({ status: 200, data: freelancerData, message: 'Product Added Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
+                        res.status(400).send({ status: 400, message: 'Product could not be added' });
                     }
                 }
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'Product could not be added' });
+                res.status(400).send({ status: 400, message: 'Product could not be added' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -409,7 +409,7 @@ class productController {
                         res.status(200).send({ status: 200, data: propertyDetails, message: 'Property Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
+                        res.status(400).send({ status: 400, message: 'Product Not Found' });
                     }
                 }
                 else if (categoryInfo.title === 'Electronics') {
@@ -419,7 +419,7 @@ class productController {
                         res.status(200).send({ status: 200, data: electronicsDetails, message: 'Product Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
+                        res.status(400).send({ status: 400, message: 'Product Not Found' });
                     }
                 }
                 else if (categoryInfo.title === 'Jobs') {
@@ -429,7 +429,7 @@ class productController {
                         res.status(200).send({ status: 200, data: jobDetails, message: 'Product Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
+                        res.status(400).send({ status: 400, message: 'Product Not Found' });
                     }
                 }
                 else if (categoryInfo.title === 'Fashion & Beauty') {
@@ -439,7 +439,7 @@ class productController {
                         res.status(200).send({ status: 200, data: fashionDetails, message: 'Product Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
+                        res.status(400).send({ status: 400, message: 'Product Not Found' });
                     }
                 }
                 else if (categoryInfo.title === 'Goods of all kinds') {
@@ -449,7 +449,7 @@ class productController {
                         res.status(200).send({ status: 200, data: goodsDetails, message: 'Product Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
+                        res.status(400).send({ status: 400, message: 'Product Not Found' });
                     }
                 }
                 else if (categoryInfo.title === 'Freelancer') {
@@ -459,7 +459,7 @@ class productController {
                         res.status(200).send({ status: 200, data: freelancerDetails, message: 'Product Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
+                        res.status(400).send({ status: 400, message: 'Product Not Found' });
                     }
                 }
                 else if (categoryInfo.title === 'Lessons & Courses') {
@@ -469,11 +469,11 @@ class productController {
                         res.status(200).send({ status: 200, data: lessonDetails, message: 'Product Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
+                        res.status(400).send({ status: 400, message: 'Product Not Found' });
                     }
                 }
             } else {
-                res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
+                res.status(400).send({ status: 400, message: 'Product Not Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -492,7 +492,7 @@ class productController {
                         res.status(200).send({ status: 200, data: propertyDetails, message: 'Real Estate Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
+                        res.status(400).send({ status: 400, message: 'Product Not Found' });
                     }
                 }
                 else if (categoryInfo.title === 'Electronics') {
@@ -501,7 +501,7 @@ class productController {
                         res.status(200).send({ status: 200, data: electronicsDetails, message: 'Electronics Product Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
+                        res.status(400).send({ status: 400, message: 'Product Not Found' });
                     }
                 }
                 else if (categoryInfo.title === 'Jobs') {
@@ -510,7 +510,7 @@ class productController {
                         res.status(200).send({ status: 200, data: jobDetails, message: 'Job Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
+                        res.status(400).send({ status: 400, message: 'Product Not Found' });
                     }
                 }
                 else if (categoryInfo.title === 'Fashion & Beauty') {
@@ -519,7 +519,7 @@ class productController {
                         res.status(200).send({ status: 200, data: fashionDetails, message: 'Fashion Product Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
+                        res.status(400).send({ status: 400, message: 'Product Not Found' });
                     }
                 }
                 else if (categoryInfo.title === 'Goods of all kinds') {
@@ -528,7 +528,7 @@ class productController {
                         res.status(200).send({ status: 200, data: goodsDetails, message: 'Goods of All Kinds Product Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
+                        res.status(400).send({ status: 400, message: 'Product Not Found' });
                     }
                 }
                 else if (categoryInfo.title === 'Freelancer') {
@@ -537,7 +537,7 @@ class productController {
                         res.status(200).send({ status: 200, data: freelancerDetails, message: 'Freelancer Product Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
+                        res.status(400).send({ status: 400, message: 'Product Not Found' });
                     }
                 }
                 else if (categoryInfo.title === 'Lessons & Courses') {
@@ -546,7 +546,7 @@ class productController {
                         res.status(200).send({ status: 200, data: lessonDetails, message: 'Lesson & Course Product Details has been fetched Successfully' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product Not Found' });
+                        res.status(400).send({ status: 400, message: 'Product Not Found' });
                     }
                 }
             }
@@ -661,7 +661,7 @@ class productController {
                         let productUpdate = await productRepo.updateProductById(updateObj, req.params.id);
                         res.status(200).send({ status: 200, data: electronicsUpdate, message: 'Product Updated Successfully' });
                     } else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
+                        res.status(400).send({ status: 400, message: 'Product could not be updated' });
                     }
                 }
                 else if (categoryInfo.title === 'Real Estate') {
@@ -733,7 +733,7 @@ class productController {
                         let productUpdate = await productRepo.updateProductById(updateObj, req.params.id);
                         res.status(200).send({ status: 200, data: propertyUpdate, message: 'Product Updated Successfully' });
                     } else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
+                        res.status(400).send({ status: 400, message: 'Product could not be updated' });
                     }
                 }
                 else if (categoryInfo.title === 'Jobs') {
@@ -793,7 +793,7 @@ class productController {
                         let productUpdate = await productRepo.updateProductById(updateObj, req.params.id);
                         res.status(200).send({ status: 200, data: jobUpdate, message: 'Product Updated Successfully' });
                     } else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
+                        res.status(400).send({ status: 400, message: 'Product could not be updated' });
                     }
                 }
                 else if (categoryInfo.title === 'Goods of all kinds') {
@@ -865,7 +865,7 @@ class productController {
                         let productUpdate = await productRepo.updateProductById(updateObj, req.params.id);
                         res.status(200).send({ status: 200, data: goodsUpdate, message: 'Product Updated Successfully' });
                     } else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
+                        res.status(400).send({ status: 400, message: 'Product could not be updated' });
                     }
                 }
                 else if (categoryInfo.title === 'Freelancer') {
@@ -922,7 +922,7 @@ class productController {
                         let productUpdate = await productRepo.updateProductById(updateObj, req.params.id);
                         res.status(200).send({ status: 200, data: freelancerUpdate, message: 'Product Updated Successfully' });
                     } else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
+                        res.status(400).send({ status: 400, message: 'Product could not be updated' });
                     }
                 }
                 else if (categoryInfo.title === 'Lessons & Courses') {
@@ -1019,7 +1019,7 @@ class productController {
                         let productUpdate = await productRepo.updateProductById(updateObj, req.params.id);
                         res.status(200).send({ status: 200, data: lessoncourseUpdate, message: 'Product Updated Successfully' });
                     } else {
-                        res.status(400).send({ status: 400, data: {}, message: 'Product could not be updated' });
+                        res.status(400).send({ status: 400, message: 'Product could not be updated' });
                     }
                 }
                 else if (categoryInfo.title === 'Fashion & Beauty') {
