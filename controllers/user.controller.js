@@ -66,7 +66,7 @@ class userController {
                         res.status(200).send({ status: 200, token: token, data: saveUser, msg: 'User Registration Successful' });
                     }
                     else {
-                        res.status(400).send({ status: 400, data: {}, message: 'User Registration Unsuccessful' });
+                        res.status(400).send({ status: 400, message: 'User Registration Unsuccessful' });
                     }
                 }
             }
@@ -78,10 +78,10 @@ class userController {
     async login(req, res) {
         try {
             if (!_.has(req.body, 'email')) {
-                res.status(400).send({ status: 400, data: {}, message: 'Email is Required' });
+                res.status(400).send({ status: 400, message: 'Email is Required' });
             }
             else if (!_.has(req.body, 'password')) {
-                res.status(400).send({ status: 400, data: {}, message: 'Password is Required' });
+                res.status(400).send({ status: 400, message: 'Password is Required' });
             }
             else {
                 let password = req.body.password;
@@ -90,7 +90,7 @@ class userController {
                 if (!_.isEmpty(userDetails)) {
                     let isPasswordMatched = await bcrypt.compareSync(password, userDetails.password);
                     if (!isPasswordMatched) {
-                        res.status(400).send({ status: 400, data: {}, message: 'Password not matched' });
+                        res.status(400).send({ status: 400, message: 'Password not matched' });
                     }
                     else {
                         let token = jsonwebtoken.sign({ email: userDetails.email, id: userDetails._id }, process.env.JWTSECERT, { expiresIn: process.env.JWTTIME });
@@ -140,10 +140,7 @@ class userController {
             const success = await sendEmail(user.email, "Forget Password", emailContent)
 
             if (success) {
-                res.status(200).json({
-                    status: 200,
-                    message: "Email Sent"
-                })
+                res.status(200).json({ status: 200, message: "Email Sent" });
             } else {
                 res.status(400).json({ status: 400, message: "Failed to Send Email" });
             }
