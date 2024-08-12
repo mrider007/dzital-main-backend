@@ -100,7 +100,7 @@ class adminController {
                     res.status(200).send({ status: 200, data: saveAdmin, message: 'Admin has been added successfully' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Admin could not be added' });
+                    res.status(400).send({ status: 400, message: 'Admin could not be added' });
                 }
             }
         } catch (e) {
@@ -403,7 +403,7 @@ class adminController {
         try {
             let user = await adminRepo.getUserInfo({ email: req.body.email });
             if (!_.isEmpty(user) && user._id) {
-                res.status(400).send({ status: 400, data: {}, message: 'User Already Exists' });
+                res.status(400).send({ status: 400, message: 'User Already Exists' });
             }
             else {
                 let password = req.body.password;
@@ -422,7 +422,7 @@ class adminController {
                     res.status(200).send({ status: 200, data: saveUser, message: 'User has been added successfully' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'User could not be added' });
+                    res.status(400).send({ status: 400, message: 'User could not be added' });
                 }
             }
         } catch (e) {
@@ -438,7 +438,7 @@ class adminController {
             if (!_.isEmpty(userInfo) && userInfo._id) {
                 res.status(200).send({ status: 200, data: userInfo, message: 'user details fetched successfully' });
             } else {
-                res.status(400).send({ status: 400, data: {}, message: 'User not found' });
+                res.status(400).send({ status: 400, message: 'User not found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -456,10 +456,10 @@ class adminController {
                     res.status(200).send({ status: 200, data: userDelete, message: 'User has been removed successfully' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'User could not be removed' });
+                    res.status(400).send({ status: 400, message: 'User could not be removed' });
                 }
             } else {
-                res.status(400).send({ status: 400, data: {}, message: 'User not found!' });
+                res.status(400).send({ status: 400, message: 'User not found!' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -483,11 +483,11 @@ class adminController {
                     res.status(200).send({ status: 200, data: userUpdate, message: 'Admin User details has been updated successfully' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Sorry, unable to update admin user at this moment!' });
+                    res.status(400).send({ status: 400, message: 'Sorry, unable to update admin user at this moment!' });
                 }
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'User not found!' });
+                res.status(400).send({ status: 400, message: 'User not found!' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
