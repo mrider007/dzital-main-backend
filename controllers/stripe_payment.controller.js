@@ -167,7 +167,7 @@ class StripePaymentController {
             });
 
             if (_.isEmpty(session) || !session.id) {
-                res.status(400).send({ status: 400, data: {}, message: 'Session can not be created' })
+                res.status(400).send({ status: 400, message: 'Session can not be created' })
             } else {
                 res.status(200).json({ status: 200, data: session.id, message: "Checkout session created successfully" });
             }
@@ -410,7 +410,7 @@ class StripePaymentController {
                 }
                 const alreadyMember = await membership_user.findOne({ payment_id: session?.id })
                 if (!_.isEmpty(alreadyMember) && alreadyMember._id) {
-                    return res.status(200).send({ status: 200, data: {}, message: 'Record Already Added' });
+                    return res.status(200).send({ status: 200, message: 'Record Already Added' });
                 }
                 const currentDate = new Date();
                 currentDate.setMonth(currentDate.getMonth() + membership_details.no_of_months);
@@ -426,7 +426,7 @@ class StripePaymentController {
                 })
 
                 if (_.isEmpty(saveData) || !saveData._id) {
-                    res.status(400).send({ status: 400, data: {}, message: 'Payment could not be verified' });
+                    res.status(400).send({ status: 400, message: 'Payment could not be verified' });
                 } else {
                     if (membership_details.type === 'Premium_Membership') {
                         await User.findByIdAndUpdate(session?.metadata?.user_id, { plan_id: membership_details._id })
