@@ -9,7 +9,7 @@ class adminModuleController {
         try {
             let moduleCheck = await Module.findOne({ name: req.body.name });
             if (!_.isEmpty(moduleCheck) && moduleCheck._id) {
-                res.status(400).send({ status: 400, data: {}, message: 'Module Already Exists' });
+                res.status(400).send({ status: 400, message: 'Module Already Exists' });
             }
             else {
                 req.body.slug = req.body.name.trim().replace(/\s+/g, '-').toLowerCase();
@@ -18,7 +18,7 @@ class adminModuleController {
                     res.status(200).send({ status: 200, data: moduleAdd, message: 'Module has been added successfully' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Module could not be added' });
+                    res.status(400).send({ status: 400, message: 'Module could not be added' });
                 }
             }
         } catch (e) {
@@ -34,7 +34,7 @@ class adminModuleController {
                 res.status(200).send({ status: 200, data: moduleInfo, message: 'Module details has been fetched successfully' });
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'Module not found' });
+                res.status(400).send({ status: 400, message: 'Module not found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -51,11 +51,11 @@ class adminModuleController {
                     res.status(200).send({ status: 200, data: moduleUpdate, message: 'Module has been updated successfully' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Module could not be updated' });
+                    res.status(400).send({ status: 400, message: 'Module could not be updated' });
                 }
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'Module could not be found' });
+                res.status(400).send({ status: 400, message: 'Module could not be found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
