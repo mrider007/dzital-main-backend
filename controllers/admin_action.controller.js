@@ -13,7 +13,7 @@ class adminActionController {
                 res.status(200).send({ status: 200, data: actionAdd, message: 'Admin Action has been added successfully' });
             }
             else {
-                res.status(200).send({ status: 400, data: {}, message: 'Admin Action has been added successfully' });
+                res.status(200).send({ status: 400, message: 'Admin Action has been added successfully' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -55,11 +55,11 @@ class adminActionController {
                     res.status(200).send({ status: 200, data: actionUpdate, message: 'Action has been updated successfully' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: "Action could not be updated" });
+                    res.status(400).send({ status: 400, message: "Action could not be updated" });
                 }
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'Action not found' });
+                res.status(400).send({ status: 400, message: 'Action not found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
