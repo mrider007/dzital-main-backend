@@ -84,7 +84,7 @@ class ReviewController {
             if (!_.isEmpty(reviewInfo) && reviewInfo._id) {
                 res.status(200).send({ status: 200, data: reviewInfo, message: 'Review Details Fetched Successfully' });
             } else {
-                res.status(201).send({ status: 201, data: {}, message: 'Review Not Found' });
+                res.status(201).send({ status: 201, message: 'Review Not Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -103,7 +103,7 @@ class ReviewController {
                     res.status(201).send({ status: 201, message: 'Review could not be updated' });
                 }
             } else {
-                res.status(201).send({ status: 201, data: {}, message: 'Review Not Found!' });
+                res.status(201).send({ status: 201, message: 'Review Not Found!' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -120,10 +120,10 @@ class ReviewController {
                     res.status(200).send({ status: 200, data: reviewInfo, message: 'Review Removed Successfully' });
                 }
                 else {
-                    res.status(201).send({ status: 201, data: {}, message: 'Review could not be removed' });
+                    res.status(201).send({ status: 201, message: 'Review could not be removed' });
                 }
             } else {
-                res.status(201).send({ status: 201, data: {}, message: 'Review Not Found' });
+                res.status(201).send({ status: 201, message: 'Review Not Found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
