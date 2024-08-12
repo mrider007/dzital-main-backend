@@ -9,14 +9,14 @@ class faqController {
         try {
             let faqCheck = await FAQ.findOne({ question: req.body.question });
             if (!_.isEmpty(faqCheck) && faqCheck._id) {
-                res.status(400).send({ status: 400, data: {}, message: 'FAQ already exists' });
+                res.status(400).send({ status: 400, message: 'FAQ already exists' });
             }
             else {
                 let faqSave = await FAQ.create(req.body);
                 if (!_.isEmpty(faqSave) && faqSave._id) {
                     res.status(200).send({ status: 200, data: faqSave, message: 'FAQ has been saved successfully' });
                 } else {
-                    res.status(400).send({ status: 400, data: {}, message: 'FAQ could not be added' });
+                    res.status(400).send({ status: 400, message: 'FAQ could not be added' });
                 }
             }
         } catch (e) {
@@ -104,11 +104,11 @@ class faqController {
                     res.status(200).send({ status: 200, data: updateData, message: 'FAQ has been updated successfully' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'FAQ could not be updated' });
+                    res.status(400).send({ status: 400, message: 'FAQ could not be updated' });
                 }
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'FAQ not found' });
+                res.status(400).send({ status: 400, message: 'FAQ not found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -124,10 +124,10 @@ class faqController {
                 if (!_.isEmpty(faqDelete) && faqDelete._id) {
                     res.status(200).send({ status: 200, data: faqDelete, message: 'FAQ has been removed successfully' });
                 } else {
-                    res.status(400).send({ status: 400, data: {}, message: 'FAQ could not be deleted' });
+                    res.status(400).send({ status: 400, message: 'FAQ could not be deleted' });
                 }
             } else {
-                res.status(400).send({ status: 400, data: {}, message: 'FAQ not found' });
+                res.status(400).send({ status: 400, message: 'FAQ not found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
