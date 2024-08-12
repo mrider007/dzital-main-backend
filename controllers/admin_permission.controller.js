@@ -9,7 +9,7 @@ class permissionController {
         try {
             let permissionCheck = await Permission.findOne({ name: req.body.name });
             if (!_.isEmpty(permissionCheck) && permissionCheck._id) {
-                res.status(400).send({ status: 400, data: {}, message: 'Permission Already Exists' });
+                res.status(400).send({ status: 400, message: 'Permission Already Exists' });
             }
             else {
                 req.body.slug = req.body.name.trim().replace(/\s+/g, '-').toLowerCase();
@@ -18,7 +18,7 @@ class permissionController {
                     res.status(200).send({ status: 200, data: permissionAdd, message: 'Permission has been added successfully' });
                 }
                 else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Permission could not be added' });
+                    res.status(400).send({ status: 400, message: 'Permission could not be added' });
                 }
             }
         } catch (e) {
@@ -62,7 +62,7 @@ class permissionController {
                 res.status(200).send({ status: 200, data: permissionDetails, message: 'Permission Details has been fetched' });
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'Permission not found' });
+                res.status(400).send({ status: 400, message: 'Permission not found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
@@ -78,7 +78,7 @@ class permissionController {
                 res.status(200).send({ status: 200, data: permissionUpdate, message: 'Permission has been updated successfully' });
             }
             else {
-                res.status(400).send({ status: 400, data: {}, message: 'Permission not found' });
+                res.status(400).send({ status: 400, message: 'Permission not found' });
             }
         } catch (e) {
             res.status(500).send({ status: 500, message: e.message });
