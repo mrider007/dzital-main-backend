@@ -160,7 +160,7 @@ class productWishlistController {
             let userId = req.user._id;
             let wishlist_exist = await Wishlist.findOne({ user_id: userId, 'products.product_id': { $in: new mongoose.Types.ObjectId(req.body.product_id) } });
             if (_.isEmpty(wishlist_exist)) {
-                res.status(400).send({ status: 400, data: {}, message: 'Product is not in your wishlist' });
+                res.status(400).send({ status: 400, message: 'Product is not in your wishlist' });
             } else {
                 let updateWishlist = await productwishlistRepo.updateWishlist({ user_id: userId }, { $pull: { 'products': { product_id: req.body.product_id } } });
                 if (!_.isEmpty(updateWishlist)) {
