@@ -89,7 +89,7 @@ class JobProposalController {
                 if (!_.isEmpty(proposalDelete) && proposalDelete._id) {
                     res.status(200).send({ status: 200, data: proposalDelete, message: 'Job Proposal has been removed successfully' });
                 } else {
-                    res.status(400).send({ status: 400, data: {}, message: 'Job Proposal could not be removed' });
+                    res.status(400).send({ status: 400, message: 'Job Proposal could not be removed' });
                 }
             }
             else {
